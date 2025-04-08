@@ -3,6 +3,7 @@
 | Default                                                  | Advanced                                                                   |
 |----------------------------------------------------------|----------------------------------------------------------------------------|
 | ![flame-charts.png](./tools/imgs/nx-default-profile.png) | ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png) |
+| `NX_DAEMON=false NX_PERF_LOGGING=true NX_CACHE=false nx show projects` | `node ./nx-advanced-profile.js --args=show,projects`                       |
 
 ## Main Process Logging
 
@@ -12,7 +13,7 @@
 3. Open Chrome browser
    1. Open DevTools (F12)
    2. Go to the `Performance` tab
-4. Drag and drop the `./.nx-profiling/tools/nx-advanced-profile.bin.js` file into the DevTools window.
+4. Drag and drop the `<process>.profile.json` file into the DevTools window.
 
 ![flame-charts.png](./tools/imgs/main-process-flame-charts.png)
 
@@ -21,18 +22,19 @@
 1. Run `node ./tools/nx-advanced-profile.postinstall.js`. This modifies the Nx sourcecode to be patched. (Don't forget
    to revert your changes)
 2. Run `node ./tools/nx-advanced-profile.bin.js --noPatch`. (As it is now patched inside the file directly)
-3. Drag and drop the `./.nx-profiling/tools/nx-advanced-profile.bin.js` file into the DevTools window.
+3. Drag and drop the `<process>.profile.json` file into the DevTools window.
 
 ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png)
 
 ## Terminal Arguments
 
-| Option      | Shorthand | Description                   |
-| ----------- | --------- | ----------------------------- |
-| `--verbose` | `-v`      | Show verbose output           |
-| `--noPatch` | `-p`      | Don't patch the Nx sourcecode |
-| `--outDir`  | `-d`      | Output directory              |
-| `--outFile` | `-f`      | Output file                   |
+| Option      | Shorthand | Description                             |
+|-------------|-----------|-----------------------------------------|
+| `--args`    |           | comma separated process args `-t,build` |
+| `--verbose` | `-v`      | Show verbose output                     |
+| `--noPatch` | `-p`      | Don't patch the Nx sourcecode           |
+| `--outDir`  | `-d`      | Output directory                        |
+| `--outFile` | `-f`      | Output file                             |
 
 **Example**
 
