@@ -35,13 +35,13 @@ It will create a flame graph that shows the time spent in each function and the 
 
 ## Terminal Arguments
 
-| Option      | Shorthand | Description                             |
-| ----------- | --------- | --------------------------------------- |
-| `--args`    |           | comma separated process args `-t,build` |
-| `--verbose` | `-v`      | Show verbose output                     |
-| `--noPatch` | `-p`      | Don't patch the Nx sourcecode           |
-| `--outDir`  | `-d`      | Output directory                        |
-| `--outFile` | `-f`      | Output file                             |
+| Option      | Shorthand | Description                               |
+| ----------- | --------- |-------------------------------------------|
+| `--args`    |           | comma separated process `--args=-t,build` |
+| `--verbose` | `-v`      | Show verbose output                       |
+| `--noPatch` | `-p`      | Don't patch the Nx sourcecode             |
+| `--outDir`  | `-d`      | Output directory                          |
+| `--outFile` | `-f`      | Output file                               |
 
 **Example**
 
