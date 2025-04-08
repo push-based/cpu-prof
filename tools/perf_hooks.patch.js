@@ -1,5 +1,6 @@
 import {Performance, performance} from "node:perf_hooks";
 import {basename} from "node:path";
+import {cpus} from "node:os";
 
 // Global array to store complete events.
 const traceEvents = [];
@@ -76,20 +77,24 @@ Performance.prototype.mark = function(name, options) {
   });
   return originalMark.call(this, name, opt);
 };
-
-// Override measure to create complete events.
 Performance.prototype.measure = function(name, start, end, options) {
   const startEntry = performance.getEntriesByName(start, 'mark')[0];
   const endEntry = performance.getEntriesByName(end, 'mark')[0];
   let event = null;
+
   if (startEntry && endEntry) {
-    const ts = startEntry.startTime * 1000; // Convert ms to microseconds.
+    const ts = startEntry.startTime * 1000; // Convert ms to µs
     const dur = (endEntry.startTime - startEntry.startTime) * 1000;
 
-    // Enrich event further if needed (here keeping it minimal to match your profile).
+    const correlationId = generateCorrelationId();
+    const callFrame = (startEntry.detail?.callStack || [])[0] || {};
+    const file = (callFrame.file || 'unknown').replace(process.cwd(), '.');
+    const functionName = callFrame.functionName != null ? callFrame.functionName : 'anonymous';
+    const line = callFrame.line || null;
+
     event = {
-      name,
-      cat: 'measure',  // Keeping the same category as in your uploaded trace.
+      name: name.replace(process.cwd(), ''), // sometimes the name includes a path
+      cat: 'measure',
       ph: 'X',
       ts,
       dur,
@@ -98,23 +103,29 @@ Performance.prototype.measure = function(name, start, end, options) {
       args: {
         startDetail: startEntry.detail || {},
         endDetail: endEntry.detail || {},
-        // Optionally: add correlation and extra labels.
-        uiLabel: name
+        uiLabel: functionName,
+        correlationId,
+        timestamp: new Date().toISOString(),
+        durationMs: dur / 1000,
+        file,
+        functionName,
+        line
       }
     };
 
-    // Push metadata events once.
     if (traceEvents.length < 1) {
       traceEvents.push(threadMetadata);
       console.log(`traceEvent:JSON:${JSON.stringify(threadMetadata)}`);
       traceEvents.push(processMetadata);
       console.log(`traceEvent:JSON:${JSON.stringify(processMetadata)}`);
     }
+
     traceEvents.push(event);
     console.log(`traceEvent:JSON:${JSON.stringify(event)}`);
   } else {
     console.warn('Missing start or end mark for measure', name);
   }
+
   return originalMeasure.call(this, name, start, end, options);
 };
 
@@ -124,7 +135,7 @@ performance.profile = function() {
     metadata: {
       source: "Nx Advanced Profiling",
       startTime: Date.now() / 1000,
-      hardwareConcurrency: 12,
+      hardwareConcurrency: cpus().length,
       dataOrigin: "TraceEvents",
       modifications: {
         entriesModifications: {
