@@ -2,7 +2,7 @@ import {Performance, performance} from "node:perf_hooks";
 import {basename} from "node:path";
 
 // Global array to store complete events.
-const trace = [];
+const traceEvents = [];
 
 // Metadata events.
 
@@ -104,16 +104,14 @@ Performance.prototype.measure = function(name, start, end, options) {
     };
 
     // Push metadata events once.
-    if (trace.length < 1) {
-      trace.push(threadMetadata);
+    if (traceEvents.length < 1) {
+      traceEvents.push(threadMetadata);
       console.log(`traceEvent:JSON:${JSON.stringify(threadMetadata)}`);
-      trace.push(processMetadata);
+      traceEvents.push(processMetadata);
       console.log(`traceEvent:JSON:${JSON.stringify(processMetadata)}`);
     }
-    trace.push(event);
+    traceEvents.push(event);
     console.log(`traceEvent:JSON:${JSON.stringify(event)}`);
-
-    // console.log('Measure Event:', JSON.stringify(event));
   } else {
     console.warn('Missing start or end mark for measure', name);
   }
@@ -148,8 +146,7 @@ performance.profile = function() {
         }
       }
     },
-    traceEvents: trace
+    traceEvents
   };
 };
-performance.trace = trace;
 
