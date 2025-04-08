@@ -1,4 +1,4 @@
-# Advanced Performance profiling for Nx
+# Advanced Performance Profiling for Nx
 
 | Default                                                                | Advanced                                                                   |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
