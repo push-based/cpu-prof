@@ -1,65 +1,41 @@
 const { performance, Performance } = require('node:perf_hooks');
-const os = require('os');
 
-// Use a correct ISO timestamp for metadata startTime.
-const metadata = {
-  source: "DevTools",
-  startTime: new Date().toISOString(),
-  hardwareConcurrency: os.cpus().length,
-  dataOrigin: "TraceEvents",
-  modifications: {
-    entriesModifications: {
-      hiddenEntries: [],
-      expandableEntries: []
-    },
-    initialBreadcrumb: {
-      window: {
-        // Set these relative to your own reference
-        min: 0,
-        max: 1000000,
-        range: 1000000
-      },
-      child: null
-    },
-    annotations: {
-      entryLabels: [],
-      labelledTimeRanges: [],
-      linksBetweenEntries: []
-    }
-  }
-};
+// Global array to store complete events.
+const trace = [];
 
-// Log metadata as the first event so DevTools can pick it up.
-console.log(`metadata:JSON:${JSON.stringify(metadata)}`);
-
-// Global array to store complete trace events.
-const traceEvents = [];
-
-// Metadata event to label the main thread.
-const mainThreadMetadataEvent = {
+// Metadata events.
+const threadMetadata = {
   name: 'thread_name',
-  cat: '__metadata',
   ph: 'M',
   pid: process.pid,
   tid: 0,
   ts: 0,
-  args: { name: 'Main Thread' }
+  args: { name: 'Main Thread' },
 };
 
-// Push the thread metadata event at the start.
-traceEvents.push(mainThreadMetadataEvent);
-console.log(`traceEvent:JSON:${JSON.stringify(mainThreadMetadataEvent)}`);
+const processMetadata = {
+  name: 'process_name',
+  ph: 'M',
+  pid: process.pid,
+  tid: 0,
+  ts: 0,
+  args: { name: 'MyApp Main Process' },
+};
 
 const originalMark = Performance.prototype.mark;
 const originalMeasure = Performance.prototype.measure;
 
+let correlationIdCounter = 0;
+function generateCorrelationId() {
+  return ++correlationIdCounter;
+}
+
 /**
- * Helper to parse an error stack into an array of frames.
- * Each frame is an object with: { functionName, file, line, column }.
+ * Parse an error stack into an array of frames.
  */
 function parseStack(stack) {
   const frames = [];
-  const lines = stack.split('\n').slice(2);
+  const lines = stack.split('\n').slice(2); // Skip error message & current function.
   for (const line of lines) {
     const trimmed = line.trim();
     const regex1 = /^at\s+(.*?)\s+\((.*):(\d+):(\d+)\)$/;
@@ -70,7 +46,7 @@ function parseStack(stack) {
         functionName: match[1],
         file: match[2],
         line: Number(match[3]),
-        column: Number(match[4])
+        column: Number(match[4]),
       });
     } else {
       match = trimmed.match(regex2);
@@ -79,7 +55,7 @@ function parseStack(stack) {
           functionName: null,
           file: match[1],
           line: Number(match[2]),
-          column: Number(match[3])
+          column: Number(match[3]),
         });
       } else {
         frames.push({ raw: trimmed });
@@ -89,31 +65,31 @@ function parseStack(stack) {
   return frames;
 }
 
-// Override performance.mark to capture the full call stack.
-Performance.prototype.mark = function (name, options) {
+// Override mark to capture call stacks.
+Performance.prototype.mark = function(name, options) {
   const err = new Error();
   const callStack = parseStack(err.stack);
   const opt = Object.assign({}, options, {
-    detail: Object.assign({}, (options && options.detail) || {}, { callStack })
+    detail: Object.assign({}, (options && options.detail) || {}, { callStack }),
   });
-  // Optionally, also log the mark event for debugging.
-  // console.log('Mark for', name, performance.now());
+  console.log('Mark for', name, performance.now());
   return originalMark.call(this, name, opt);
 };
 
-// Override performance.measure to create complete events.
-Performance.prototype.measure = function (name, start, end, options) {
+// Override measure to create complete events.
+Performance.prototype.measure = function(name, start, end, options) {
   const startEntry = performance.getEntriesByName(start, 'mark')[0];
   const endEntry = performance.getEntriesByName(end, 'mark')[0];
   let event = null;
   if (startEntry && endEntry) {
-    // Use the startEntry.startTime (ms) and convert to microseconds.
-    const ts = startEntry.startTime * 1000;
+    const ts = startEntry.startTime * 1000; // Convert ms to microseconds.
     const dur = (endEntry.startTime - startEntry.startTime) * 1000;
+
+    // Enrich event further if needed (here keeping it minimal to match your profile).
     event = {
       name,
-      cat: 'devtools.timeline',  // Use a category that Chrome recognizes for timeline events.
-      ph: 'X',                   // "X" for complete events.
+      cat: 'measure',  // Keeping the same category as in your uploaded trace.
+      ph: 'X',
       ts,
       dur,
       pid: process.pid,
@@ -121,22 +97,60 @@ Performance.prototype.measure = function (name, start, end, options) {
       args: {
         startDetail: startEntry.detail || {},
         endDetail: endEntry.detail || {},
-        options
+        // Optionally: add correlation and extra labels.
+        correlationId: generateCorrelationId(),
+        uiLabel: name  // A simple label for UI display.
       }
     };
 
-    traceEvents.push(event);
+    // Push metadata events once.
+    if (trace.length < 1) {
+      trace.push(threadMetadata);
+      console.log(`traceEvent:JSON:${JSON.stringify(threadMetadata)}`);
+      trace.push(processMetadata);
+      console.log(`traceEvent:JSON:${JSON.stringify(processMetadata)}`);
+    }
+    trace.push(event);
     console.log(`traceEvent:JSON:${JSON.stringify(event)}`);
+
+    // console.log('Measure Event:', JSON.stringify(event));
   } else {
     console.warn('Missing start or end mark for measure', name);
   }
   return originalMeasure.call(this, name, start, end, options);
 };
 
-// Add a method to performance to return the full Chrome Trace profile.
-performance.profile = function () {
-  return { metadata, traceEvents };
+// Return the complete Chrome Trace profile object.
+performance.profile = function() {
+  return {
+    metadata: {
+      source: "DevTools",
+      startTime: "2025-04-08T13:20:54.094Z",
+      hardwareConcurrency: 12,
+      dataOrigin: "TraceEvents",
+      modifications: {
+        entriesModifications: {
+          hiddenEntries: [],
+          expandableEntries: []
+        },
+        initialBreadcrumb: {
+          window: {
+            min: 269106047711,
+            max: 269107913714,
+            range: 1866003
+          },
+          child: null
+        },
+        annotations: {
+          entryLabels: [],
+          labelledTimeRanges: [],
+          linksBetweenEntries: []
+        }
+      }
+    },
+    traceEvents: trace
+  };
 };
-performance.trace = traceEvents;
+performance.trace = trace;
 
-module.exports = { nxPerfProfile: { metadata, traceEvents } };
+module.exports = { trace };

@@ -40,7 +40,8 @@ nxRunWithPerfLogging(args, {
         // console.log('perfProfileEvent', perfProfileEvent);
     },
     beforeExit: (profile) => {
-        const profileStdout = JSON.stringify(profile, null, 2);
+        // @TODO figure out why profile directly does not show the flames but profile.traceEvents does
+        const profileStdout = JSON.stringify(profile.traceEvents, null, 2);
         mkdirSync(outDir, {recursive: true});
         writeFileSync(`${outDir}/${outFile}`, profileStdout);
         if (verbose) {
@@ -56,9 +57,12 @@ export async function nxRunWithPerfLogging(
         noPatch = false,
         onData = () => {
         },
-        onTraceEvent = () => {},
-        onMetadata = () => {},
-        beforeExit = () => {},
+        onTraceEvent = () => {
+        },
+        onMetadata = () => {
+        },
+        beforeExit = () => {
+        },
     } = {}
 ) {
     const patch = !noPatch;
