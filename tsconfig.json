@@ -2,5 +2,30 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./packages/pkg-0"
+    },
+    {
+      "path": "./packages/pkg-1"
+    },
+    {
+      "path": "./packages/pkg-2"
+    },
+    {
+      "path": "./packages/pkg-3"
+    },
+    {
+      "path": "./packages/pkg-4"
+    },
+    {
+      "path": "./packages/app-0-e2e"
+    },
+    {
+      "path": "./packages/app-0"
+    },
+    {
+      "path": "./packages/app-1"
+    }
+  ]
 }
