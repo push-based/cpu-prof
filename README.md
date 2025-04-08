@@ -46,5 +46,7 @@ It will create a flame graph that shows the time spent in each function and the 
 **Example**
 
 ```sh
-node ./tools/nx-advanced-profile.bin.js --verbose --noPatch --outDir=./tools/demo --outFile=nx-show-projects
+node ./tools/nx-advanced-profile.bin.js --args=show,projects
+node ./tools/nx-advanced-profile.bin.js --args=show,projects --verbose
+node ./tools/nx-advanced-profile.bin.js -v -p -o./tools/demo -f=nx-show-projects.json
 ```
