@@ -1,0 +1,3015 @@
+[
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96911,
+    "ts": 0,
+    "args": {
+      "name": "Nx Process"
+    }
+  },
+  {
+    "name": "process_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96911,
+    "ts": 0,
+    "args": {
+      "name": "Measure Process"
+    }
+  },
+  {
+    "name": "loading dotenv files",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 68179.167,
+    "dur": 751.4169999999893,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "main",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 29,
+            "column": 30
+          },
+          {
+            "functionName": "Object.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 234,
+            "column": 1
+          },
+          {
+            "functionName": "Module._compile",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1734,
+            "column": 14
+          },
+          {
+            "functionName": "Object..js",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1899,
+            "column": 10
+          },
+          {
+            "functionName": "Module.load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1469,
+            "column": 32
+          },
+          {
+            "functionName": "Function._load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1286,
+            "column": 12
+          },
+          {
+            "functionName": "TracingChannel.traceSync",
+            "file": "node:diagnostics_channel",
+            "line": 322,
+            "column": 14
+          },
+          {
+            "functionName": "wrapModuleLoad",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 235,
+            "column": 24
+          },
+          {
+            "functionName": "Function.executeUserEntryPoint [as runMain]",
+            "file": "node:internal/modules/run_main",
+            "line": 151,
+            "column": 5
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "main",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 33,
+            "column": 30
+          },
+          {
+            "functionName": "Object.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 234,
+            "column": 1
+          },
+          {
+            "functionName": "Module._compile",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1734,
+            "column": 14
+          },
+          {
+            "functionName": "Object..js",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1899,
+            "column": 10
+          },
+          {
+            "functionName": "Module.load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1469,
+            "column": 32
+          },
+          {
+            "functionName": "Function._load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1286,
+            "column": 12
+          },
+          {
+            "functionName": "TracingChannel.traceSync",
+            "file": "node:diagnostics_channel",
+            "line": 322,
+            "column": 14
+          },
+          {
+            "functionName": "wrapModuleLoad",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 235,
+            "column": 24
+          },
+          {
+            "functionName": "Function.executeUserEntryPoint [as runMain]",
+            "file": "node:internal/modules/run_main",
+            "line": 151,
+            "column": 5
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "loading dotenv files"
+    }
+  },
+  {
+    "name": "workspace context init",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 69345.375,
+    "dur": 980.4999999999922,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "setupWorkspaceContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/workspace-context.js",
+            "line": 21,
+            "column": 30
+          },
+          {
+            "functionName": "main",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 45,
+            "column": 59
+          },
+          {
+            "functionName": "Object.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 234,
+            "column": 1
+          },
+          {
+            "functionName": "Module._compile",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1734,
+            "column": 14
+          },
+          {
+            "functionName": "Object..js",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1899,
+            "column": 10
+          },
+          {
+            "functionName": "Module.load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1469,
+            "column": 32
+          },
+          {
+            "functionName": "Function._load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1286,
+            "column": 12
+          },
+          {
+            "functionName": "TracingChannel.traceSync",
+            "file": "node:diagnostics_channel",
+            "line": 322,
+            "column": 14
+          },
+          {
+            "functionName": "wrapModuleLoad",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 235,
+            "column": 24
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "setupWorkspaceContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/workspace-context.js",
+            "line": 23,
+            "column": 30
+          },
+          {
+            "functionName": "main",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 45,
+            "column": 59
+          },
+          {
+            "functionName": "Object.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/bin/nx.js",
+            "line": 234,
+            "column": 1
+          },
+          {
+            "functionName": "Module._compile",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1734,
+            "column": 14
+          },
+          {
+            "functionName": "Object..js",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1899,
+            "column": 10
+          },
+          {
+            "functionName": "Module.load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1469,
+            "column": 32
+          },
+          {
+            "functionName": "Function._load",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 1286,
+            "column": 12
+          },
+          {
+            "functionName": "TracingChannel.traceSync",
+            "file": "node:diagnostics_channel",
+            "line": 322,
+            "column": 14
+          },
+          {
+            "functionName": "wrapModuleLoad",
+            "file": "node:internal/modules/cjs/loader",
+            "line": 235,
+            "column": 24
+          }
+        ]
+      },
+      "correlationId": 2,
+      "uiLabel": "workspace context init"
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96914,
+    "ts": 0,
+    "args": {
+      "name": "Child Process"
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96915,
+    "ts": 0,
+    "args": {
+      "name": "Child Process"
+    }
+  },
+  {
+    "name": "process_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96914,
+    "ts": 0,
+    "args": {
+      "name": "Measure Process"
+    }
+  },
+  {
+    "name": "process_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96915,
+    "ts": 0,
+    "args": {
+      "name": "Measure Process"
+    }
+  },
+  {
+    "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 58371.084,
+    "dur": 544.0829999999935,
+    "pid": 0,
+    "tid": 96914,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 199,
+            "column": 21
+          },
+          {
+            "functionName": "loadNxPlugin",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 182,
+            "column": 9
+          },
+          {
+            "functionName": "load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 37,
+            "column": 65
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 203,
+            "column": 21
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 38,
+            "column": 30
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json"
+    }
+  },
+  {
+    "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/project-json/build-nodes/project-json",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 58442.25,
+    "dur": 511.2090000000009,
+    "pid": 0,
+    "tid": 96915,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 199,
+            "column": 21
+          },
+          {
+            "functionName": "loadNxPlugin",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 182,
+            "column": 9
+          },
+          {
+            "functionName": "load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 37,
+            "column": 65
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 203,
+            "column": 21
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 38,
+            "column": 30
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/project-json/build-nodes/project-json"
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96913,
+    "ts": 0,
+    "args": {
+      "name": "Child Process"
+    }
+  },
+  {
+    "name": "process_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96913,
+    "ts": 0,
+    "args": {
+      "name": "Measure Process"
+    }
+  },
+  {
+    "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/js",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 58712.125,
+    "dur": 4441.209000000001,
+    "pid": 0,
+    "tid": 96913,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 199,
+            "column": 21
+          },
+          {
+            "functionName": "loadNxPlugin",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 182,
+            "column": 9
+          },
+          {
+            "functionName": "load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 37,
+            "column": 65
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 203,
+            "column": 21
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 38,
+            "column": 30
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/js"
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96912,
+    "ts": 0,
+    "args": {
+      "name": "Child Process"
+    }
+  },
+  {
+    "name": "process_name",
+    "ph": "M",
+    "pid": 0,
+    "tid": 96912,
+    "ts": 0,
+    "args": {
+      "name": "Measure Process"
+    }
+  },
+  {
+    "name": "Load Nx Plugin: @push-based/nx-verdaccio",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 58371.458,
+    "dur": 65837.83400000002,
+    "pid": 0,
+    "tid": 96912,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 199,
+            "column": 21
+          },
+          {
+            "functionName": "loadNxPlugin",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 182,
+            "column": 9
+          },
+          {
+            "functionName": "load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 37,
+            "column": 65
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 203,
+            "column": 21
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 38,
+            "column": 30
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "Load Nx Plugin: @push-based/nx-verdaccio"
+    }
+  },
+  {
+    "name": "loadNxPlugins",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 109972.875,
+    "dur": 133231.542,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPlugins",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 85,
+            "column": 17
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 78,
+            "column": 71
+          },
+          {
+            "functionName": "createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 31
+          },
+          {
+            "functionName": "createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 45
+          },
+          {
+            "functionName": "showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 69
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 19
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPlugins",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 108,
+            "column": 17
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 78,
+            "column": 32
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 3,
+      "uiLabel": "loadNxPlugins"
+    }
+  },
+  {
+    "name": "@push-based/nx-verdaccio:createNodes",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 127943,
+    "dur": 3239.7079999999933,
+    "pid": 0,
+    "tid": 96912,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 42,
+            "column": 29
+          },
+          {
+            "functionName": "createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 63
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          },
+          {
+            "functionName": "Readable.push",
+            "file": "node:internal/streams/readable",
+            "line": 390,
+            "column": 5
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 54,
+            "column": 33
+          },
+          {
+            "functionName": "async createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 36
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 2,
+      "uiLabel": "@push-based/nx-verdaccio:createNodes"
+    }
+  },
+  {
+    "name": "nx/core/project-json:createNodes",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 131206,
+    "dur": 966.7090000000087,
+    "pid": 0,
+    "tid": 96915,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 42,
+            "column": 29
+          },
+          {
+            "functionName": "createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 63
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          },
+          {
+            "functionName": "Readable.push",
+            "file": "node:internal/streams/readable",
+            "line": 390,
+            "column": 5
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 54,
+            "column": 33
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 36
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 2,
+      "uiLabel": "nx/core/project-json:createNodes"
+    }
+  },
+  {
+    "name": "nx/core/package-json:createNodes",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 130609.20899999999,
+    "dur": 2113.79100000002,
+    "pid": 0,
+    "tid": 96914,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 42,
+            "column": 29
+          },
+          {
+            "functionName": "createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 63
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          },
+          {
+            "functionName": "Readable.push",
+            "file": "node:internal/streams/readable",
+            "line": 390,
+            "column": 5
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 54,
+            "column": 33
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 36
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 2,
+      "uiLabel": "nx/core/package-json:createNodes"
+    }
+  },
+  {
+    "name": "nx/js/dependencies-and-lockfile:createNodes",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 129712.29199999999,
+    "dur": 4077.625000000012,
+    "pid": 0,
+    "tid": 96913,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 42,
+            "column": 29
+          },
+          {
+            "functionName": "createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 63
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          },
+          {
+            "functionName": "Readable.push",
+            "file": "node:internal/streams/readable",
+            "line": 390,
+            "column": 5
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "LoadedNxPlugin.createNodes.<computed>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 54,
+            "column": 33
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createNodes",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 66,
+            "column": 36
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 2,
+      "uiLabel": "nx/js/dependencies-and-lockfile:createNodes"
+    }
+  },
+  {
+    "name": "createNodes:merge",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 257397.584,
+    "dur": 3003.4160000000156,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "mergeCreateNodesResults",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 294,
+            "column": 30
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 270,
+            "column": 85
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 80,
+            "column": 31
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "mergeCreateNodesResults",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 337,
+            "column": 30
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 270,
+            "column": 85
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 80,
+            "column": 31
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "correlationId": 4,
+      "uiLabel": "createNodes:merge"
+    }
+  },
+  {
+    "name": "build-project-configs",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 244032.084,
+    "dur": 16457.24999999999,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "createProjectConfigurations",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 226,
+            "column": 30
+          },
+          {
+            "functionName": "retrieveProjectConfigurations",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 46,
+            "column": 74
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 80,
+            "column": 31
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/project-configuration-utils.js",
+            "line": 271,
+            "column": 34
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 80,
+            "column": 31
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 5,
+      "uiLabel": "build-project-configs"
+    }
+  },
+  {
+    "name": "native-file-deps",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 260639.12499999997,
+    "dur": 28.33400000002939,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 24,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 120
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 25,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 120
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 6,
+      "uiLabel": "native-file-deps"
+    }
+  },
+  {
+    "name": "get-workspace-files",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 260715.83399999997,
+    "dur": 974.5410000000447,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 27,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 120
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 29,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 60
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 7,
+      "uiLabel": "get-workspace-files"
+    }
+  },
+  {
+    "name": "get-all-workspace-files",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 261801.584,
+    "dur": 6703.416000000005,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "buildAllWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/build-all-workspace-files.js",
+            "line": 6,
+            "column": 30
+          },
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 32,
+            "column": 83
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 60
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "buildAllWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/build-all-workspace-files.js",
+            "line": 11,
+            "column": 30
+          },
+          {
+            "functionName": "retrieveWorkspaceFiles",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js",
+            "line": 32,
+            "column": 83
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 94,
+            "column": 60
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "correlationId": 8,
+      "uiLabel": "get-all-workspace-files"
+    }
+  },
+  {
+    "name": "read cache",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 268671.042,
+    "dur": 502.207999999996,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "readFileMapCache",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/nx-deps-cache.js",
+            "line": 42,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 221
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "readFileMapCache",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/nx-deps-cache.js",
+            "line": 54,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 221
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 9,
+      "uiLabel": "read cache"
+    }
+  },
+  {
+    "name": "build typescript dependencies",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 162179,
+    "dur": 159.4169999999906,
+    "pid": 0,
+    "tid": 96913,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "Object.createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/js/index.js",
+            "line": 79,
+            "column": 30
+          },
+          {
+            "functionName": "LoadedNxPlugin.createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 60,
+            "column": 59
+          },
+          {
+            "functionName": "createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 85,
+            "column": 49
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "Object.createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/js/index.js",
+            "line": 81,
+            "column": 30
+          },
+          {
+            "functionName": "LoadedNxPlugin.createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/internal-api.js",
+            "line": 60,
+            "column": 59
+          },
+          {
+            "functionName": "createDependencies",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 85,
+            "column": 49
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "correlationId": 3,
+      "uiLabel": "build typescript dependencies"
+    }
+  },
+  {
+    "name": "nx/js/dependencies-and-lockfile:createDependencies",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 272790.91699999996,
+    "dur": 12108.708000000035,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 224,
+            "column": 34
+          },
+          {
+            "raw": "at Array.map (<anonymous>)"
+          },
+          {
+            "functionName": "updateProjectGraphWithPlugins",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 223,
+            "column": 47
+          },
+          {
+            "functionName": "buildProjectGraphUsingContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 135,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphUsingProjectFileMap",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 86,
+            "column": 24
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 30
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 238,
+            "column": 34
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "raw": "at async Promise.all (index 0)"
+          },
+          {
+            "functionName": "async updateProjectGraphWithPlugins",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 223,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphUsingContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 135,
+            "column": 24
+          },
+          {
+            "functionName": "async buildProjectGraphUsingProjectFileMap",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 86,
+            "column": 24
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 30
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          }
+        ]
+      },
+      "correlationId": 10,
+      "uiLabel": "nx/js/dependencies-and-lockfile:createDependencies"
+    }
+  },
+  {
+    "name": "build project graph",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 271471.042,
+    "dur": 14225.582999999971,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphUsingContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 124,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphUsingProjectFileMap",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 86,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 99
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphUsingContext",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 163,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async buildProjectGraphUsingProjectFileMap",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/build-project-graph.js",
+            "line": 86,
+            "column": 24
+          },
+          {
+            "functionName": "async buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 101,
+            "column": 30
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          }
+        ]
+      },
+      "correlationId": 11,
+      "uiLabel": "build project graph"
+    }
+  },
+  {
+    "name": "write cache",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 285959.25,
+    "dur": 4949.87500000002,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "writeCache",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/nx-deps-cache.js",
+            "line": 90,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 136,
+            "column": 44
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "writeCache",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/nx-deps-cache.js",
+            "line": 119,
+            "column": 30
+          },
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 136,
+            "column": 44
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 12,
+      "uiLabel": "write cache"
+    }
+  },
+  {
+    "name": "create-project-graph-async >> retrieve-project-configurations",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 109855.167,
+    "dur": 150705.66700000002,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 75,
+            "column": 30
+          },
+          {
+            "functionName": "createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 31
+          },
+          {
+            "functionName": "createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 45
+          },
+          {
+            "functionName": "showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 69
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 19
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 92,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 13,
+      "uiLabel": "create-project-graph-async >> retrieve-project-configurations"
+    }
+  },
+  {
+    "name": "create-project-graph-async >> retrieve-workspace-files",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 260590.292,
+    "dur": 7986.333000000002,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 93,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 95,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 14,
+      "uiLabel": "create-project-graph-async >> retrieve-workspace-files"
+    }
+  },
+  {
+    "name": "create-project-graph-async >> build-project-graph-using-project-file-map",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 268605.875,
+    "dur": 17284.208999999977,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 97,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "buildProjectGraphAndSourceMapsWithoutDaemon",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 125,
+            "column": 30
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 208,
+            "column": 25
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 15,
+      "uiLabel": "create-project-graph-async >> build-project-graph-using-project-file-map"
+    }
+  },
+  {
+    "name": "create-project-graph-async",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 109677.375,
+    "dur": 181406,
+    "pid": 0,
+    "tid": 96911,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 205,
+            "column": 30
+          },
+          {
+            "functionName": "createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 45
+          },
+          {
+            "functionName": "showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 69
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 19
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "createProjectGraphAndSourceMapsAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 212,
+            "column": 38
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async createProjectGraphAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/project-graph.js",
+            "line": 198,
+            "column": 39
+          },
+          {
+            "functionName": "async showProjectHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
+            "line": 8,
+            "column": 19
+          },
+          {
+            "functionName": null,
+            "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 111,
+            "column": 13
+          },
+          {
+            "functionName": "async handleErrors",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/handle-errors.js",
+            "line": 9,
+            "column": 24
+          },
+          {
+            "functionName": "async Object.handler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
+            "line": 109,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 16,
+      "uiLabel": "create-project-graph-async"
+    }
+  }
+]
