@@ -27,7 +27,7 @@ const {values} = parseArgs({
 });
 
 const {
-  args = ["show", "project", "cli", "--json"].join(','),
+  args = ["show", "projects"].join(','),
   verbose,
   noPatch,
   outDir = ".nx-profiling",
@@ -39,13 +39,9 @@ nxRunWithPerfLogging(args.split(','), {
   verbose,
   noPatch,
   onData: (perfProfileEvent) => {
-    // console.log('perfProfileEvent', perfProfileEvent);
+    // console.log(perfProfileEvent);
   },
   beforeExit: (profile) => {
-    if (profile.traceEvents[0]) {
-     // profile.traceEvents[0].args.name = `Process: nx ${args.split(',').join(' ')}`;
-    }
-
     // @TODO figure out why profile directly does not show the flames but profile.traceEvents does
     const profileStdout = JSON.stringify(profile.traceEvents, null, 2);
     mkdirSync(outDir, {recursive: true});

@@ -34,8 +34,7 @@ export async function nxRunWithPerfLogging(
         ...process.env,
         NX_DAEMON: "false",
         NX_CACHE: "false",
-        NX_PERF_LOGGING: "true",
-        XX: args.join(" "),
+        NX_PERF_LOGGING: "true"
       },
       // Preload the patch file so that it applies before NX is loaded.
       execArgv: patch ? ["--require", "./tools/perf_hooks.patch.js"] : [],

@@ -5,8 +5,18 @@ import {basename} from "node:path";
 const trace = [];
 
 // Metadata events.
+
+const processMetadata = {
+  name: 'process_name', // Used to label the main process
+  ph: 'M',
+  pid: 0,
+  tid: process.pid,
+  ts: 0,
+  args: { name: 'Measure Process' },
+};
+
 const threadMetadata = {
-  name: 'thread_name',
+  name: 'thread_name', // Used to label the child processes
   ph: 'M',
   pid: 0,
   tid: process.pid,
@@ -14,14 +24,6 @@ const threadMetadata = {
   args: { name: `Child Process: ${basename(process.argv.at(0))} ${basename(process.argv.at(1))} ${process.argv.slice(2).join(' ')}` },
 };
 
-const processMetadata = {
-  name: 'process_name',
-  ph: 'M',
-  pid: 0,
-  tid: process.pid,
-  ts: 0,
-  args: { name: 'Measure Process' },
-};
 
 const originalMark = Performance.prototype.mark;
 const originalMeasure = Performance.prototype.measure;
@@ -97,8 +99,7 @@ Performance.prototype.measure = function(name, start, end, options) {
         startDetail: startEntry.detail || {},
         endDetail: endEntry.detail || {},
         // Optionally: add correlation and extra labels.
-        correlationId: generateCorrelationId(),
-        uiLabel: name  // A simple label for UI display.
+        uiLabel: name
       }
     };
 
