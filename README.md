@@ -1,5 +1,9 @@
 # Advanced Performance profiling for Nx
 
+| Default                                                  | Advanced                                                                   |
+|----------------------------------------------------------|----------------------------------------------------------------------------|
+| ![flame-charts.png](./tools/imgs/nx-default-profile.png) | ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png) |
+
 ## Main Process Logging
 
 1. Copy the `tools` folder into your workspace root.
@@ -10,7 +14,7 @@
    2. Go to the `Performance` tab
 4. Drag and drop the `./.nx-profiling/tools/nx-advanced-profile.bin.js` file into the DevTools window.
 
-![flame-charts.png](./tools/main-process-flame-charts.png)
+![flame-charts.png](./tools/imgs/main-process-flame-charts.png)
 
 ## Main and Forked Process Logging
 
@@ -19,7 +23,7 @@
 2. Run `node ./tools/nx-advanced-profile.bin.js --noPatch`. (As it is now patched inside the file directly)
 3. Drag and drop the `./.nx-profiling/tools/nx-advanced-profile.bin.js` file into the DevTools window.
 
-![flame-charts.png](./tools/main-and-forked-process-flame-charts.png)
+![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png)
 
 ## Terminal Arguments
 
@@ -35,3 +39,4 @@
 ```sh
 node ./tools/nx-advanced-profile.bin.js --verbose --noPatch --outDir=./tools/demo --outFile=nx-show-projects
 ```
+
