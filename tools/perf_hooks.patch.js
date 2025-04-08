@@ -1,4 +1,5 @@
 import {Performance, performance} from "node:perf_hooks";
+import {basename} from "node:path";
 
 // Global array to store complete events.
 const trace = [];
@@ -10,7 +11,7 @@ const threadMetadata = {
   pid: 0,
   tid: process.pid,
   ts: 0,
-  args: { name: 'Child Process' },
+  args: { name: `Child Process: ${basename(process.argv.at(0))} ${basename(process.argv.at(1))} ${process.argv.slice(2).join(' ')}` },
 };
 
 const processMetadata = {
@@ -65,14 +66,12 @@ function parseStack(stack) {
   return frames;
 }
 
-// Override mark to capture call stacks.
 Performance.prototype.mark = function(name, options) {
   const err = new Error();
   const callStack = parseStack(err.stack);
   const opt = Object.assign({}, options, {
     detail: Object.assign({}, (options && options.detail) || {}, { callStack }),
   });
-  console.log('Mark for', name, performance.now());
   return originalMark.call(this, name, opt);
 };
 
@@ -124,8 +123,8 @@ Performance.prototype.measure = function(name, start, end, options) {
 performance.profile = function() {
   return {
     metadata: {
-      source: "DevTools",
-      startTime: "2025-04-08T13:20:54.094Z",
+      source: "Nx Advanced Profiling",
+      startTime: Date.now() / 1000,
       hardwareConcurrency: 12,
       dataOrigin: "TraceEvents",
       modifications: {

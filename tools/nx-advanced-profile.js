@@ -38,7 +38,7 @@ export async function nxRunWithPerfLogging(
         XX: args.join(" "),
       },
       // Preload the patch file so that it applies before NX is loaded.
-      execArgv: patch ? ["--require", "./tools/perf.observer.js"] : [],
+      execArgv: patch ? ["--require", "./tools/perf_hooks.patch.js"] : [],
     },
   ];
   if (verbose) {
