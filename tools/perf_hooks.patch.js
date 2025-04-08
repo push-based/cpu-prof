@@ -1,14 +1,13 @@
-import {Performance, performance} from "node:perf_hooks";
-import {basename} from "node:path";
-import {cpus} from "node:os";
+import { Performance, performance, PerformanceObserver } from "node:perf_hooks";
+import { basename } from "node:path";
+import { cpus } from "node:os";
 
 // Global array to store complete events.
 const traceEvents = [];
 
 // Metadata events.
-
 const processMetadata = {
-  name: 'process_name', // Used to label the main process
+  name: 'process_name',
   ph: 'M',
   pid: 0,
   tid: process.pid,
@@ -17,17 +16,17 @@ const processMetadata = {
 };
 
 const threadMetadata = {
-  name: 'thread_name', // Used to label the child processes
+  name: 'thread_name',
   ph: 'M',
   pid: 0,
   tid: process.pid,
   ts: 0,
-  args: { name: `Child Process: ${basename(process.argv.at(0))} ${basename(process.argv.at(1))} ${process.argv.slice(2).join(' ')}` },
+  args: {
+    name: `Child Process: ${basename(process.argv.at(0))} ${basename(process.argv.at(1))} ${process.argv.slice(2).join(' ')}`
+  },
 };
 
-
 const originalMark = Performance.prototype.mark;
-const originalMeasure = Performance.prototype.measure;
 
 let correlationIdCounter = 0;
 function generateCorrelationId() {
@@ -57,7 +56,7 @@ function parseStack(stack) {
       if (match) {
         frames.push({
           functionName: null,
-          file: match[1],
+          file: match[1].replace(process.cwd(), ''),
           line: Number(match[2]),
           column: Number(match[3]),
         });
@@ -69,7 +68,8 @@ function parseStack(stack) {
   return frames;
 }
 
-Performance.prototype.mark = function(name, options) {
+// Patch mark to include call stack
+Performance.prototype.mark = function (name, options) {
   const err = new Error();
   const callStack = parseStack(err.stack);
   const opt = Object.assign({}, options, {
@@ -77,23 +77,24 @@ Performance.prototype.mark = function(name, options) {
   });
   return originalMark.call(this, name, opt);
 };
-Performance.prototype.measure = function(name, start, end, options) {
-  const startEntry = performance.getEntriesByName(start, 'mark')[0];
-  const endEntry = performance.getEntriesByName(end, 'mark')[0];
-  let event = null;
 
-  if (startEntry && endEntry) {
-    const ts = startEntry.startTime * 1000; // Convert ms to µs
-    const dur = (endEntry.startTime - startEntry.startTime) * 1000;
+// Use PerformanceObserver to enrich and capture measure events
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    const startEntry = performance.getEntriesByName(entry.startTime ? entry.name.split(' -> ')[0] : '', 'mark')[0];
+    const endEntry = performance.getEntriesByName(entry.name, 'mark')[0]; // fallback if needed
 
     const correlationId = generateCorrelationId();
-    const callFrame = (startEntry.detail?.callStack || [])[0] || {};
+    const callFrame = (startEntry?.detail?.callStack || [])[0] || {};
     const file = (callFrame.file || 'unknown').replace(process.cwd(), '.');
     const functionName = callFrame.functionName != null ? callFrame.functionName : 'anonymous';
     const line = callFrame.line || null;
 
-    event = {
-      name: name.replace(process.cwd(), ''), // sometimes the name includes a path
+    const ts = entry.startTime * 1000;
+    const dur = entry.duration * 1000;
+
+    const event = {
+      name: entry.name.replace(process.cwd(), ''),
       cat: 'measure',
       ph: 'X',
       ts,
@@ -101,15 +102,15 @@ Performance.prototype.measure = function(name, start, end, options) {
       pid: 0,
       tid: process.pid,
       args: {
-        startDetail: startEntry.detail || {},
-        endDetail: endEntry.detail || {},
+        startDetail: startEntry?.detail || {},
+        endDetail: endEntry?.detail || {},
         uiLabel: functionName,
         correlationId,
         timestamp: new Date().toISOString(),
         durationMs: dur / 1000,
         file,
         functionName,
-        line
+        line,
       }
     };
 
@@ -122,15 +123,12 @@ Performance.prototype.measure = function(name, start, end, options) {
 
     traceEvents.push(event);
     console.log(`traceEvent:JSON:${JSON.stringify(event)}`);
-  } else {
-    console.warn('Missing start or end mark for measure', name);
   }
-
-  return originalMeasure.call(this, name, start, end, options);
-};
+});
+observer.observe({ entryTypes: ['measure'], buffered: true });
 
 // Return the complete Chrome Trace profile object.
-performance.profile = function() {
+performance.profile = function () {
   return {
     metadata: {
       source: "Nx Advanced Profiling",
@@ -160,4 +158,3 @@ performance.profile = function() {
     traceEvents
   };
 };
-
