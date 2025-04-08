@@ -1,4 +1,4 @@
-const { performance, Performance } = require('node:perf_hooks');
+import {Performance, performance} from "node:perf_hooks";
 
 // Global array to store complete events.
 const trace = [];
@@ -7,19 +7,19 @@ const trace = [];
 const threadMetadata = {
   name: 'thread_name',
   ph: 'M',
-  pid: process.pid,
-  tid: 0,
+  pid: 0,
+  tid: process.pid,
   ts: 0,
-  args: { name: 'Main Thread' },
+  args: { name: 'Child Process' },
 };
 
 const processMetadata = {
   name: 'process_name',
   ph: 'M',
-  pid: process.pid,
-  tid: 0,
+  pid: 0,
+  tid: process.pid,
   ts: 0,
-  args: { name: 'MyApp Main Process' },
+  args: { name: 'Measure Process' },
 };
 
 const originalMark = Performance.prototype.mark;
@@ -44,7 +44,7 @@ function parseStack(stack) {
     if (match) {
       frames.push({
         functionName: match[1],
-        file: match[2],
+        file: match[2].replace(process.cwd(), ''),
         line: Number(match[3]),
         column: Number(match[4]),
       });
@@ -92,8 +92,8 @@ Performance.prototype.measure = function(name, start, end, options) {
       ph: 'X',
       ts,
       dur,
-      pid: process.pid,
-      tid: 0,
+      pid: 0,
+      tid: process.pid,
       args: {
         startDetail: startEntry.detail || {},
         endDetail: endEntry.detail || {},
@@ -153,4 +153,3 @@ performance.profile = function() {
 };
 performance.trace = trace;
 
-module.exports = { trace };
