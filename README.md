@@ -5,7 +5,7 @@
 | ![flame-charts.png](./tools/imgs/nx-default-profile.png)               | ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png) |
 | `NX_DAEMON=false NX_PERF_LOGGING=true NX_CACHE=false nx show projects` | `node ./nx-advanced-profile.js --args=show,projects`                       |
 
-Nx it boosting performance, yet when there is a question, it is not always easy to understand where the time is spent.
+Nx is boosting performance, yet when there is a question, it is not always easy to understand where the time is spent.
 By default, Nx provides a way to profile the performance of the CLI commands using `NX_PERF_LOGGING=true` and `NX_DAEMON=false`.
 This will create a minimal text log in the terminal.
 
