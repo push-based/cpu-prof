@@ -9,6 +9,7 @@ const childScript = join(__dirname, 'child-process.mjs');
 
 // Get CPU profile directory from parent process
 const cpuProfDir = process.execArgv.find(arg => arg.startsWith('--cpu-prof-dir=')).split('=')[1];
+const cpuProfInterval = process.execArgv.find(arg => arg.startsWith('--cpu-prof-interval='))?.split('=')[1] || '100';
 
 console.log(`PID ${process.pid}; spawning ${numChildren} children, 3 times each at 100ms intervals`);
 
@@ -21,7 +22,8 @@ function spawnChild(childIndex) {
     const child = fork(childScript, [], {
         execArgv: [
             '--cpu-prof',
-            `--cpu-prof-dir=${cpuProfDir}`
+            `--cpu-prof-dir=${cpuProfDir}`,
+            `--cpu-prof-interval=${cpuProfInterval}`
         ],
         stdio: ['inherit', 'pipe', 'pipe', 'ipc']
     });
@@ -54,12 +56,12 @@ function spawnChild(childIndex) {
         activeChildren.delete(child);
     });
 
-    // Kill the child after a short time
+    // Kill the child after running for a while
     setTimeout(() => {
         if (activeChildren.has(child)) {
             child.kill();
         }
-    }, 50);
+    }, 400);
 
     // Schedule next fork if we haven't done 3 yet
     if (currentForks + 1 < 3) {
@@ -85,5 +87,5 @@ setTimeout(() => {
     }
     console.log('All processes completed');
     process.exit(0);
-}, 1000); // 1 second should be enough for 3 forks at 100ms intervals
+}, 2000); // Increased from 1000ms to 2000ms to ensure all children complete
 

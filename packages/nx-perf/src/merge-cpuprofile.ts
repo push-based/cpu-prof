@@ -1,8 +1,5 @@
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
-import { join, isAbsolute } from 'node:path';
-import { fileURLToPath } from 'url';
-
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+import { join } from 'node:path';
 
 interface CallFrame {
   functionName?: string;
@@ -35,23 +32,20 @@ interface TraceEvent {
   dur?: number;
 }
 
-// Get command line arguments with defaults
-const [,, inDir = 'profiles', outDir = 'out'] = process.argv;
-
-// Handle both absolute and relative paths
-const inputDir = isAbsolute(inDir) ? inDir : join(process.cwd(), inDir);
-const outputDir = isAbsolute(outDir) ? outDir : join(process.cwd(), outDir);
-const outputFile = join(outputDir, 'merged-trace.json');
-
-async function mergeProfiles(): Promise<void> {
+/**
+ * Merges multiple CPU profiles into a single Chrome Trace Format file.
+ * @param inputDir Directory containing the CPU profiles
+ * @param outputDir Directory to write the merged trace file
+ * @param outputFile Full path of the output file
+ */
+export async function mergeProfiles(inputDir: string, outputDir: string, outputFile: string): Promise<void> {
   // Ensure output directory exists
   await mkdir(outputDir, { recursive: true });
 
   const files = (await readdir(inputDir)).filter(f => f.endsWith('.cpuprofile')).sort();
 
   if (files.length === 0) {
-    console.warn(`No .cpuprofile files found in ${inputDir}`);
-    return;
+    throw new Error(`No .cpuprofile files found in ${inputDir}`);
   }
 
   const mergedEvents: TraceEvent[] = [];
@@ -145,6 +139,4 @@ async function mergeProfiles(): Promise<void> {
   }, null, 2));
 
   console.log(`✅ Merged ${files.length} trace(s) written to ${outputFile}`);
-}
-
-mergeProfiles().catch(console.error); 
+} 

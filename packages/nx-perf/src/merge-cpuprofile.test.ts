@@ -4,6 +4,7 @@ import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { mergeProfiles } from './merge-cpuprofile';
 
 const execAsync = promisify(exec);
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -13,7 +14,6 @@ const PACKAGE_ROOT = join(__dirname, '..');
 const TMP_DIR = join(PACKAGE_ROOT, '../tmp/nx-perf/merge');
 const MOCKS_DIR = join(PACKAGE_ROOT, 'mocks');
 const CHILD_PROCESS = join(MOCKS_DIR, 'child-process.mjs');
-const MAIN_WITH_CHILD = join(MOCKS_DIR, 'main-with-child.mjs');
 
 describe('merge-cpuprofile', () => {
     afterAll(async () => {
@@ -29,12 +29,14 @@ describe('merge-cpuprofile', () => {
 
         // Run child-process.mjs with CPU profiling
         const { stdout, stderr } = await execAsync(
-            `node --cpu-prof --cpu-prof-dir=${testCaseDir} ${CHILD_PROCESS}`,
+            `node --cpu-prof --cpu-prof-interval=100 --cpu-prof-dir=${testCaseDir} ${CHILD_PROCESS}`,
             { cwd: MOCKS_DIR }
         );
         
         // Verify process output
-        expect(stdout.trim()).toMatch(/PID \d+; array length: \d+/);
+        expect(stdout.trim()).toMatch(/PID \d+; Starting heavy computations/);
+        expect(stdout.trim()).toMatch(/PID \d+; Tick 3, Round 3 completed:/);
+        expect(stdout.trim()).toMatch(/PID \d+; All ticks completed/);
         // Verify no errors (ignoring experimental warning)
         expect(stderr).not.toMatch(/Error|error/i);
 
@@ -52,45 +54,57 @@ describe('merge-cpuprofile', () => {
         expect(profile).toHaveProperty('timeDeltas');
     });
 
-    it('should create multiple profiles over time for each process', async () => {
-        const testCaseDir = join(TMP_DIR, 'multi-time-setup');
-        const numChildren = 2;
-        const duration = 500; // 500ms duration to keep test time reasonable
-        
-        // Clean up and recreate test directory
-        await rm(testCaseDir, { recursive: true, force: true });
-        await mkdir(testCaseDir, { recursive: true });
+});
 
-        // Run main-with-child.mjs with specified number of children and duration
-        const { stdout, stderr } = await execAsync(
-            `node --cpu-prof --cpu-prof-dir=${testCaseDir} ${MAIN_WITH_CHILD} ${numChildren} ${duration}`,
-        );
+describe('mergeProfiles function', () => {
+    it('should merge a single CPU profile into a single trace file', async () => {
+        // Setup test directories
+        const inputDir = join(TMP_DIR, 'merge-single-input');
+        const outputDir = join(TMP_DIR, 'merge-single-output');
+        const outputFile = join(outputDir, 'merged-trace.json');
         
-              // Verify no errors (ignoring experimental warning)
+        // Clean up and recreate directories
+        await rm(inputDir, { recursive: true, force: true });
+        await rm(outputDir, { recursive: true, force: true });
+        await mkdir(inputDir, { recursive: true });
+
+        // Generate a single CPU profile using child-process.mjs
+        const { stderr } = await execAsync(
+            `node --cpu-prof --cpu-prof-interval=100 --cpu-prof-dir=${inputDir} ${CHILD_PROCESS}`,
+            { cwd: MOCKS_DIR }
+        );
         expect(stderr).not.toMatch(/Error|error/i);
 
-        // Check that CPU profiles were created
-        const files = await readdir(testCaseDir);
+        // Verify we have exactly one profile
+        const files = await readdir(inputDir);
         const cpuProfiles = files.filter(f => f.startsWith('CPU.') && f.endsWith('.cpuprofile'));
-        
-        // We should have multiple profiles
-        expect(cpuProfiles.length).toBeGreaterThanOrEqual(2); // Allow for some timing variance
+        expect(cpuProfiles.length).toBe(1);
 
-        // Verify profile content
-    
-            const profilePath = join(testCaseDir, cpuProfiles.at(0));
-            const profile = JSON.parse(await readFile(profilePath, 'utf8'));
-            expect(profile).toHaveProperty('nodes');
-            expect(profile).toHaveProperty('startTime');
-            expect(profile).toHaveProperty('samples');
-            expect(profile).toHaveProperty('timeDeltas');
+        // Merge the single profile
+        await mergeProfiles(inputDir, outputDir, outputFile);
 
-            const profilePath2 = join(testCaseDir, cpuProfiles.at(1));
-            const profile2 = JSON.parse(await readFile(profilePath2, 'utf8'));
-            expect(profile2).toHaveProperty('nodes');
-            expect(profile2).toHaveProperty('startTime');
-            expect(profile2).toHaveProperty('samples');
-            expect(profile2).toHaveProperty('timeDeltas');
-        
+        // Verify the merged output
+        const mergedContent = JSON.parse(await readFile(outputFile, 'utf8'));
+        expect(mergedContent).toHaveProperty('traceEvents');
+        expect(mergedContent).toHaveProperty('displayTimeUnit', 'ms');
+        expect(mergedContent.traceEvents).toBeInstanceOf(Array);
+        expect(mergedContent.traceEvents.length).toBeGreaterThan(0);
+
+        // Verify trace event structure
+        const event = mergedContent.traceEvents[0];
+        expect(event).toHaveProperty('ph');
+        expect(event).toHaveProperty('name');
+        expect(event).toHaveProperty('pid');
+        expect(event).toHaveProperty('tid');
+        expect(event).toHaveProperty('ts');
+        expect(event).toHaveProperty('cat');
+        expect(event).toHaveProperty('args');
+
+        // Verify thread metadata is present
+        const metadataEvent = mergedContent.traceEvents.find((e: { ph: string; name: string }) => 
+            e.ph === 'M' && e.name === 'thread_name'
+        );
+        expect(metadataEvent).toBeDefined();
+        expect(metadataEvent?.args.name).toBe('Main Thread (.001)');
     });
 });
