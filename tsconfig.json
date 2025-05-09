@@ -4,28 +4,31 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/pkg-0"
+      "path": "./dummy/pkg-0"
     },
     {
-      "path": "./packages/pkg-1"
+      "path": "./dummy/pkg-1"
     },
     {
-      "path": "./packages/pkg-2"
+      "path": "./dummy/pkg-2"
     },
     {
-      "path": "./packages/pkg-3"
+      "path": "./dummy/pkg-3"
     },
     {
-      "path": "./packages/pkg-4"
+      "path": "./dummy/pkg-4"
     },
     {
-      "path": "./packages/app-0-e2e"
+      "path": "./dummy/app-0-e2e"
     },
     {
-      "path": "./packages/app-0"
+      "path": "./dummy/app-0"
     },
     {
-      "path": "./packages/app-1"
+      "path": "./dummy/app-1"
+    },
+    {
+      "path": "./packages/nx-perf"
     }
   ]
 }

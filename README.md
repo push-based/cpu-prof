@@ -3,7 +3,7 @@
 | Default                                                                | Advanced                                                                   |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | ![flame-charts.png](./tools/imgs/nx-default-profile.png)               | ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png) |
-| `NX_DAEMON=false NX_PERF_LOGGING=true NX_CACHE=false nx show projects` | `node ./nx-advanced-profile.js --args=show,projects`                       |
+| `NX_DAEMON=false NX_PERF_LOGGING=true NX_CACHE=false nx show projects` | `node ./profile.ts --args=show,projects`                       |
 
 Nx it boosting performance, yet when there is a question, it is not always easy to understand where the time is spent.
 By default, Nx provides a way to profile the performance of the CLI commands using `NX_PERF_LOGGING=true` and `NX_DAEMON=false`.
@@ -15,7 +15,7 @@ It will create a flame graph that shows the time spent in each function and the 
 ## Main Process Logging
 
 1. Copy the `tools` folder into your workspace root.
-2. Run `node ./tools/nx-advanced-profile.bin.js`.  
+2. Run `node ./tools/bin.ts`.  
    The script will create a file named `.nx-profiling/nx-show-projects.<Date.now()>.profile.json`.
 3. Open Chrome browser
    1. Open DevTools
@@ -26,9 +26,9 @@ It will create a flame graph that shows the time spent in each function and the 
 
 ## Main and Forked Process Logging
 
-1. Run `node ./tools/nx-advanced-profile.postinstall.js`. This modifies the Nx sourcecode to be patched. (Don't forget
+1. Run `node ./tools/postinstall.ts`. This modifies the Nx sourcecode to be patched. (Don't forget
    to revert your changes)
-2. Run `node ./tools/nx-advanced-profile.bin.js --noPatch`. (As it is now patched inside the file directly)
+2. Run `node ./tools/bin.ts --noPatch`. (As it is now patched inside the file directly)
 3. Open DevTools
 
 ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png)
@@ -46,7 +46,7 @@ It will create a flame graph that shows the time spent in each function and the 
 **Example**
 
 ```sh
-node ./tools/nx-advanced-profile.bin.js --args=show,projects
-node ./tools/nx-advanced-profile.bin.js --args=show,projects --verbose
-node ./tools/nx-advanced-profile.bin.js -v -p -o./tools/demo -f=nx-show-projects.json
+node ./tools/bin.ts --args=show,projects
+node ./tools/bin.ts --args=show,projects --verbose
+node ./tools/bin.ts -v -p -o./tools/demo -f=nx-show-projects.json
 ```
