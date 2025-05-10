@@ -32,13 +32,143 @@ interface TraceEvent {
   dur?: number;
 }
 
+interface ProfileInfo {
+  profile: CpuProfile;
+  pid: number;
+  isMain: boolean;
+}
+
+interface TraceOutput {
+  traceEvents: TraceEvent[];
+  displayTimeUnit: string;
+}
+
+export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
+  const mergedEvents: TraceEvent[] = [];
+  let defaultTid = 10000;
+
+  for (const { profile, pid, isMain } of profiles) {
+    const tid = isMain ? 0 : defaultTid++;
+
+    // 1) Thread metadata
+    mergedEvents.push({
+      ph: 'M',
+      name: 'thread_name',
+      pid,
+      tid,
+      ts: 0,
+      cat: '__metadata',
+      args: { name: isMain ? 'Main Thread (.001)' : `Thread ${tid}` }
+    });
+
+    // 2) Quick lookup tables
+    const nodeMap = new Map<number, ProfileNode>();
+    profile.nodes.forEach(n => nodeMap.set(n.id, n));
+
+    const childToParent = new Map<number, number>();
+    for (const n of profile.nodes) {
+      for (const c of n.children || []) {
+        childToParent.set(c, n.id);
+      }
+    }
+
+    // 3) Emit runMainESM as one full-span event
+    const runMainNode = profile.nodes.find(n => n.callFrame.functionName === 'runMainESM');
+    if (runMainNode) {
+      const startUs = profile.startTime * 1000;
+      const totalUs = (profile.endTime - profile.startTime) * 1000;
+      mergedEvents.push({
+        ph: 'X',
+        name: 'runMainESM',
+        cat: 'function',
+        pid,
+        tid,
+        ts: Math.round(startUs),
+        dur: Math.round(totalUs),
+        args: {
+          url: runMainNode.callFrame.url,
+          line: runMainNode.callFrame.lineNumber,
+          col: runMainNode.callFrame.columnNumber
+        }
+      });
+    }
+
+    // 4) Emit a single 'main' span covering both child phases
+    const mainNode = profile.nodes.find(n => n.callFrame.functionName === 'main');
+    if (mainNode && profile.timeDeltas.length >= 3) {
+      const startUs = profile.startTime * 1000 + profile.timeDeltas[0] * 1000;
+      const durUs = profile.timeDeltas
+          .slice(1)
+          .reduce((sum, d) => sum + d, 0) * 1000;
+      mergedEvents.push({
+        ph: 'X',
+        name: 'main',
+        cat: 'function',
+        pid,
+        tid,
+        ts: Math.round(startUs),
+        dur: Math.round(durUs),
+        args: {
+          url: mainNode.callFrame.url,
+          line: mainNode.callFrame.lineNumber,
+          col: mainNode.callFrame.columnNumber
+        }
+      });
+    }
+
+    // 5) Walk samples and emit only the true leaf calls (loadConfig & startServer)
+    let ts = profile.startTime * 1000;
+    for (let i = 0; i < profile.samples.length; i++) {
+      const nodeId = profile.samples[i];
+      const deltaUs = profile.timeDeltas[i] * 1000;
+
+      // Reconstruct full stack
+      const stack: ProfileNode[] = [];
+      let cur = nodeId;
+      const seen = new Set<number>();
+      while (cur !== undefined && !seen.has(cur)) {
+        seen.add(cur);
+        const n = nodeMap.get(cur);
+        if (n) stack.unshift(n);
+        cur = childToParent.get(cur);
+      }
+
+      // Filter to your code only
+      const userFrames = stack.filter(n =>
+          !['(root)', 'runMainESM', 'main'].includes(n.callFrame.functionName)
+      );
+
+      if (userFrames.length) {
+        const leaf = userFrames[userFrames.length - 1];
+        const { functionName, url, lineNumber, columnNumber } = leaf.callFrame;
+        mergedEvents.push({
+          ph: 'X',
+          name: functionName || '(anonymous)',
+          cat: 'function',
+          pid,
+          tid,
+          ts: Math.round(ts),
+          dur: Math.round(deltaUs),
+          args: { url, line: lineNumber, col: columnNumber }
+        });
+      }
+
+      ts += deltaUs;
+    }
+  }
+
+  mergedEvents.sort((a, b) => a.ts - b.ts);
+
+  return { traceEvents: mergedEvents, displayTimeUnit: 'ms' };
+}
+
 /**
- * Merges multiple CPU profiles into a single Chrome Trace Format file.
+ * File I/O wrapper that reads CPU profiles from a directory and writes the merged trace
  * @param inputDir Directory containing the CPU profiles
  * @param outputDir Directory to write the merged trace file
  * @param outputFile Full path of the output file
  */
-export async function mergeProfiles(inputDir: string, outputDir: string, outputFile: string): Promise<void> {
+export async function mergeProfileFiles(inputDir: string, outputDir: string, outputFile: string): Promise<void> {
   // Ensure output directory exists
   await mkdir(outputDir, { recursive: true });
 
@@ -48,95 +178,26 @@ export async function mergeProfiles(inputDir: string, outputDir: string, outputF
     throw new Error(`No .cpuprofile files found in ${inputDir}`);
   }
 
-  const mergedEvents: TraceEvent[] = [];
-  let defaultTid = 10000;
+  const profiles: ProfileInfo[] = await Promise.all(
+    files.map(async file => {
+      const path = join(inputDir, file);
+      const content = await readFile(path, 'utf8');
+      const profile = JSON.parse(content) as CpuProfile;
 
-  for (const file of files) {
-    const path = join(inputDir, file);
-    const content = await readFile(path, 'utf8');
-    const profile = JSON.parse(content) as CpuProfile;
+      // Extract PID and detect if this is the main thread (.001)
+      const pid = parseInt(file.match(/CPU\.\d+\.\d+\.(\d+)\./)?.[1] || '1', 10);
+      const seq = file.match(/CPU\.\d+\.\d+\.\d+\.\d+\.(\d+)\.cpuprofile$/)?.[1];
+      const isMain = seq === '001';
 
-    // Extract PID and detect if this is the main thread (.001)
-    const pid = parseInt(file.match(/CPU\.\d+\.\d+\.(\d+)\./)?.[1] || '1', 10);
-    const seq = file.match(/CPU\.\d+\.\d+\.\d+\.\d+\.(\d+)\.cpuprofile$/)?.[1];
-    const isMain = seq === '001';
-    const tid = isMain ? 0 : defaultTid++;
+      return { profile, pid, isMain };
+    })
+  );
 
-    // Metadata for thread
-    mergedEvents.push({
-      ph: 'M',
-      name: 'thread_name',
-      pid,
-      tid,
-      ts: 0,
-      cat: '__metadata',
-      args: { name: isMain ? 'Main Thread (.001)' : file }
-    });
-
-    const nodes = profile.nodes.map(n => ({ ...n }));
-    const nodeMap = new Map(nodes.map(n => [n.id, n]));
-
-    // Build child → parent reverse lookup
-    const childToParent = new Map<number, number>();
-    for (const node of nodes) {
-      for (const child of node.children || []) {
-        childToParent.set(child, node.id);
-      }
-    }
-
-    // Reconstruct stack + emit events
-    let ts = profile.startTime * 1000;
-    const samples = profile.samples;
-    const timeDeltas = profile.timeDeltas;
-
-    for (let i = 0; i < samples.length; i++) {
-      const nodeId = samples[i];
-      const dur = timeDeltas[i] * 1000;
-
-      const stack: ProfileNode[] = [];
-      let currentId: number | undefined = nodeId;
-      const seen = new Set<number>();
-
-      while (currentId !== undefined && !seen.has(currentId)) {
-        seen.add(currentId);
-        const node = nodeMap.get(currentId);
-        if (node) stack.unshift(node);
-        currentId = childToParent.get(currentId);
-      }
-
-      let localTs = ts;
-      for (let d = 0; d < stack.length; d++) {
-        const node = stack[d];
-        if (!node?.callFrame) continue;
-
-        const { functionName, url, lineNumber, columnNumber } = node.callFrame;
-        const remaining = dur - (localTs - ts);
-        const currentDur = d === stack.length - 1 ? remaining : remaining / (stack.length - d);
-
-        mergedEvents.push({
-          ph: 'X',
-          name: functionName || '(anonymous)',
-          cat: 'function',
-          pid,
-          tid,
-          ts: Math.round(localTs),
-          dur: Math.round(currentDur),
-          args: { url, line: lineNumber, col: columnNumber }
-        });
-
-        localTs += currentDur;
-      }
-
-      ts += dur;
-    }
-  }
-
-  mergedEvents.sort((a, b) => a.ts - b.ts);
-
-  await writeFile(outputFile, JSON.stringify({
-    traceEvents: mergedEvents,
-    displayTimeUnit: 'ms'
-  }, null, 2));
+  const output = mergeCpuProfiles(profiles);
+  await writeFile(outputFile, JSON.stringify(output, null, 2));
 
   console.log(`✅ Merged ${files.length} trace(s) written to ${outputFile}`);
-} 
+}
+
+// Keep the old name for backward compatibility
+export const mergeProfiles = mergeProfileFiles; 

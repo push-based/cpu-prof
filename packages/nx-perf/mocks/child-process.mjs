@@ -1,3 +1,5 @@
+import { parentPort, threadId, isMainThread } from 'worker_threads';
+
 // Heavy computation that's easy to understand
 function heavyWork(size) {
     let result = 0;
@@ -10,25 +12,29 @@ function heavyWork(size) {
 }
 
 async function executeHeavyComputations() {
-    console.log(`PID ${process.pid}; Starting heavy computations`);
+    const id = isMainThread ? process.pid : threadId;
+    console.log(`Thread ${id}; Starting heavy computations`);
     
     let tickCount = 0;
 
     const executeTick = () => {
         tickCount++;
-        console.log(`PID ${process.pid}; Tick ${tickCount}`);
+        console.log(`Thread ${id}; Tick ${tickCount}`);
         
         // Three rounds of computation per tick
         for (let i = 0; i < 3; i++) {
             const result = heavyWork(1000);
-            console.log(`PID ${process.pid}; Tick ${tickCount}, Round ${i + 1} completed:`, {
+            console.log(`Thread ${id}; Tick ${tickCount}, Round ${i + 1} completed:`, {
                 result
             });
         }
 
         if (tickCount >= 3) {
             clearInterval(interval);
-            console.log(`PID ${process.pid}; All ticks completed`);
+            console.log(`Thread ${id}; All ticks completed`);
+            if (parentPort) {
+                parentPort.close();
+            }
         }
     };
 
