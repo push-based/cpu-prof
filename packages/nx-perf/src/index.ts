@@ -1,1 +1,1 @@
-export * from './temp-out/lib/profile.js';
+export * from './merge-cpuprofile'

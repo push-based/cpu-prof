@@ -1,5 +1,8 @@
 # CPU Profiler
 
+NX_DAEMON=false NX_CLOUD=false node --cpu-prof --cpu-prof-interval=20 --cpu-prof-dir=./profiles node_modules/nx/bin/nx.js 
+
+
 ### Filename:
 
 ```shell

@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "source": "DevTools",
+    "startTime": "2025-05-11T07:25:15.135Z",
+    "hardwareConcurrency": 12,
+    "dataOrigin": "CPU-Profiling"
+  },
+  "traceEvents": [
+    {
+      "args": {
+        "name": "CrRendererMain"
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 9,
+      "tid": 1,
+      "ts": 0
+    },
+    {
+      "args": {
+        "data": {
+          "frameTreeNodeId": 100,
+          "frames": [
+            {
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "processId": 9,
+              "url": "file://script.js --verbose --skip-caching"
+            }
+          ],
+          "persistentIds": true
+        }
+      },
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 9,
+      "s": "t",
+      "tid": 1,
+      "ts": 100000000000,
+      "tts": 33837555000
+    },
+    {
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 50000,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 9,
+      "tdur": 50000,
+      "tid": 1,
+      "ts": 100000000000,
+      "tts": 250000
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 50000,
+      "name": "EvaluateScript",
+      "ph": "X",
+      "pid": 9,
+      "tdur": 50000,
+      "tid": 1,
+      "ts": 100000000000,
+      "tts": 250000
+    },
+    {
+      "args": {},
+      "cat": "timeline,script",
+      "dur": 50000,
+      "name": "function",
+      "ph": "X",
+      "pid": 9,
+      "tdur": 50000,
+      "tid": 1,
+      "ts": 100000000000,
+      "tts": 250000
+    }
+  ]
+}

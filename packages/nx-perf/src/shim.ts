@@ -1,7 +1,7 @@
 import { Performance, performance, PerformanceObserver } from "node:perf_hooks";
 import { basename } from "node:path";
 import { cpus } from "node:os";
-import type {TraceEvent} from "./temp-out/lib/types.js";
+import {TraceEvent} from "./convert-cpuprofile-to-trace";
 
 // Global array to store complete events.
 const traceEvents: TraceEvent[] = [];

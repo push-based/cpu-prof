@@ -1,189 +1,127 @@
-import { readFile, writeFile} from 'node:fs/promises';
-import { basename } from 'node:path';
-import { parseCpuProfileName } from './utils';
+import {readFile, writeFile} from 'node:fs/promises';
+import {basename} from 'node:path';
+import {parseCpuProfileName, sortTraceEvents} from './utils';
+import {
+    convertCpuProfileToTraceFile,
+    CpuProfile,
+    ProfileInfo,
+    TraceOutput,
+    TraceEvent
+} from './convert-cpuprofile-to-trace';
+import {readdir} from "fs/promises";
+import {join} from "path";
 
-interface CallFrame {
-  functionName?: string;
-  scriptId: number;
-  url?: string;
-  lineNumber?: number;
-  columnNumber?: number;
-}
+export async function mergeCpuProfileFiles(sourceDir: string, outputFile: string): Promise<void> {
+    const files: string[] = (await readdir(sourceDir)).map(file => join(sourceDir, file));
+    // Step 1: Parse all files into ProfileInfo objects
+    const profiles: ProfileInfo[] = await Promise.all(
+        files.map(async file => {
+            const content = await readFile(file, 'utf8');
+            const profile = JSON.parse(content) as CpuProfile;
+            return {profile, ...parseCpuProfileName(basename(file))} as ProfileInfo;
+        })
+    );
 
-interface ProfileNode {
-  id: number;
-  callFrame: CallFrame;
-  children?: number[];
-  "hitCount"?: number;
-}
-
-interface CpuProfile {
-  nodes: ProfileNode[];
-  startTime: number;
-  endTime: number;
-  samples: number[];
-  timeDeltas: number[];
-}
-
-interface TraceEvent {
-  ph: string;
-  name: string;
-  pid: number;
-  tid: number;
-  ts: number;
-  cat: string;
-  args: Record<string, unknown>;
-  dur?: number;
-}
-
-interface ProfileInfo {
-  profile: CpuProfile;
-  pid: number;
-  tid?: number;
-  sequence?: number;
-  isMain: boolean;
-}
-
-interface TraceOutput {
-  traceEvents: TraceEvent[];
-  displayTimeUnit: string;
-}
-
-/**
- * File I/O wrapper that reads CPU profiles from a directory and writes the merged trace
- * @param inputDir Directory containing the CPU profiles
- * @param outputDir Directory to write the merged trace file
- * @param outputFile Full path of the output file
- */
-export async function mergeCpuProfileFiles(files: string[],  outputFile: string): Promise<void> {
-
-  const profiles: ProfileInfo[] = await Promise.all(
-    files.map(async file => {
-      const content = await readFile(file, 'utf8');
-      const profile = JSON.parse(content) as CpuProfile;
-      return { profile, ...parseCpuProfileName(basename(file)) };
-    })
-  );
-
-  const output = mergeCpuProfiles(profiles);
-  await writeFile(outputFile, JSON.stringify(output, null, 2));
-}
-
-
-export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
-  const mergedEvents: TraceEvent[] = [];
-  let defaultTid = 10000;
-
-  for (const { profile, pid, isMain } of profiles) {
-    const tid = isMain ? 0 : defaultTid++;
-
-    mergedEvents.push({
-      ph: 'M',
-      name: 'thread_name',
-      pid,
-      tid,
-      ts: 0,
-      cat: '__metadata',
-      args: { name: isMain ? 'Main Thread (.001)' : `Thread ${tid}` }
+    // Sort profiles by  profile.profile.startTime
+    profiles.sort((a, b) => {
+        const startTimeA = a.profile.startTime ?? 0;
+        const startTimeB = b.profile.startTime ?? 0;
+        return (startTimeA - startTimeB);
     });
 
-    // 2) Quick lookup tables
-    const nodeMap = new Map<number, ProfileNode>();
-    profile.nodes.forEach(n => nodeMap.set(n.id, n));
+    // Step 2: Merge all profiles into a single trace output
+    const output = mergeCpuProfiles(profiles);
+    await writeFile(outputFile, JSON.stringify(output, null, 2));
+}
 
-    const childToParent = new Map<number, number>();
-    for (const n of profile.nodes) {
-      for (const c of n.children || []) {
-        childToParent.set(c, n.id);
-      }
+export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
+    // Convert each profile to TraceOutput
+    const traces: TraceOutput[] = profiles.map(convertCpuProfileToTraceFile)
+
+    // Detect the main profile (always use the first profile)
+    const mainProfileInfo = profiles[0];
+    if (!mainProfileInfo) {
+        throw new Error("No main profile found");
     }
 
-    // 3) Emit runMainESM as one full-span event
-    const runMainNode = profile.nodes.find(n => n.callFrame.functionName === 'runMainESM');
-    if (runMainNode) {
-      const startUs = profile.startTime * 1000;
-      const totalUs = (profile.endTime - profile.startTime) * 1000;
-      mergedEvents.push({
-        ph: 'X',
-        name: 'runMainESM',
-        cat: 'function',
-        pid,
-        tid,
-        ts: Math.round(startUs),
-        dur: Math.round(totalUs),
+    // Find the minimum timestamp from all trace events (excluding undefined)
+    const allEvents = traces.flatMap(trace => trace.traceEvents);
+
+    // Find the earliest timestamp for zeroing
+    const minTs = allEvents.reduce((min, ev) =>
+        typeof ev.ts === 'number' && ev.ts < min ? ev.ts : min, Number.POSITIVE_INFINITY
+    );
+    const startTs = isFinite(minTs) ? minTs : 0;
+
+    // TracingStartedInBrowser event
+    const tracingStartedEvent: TraceEvent = {
+        ph: 'I',
+        cat: 'disabled-by-default-devtools.timeline',
+        name: 'TracingStartedInBrowser',
+        pid: mainProfileInfo.pid,
+        tid: mainProfileInfo.tid,
+        ts: startTs,
+        tts: startTs,
+        s: 't',
         args: {
-          url: runMainNode.callFrame.url,
-          line: runMainNode.callFrame.lineNumber,
-          col: runMainNode.callFrame.columnNumber
+            data: {
+                frameTreeNodeId: 1,
+                frames: [
+                    {
+                        frame: '1',
+                        name: 'main',
+                        url: mainProfileInfo.source ?? '',
+                        processId: mainProfileInfo.pid,
+                        isOutermostMainFrame: true,
+                        isInPrimaryMainFrame: true
+                    }
+                ],
+                persistentIds: true
+            }
         }
-      });
-    }
+    };
 
-    // 4) Emit a single 'main' span covering both child phases
-    const mainNode = profile.nodes.find(n => n.callFrame.functionName === 'main');
-    if (mainNode && profile.timeDeltas.length >= 3) {
-      const startUs = profile.startTime * 1000 + profile.timeDeltas[0] * 1000;
-      const durUs = profile.timeDeltas
-          .slice(1)
-          .reduce((sum, d) => sum + d, 0) * 1000;
-      mergedEvents.push({
-        ph: 'X',
-        name: 'main',
-        cat: 'function',
-        pid,
-        tid,
-        ts: Math.round(startUs),
-        dur: Math.round(durUs),
-        args: {
-          url: mainNode.callFrame.url,
-          line: mainNode.callFrame.lineNumber,
-          col: mainNode.callFrame.columnNumber
+    // thread_name meta event for main thread
+    const threadNameEvent: TraceEvent = {
+        ph: 'M',
+        cat: '__metadata',
+        name: 'thread_name',
+        pid: mainProfileInfo.pid,
+        tid: mainProfileInfo.tid,
+        ts: 0,
+        args: { name: mainProfileInfo.tid }
+    };
+
+    // Remove any existing thread_name for this pid/tid to avoid duplicates
+    const filteredEvents = allEvents.filter(e =>
+        !(e.ph === 'M' && e.name === 'thread_name' && e.pid === mainProfileInfo.pid && e.tid === mainProfileInfo.tid)
+    );
+
+    // Use sortTraceEvents to order meta events at the top
+    const sortedEvents = sortTraceEvents([
+        tracingStartedEvent,
+        threadNameEvent,
+        ...filteredEvents
+    ]).map((t) => ({ ...t, pid: 0 }));
+
+    return {
+        traceEvents: sortedEvents,
+        displayTimeUnit: 'ms',
+        metadata: {
+            startTime: mainProfileInfo.date?.toISOString(),
+            hardwareConcurrency: 12,
+            modifications: {
+                entriesModifications: {
+                    hiddenEntries: [],
+                    expandableEntries: []
+                },
+                initialBreadcrumb: {
+                    window: {
+                        min: 0,
+                        max: 0
+                    }
+                }
+            }
         }
-      });
-    }
-
-    // 5) Walk samples and emit only the true leaf calls (loadConfig & startServer)
-    let ts = profile.startTime * 1000;
-    for (let i = 0; i < profile.samples.length; i++) {
-      const nodeId = profile.samples[i];
-      const deltaUs = profile.timeDeltas[i] * 1000;
-
-      // Reconstruct full stack
-      const stack: ProfileNode[] = [];
-      let cur = nodeId;
-      const seen = new Set<number>();
-      while (cur !== undefined && !seen.has(cur)) {
-        seen.add(cur);
-        const n = nodeMap.get(cur);
-        if (n) stack.unshift(n);
-        cur = childToParent.get(cur);
-      }
-
-      // Filter to your code only
-      const userFrames = stack.filter(n =>
-          !['(root)', 'runMainESM', 'main'].includes(n.callFrame.functionName)
-      );
-
-      if (userFrames.length) {
-        const leaf = userFrames[userFrames.length - 1];
-        const { functionName, url, lineNumber, columnNumber } = leaf.callFrame;
-        mergedEvents.push({
-          ph: 'X',
-          name: functionName || '(anonymous)',
-          cat: 'function',
-          pid,
-          tid,
-          ts: Math.round(ts),
-          dur: Math.round(deltaUs),
-          args: { url, line: lineNumber, col: columnNumber }
-        });
-      }
-
-      ts += deltaUs;
-    }
-  }
-
-  mergedEvents.sort((a, b) => a.ts - b.ts);
-
-  return { traceEvents: mergedEvents, displayTimeUnit: 'ms' };
+    };
 }

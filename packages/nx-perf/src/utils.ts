@@ -1,12 +1,20 @@
+import {exec} from 'child_process';
+import {mkdir, rm} from 'fs/promises';
+import {promisify} from 'util';
+import {TraceEvent} from "./convert-cpuprofile-to-trace";
+
+const execAsync = promisify(exec);
+
 export interface CpuProfileNameOptions {
     prefix?: string;
-    pid: number;
+    pid?: number;
     tid?: number;
     date?: Date;
     extension?: string;
+    seq: number;
 }
 
-// 📦 Sequence tracker for each (PID + TID) combo
+
 const cpuProfileSeqMap = new Map();
 
 /**
@@ -67,18 +75,14 @@ export function getCpuProfileName({
  * //   isMain: true
  * // }
  */
-export function parseCpuProfileName(file: string): CpuProfileNameOptions & {
-    isMain: boolean;
-    date: Date;
-    seq: number;
-} {
+export function parseCpuProfileName(file: string): CpuProfileNameOptions {
     const pattern = /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)\.(?<ext>[^.]+)$/;
     const match = file.match(pattern);
     if (!match?.groups) {
         throw new Error(`Invalid CPU profile filename: ${file}`);
     }
 
-    const { prefix, ymd, hms, pid, tid, seq, ext: extension } = match.groups;
+    const {prefix, ymd, hms, pid, tid, seq, ext: extension} = match.groups;
     const year = +ymd.slice(0, 4);
     const month = +ymd.slice(4, 6) - 1;
     const day = +ymd.slice(6, 8);
@@ -92,8 +96,82 @@ export function parseCpuProfileName(file: string): CpuProfileNameOptions & {
         tid: +tid,
         seq: +seq,
         date: new Date(year, month, day, hours, minutes, seconds),
-        extension,
-        isMain: +seq === 1,
+        extension
     };
 }
 
+
+export interface CpuProfOptions {
+    /** Enable the V8 CPU profiler */
+    enabled?: boolean; // default: true
+
+    /** Directory to write .cpuprofile files */
+    dir?: string;
+
+    /** Filename pattern (supports %P, %T, %D, %H) */
+    name?: string;
+
+    /** Sampling interval in microseconds (default: 1000) */
+    interval?: number;
+}
+
+export interface ExecWithCpuProfConfig {
+    scriptPath: string;
+    outputDir: string;
+    timeoutMs?: number;
+    cpuProfOptions?: CpuProfOptions;
+    sampleProfInterval?: string;
+}
+
+export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ stdout: string; stderr: string }> {
+    const {
+        scriptPath,
+        outputDir,
+        timeoutMs = 5000,
+        cpuProfOptions = {},
+        sampleProfInterval
+    } = config;
+
+    const {
+        enabled = true,
+        interval = 1000,
+        dir = outputDir,
+        name
+    } = cpuProfOptions;
+
+    // Prepare output directory
+    await rm(dir, {recursive: true, force: true});
+    await mkdir(dir, {recursive: true});
+
+    // Build profiling flags
+    const profFlags: string[] = [];
+
+    if (enabled) {
+        profFlags.push('--cpu-prof');
+        if (interval) profFlags.push(`--cpu-prof-interval=${interval}`);
+        if (dir) profFlags.push(`--cpu-prof-dir="${dir}"`);
+        if (name) profFlags.push(`--cpu-prof-name="${name}"`);
+    }
+
+    if (sampleProfInterval) {
+        profFlags.push(`--sample-prof-interval=${sampleProfInterval}`);
+    }
+
+    const command = `node ${profFlags.join(' ')} "${scriptPath}"`;
+
+    try {
+        const result = await execAsync(command, (timeoutMs ? {timeout: timeoutMs} : {}));
+        return result;
+    } catch (error: any) {
+        throw new Error(`CPU profile execution failed: ${error.message || error}`);
+    }
+}
+
+export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
+    // --- Final assembly and sort by ts ---
+    const metaOnly = rawEvents.filter(e => e.ph === 'M')
+    const eventsOnly = rawEvents.filter(e => ['X', 'E', 'B'].includes(e.ph));
+    const finalEvents = [...metaOnly, ...eventsOnly];
+    finalEvents.sort((a, b) => a.ts - b.ts);
+    return finalEvents;
+}
