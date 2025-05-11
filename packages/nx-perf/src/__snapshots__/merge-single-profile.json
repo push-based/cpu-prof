@@ -31,8 +31,8 @@
       "cat": "function",
       "pid": 51430,
       "tid": 0,
-      "ts": 828802958626000,
-      "dur": 4166000,
+      "ts": 828802956626000,
+      "dur": 4083000,
       "args": {
         "url": "file:///path/to/app.mjs",
         "line": 10,
@@ -46,7 +46,7 @@
       "pid": 51430,
       "tid": 0,
       "ts": 828802958626000,
-      "dur": 2083000,
+      "dur": 0,
       "args": {
         "url": "file:///path/to/app.mjs",
         "line": 11,
@@ -59,7 +59,7 @@
       "cat": "function",
       "pid": 51430,
       "tid": 0,
-      "ts": 828802960709000,
+      "ts": 828802958626000,
       "dur": 2083000,
       "args": {
         "url": "file:///path/to/app.mjs",

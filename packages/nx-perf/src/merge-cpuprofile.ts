@@ -1,8 +1,10 @@
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readFile, writeFile} from 'node:fs/promises';
+import { basename } from 'node:path';
+import { parseCpuProfileName } from './utils';
 
 interface CallFrame {
   functionName?: string;
+  scriptId: number;
   url?: string;
   lineNumber?: number;
   columnNumber?: number;
@@ -12,11 +14,13 @@ interface ProfileNode {
   id: number;
   callFrame: CallFrame;
   children?: number[];
+  "hitCount"?: number;
 }
 
 interface CpuProfile {
   nodes: ProfileNode[];
   startTime: number;
+  endTime: number;
   samples: number[];
   timeDeltas: number[];
 }
@@ -35,6 +39,8 @@ interface TraceEvent {
 interface ProfileInfo {
   profile: CpuProfile;
   pid: number;
+  tid?: number;
+  sequence?: number;
   isMain: boolean;
 }
 
@@ -43,6 +49,27 @@ interface TraceOutput {
   displayTimeUnit: string;
 }
 
+/**
+ * File I/O wrapper that reads CPU profiles from a directory and writes the merged trace
+ * @param inputDir Directory containing the CPU profiles
+ * @param outputDir Directory to write the merged trace file
+ * @param outputFile Full path of the output file
+ */
+export async function mergeCpuProfileFiles(files: string[],  outputFile: string): Promise<void> {
+
+  const profiles: ProfileInfo[] = await Promise.all(
+    files.map(async file => {
+      const content = await readFile(file, 'utf8');
+      const profile = JSON.parse(content) as CpuProfile;
+      return { profile, ...parseCpuProfileName(basename(file)) };
+    })
+  );
+
+  const output = mergeCpuProfiles(profiles);
+  await writeFile(outputFile, JSON.stringify(output, null, 2));
+}
+
+
 export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
   const mergedEvents: TraceEvent[] = [];
   let defaultTid = 10000;
@@ -50,7 +77,6 @@ export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
   for (const { profile, pid, isMain } of profiles) {
     const tid = isMain ? 0 : defaultTid++;
 
-    // 1) Thread metadata
     mergedEvents.push({
       ph: 'M',
       name: 'thread_name',
@@ -161,43 +187,3 @@ export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
 
   return { traceEvents: mergedEvents, displayTimeUnit: 'ms' };
 }
-
-/**
- * File I/O wrapper that reads CPU profiles from a directory and writes the merged trace
- * @param inputDir Directory containing the CPU profiles
- * @param outputDir Directory to write the merged trace file
- * @param outputFile Full path of the output file
- */
-export async function mergeProfileFiles(inputDir: string, outputDir: string, outputFile: string): Promise<void> {
-  // Ensure output directory exists
-  await mkdir(outputDir, { recursive: true });
-
-  const files = (await readdir(inputDir)).filter(f => f.endsWith('.cpuprofile')).sort();
-
-  if (files.length === 0) {
-    throw new Error(`No .cpuprofile files found in ${inputDir}`);
-  }
-
-  const profiles: ProfileInfo[] = await Promise.all(
-    files.map(async file => {
-      const path = join(inputDir, file);
-      const content = await readFile(path, 'utf8');
-      const profile = JSON.parse(content) as CpuProfile;
-
-      // Extract PID and detect if this is the main thread (.001)
-      const pid = parseInt(file.match(/CPU\.\d+\.\d+\.(\d+)\./)?.[1] || '1', 10);
-      const seq = file.match(/CPU\.\d+\.\d+\.\d+\.\d+\.(\d+)\.cpuprofile$/)?.[1];
-      const isMain = seq === '001';
-
-      return { profile, pid, isMain };
-    })
-  );
-
-  const output = mergeCpuProfiles(profiles);
-  await writeFile(outputFile, JSON.stringify(output, null, 2));
-
-  console.log(`✅ Merged ${files.length} trace(s) written to ${outputFile}`);
-}
-
-// Keep the old name for backward compatibility
-export const mergeProfiles = mergeProfileFiles; 

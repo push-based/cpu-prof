@@ -18,7 +18,7 @@
     "@push-based/nx-perf": "./dist/bin.esm.js"
   },
   "scripts": {
-    "postinstall": "node ./dist/postinstall.esm.js"
+
   },
   "files": [
     "dist",

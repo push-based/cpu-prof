@@ -1,10 +1,12 @@
-import {afterAll, describe, expect, it} from 'vitest';
-import {access, mkdir, readdir, readFile, rm, writeFile} from 'fs/promises';
+import {afterAll, beforeEach, describe, expect, it} from 'vitest';
+import {mkdir, readdir, readFile, rm} from 'fs/promises';
 import {join} from 'path';
 import {fileURLToPath} from 'url';
 import {exec} from 'child_process';
 import {promisify} from 'util';
-import {mergeCpuProfiles, mergeProfileFiles} from './merge-cpuprofile';
+import {mergeCpuProfiles} from './merge-cpuprofile';
+import {getCpuProfileName} from './utils';
+
 
 const execAsync = promisify(exec);
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -65,7 +67,7 @@ export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ 
         cpuProfOptions = {},
         sampleProfInterval
     } = config;
-    
+
     const {
         enabled = true,
         interval = 1000,
@@ -74,8 +76,8 @@ export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ 
     } = cpuProfOptions;
 
     // Prepare output directory
-    await rm(dir, { recursive: true, force: true });
-    await mkdir(dir, { recursive: true });
+    await rm(dir, {recursive: true, force: true});
+    await mkdir(dir, {recursive: true});
 
     // Build profiling flags
     const profFlags: string[] = [];
@@ -94,24 +96,23 @@ export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ 
     const command = `node ${profFlags.join(' ')} "${scriptPath}"`;
 
     try {
-        const result = await execAsync(command, { timeout: timeoutMs });
+        const result = await execAsync(command, {timeout: timeoutMs});
         return result;
     } catch (error: any) {
         throw new Error(`CPU profile execution failed: ${error.message || error}`);
     }
 }
 
-// Clean up TMP_DIR after all tests
-afterAll(async () => {
-  //  await rm(TMP_DIR, { recursive: true, force: true });
-});
-
 describe('setup-cpuprofile', () => {
+    afterAll(async () => {
+        //  await rm(TMP_DIR, { recursive: true, force: true });
+    });
+
     it('should create a empty CPU profiles', async () => {
         const testCaseDir = join(TMP_DIR, 'setup-empty-profile');
-        
+
         // Execute the minimal process with specific sampling interval
-        const { stdout, stderr } = await execWithCpuProf({
+        const {stdout, stderr} = await execWithCpuProf({
             scriptPath: EMPTY_CHILD_PROCESS,
             outputDir: testCaseDir,
             cpuProfOptions: {
@@ -119,11 +120,9 @@ describe('setup-cpuprofile', () => {
             }
         });
 
-        // Verify process execution
         expect(stdout).toBe('');
         expect(stderr).toBe('');
 
-        // Verify profile file creation
         const files = await readdir(testCaseDir);
         const cpuProfiles = files.filter(f => f.startsWith('CPU.') && f.endsWith('.cpuprofile'));
         expect(cpuProfiles).toHaveLength(1);
@@ -133,13 +132,73 @@ describe('setup-cpuprofile', () => {
         const profileContent = await readFile(profilePath, 'utf8');
         JSON.parse(profileContent); // Will throw if invalid JSON
     });
+
 });
 
 describe('mergeProfiles function', () => {
+    const minimalProfile = {
+        nodes: [
+            {
+                id: 1,
+                callFrame: {
+                    functionName: "(root)",
+                    scriptId: 0,
+                    url: "",
+                    lineNumber: 0,
+                    columnNumber: 0
+                },
+                children: [2]
+            },
+            {
+                id: 2,
+                callFrame: {
+                    functionName: "runMainESM",
+                    scriptId: 1,
+                    url: "node:internal/modules/run_main",
+                    lineNumber: 92,
+                    columnNumber: 19
+                },
+                children: [3]
+            },
+            {
+                id: 3,
+                callFrame: {
+                    functionName: "main",
+                    scriptId: 2,
+                    url: "file:///path/to/app.mjs",
+                    lineNumber: 10,
+                    columnNumber: 0
+                },
+                children: [4, 5]
+            },
+            {
+                id: 4,
+                callFrame: {
+                    functionName: "loadConfig",
+                    scriptId: 2,
+                    url: "file:///path/to/app.mjs",
+                    lineNumber: 11,
+                    columnNumber: 2
+                }
+            },
+            {
+                id: 5,
+                callFrame: {
+                    functionName: "startServer",
+                    scriptId: 2,
+                    url: "file:///path/to/app.mjs",
+                    lineNumber: 12,
+                    columnNumber: 2
+                }
+            }
+        ],
+        startTime: 828802956626,
+        endTime: 828802966709,
+        samples: [2, 3, 4, 5],
+        timeDeltas: [0, 2000, 0, 2083]
+    };
+
     it('should merge a single minimal CPU profile into a trace file', async () => {
-        const minimalProfile = JSON.parse(await readFile(join(FIXTURES_DIR, 'minimal.cpuprofile'), 'utf8'));
-        
-        // Merge the profile directly using the core function
         const output = mergeCpuProfiles([{
             profile: minimalProfile,
             pid: 51430,
@@ -148,8 +207,47 @@ describe('mergeProfiles function', () => {
 
         // Write output for snapshot comparison
         const snapshotFile = join(__dirname, '__snapshots__', 'merge-single-profile.json');
-        await mkdir(join(__dirname, '__snapshots__'), { recursive: true });
-        await writeFile(snapshotFile, JSON.stringify(output, null, 2));
+        await mkdir(join(__dirname, '__snapshots__'), {recursive: true});
         await expect(JSON.stringify(output, null, 2)).toMatchFileSnapshot(snapshotFile);
+    });
+
+    it('should merge multiple minimal CPU profiles into a trace file with different PIDs', async () => {
+        const output = mergeCpuProfiles([
+            {
+                profile: minimalProfile,
+                pid: 51430,
+                isMain: true
+            },
+            {
+                profile: minimalProfile,
+                pid: 51431,
+                isMain: true
+            }
+        ]);
+
+        // Write output for snapshot comparison
+        await mkdir(join(__dirname, '__snapshots__'), {recursive: true});
+        await expect(JSON.stringify(output, null, 2)).toMatchFileSnapshot(join(__dirname, '__snapshots__', 'merge-multiple-profiles.json'));
+    });
+
+    it('should merge multiple minimal CPU profiles into a trace file with same PIDs and different TIDs', async () => {
+        const output = mergeCpuProfiles([
+            {
+                profile: minimalProfile,
+                pid: 51430,
+                tid: 1,
+                isMain: true
+            },
+            {
+                profile: minimalProfile,
+                pid: 51430,
+                tid: 2,
+                isMain: true
+            }
+        ]);
+
+        // Write output for snapshot comparison
+        await mkdir(join(__dirname, '__snapshots__'), {recursive: true});
+        await expect(JSON.stringify(output, null, 2)).toMatchFileSnapshot(join(__dirname, '__snapshots__', 'merge-multiple-profiles-same-pid.json'));
     });
 });
