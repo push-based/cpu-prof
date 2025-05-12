@@ -4,7 +4,7 @@ import {join} from 'path';
 import {fileURLToPath} from 'url';
 
 import {mergeCpuProfileFiles, mergeCpuProfiles} from './merge-cpuprofile';
-import {convertCpuProfileToTraceFile, ProfileInfo} from './convert-cpuprofile-to-trace';
+import {ProfileInfo} from './convert-cpuprofile-to-trace';
 import {execWithCpuProf, parseCpuProfileName} from './utils';
 
 
@@ -12,10 +12,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 // Go up from src to package root, then to project root
 const PACKAGE_ROOT = join(__dirname, '..');
 const PROJECT_ROOT = join(PACKAGE_ROOT, '../..');
-const SNAPSHOTS_DIR = join(__dirname, '__snapshots__');
 
 const CPU_NG_SERVE_1 = join(__dirname, '../mocks/fixtures/ng-serve/CPU.20250511.154655.76037.0.001.cpuprofile');
-const {date, tid: tid1 = 1, pid: pid1 = 0} = parseCpuProfileName(CPU_NG_SERVE_1);
+const {tid: tid1 = 1, pid: pid1 = 0} = parseCpuProfileName(CPU_NG_SERVE_1);
 const INFO_NG_SERVE_1: ProfileInfo = {
     profile: JSON.parse(
         (
@@ -30,7 +29,7 @@ const INFO_NG_SERVE_1: ProfileInfo = {
 }
 
 const CPU_NG_SERVE_2 = join(__dirname, '../mocks/fixtures/ng-serve/CPU.20250511.154656.76037.1.002.cpuprofile');
-const {date: date2, tid: tid2 = 1, pid: pid2 = 0} = parseCpuProfileName(CPU_NG_SERVE_2);
+const { tid: tid2 = 1, pid: pid2 = 0} = parseCpuProfileName(CPU_NG_SERVE_2);
 const INFO_NG_SERVE_2: ProfileInfo = {
     profile: JSON.parse(
         (
@@ -46,7 +45,7 @@ const INFO_NG_SERVE_2: ProfileInfo = {
 const CPU_NG_SERVE_FOLDER = join(__dirname, '../mocks/fixtures/ng-serve');
 
 const CPU_NG_SERVE_3 = join(__dirname, '../mocks/fixtures/ng-serve/CPU.20250511.154656.76037.2.003.cpuprofile');
-const {date: date3, tid: tid3 = 1, pid: pid3 = 0} = parseCpuProfileName(CPU_NG_SERVE_3);
+const { tid: tid3 = 1, pid: pid3 = 0} = parseCpuProfileName(CPU_NG_SERVE_3);
 const INFO_NG_SERVE_3: ProfileInfo = {
     profile: JSON.parse(
         (
@@ -85,7 +84,7 @@ describe('execWithCpuProf', () => {
     });
 
     it.each([
-       // join(MOCKS_DIR, 'empty-child-process.mjs'),
+        // join(MOCKS_DIR, 'empty-child-process.mjs'),
         join(MOCKS_DIR, 'fork-children.mjs'),
         join(MOCKS_DIR, 'spawn-children.mjs'),
         join(MOCKS_DIR, 'worker-children.mjs'),
