@@ -1,0 +1,492 @@
+{
+  "metadata": {
+    "source": "DevTools",
+    "startTime": "2025-05-13T17:27:35.897Z",
+    "hardwareConcurrency": 12,
+    "dataOrigin": "TraceEvents"
+  },
+  "traceEvents": [
+    {
+      "args": {
+        "name": "CrRendererMain"
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 21636,
+      "tid": 259,
+      "ts": 0
+    },
+    {
+      "args": {
+        "data": {
+          "frameTreeNodeId": 16472,
+          "frames": [
+            {
+              "frame": "4537E926EFBC9DB319B1582CFBB347DD",
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "name": "",
+              "processId": 21636,
+              "url": "about:blank"
+            }
+          ],
+          "persistentIds": true
+        }
+      },
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 2187,
+      "s": "t",
+      "tid": 259,
+      "ts": 950265192589
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 1313,
+      "name": "EvaluateScript",
+      "ph": "X",
+      "pid": 21636,
+      "tdur": 1249,
+      "tid": 259,
+      "ts": 950265193189
+    },
+    {
+      "args": {
+        "data": {
+          "startTime": 950265193292
+        }
+      },
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 21636,
+      "tid": 259,
+      "ts": 950265193325
+    },
+    {
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          },
+          "timeDeltas": [
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            166,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            166,
+            125,
+            125,
+            125,
+            167,
+            42,
+            166,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            166,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            125,
+            166,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            167,
+            125,
+            208,
+            0,
+            -83,
+            166,
+            125,
+            42
+          ]
+        }
+      },
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "ProfileChunk",
+      "ph": "P",
+      "pid": 21636,
+      "tid": 26119,
+      "ts": 950265233317
+    },
+    {
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 0,
+                  "functionName": "",
+                  "lineNumber": 0,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 12,
+                "parent": 1
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 1,
+                  "functionName": "",
+                  "lineNumber": 3,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 13,
+                "parent": 12
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 67232,
+                  "functionName": "t",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 14,
+                "parent": 13
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 55645,
+                  "functionName": "e",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 15,
+                "parent": 14
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 64741,
+                  "functionName": "Q",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 16,
+                "parent": 13
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 64635,
+                  "functionName": "t",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 17,
+                "parent": 16
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 65862,
+                  "functionName": "Pe",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 18,
+                "parent": 13
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 66571,
+                  "functionName": "Ar",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 19,
+                "parent": 13
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 200,
+                  "functionName": "",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 20,
+                "parent": 13
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 16812,
+                  "functionName": "",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 21,
+                "parent": 20
+              },
+              {
+                "callFrame": {
+                  "codeType": "JS",
+                  "columnNumber": 200,
+                  "functionName": "",
+                  "lineNumber": 4,
+                  "scriptId": 8,
+                  "url": "index.js"
+                },
+                "id": 22,
+                "parent": 21
+              }
+            ],
+            "samples": [
+              2,
+              13,
+              13,
+              13,
+              15,
+              13,
+              17,
+              18,
+              19,
+              20,
+              20,
+              22
+            ]
+          },
+          "lines": [
+            0,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "timeDeltas": [
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125,
+            125,
+            125,
+            167,
+            125,
+            125
+          ]
+        }
+      },
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "ProfileChunk",
+      "ph": "P",
+      "pid": 21636,
+      "tid": 26119,
+      "ts": 950265243524
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 400,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 2187,
+      "tdur": 4,
+      "tid": 259,
+      "ts": 950265246411
+    }
+  ]
+}

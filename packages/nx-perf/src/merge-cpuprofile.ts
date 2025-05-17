@@ -53,34 +53,6 @@ export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
     );
     const startTs = isFinite(minTs) ? minTs : 0;
 
-    // TracingStartedInBrowser event
-    const tracingStartedEvent: TraceEvent = {
-        ph: 'I',
-        cat: 'disabled-by-default-devtools.timeline',
-        name: 'TracingStartedInBrowser',
-        pid: mainProfileInfo.pid,
-        tid: mainProfileInfo.tid,
-        ts: startTs,
-        tts: startTs,
-        s: 't',
-        args: {
-            data: {
-                frameTreeNodeId: 1,
-                frames: [
-                    {
-                        frame: '1',
-                        name: 'main',
-                        url: mainProfileInfo.source ?? '',
-                        processId: mainProfileInfo.pid,
-                        isOutermostMainFrame: true,
-                        isInPrimaryMainFrame: true
-                    }
-                ],
-                persistentIds: true
-            }
-        }
-    };
-
     // thread_name meta event for main thread
     const threadNameEvent: TraceEvent = {
         ph: 'M',
@@ -99,9 +71,9 @@ export function mergeCpuProfiles(profiles: ProfileInfo[]): TraceOutput {
 
     // Use sortTraceEvents to order meta events at the top
     const sortedEvents = sortTraceEvents([
-        tracingStartedEvent,
+       // tracingStartedEvent,
         threadNameEvent,
-        ...filteredEvents
+        ...allEvents
     ]).map((t) => ({ ...t, pid: 0 }));
 
     return {

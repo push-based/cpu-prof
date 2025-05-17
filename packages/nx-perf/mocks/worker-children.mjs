@@ -30,7 +30,7 @@ function createWorkerWithCPUProfile({
   ];
 
   const worker = new Worker(workerScript, {
-    execArgv: execArgs,
+   // execArgv: execArgs,
     stdout: true,
     stderr: true
   });

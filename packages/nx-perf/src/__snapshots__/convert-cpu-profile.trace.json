@@ -6,6 +6,42 @@
     "dataOrigin": "CPU-Profiling"
   },
   "traceEvents": [
+      {
+      "args": {
+        "name": "CrRendererMain"
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 1234,
+      "tid": 5678,
+      "ts": 0
+    },
+    {
+      "args": {
+        "data": {
+          "frameTreeNodeId": 16472,
+          "frames": [
+            {
+              "frame": "4537E926EFBC9DB319B1582CFBB347DD",
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "name": "",
+              "processId": 1234,
+              "url": "about:blank"
+            }
+          ],
+          "persistentIds": true
+        }
+      },
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "s": "t",
+     "pid": 1234,
+      "tid": 5678,
+      "ts": 950265192589
+    },
     {
       "ph": "X",
       "cat": "function",
@@ -21,25 +57,9 @@
         "frameId": 1
       }
     },
-
     {
       "ph": "X",
       "cat": "function",
-      "name": "(program)",
-      "pid": 1234,
-      "tid": 5678,
-      "ts": 869129811209,
-      "dur": 2250,
-      "args": {
-        "url": "",
-        "line": -1,
-        "col": -1,
-        "frameId": 2
-      }
-    },
-    {
-      "ph": "X",
-      "cat": "disabled-by-default-devtools.timeline",
       "name": "(program)",
       "pid": 1234,
       "tid": 5678,
