@@ -176,7 +176,6 @@ export function cpuProfilesToTraceFile(cpuProfileInfos: CpuProfileInfo[]) {
     const traceFile: TraceFile = {
         metadata: getTraceMetadata(mainProfileInfo),
         traceEvents: [
-            getProcessNameTraceEvent(mainPid, mainTid),
             getStartTracing(mainPid, mainTid, {
                 traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
                 // has to be valid URL
@@ -186,11 +185,13 @@ export function cpuProfilesToTraceFile(cpuProfileInfos: CpuProfileInfo[]) {
             ...cpuProfileInfos.flatMap((info) => {
                 const {cpuProfile, pid, tid} = info;
                 return [
+                    getProcessNameTraceEvent(pid, tid),
                     getThreadNameTraceEvent(pid, tid, pid !== mainPid || tid !== mainTid ? getThreadName(info) : undefined),
                     ...cpuProfileToTraceProfileEvents(cpuProfile, {
                         pid,
                         tid
                     }),
+                    // have a random event at the end to hackfix broken view @Todo find real problem
                     getRunTaskTraceEvent(pid, tid, {
                         ts: (cpuProfile.startTime ?? 0) + cpuProfile.timeDeltas.reduce((ts, d) => ts + d) + 100,
                         dur: 10

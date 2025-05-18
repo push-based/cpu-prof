@@ -7,15 +7,6 @@
   },
   "traceEvents": [
     {
-      "cat": "__metadata",
-      "name": "process_name",
-      "ph": "M",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 0,
-      "args": {}
-    },
-    {
       "cat": "disabled-by-default-devtools.timeline",
       "name": "TracingStartedInBrowser",
       "ph": "I",
@@ -38,6 +29,17 @@
           ],
           "persistentIds": true
         }
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 20001,
+      "ts": 0,
+      "args": {
+        "name": ""
       }
     },
     {
