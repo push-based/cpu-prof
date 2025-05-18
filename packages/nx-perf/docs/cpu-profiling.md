@@ -5,12 +5,7 @@
 CPU profiling is a technique used to analyze the performance of a program by collecting data about its CPU usage. It
 helps identify which parts of the code consume the most CPU resources, allowing developers to optimize performance.
 
-## 🧠 Why Use CPU Profiling?
-
-CPU profiling is essential for identifying performance bottlenecks in your code. It helps you understand how your
-application uses CPU resources, enabling you to make informed decisions about optimizations.
-
-### Create a CPU Profile
+## Create a CPU Profile
 
 To create a CPU profile, you can use the `--cpu-prof` flag when running your Node.js application. This will generate a
 `.cpuprofile` file containing the profiling data.
@@ -24,9 +19,7 @@ node --cpu-prof index.js
 This command will create a file named `CPU.<timestamp>.<pid>.<tid>.<sequence>.cpuprofile` in the current working
 directory.
 
-#### CPU Profile Filename
-
-Each created profile file has a unique name based on the following format:
+### CPU Profile Filename
 
 ```shell
 ┌────────────────────────────────────────────────────────────┐
@@ -36,9 +29,12 @@ Each created profile file has a unique name based on the following format:
 │      │        │      │     └────────── %T = Thread ID (0)
 │      │        │      └──────────────── %P = Process ID (51430)
 │      │        └─────────────────────── %H = Time (134625 → 13:46:25)
-│      └──────────────────────────────── %D = Date (20250510 → May 10, 2025)
+│      └──────────────────────────────── %D = Start Date (20250510 → May 10, 2025)
 └─────────────────────────────────────── Fixed prefix = "CPU"
 ```
+
+The date and time are from when the profiling was started, not the moment it was written to disk, which is after the
+profiling finished.
 
 🧠 What Creates New `PID` and `TID` in `.cpuprofile` Files?
 
@@ -73,21 +69,19 @@ Each created profile file has a unique name based on the following format:
 - CPU.20250510.135416.51624.0.001.cpuprofile
 - CPU.20250510.135416.51625.0.001.cpuprofile
 
-
 ---
 
 Summary
 
-| Mechanism                 | PID 🔢       | TID 🔢       | Notes                                             |
-|---------------------------|--------------|--------------|---------------------------------------------------|
-| `node app.js`             | ➖ (same)     | ➖ (main = 0) | Single process, single main thread                |
-| `child_process.fork()`    | 🔼 (new)     | ➖ (main = 0) | New OS process, same threading model              |
-| `new Worker()`            | ➖ (same PID) | 🔼 (new)     | New thread within same process                    |
-| `.cpuprofile` per process | 🔼 (yes)     | 🔼 (yes)     | Based on how V8 captures both process & thread ID |
+| Mechanism              | PID 🔢       | TID 🔢       | Notes                                |
+|------------------------|--------------|--------------|--------------------------------------|
+| `node app.js`          | ➖ (same)     | ➖ (main = 0) | Single process, single main thread   |
+| `child_process.fork()` | 🔼 (new)     | ➖ (main = 0) | New OS process, same threading model |
+| `new Worker()`         | ➖ (same PID) | 🔼 (new)     | New thread within same process       |
 
 ---
 
-### Data Structure
+## Data Structure
 
 ```ts
 /**
@@ -138,91 +132,90 @@ type CpuProfile = {
 };
 ```
 
-### Example for a Minimal CPU Profile
+## Example for a Minimal CPU Profile
 
 _CPU.20250510.135416.51623.0.001.cpuprofile_
 
-
 ```json
 {
-"nodes": [
-{
-"id": 0,
-"callFrame": {
-"functionName": "(root)",
-"scriptId": "0",
-"url": "",
-"lineNumber": -1,
-"columnNumber": -1
-},
-"children": [
-2
-]
-},
-{
-"id": 1,
-"callFrame": {
-"functionName": "runMainESM",
-"scriptId": "1",
-"url": "node:internal/modules/run_main",
-"lineNumber": 92,
-"columnNumber": 19
-},
-"children": [
-3
-],
-"hitCount": 1
-},
-{
-"id": 2,
-"callFrame": {
-"functionName": "main-work",
-"scriptId": "2",
-"url": "file:///index.mjs",
-"lineNumber": 10,
-"columnNumber": 0
-},
-"children": [
-4,
-5
-],
-"hitCount": 1
-},
-{
-"id": 3,
-"callFrame": {
-"functionName": "child-work-1",
-"scriptId": "2",
-"url": "file:///index.mjs",
-"lineNumber": 11,
-"columnNumber": 2
-},
-"hitCount": 1
-},
-{
-"id": 4,
-"callFrame": {
-"functionName": "child-work-1",
-"scriptId": "2",
-"url": "file:///index.mjs",
-"lineNumber": 12,
-"columnNumber": 2
-},
-"hitCount": 1
-}
-],
-"startTime": 100000000000,
-"endTime": 100000000400,
-"samples": [
-1,
-3,
-4
-],
-"timeDeltas": [
-100,
-100,
-100
-]
+  "nodes": [
+    {
+      "id": 0,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [
+        2
+      ]
+    },
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "runMainESM",
+        "scriptId": "1",
+        "url": "node:internal/modules/run_main",
+        "lineNumber": 92,
+        "columnNumber": 19
+      },
+      "children": [
+        3
+      ],
+      "hitCount": 1
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "main-work",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "children": [
+        4,
+        5
+      ],
+      "hitCount": 1
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "child-work-1",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      },
+      "hitCount": 1
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "child-work-1",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 12,
+        "columnNumber": 2
+      },
+      "hitCount": 1
+    }
+  ],
+  "startTime": 100000000000,
+  "endTime": 100000000400,
+  "samples": [
+    1,
+    3,
+    4
+  ],
+  "timeDeltas": [
+    100,
+    100,
+    100
+  ]
 }
 ```
 
@@ -390,6 +383,7 @@ The `scriptId` of syntectic frames is always `0`, the `url` is empty `"` and `li
 | `--cpu-prof-interval` | v12.2.0 (Exp) | `1000` μs                                                   | Sampling interval in microseconds for the CPU profiler. ([Node.js][2])                   |
 
 [1]: https://nodejs.org/api/cli.html?utm_source=chatgpt.com "Command-line API | Node.js v24.0.2 Documentation"
+
 [2]: https://nodejs.org/download/rc/v13.10.1-rc.0/docs/api/cli.html?utm_source=chatgpt.com "Command Line Options | Node.js v13.10.1-rc.0 Documentation"
 
 Example:

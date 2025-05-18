@@ -1,7 +1,7 @@
 import {exec} from 'child_process';
 import {mkdir, rm} from 'fs/promises';
 import {promisify} from 'util';
-import {TraceEvent} from "./convert-cpuprofile-to-trace";
+import {TraceEvent} from "./traceprofile.types";
 
 const execAsync = promisify(exec);
 
@@ -11,9 +11,8 @@ export interface CpuProfileNameOptions {
     tid?: number;
     date?: Date;
     extension?: string;
-    seq: number;
+    seq?: number;
 }
-
 
 const cpuProfileSeqMap = new Map();
 
@@ -65,24 +64,25 @@ export function getCpuProfileName({
  *
  * @example
  * const info = parseCpuProfileName('CPU.20250510.134625.51430.1.1.cpuprofile');
- * // info = {
- * //   prefix: 'CPU',
- * //   pid: 51430,
- * //   tid: 1,
- * //   seq: 1,
- * //   date: Date('2025-05-10T13:46:25'),
- * //   extension: 'cpuprofile',
- * //   isMain: true
- * // }
+ *  info = {
+ *    prefix: 'CPU',
+ *    pid: 51430,
+ *    tid: 1,
+ *    seq: 1,
+ *    date: Date('2025-05-10T13:46:25'),
+ *    extension: 'cpuprofile',
+ *    isMain: true
+ *  }
  */
-export function parseCpuProfileName(file: string): CpuProfileNameOptions {
+export function parseCpuProfileName(file: string): Required<Omit<CpuProfileNameOptions, 'prefix' | 'extension'>> & Pick<CpuProfileNameOptions, 'prefix' | 'extension'> {
     const pattern = /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)\.(?<ext>[^.]+)$/;
     const match = file.match(pattern);
     if (!match?.groups) {
         throw new Error(`Invalid CPU profile filename: ${file}`);
     }
 
-    const {prefix, ymd, hms, pid, tid, seq, ext: extension} = match.groups;
+    const {prefix, ymd, hms, pid = 0, tid = 0, seq, ext: extension} = match.groups;
+
     const year = +ymd.slice(0, 4);
     const month = +ymd.slice(4, 6) - 1;
     const day = +ymd.slice(6, 8);
@@ -92,14 +92,13 @@ export function parseCpuProfileName(file: string): CpuProfileNameOptions {
 
     return {
         prefix,
-        pid: +pid,
-        tid: +tid,
-        seq: +seq,
+        pid: Number(pid),
+        tid: Number(tid),
+        seq: Number(seq),
         date: new Date(year, month, day, hours, minutes, seconds),
         extension
     };
 }
-
 
 export interface CpuProfOptions {
     /** Enable the V8 CPU profiler */
@@ -167,8 +166,11 @@ export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ 
     }
 }
 
+export function microsecondsToDate(microseconds: number): Date {
+    return new Date(microseconds / 1000);
+}
+
 export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
-    // --- Final assembly and sort by ts ---
     const metaOnly = rawEvents.filter(e => e.ph === 'M')
     const eventsOnly = rawEvents.filter(e => ['X', 'E', 'B'].includes(e.ph));
     const finalEvents = [...metaOnly, ...eventsOnly];

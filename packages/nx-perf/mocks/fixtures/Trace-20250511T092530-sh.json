@@ -1,29 +1,36 @@
 {
   "metadata": {
     "source": "DevTools",
-    "startTime": "2025-05-13T17:27:35.897Z",
-    "hardwareConcurrency": 12,
+    "startTime": "2025-05-17T20:56:30.714Z",
+    "hardwareConcurrency": 1,
     "dataOrigin": "TraceEvents"
   },
   "traceEvents": [
     {
-      "args": {
-        "name": "CrRendererMain"
-      },
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
       "pid": 10001,
       "tid": 20001,
-      "ts": 0
+      "ts": 0,
+      "args": {
+        "name": "CrRendererMain"
+      }
     },
     {
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 10001,
+      "tid": 20001,
+      "ts": 100000000000,
+      "s": "t",
       "args": {
         "data": {
-          "frameTreeNodeId": 16472,
+          "frameTreeNodeId": 1,
           "frames": [
             {
-              "frame": "4537E926EFBC9DB319B1582CFBB347DD",
+              "frame": "frame-1",
               "isInPrimaryMainFrame": true,
               "isOutermostMainFrame": true,
               "name": "",
@@ -33,29 +40,12 @@
           ],
           "persistentIds": true
         }
-      },
-      "cat": "disabled-by-default-devtools.timeline",
-      "name": "TracingStartedInBrowser",
-      "ph": "I",
-      "pid": 10001,
-      "s": "t",
-      "tid": 20001,
-      "ts": 100000001000
-    },
-    {
-      "args": {},
-      "cat": "disabled-by-default-devtools.timeline",
-      "dur": 1313,
-      "name": "EvaluateScript",
-      "ph": "X",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 100000001010
+      }
     },
     {
       "args": {
         "data": {
-          "startTime": 100000001010
+          "startTime": 100000000000
         }
       },
       "cat": "disabled-by-default-v8.cpu_profiler",
@@ -64,7 +54,7 @@
       "ph": "P",
       "pid": 10001,
       "tid": 20001,
-      "ts": 100000001020
+      "ts": 100000000000
     },
     {
       "args": {
@@ -73,35 +63,82 @@
             "nodes": [
               {
                 "id": 1,
-                "callFrame": { "functionName": "(root)", "scriptId": "0", "url": "", "lineNumber": -1, "columnNumber": -1 },
-                "children": [2]
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
               },
               {
                 "id": 2,
-                "callFrame": { "functionName": "runMainESM", "scriptId": "1", "url": "node:internal/modules/run_main", "lineNumber": 92, "columnNumber": 19 },
-                "children": [3],
+                "callFrame": {
+                  "functionName": "runMainESM",
+                  "scriptId": "1",
+                  "url": "node:internal/modules/run_main",
+                  "lineNumber": 92,
+                  "columnNumber": 19
+                },
+                "children": [
+                  3
+                ],
                 "hitCount": 1
               },
               {
                 "id": 3,
-                "callFrame": { "functionName": "main-work", "scriptId": "2", "url": "file:///index.mjs", "lineNumber": 10, "columnNumber": 0 },
-                "children": [4, 5],
+                "callFrame": {
+                  "functionName": "main-work",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4,
+                  5
+                ],
                 "hitCount": 1
               },
               {
                 "id": 4,
-                "callFrame": { "functionName": "child-work-1", "scriptId": "2", "url": "file:///index.mjs", "lineNumber": 11, "columnNumber": 2 },
+                "callFrame": {
+                  "functionName": "child-work-1",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 11,
+                  "columnNumber": 2
+                },
                 "hitCount": 1
               },
               {
                 "id": 5,
-                "callFrame": { "functionName": "child-work-2", "scriptId": "2", "url": "file:///index.mjs", "lineNumber": 12, "columnNumber": 2 },
+                "callFrame": {
+                  "functionName": "child-work-2",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 12,
+                  "columnNumber": 2
+                },
                 "hitCount": 1
               }
             ],
-            "samples":    [1, 2,   4,   5]
+            "samples": [
+              1,
+              2,
+              4,
+              5
+            ]
           },
-          "timeDeltas": [0, 0, 100, 100]
+          "timeDeltas": [
+            0,
+            0,
+            100,
+            100
+          ]
         }
       },
       "cat": "disabled-by-default-v8.cpu_profiler",
@@ -110,17 +147,17 @@
       "ph": "P",
       "pid": 10001,
       "tid": 20002,
-      "ts": 100000001020
+      "ts": 0
     },
     {
       "args": {},
       "cat": "disabled-by-default-devtools.timeline",
-      "dur": 100,
+      "dur": 10,
       "name": "RunTask",
       "ph": "X",
       "pid": 10001,
       "tid": 20001,
-      "ts": 100000002520
+      "ts": 100000000300
     }
   ]
 }
