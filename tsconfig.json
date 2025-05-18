@@ -29,6 +29,9 @@
     },
     {
       "path": "./packages/nx-perf"
+    },
+    {
+      "path": "./packages/cpu-profiling"
     }
   ]
 }
