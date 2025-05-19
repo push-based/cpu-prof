@@ -1,6 +1,7 @@
 import {CpuProfile, CpuProfileInfo} from "./cpuprofile.types";
 import {Metadata, TraceEvent, TraceFile} from "./traceprofile.types";
 import {basename} from "node:path";
+import {getMainProfileInfo} from "./profile-selection";
 
 export function cpuProfileToTraceProfileEvents(cpuProfile: CpuProfile, opt: {
     pid: number;
@@ -142,23 +143,6 @@ export function getTraceMetadata(info?: CpuProfileInfo): Metadata {
         hardwareConcurrency: 1,
         dataOrigin: 'TraceEvents'
     };
-}
-export function getMainProfileInfo(cpuProfileInfos: CpuProfileInfo[]): CpuProfileInfo {
-    if (cpuProfileInfos.length === 0) {
-        throw new Error('No CPU profiles provided');
-    }
-
-    return cpuProfileInfos.reduce((best, current) => {
-        if (current.pid < best.pid) {
-            return current;
-        }
-
-        if (current.pid === best.pid && current.tid < best.tid) {
-            return current;
-        }
-
-        return best;
-    });
 }
 
 /**
