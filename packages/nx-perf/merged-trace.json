@@ -1,0 +1,1304 @@
+{
+  "traceEvents": [
+    {
+      "ph": "M",
+      "name": "thread_name",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 0,
+      "cat": "__metadata",
+      "args": {
+        "name": "Main Thread (.001)"
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953870751000,
+      "dur": 1041500,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(program)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953871792500,
+      "dur": 1041500,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953872834000,
+      "dur": 222167,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953873056167,
+      "dur": 222167,
+      "args": {
+        "url": "node:internal/main/run_main_module",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "prepareMainThreadExecution",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953873278333,
+      "dur": 222167,
+      "args": {
+        "url": "node:internal/process/pre_execution",
+        "line": 53,
+        "col": 35
+      }
+    },
+    {
+      "ph": "X",
+      "name": "prepareExecution",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953873500500,
+      "dur": 222167,
+      "args": {
+        "url": "node:internal/process/pre_execution",
+        "line": 89,
+        "col": 25
+      }
+    },
+    {
+      "ph": "X",
+      "name": "setupWebCrypto",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953873722667,
+      "dur": 222167,
+      "args": {
+        "url": "node:internal/process/pre_execution",
+        "line": 361,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "defineReplaceableLazyAttribute",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953873944833,
+      "dur": 222167,
+      "args": {
+        "url": "node:internal/util",
+        "line": 639,
+        "col": 39
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953874167000,
+      "dur": 208333,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953874375333,
+      "dur": 208333,
+      "args": {
+        "url": "node:internal/main/run_main_module",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "executeUserEntryPoint",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953874583667,
+      "dur": 208333,
+      "args": {
+        "url": "node:internal/modules/run_main",
+        "line": 126,
+        "col": 30
+      }
+    },
+    {
+      "ph": "X",
+      "name": "resolveMainPath",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953874792000,
+      "dur": 208333,
+      "args": {
+        "url": "node:internal/modules/run_main",
+        "line": 14,
+        "col": 24
+      }
+    },
+    {
+      "ph": "X",
+      "name": "Module._findPath",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875000333,
+      "dur": 208333,
+      "args": {
+        "url": "node:internal/modules/cjs/loader",
+        "line": 609,
+        "col": 27
+      }
+    },
+    {
+      "ph": "X",
+      "name": "toRealPath",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875208667,
+      "dur": 208333,
+      "args": {
+        "url": "node:internal/modules/helpers",
+        "line": 53,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875417000,
+      "dur": 92286,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875509286,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/main/run_main_module",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "executeUserEntryPoint",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875601572,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/run_main",
+        "line": 126,
+        "col": 30
+      }
+    },
+    {
+      "ph": "X",
+      "name": "runMainESM",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875693857,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/run_main",
+        "line": 92,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "loadESM",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875786143,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/process/esm_loader",
+        "line": 15,
+        "col": 15
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875878429,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/run_main",
+        "line": 97,
+        "col": 28
+      }
+    },
+    {
+      "ph": "X",
+      "name": "import",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953875970715,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 326,
+        "col": 14
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getModuleJob",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876063000,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 238,
+        "col": 20
+      }
+    },
+    {
+      "ph": "X",
+      "name": "resolve",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876155286,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 355,
+        "col": 9
+      }
+    },
+    {
+      "ph": "X",
+      "name": "defaultResolve",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876247572,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 385,
+        "col": 16
+      }
+    },
+    {
+      "ph": "X",
+      "name": "defaultResolve",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876339857,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/modules/esm/resolve",
+        "line": 1037,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getCWDURL",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876432143,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/util",
+        "line": 368,
+        "col": 18
+      }
+    },
+    {
+      "ph": "X",
+      "name": "wrappedCwd",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876524429,
+      "dur": 92286,
+      "args": {
+        "url": "node:internal/bootstrap/switches/does_own_process_state",
+        "line": 135,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "cwd",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876616714,
+      "dur": 92286,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876709000,
+      "dur": 89286,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getModuleJob",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876798286,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 238,
+        "col": 20
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getJobFromResolveResult",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876887572,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 248,
+        "col": 25
+      }
+    },
+    {
+      "ph": "X",
+      "name": "#createModuleJob",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953876976857,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 276,
+        "col": 18
+      }
+    },
+    {
+      "ph": "X",
+      "name": "ModuleJob",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877066143,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/module_job",
+        "line": 52,
+        "col": 13
+      }
+    },
+    {
+      "ph": "X",
+      "name": "moduleProvider",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877155429,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 290,
+        "col": 6
+      }
+    },
+    {
+      "ph": "X",
+      "name": "load",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877244715,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/loader",
+        "line": 404,
+        "col": 12
+      }
+    },
+    {
+      "ph": "X",
+      "name": "defaultLoad",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877334000,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/load",
+        "line": 109,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getSource",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877423286,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/modules/esm/load",
+        "line": 39,
+        "col": 24
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877512572,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877601857,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877691143,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/fs/promises",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877780429,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877869714,
+      "dur": 89286,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953877959000,
+      "dur": 625000,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "readFile",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953878584000,
+      "dur": 625000,
+      "args": {
+        "url": "node:internal/fs/promises",
+        "line": 1075,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879209000,
+      "dur": 59524,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "run",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879268524,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/modules/esm/module_job",
+        "line": 212,
+        "col": 11
+      }
+    },
+    {
+      "ph": "X",
+      "name": "evaluate",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879328048,
+      "dur": 59524,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879387571,
+      "dur": 59524,
+      "args": {
+        "url": "file:///Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/nx-perf/mocks/child-process.mjs",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "consoleCall",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879447095,
+      "dur": 59524,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "log",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879506619,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 377,
+        "col": 5
+      }
+    },
+    {
+      "ph": "X",
+      "name": "value",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879566143,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 338,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "get",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879625667,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 212,
+        "col": 13
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getStdout",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879685191,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/switches/is_main_thread",
+        "line": 147,
+        "col": 18
+      }
+    },
+    {
+      "ph": "X",
+      "name": "createWritableStdioStream",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879744714,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/switches/is_main_thread",
+        "line": 46,
+        "col": 34
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879804238,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879863762,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879923286,
+      "dur": 59524,
+      "args": {
+        "url": "node:net",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953879982810,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880042333,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880101857,
+      "dur": 59524,
+      "args": {
+        "url": "node:stream",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880161381,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880220905,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880280429,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/streams/operators",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880339952,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880399476,
+      "dur": 59524,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880459000,
+      "dur": 73529,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "run",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880532529,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/modules/esm/module_job",
+        "line": 212,
+        "col": 11
+      }
+    },
+    {
+      "ph": "X",
+      "name": "evaluate",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880606059,
+      "dur": 73529,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880679588,
+      "dur": 73529,
+      "args": {
+        "url": "file:///Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/nx-perf/mocks/child-process.mjs",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "consoleCall",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880753118,
+      "dur": 73529,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "log",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880826647,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 377,
+        "col": 5
+      }
+    },
+    {
+      "ph": "X",
+      "name": "value",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880900176,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 338,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "get",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953880973706,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 212,
+        "col": 13
+      }
+    },
+    {
+      "ph": "X",
+      "name": "getStdout",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881047235,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/bootstrap/switches/is_main_thread",
+        "line": 147,
+        "col": 18
+      }
+    },
+    {
+      "ph": "X",
+      "name": "createWritableStdioStream",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881120765,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/bootstrap/switches/is_main_thread",
+        "line": 46,
+        "col": 34
+      }
+    },
+    {
+      "ph": "X",
+      "name": "requireBuiltin",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881194294,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 422,
+        "col": 23
+      }
+    },
+    {
+      "ph": "X",
+      "name": "compileForInternalLoader",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881267823,
+      "dur": 73529,
+      "args": {
+        "url": "node:internal/bootstrap/realm",
+        "line": 385,
+        "col": 26
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881341353,
+      "dur": 73529,
+      "args": {
+        "url": "node:net",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "channel",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881414882,
+      "dur": 73529,
+      "args": {
+        "url": "node:diagnostics_channel",
+        "line": 212,
+        "col": 16
+      }
+    },
+    {
+      "ph": "X",
+      "name": "Channel",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881488412,
+      "dur": 73529,
+      "args": {
+        "url": "node:diagnostics_channel",
+        "line": 167,
+        "col": 13
+      }
+    },
+    {
+      "ph": "X",
+      "name": "set",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881561941,
+      "dur": 73529,
+      "args": {
+        "url": "node:diagnostics_channel",
+        "line": 39,
+        "col": 5
+      }
+    },
+    {
+      "ph": "X",
+      "name": "WeakReference",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881635471,
+      "dur": 73530,
+      "args": {
+        "url": "node:internal/util",
+        "line": 834,
+        "col": 13
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881709000,
+      "dur": 156250,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "run",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953881865250,
+      "dur": 156250,
+      "args": {
+        "url": "node:internal/modules/esm/module_job",
+        "line": 212,
+        "col": 11
+      }
+    },
+    {
+      "ph": "X",
+      "name": "evaluate",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882021500,
+      "dur": 156250,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(anonymous)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882177750,
+      "dur": 156250,
+      "args": {
+        "url": "file:///Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/nx-perf/mocks/child-process.mjs",
+        "line": 0,
+        "col": 0
+      }
+    },
+    {
+      "ph": "X",
+      "name": "consoleCall",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882334000,
+      "dur": 156250,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "log",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882490250,
+      "dur": 156250,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 377,
+        "col": 5
+      }
+    },
+    {
+      "ph": "X",
+      "name": "value",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882646500,
+      "dur": 156250,
+      "args": {
+        "url": "node:internal/console/constructor",
+        "line": 275,
+        "col": 19
+      }
+    },
+    {
+      "ph": "X",
+      "name": "Writable.write",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882802750,
+      "dur": 156250,
+      "args": {
+        "url": "node:internal/streams/writable",
+        "line": 495,
+        "col": 35
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(root)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953882959000,
+      "dur": 354000,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    },
+    {
+      "ph": "X",
+      "name": "(idle)",
+      "cat": "function",
+      "pid": 36052,
+      "tid": 0,
+      "ts": 814953883313000,
+      "dur": 354000,
+      "args": {
+        "url": "",
+        "line": -1,
+        "col": -1
+      }
+    }
+  ],
+  "displayTimeUnit": "ms"
+}

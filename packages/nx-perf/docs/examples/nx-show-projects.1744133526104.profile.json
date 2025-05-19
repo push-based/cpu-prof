@@ -3,7 +3,7 @@
     "name": "thread_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "ts": 0,
     "args": {
       "name": "Nx Process"
@@ -13,7 +13,7 @@
     "name": "process_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "ts": 0,
     "args": {
       "name": "Measure Process"
@@ -23,10 +23,10 @@
     "name": "loading dotenv files",
     "cat": "measure",
     "ph": "X",
-    "ts": 68179.167,
-    "dur": 751.4169999999893,
+    "ts": 104022.125,
+    "dur": 909.165999999999,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -152,10 +152,10 @@
     "name": "workspace context init",
     "cat": "measure",
     "ph": "X",
-    "ts": 69345.375,
-    "dur": 980.4999999999922,
+    "ts": 105370.583,
+    "dur": 886.9169999999968,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -281,7 +281,7 @@
     "name": "thread_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96914,
+    "tid": 96896,
     "ts": 0,
     "args": {
       "name": "Child Process"
@@ -291,7 +291,7 @@
     "name": "thread_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96915,
+    "tid": 96895,
     "ts": 0,
     "args": {
       "name": "Child Process"
@@ -301,7 +301,7 @@
     "name": "process_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96914,
+    "tid": 96896,
     "ts": 0,
     "args": {
       "name": "Measure Process"
@@ -311,119 +311,20 @@
     "name": "process_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96915,
+    "tid": 96895,
     "ts": 0,
     "args": {
       "name": "Measure Process"
     }
   },
   {
-    "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json",
-    "cat": "measure",
-    "ph": "X",
-    "ts": 58371.084,
-    "dur": 544.0829999999935,
-    "pid": 0,
-    "tid": 96914,
-    "args": {
-      "startDetail": {
-        "callStack": [
-          {
-            "functionName": "loadNxPluginAsync",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
-            "line": 199,
-            "column": 21
-          },
-          {
-            "functionName": "loadNxPlugin",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
-            "line": 182,
-            "column": 9
-          },
-          {
-            "functionName": "load",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
-            "line": 37,
-            "column": 65
-          },
-          {
-            "functionName": "consumeMessage",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
-            "line": 38,
-            "column": 32
-          },
-          {
-            "functionName": null,
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
-            "line": 31,
-            "column": 47
-          },
-          {
-            "functionName": "Socket.<anonymous>",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
-            "line": 13,
-            "column": 17
-          },
-          {
-            "functionName": "Socket.emit",
-            "file": "node:events",
-            "line": 507,
-            "column": 28
-          },
-          {
-            "functionName": "addChunk",
-            "file": "node:internal/streams/readable",
-            "line": 559,
-            "column": 12
-          },
-          {
-            "functionName": "readableAddChunkPushByteMode",
-            "file": "node:internal/streams/readable",
-            "line": 510,
-            "column": 3
-          }
-        ]
-      },
-      "endDetail": {
-        "callStack": [
-          {
-            "functionName": "loadNxPluginAsync",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
-            "line": 203,
-            "column": 21
-          },
-          {
-            "functionName": "process.processTicksAndRejections",
-            "file": "node:internal/process/task_queues",
-            "line": 105,
-            "column": 5
-          },
-          {
-            "functionName": "async load",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
-            "line": 38,
-            "column": 30
-          },
-          {
-            "functionName": "async consumeMessage",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
-            "line": 38,
-            "column": 26
-          }
-        ]
-      },
-      "correlationId": 1,
-      "uiLabel": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json"
-    }
-  },
-  {
     "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/project-json/build-nodes/project-json",
     "cat": "measure",
     "ph": "X",
-    "ts": 58442.25,
-    "dur": 511.2090000000009,
+    "ts": 58851.042,
+    "dur": 514.7910000000024,
     "pid": 0,
-    "tid": 96915,
+    "tid": 96896,
     "args": {
       "startDetail": {
         "callStack": [
@@ -516,10 +417,109 @@
     }
   },
   {
+    "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json",
+    "cat": "measure",
+    "ph": "X",
+    "ts": 58800.417,
+    "dur": 506.0000000000002,
+    "pid": 0,
+    "tid": 96895,
+    "args": {
+      "startDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 199,
+            "column": 21
+          },
+          {
+            "functionName": "loadNxPlugin",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 182,
+            "column": 9
+          },
+          {
+            "functionName": "load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 37,
+            "column": 65
+          },
+          {
+            "functionName": "consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 32
+          },
+          {
+            "functionName": null,
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 31,
+            "column": 47
+          },
+          {
+            "functionName": "Socket.<anonymous>",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/utils/consume-messages-from-socket.js",
+            "line": 13,
+            "column": 17
+          },
+          {
+            "functionName": "Socket.emit",
+            "file": "node:events",
+            "line": 507,
+            "column": 28
+          },
+          {
+            "functionName": "addChunk",
+            "file": "node:internal/streams/readable",
+            "line": 559,
+            "column": 12
+          },
+          {
+            "functionName": "readableAddChunkPushByteMode",
+            "file": "node:internal/streams/readable",
+            "line": 510,
+            "column": 3
+          }
+        ]
+      },
+      "endDetail": {
+        "callStack": [
+          {
+            "functionName": "loadNxPluginAsync",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/loader.js",
+            "line": 203,
+            "column": 21
+          },
+          {
+            "functionName": "process.processTicksAndRejections",
+            "file": "node:internal/process/task_queues",
+            "line": 105,
+            "column": 5
+          },
+          {
+            "functionName": "async load",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/plugin-worker.js",
+            "line": 38,
+            "column": 30
+          },
+          {
+            "functionName": "async consumeMessage",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/project-graph/plugins/isolation/messaging.js",
+            "line": 38,
+            "column": 26
+          }
+        ]
+      },
+      "correlationId": 1,
+      "uiLabel": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/package-json"
+    }
+  },
+  {
     "name": "thread_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96913,
+    "tid": 96894,
     "ts": 0,
     "args": {
       "name": "Child Process"
@@ -529,7 +529,7 @@
     "name": "process_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96913,
+    "tid": 96894,
     "ts": 0,
     "args": {
       "name": "Measure Process"
@@ -539,10 +539,10 @@
     "name": "Load Nx Plugin: /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/plugins/js",
     "cat": "measure",
     "ph": "X",
-    "ts": 58712.125,
-    "dur": 4441.209000000001,
+    "ts": 59172.708,
+    "dur": 6290.916999999993,
     "pid": 0,
-    "tid": 96913,
+    "tid": 96894,
     "args": {
       "startDetail": {
         "callStack": [
@@ -638,7 +638,7 @@
     "name": "thread_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96912,
+    "tid": 96893,
     "ts": 0,
     "args": {
       "name": "Child Process"
@@ -648,7 +648,7 @@
     "name": "process_name",
     "ph": "M",
     "pid": 0,
-    "tid": 96912,
+    "tid": 96893,
     "ts": 0,
     "args": {
       "name": "Measure Process"
@@ -658,10 +658,10 @@
     "name": "Load Nx Plugin: @push-based/nx-verdaccio",
     "cat": "measure",
     "ph": "X",
-    "ts": 58371.458,
-    "dur": 65837.83400000002,
+    "ts": 59254.25,
+    "dur": 111853.41699999999,
     "pid": 0,
-    "tid": 96912,
+    "tid": 96893,
     "args": {
       "startDetail": {
         "callStack": [
@@ -757,10 +757,10 @@
     "name": "loadNxPlugins",
     "cat": "measure",
     "ph": "X",
-    "ts": 109972.875,
-    "dur": 133231.542,
+    "ts": 119676.166,
+    "dur": 179868.54200000002,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -789,15 +789,15 @@
             "column": 45
           },
           {
-            "functionName": "showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 69
+            "functionName": "showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 67
           },
           {
             "functionName": null,
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 19
           },
           {
@@ -815,7 +815,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -853,15 +853,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -873,7 +873,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -886,10 +886,10 @@
     "name": "@push-based/nx-verdaccio:createNodes",
     "cat": "measure",
     "ph": "X",
-    "ts": 127943,
-    "dur": 3239.7079999999933,
+    "ts": 175037.625,
+    "dur": 3603.958000000006,
     "pid": 0,
-    "tid": 96912,
+    "tid": 96893,
     "args": {
       "startDetail": {
         "callStack": [
@@ -979,10 +979,10 @@
     "name": "nx/core/project-json:createNodes",
     "cat": "measure",
     "ph": "X",
-    "ts": 131206,
-    "dur": 966.7090000000087,
+    "ts": 178383.29200000002,
+    "dur": 988.1249999999966,
     "pid": 0,
-    "tid": 96915,
+    "tid": 96896,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1078,10 +1078,10 @@
     "name": "nx/core/package-json:createNodes",
     "cat": "measure",
     "ph": "X",
-    "ts": 130609.20899999999,
-    "dur": 2113.79100000002,
+    "ts": 177844.167,
+    "dur": 2256.458000000009,
     "pid": 0,
-    "tid": 96914,
+    "tid": 96895,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1177,10 +1177,10 @@
     "name": "nx/js/dependencies-and-lockfile:createNodes",
     "cat": "measure",
     "ph": "X",
-    "ts": 129712.29199999999,
-    "dur": 4077.625000000012,
+    "ts": 176774.792,
+    "dur": 3971.2499999999977,
     "pid": 0,
-    "tid": 96913,
+    "tid": 96894,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1276,10 +1276,10 @@
     "name": "createNodes:merge",
     "cat": "measure",
     "ph": "X",
-    "ts": 257397.584,
-    "dur": 3003.4160000000156,
+    "ts": 314478.16599999997,
+    "dur": 4675.584000000015,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1320,15 +1320,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1378,15 +1378,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1405,10 +1405,10 @@
     "name": "build-project-configs",
     "cat": "measure",
     "ph": "X",
-    "ts": 244032.084,
-    "dur": 16457.24999999999,
+    "ts": 300459.41599999997,
+    "dur": 18790.584000000024,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1449,15 +1449,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1501,15 +1501,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1521,7 +1521,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -1534,10 +1534,10 @@
     "name": "native-file-deps",
     "cat": "measure",
     "ph": "X",
-    "ts": 260639.12499999997,
-    "dur": 28.33400000002939,
+    "ts": 319421.666,
+    "dur": 29.20899999998028,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1572,15 +1572,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1592,7 +1592,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -1630,15 +1630,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1650,7 +1650,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -1663,10 +1663,10 @@
     "name": "get-workspace-files",
     "cat": "measure",
     "ph": "X",
-    "ts": 260715.83399999997,
-    "dur": 974.5410000000447,
+    "ts": 319517.75,
+    "dur": 1026.37500000003,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1701,15 +1701,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1721,7 +1721,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -1759,15 +1759,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1779,7 +1779,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -1792,10 +1792,10 @@
     "name": "get-all-workspace-files",
     "cat": "measure",
     "ph": "X",
-    "ts": 261801.584,
-    "dur": 6703.416000000005,
+    "ts": 320644.375,
+    "dur": 6578.540999999973,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1836,15 +1836,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1894,15 +1894,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1921,10 +1921,10 @@
     "name": "read cache",
     "cat": "measure",
     "ph": "X",
-    "ts": 268671.042,
-    "dur": 502.207999999996,
+    "ts": 327418.791,
+    "dur": 680.7499999999891,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -1959,15 +1959,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -1979,7 +1979,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2017,15 +2017,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2037,7 +2037,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2050,10 +2050,10 @@
     "name": "build typescript dependencies",
     "cat": "measure",
     "ph": "X",
-    "ts": 162179,
-    "dur": 159.4169999999906,
+    "ts": 213781.583,
+    "dur": 150.0419999999849,
     "pid": 0,
-    "tid": 96913,
+    "tid": 96894,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2179,10 +2179,10 @@
     "name": "nx/js/dependencies-and-lockfile:createDependencies",
     "cat": "measure",
     "ph": "X",
-    "ts": 272790.91699999996,
-    "dur": 12108.708000000035,
+    "ts": 332564.541,
+    "dur": 13336.874999999964,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2302,10 +2302,10 @@
     "name": "build project graph",
     "cat": "measure",
     "ph": "X",
-    "ts": 271471.042,
-    "dur": 14225.582999999971,
+    "ts": 330758.333,
+    "dur": 16038.749999999993,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2346,15 +2346,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2404,15 +2404,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2431,10 +2431,10 @@
     "name": "write cache",
     "cat": "measure",
     "ph": "X",
-    "ts": 285959.25,
-    "dur": 4949.87500000002,
+    "ts": 347062.541,
+    "dur": 5298.833999999999,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2469,15 +2469,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2489,7 +2489,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2527,15 +2527,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2547,7 +2547,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2560,10 +2560,10 @@
     "name": "create-project-graph-async >> retrieve-project-configurations",
     "cat": "measure",
     "ph": "X",
-    "ts": 109855.167,
-    "dur": 150705.66700000002,
+    "ts": 119551.791,
+    "dur": 199779.584,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2586,15 +2586,15 @@
             "column": 45
           },
           {
-            "functionName": "showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 69
+            "functionName": "showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 67
           },
           {
             "functionName": null,
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 19
           },
           {
@@ -2612,7 +2612,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2644,15 +2644,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2664,7 +2664,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2677,10 +2677,10 @@
     "name": "create-project-graph-async >> retrieve-workspace-files",
     "cat": "measure",
     "ph": "X",
-    "ts": 260590.292,
-    "dur": 7986.333000000002,
+    "ts": 319363.458,
+    "dur": 7962.208000000032,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2709,15 +2709,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2729,7 +2729,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2761,15 +2761,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2781,7 +2781,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2794,10 +2794,10 @@
     "name": "create-project-graph-async >> build-project-graph-using-project-file-map",
     "cat": "measure",
     "ph": "X",
-    "ts": 268605.875,
-    "dur": 17284.208999999977,
+    "ts": 327355.208,
+    "dur": 19632.499999999993,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2826,15 +2826,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2846,7 +2846,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2878,15 +2878,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -2898,7 +2898,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2911,10 +2911,10 @@
     "name": "create-project-graph-async",
     "cat": "measure",
     "ph": "X",
-    "ts": 109677.375,
-    "dur": 181406,
+    "ts": 119371.708,
+    "dur": 233148.458,
     "pid": 0,
-    "tid": 96911,
+    "tid": 96892,
     "args": {
       "startDetail": {
         "callStack": [
@@ -2931,15 +2931,15 @@
             "column": 45
           },
           {
-            "functionName": "showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 69
+            "functionName": "showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 67
           },
           {
             "functionName": null,
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 19
           },
           {
@@ -2957,7 +2957,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]
@@ -2983,15 +2983,15 @@
             "column": 39
           },
           {
-            "functionName": "async showProjectHandler",
-            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/project.js",
-            "line": 8,
-            "column": 19
+            "functionName": "async showProjectsHandler",
+            "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/projects.js",
+            "line": 14,
+            "column": 17
           },
           {
             "functionName": null,
             "file": "async /Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 111,
+            "line": 70,
             "column": 13
           },
           {
@@ -3003,7 +3003,7 @@
           {
             "functionName": "async Object.handler",
             "file": "/Users/michael_hladky/WebstormProjects/quality-metrics-cli/node_modules/nx/src/command-line/show/command-object.js",
-            "line": 109,
+            "line": 68,
             "column": 26
           }
         ]

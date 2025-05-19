@@ -6,5 +6,6 @@ writeFileSync(
   readFileSync(
     './node_modules/nx/src/utils/perf-logging.js',
     'utf-8'
-  ).toString() + 'require("./../../../node_modules/@puah-based/cpu-profiling/src/shim.js");'
+  ).toString() +
+    'require("./../../../node_modules/@puah-based/nx-perf/src/shim.js");'
 );

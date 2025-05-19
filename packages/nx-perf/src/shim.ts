@@ -1,7 +1,11 @@
-import { Performance, performance, PerformanceObserver } from "node:perf_hooks";
-import { basename } from "node:path";
-import { cpus } from "node:os";
-import {TraceEvent} from "./traceprofile.types";
+import {
+  performance,
+  PerformanceObserver,
+  PerformanceEntry,
+} from 'node:perf_hooks';
+import { basename } from 'node:path';
+import { cpus } from 'node:os';
+import { TraceEvent, CallFrame, PerformanceMarkOptions } from './types';
 
 // Global array to store complete events.
 const traceEvents: TraceEvent[] = [];
@@ -23,22 +27,25 @@ const threadMetadata: TraceEvent = {
   tid: process.pid,
   ts: 0,
   args: {
-    name: `Child Process: ${basename(process.argv.at(0) ?? '')} ${basename(process.argv.at(1)?? '')} ${process.argv.slice(2).join(' ')}`
+    name: `Child Process: ${basename(process.argv.at(0) ?? '')} ${basename(
+      process.argv.at(1) ?? ''
+    )} ${process.argv.slice(2).join(' ')}`,
   },
 };
 
-const originalMark = Performance.prototype.mark;
+// Store original mark function
+const originalMark = performance.mark;
 
 let correlationIdCounter = 0;
-function generateCorrelationId() {
+function generateCorrelationId(): number {
   return ++correlationIdCounter;
 }
 
 /**
  * Parse an error stack into an array of frames.
  */
-function parseStack(stack) {
-  const frames = [];
+function parseStack(stack: string): CallFrame[] {
+  const frames: CallFrame[] = [];
   const lines = stack.split('\n').slice(2); // Skip error message & current function.
   for (const line of lines) {
     const trimmed = line.trim();
@@ -62,7 +69,13 @@ function parseStack(stack) {
           column: Number(match[3]),
         });
       } else {
-        frames.push({ raw: trimmed });
+        frames.push({
+          functionName: null,
+          file: trimmed,
+          line: 0,
+          column: 0,
+          raw: trimmed,
+        });
       }
     }
   }
@@ -70,31 +83,38 @@ function parseStack(stack) {
 }
 
 // Patch mark to include call stack
-Performance.prototype.mark = function (name, options) {
+performance.mark = function (name: string, options?: PerformanceMarkOptions) {
   const err = new Error();
-  const callStack = parseStack(err.stack);
+  const callStack = parseStack(err.stack || '');
   const opt = Object.assign({}, options, {
     detail: Object.assign({}, (options && options.detail) || {}, { callStack }),
   });
-  return originalMark.call(this, name, opt);
+  return originalMark.call(performance, name, opt);
 };
 
 // Use PerformanceObserver to enrich and capture measure events
 const observer = new PerformanceObserver((list) => {
   for (const entry of list.getEntries()) {
-    const startEntry = performance.getEntriesByName(entry.startTime ? entry.name.split(' -> ')[0] : '', 'mark')[0];
-    const endEntry = performance.getEntriesByName(entry.name, 'mark')[0]; // fallback if needed
+    const startEntry = performance.getEntriesByName(
+      entry.startTime ? entry.name.split(' -> ')[0] : '',
+      'mark'
+    )[0] as PerformanceMarkOptions & PerformanceEntry;
+    const endEntry = performance.getEntriesByName(
+      entry.name,
+      'mark'
+    )[0] as PerformanceMarkOptions & PerformanceEntry; // fallback if needed
 
     const correlationId = generateCorrelationId();
     const callFrame = (startEntry?.detail?.callStack || [])[0] || {};
     const file = (callFrame.file || 'unknown').replace(process.cwd(), '.');
-    const functionName = callFrame.functionName != null ? callFrame.functionName : 'anonymous';
+    const functionName =
+      callFrame.functionName != null ? callFrame.functionName : 'anonymous';
     const line = callFrame.line || null;
 
     const ts = entry.startTime * 1000;
     const dur = entry.duration * 1000;
 
-    const event = {
+    const event: TraceEvent = {
       name: entry.name.replace(process.cwd(), ''),
       cat: 'measure',
       ph: 'X',
@@ -112,7 +132,7 @@ const observer = new PerformanceObserver((list) => {
         file,
         functionName,
         line,
-      }
+      },
     };
 
     if (traceEvents.length < 1) {
@@ -128,34 +148,34 @@ const observer = new PerformanceObserver((list) => {
 });
 observer.observe({ entryTypes: ['measure'], buffered: true });
 
-// Return the complete Chrome Trace profile object.
-performance.profile = function () {
+// Add profile method to performance object
+(performance as any).profile = function () {
   return {
     metadata: {
-      source: "Nx Advanced Profiling",
+      source: 'Nx Advanced Profiling',
       startTime: Date.now() / 1000,
       hardwareConcurrency: cpus().length,
-      dataOrigin: "TraceEvents",
+      dataOrigin: 'TraceEvents',
       modifications: {
         entriesModifications: {
           hiddenEntries: [],
-          expandableEntries: []
+          expandableEntries: [],
         },
         initialBreadcrumb: {
           window: {
             min: 269106047711,
             max: 269107913714,
-            range: 1866003
+            range: 1866003,
           },
-          child: null
+          child: null,
         },
         annotations: {
           entryLabels: [],
           labelledTimeRanges: [],
-          linksBetweenEntries: []
-        }
-      }
+          linksBetweenEntries: [],
+        },
+      },
     },
-    traceEvents
+    traceEvents,
   };
 };
