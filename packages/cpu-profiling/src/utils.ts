@@ -5,7 +5,7 @@ import {TraceEvent} from "./traceprofile.types";
 
 const execAsync = promisify(exec);
 
-export interface CpuProfileNameOptions {
+export type CpuProfileNameOptions = {
     prefix?: string;
     pid?: number;
     tid?: number;
@@ -75,13 +75,13 @@ export function getCpuProfileName({
  *  }
  */
 export function parseCpuProfileName(file: string): Required<Omit<CpuProfileNameOptions, 'prefix' | 'extension'>> & Pick<CpuProfileNameOptions, 'prefix' | 'extension'> {
-    const pattern = /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)\.(?<ext>[^.]+)$/;
+    const pattern = /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)(?:\.(?<ext>.*))?$/;
     const match = file.match(pattern);
     if (!match?.groups) {
         throw new Error(`Invalid CPU profile filename: ${file}`);
     }
 
-    const {prefix, ymd, hms, pid = 0, tid = 0, seq, ext: extension} = match.groups;
+    const {prefix, ymd, hms, pid = 0, tid = 0, seq, ext: extension = ''} = match.groups;
 
     const year = +ymd.slice(0, 4);
     const month = +ymd.slice(4, 6) - 1;
@@ -171,9 +171,9 @@ export function microsecondsToDate(microseconds: number): Date {
 }
 
 export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
-    const metaOnly = rawEvents.filter(e => e.ph === 'M')
-    const eventsOnly = rawEvents.filter(e => ['X', 'E', 'B'].includes(e.ph));
-    const finalEvents = [...metaOnly, ...eventsOnly];
-    finalEvents.sort((a, b) => a.ts - b.ts);
-    return finalEvents;
+    const metaOnly = rawEvents.filter(e => e.ph === 'M');
+    const eventsOnly = rawEvents.filter(e => e.ph !== 'M');
+    metaOnly.sort((a, b) => a.ts - b.ts);
+    eventsOnly.sort((a, b) => a.ts - b.ts);
+    return [...metaOnly, ...eventsOnly];
 }

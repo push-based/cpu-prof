@@ -8,7 +8,7 @@ import {mkdir} from "node:fs/promises";
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const CPU_NG_SERVE_FOLDER = join(__dirname, '../mocks/fixtures/ng-serve-cpu');
-const CPU_NG_BUILD_FOLDER = join(__dirname, '../mocks/fixtures/ng-build-cpu');
+// const CPU_NG_BUILD_FOLDER = join(__dirname, '../mocks/fixtures/ng-build-cpu');
 
 describe('mergeCpuProfileFiles', () => {
     const outputDir = join(__dirname, '../../../tmp/merge/');
@@ -21,7 +21,7 @@ describe('mergeCpuProfileFiles', () => {
         const outputFile = join(outputDir, 'merged-files-trace.json');
 
         await mkdir(outputDir);
-        await mergeCpuProfileFiles(CPU_NG_BUILD_FOLDER, outputFile);
+        await mergeCpuProfileFiles(CPU_NG_SERVE_FOLDER, outputFile);
 
         const outputFileContent = await readFile(outputFile, 'utf8');
         const output = JSON.parse(outputFileContent);
