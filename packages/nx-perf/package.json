@@ -23,17 +23,5 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {},
-  "nx": {
-    "targets": {
-      "measure": {
-        "command": "node --cpu-prof --cpu-prof-dir profiles node_modules/nx/bin/nx.js"
-      },
-      "merge": {
-        "dependsOn": [
-          "build"
-        ],
-        "command": "node packages/nx-perf/dist/bin.esm.js"
-      }
-    }
-  }
+  "nx": {}
 }

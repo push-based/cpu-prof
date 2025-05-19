@@ -29,6 +29,9 @@
     },
     {
       "path": "./dummy/pkg-4"
+    },
+    {
+      "path": "./packages/cpu-profiling"
     }
   ]
 }
