@@ -156,7 +156,13 @@ export async function execWithCpuProf(config: ExecWithCpuProfConfig): Promise<{ 
         profFlags.push(`--sample-prof-interval=${sampleProfInterval}`);
     }
 
-    const command = `node ${profFlags.join(' ')} "${scriptPath}"`;
+    // Handle -e flag differently than file paths
+    const isEvalScript = scriptPath.startsWith('-e');
+    const formattedScript = isEvalScript ? 
+        scriptPath :  // Keep the -e command exactly as provided
+        `"${scriptPath}"`;
+    
+    const command = `node ${profFlags.join(' ')} ${formattedScript}`;
 
     try {
         const result = await execAsync(command, (timeoutMs ? {timeout: timeoutMs} : {}));

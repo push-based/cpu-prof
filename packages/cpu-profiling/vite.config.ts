@@ -17,6 +17,12 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: './test-output/vitest/coverage',
       provider: 'v8' as const,
+      include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      exclude: [
+        'src/**/__snapshots__/**',
+        'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        'src/**/index.ts'
+      ]
     },
   },
 }));
