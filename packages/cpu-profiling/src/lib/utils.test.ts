@@ -8,7 +8,7 @@ import { join } from 'path';
 import { readdir, readFile, rm } from 'fs/promises';
 import { execSync } from 'node:child_process';
 import { statSync } from 'node:fs';
-import { CPUProfile } from './lib/cpuprofile.types';
+import { CPUProfile } from './cpuprofile.types';
 import { mkdir } from 'node:fs/promises';
 
 const PACKAGE_ROOT = join(__dirname, '..');

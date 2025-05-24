@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename } from 'node:path';
-import { parseCpuProfileName } from '../utils';
+import { parseCpuProfileName } from './utils';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { CpuProfile } from './cpuprofile.types';

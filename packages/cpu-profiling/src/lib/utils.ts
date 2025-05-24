@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { mkdir, rm } from 'fs/promises';
 import { promisify } from 'util';
-import { TraceEvent } from './lib/traceprofile.types';
+import { TraceEvent } from './traceprofile.types';
 
 const execAsync = promisify(exec);
 

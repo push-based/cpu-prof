@@ -1,24 +1,26 @@
-import { findNewestTraceFile, generateOutputFilename } from '../../utils';
 import type { ReduceTraceArgs, ProcessedArgs } from './types';
 
 /**
  * Process and validate CLI arguments for the reduce-trace command
+ * Note: Default input/output file handling is now done by yargs middleware
  */
-export function processArgs(argv: ReduceTraceArgs): ProcessedArgs {
-  // Handle input file (auto-select if not provided)
-  const inputFile = argv.inputFile;
-  const validatedInputFile = inputFile || findNewestTraceFile();
-  if (!inputFile) {
-    console.log(`📁 Auto-selected newest trace file: ${validatedInputFile}`);
+export function processArgs(
+  argv: ReduceTraceArgs,
+  logger = console
+): ProcessedArgs {
+  // Input and output files are now handled by middleware
+  const inputFile = argv.inputFile!; // Safe to assert since middleware ensures it's set
+  const outputFile = argv.output!; // Safe to assert since middleware ensures it's set
+
+  if (argv.verbose) {
+    // Verbose logging is handled elsewhere - this just indicates middleware was used
+    logger.log(`📁 Using input file: ${inputFile}`);
+    logger.log(`📁 Using output file: ${outputFile}`);
   }
 
-  // Handle output file
-  const validatedOutputFile =
-    argv.output || generateOutputFilename(validatedInputFile);
-
   return {
-    inputFile: validatedInputFile,
-    outputFile: validatedOutputFile,
+    inputFile,
+    outputFile,
     verbose: argv.verbose || false,
     filterOptions: {
       filterNetwork: argv.network ?? true,
