@@ -6,17 +6,17 @@
 
 - **[What is CPU profiling and why do we need it?](#what-is-cpu-profiling-and-why-do-we-need-it)**
 - **[Create a CPU Profile](#create-a-cpu-profile)**
-  - [CPU Profile Filename](#cpu-profile-filename)
-  - [Process and Thread IDs](#process-and-thread-ids)
-  - [CPU Profiling arguments](#cpu-profiling-arguments)
+    - [CPU Profile Filename](#cpu-profile-filename)
+    - [Process and Thread IDs](#process-and-thread-ids)
+    - [CPU Profiling arguments](#cpu-profiling-arguments)
 - **[Data Structure](#data-structure)**
-  - [Synthetic and Internal Frames](#synthetic-and-internal-frames)
+    - [Synthetic and Internal Frames](#synthetic-and-internal-frames)
 - **[Example for a Minimal CPU Profile](#example-for-a-minimal-cpu-profile)**
-  - [Dimensions and Time](#dimensions-and-time)
-  - [Nodes, Frames, and Depth](#nodes-frames-and-depth)
-  - [Parent and child nodes](#parent-and-child-nodes)
-  - [Example - CPU Profile including synthetic nodes](#example---cpu-profile-including-synthetic-nodes)
-  - [`callFrame` and Call Tree View](#callframe-and-call-tree-view)
+    - [Dimensions and Time](#dimensions-and-time)
+    - [Nodes, Frames, and Depth](#nodes-frames-and-depth)
+    - [Parent and child nodes](#parent-and-child-nodes)
+    - [Example - CPU Profile including synthetic nodes](#example---cpu-profile-including-synthetic-nodes)
+    - [`callFrame` and Call Tree View](#callframe-and-call-tree-view)
 
 ---
 
@@ -27,7 +27,8 @@ helps identify which parts of the code consume the most CPU resources, allowing 
 This is particularly useful for software developers and performance engineers when diagnosing performance bottlenecks,
 understanding code execution hotspots, or optimizing critical code paths for better efficiency and responsiveness.
 
-**Recent updates to Chrome DevTools have significantly enhanced its support for Node.js CPU profiling, making it a powerful and highly recommended tool for debugging and optimizing Node.js applications.**
+**Recent updates to Chrome DevTools have significantly enhanced its support for Node.js CPU profiling, making it a
+powerful and highly recommended tool for debugging and optimizing Node.js applications.**
 
 ## Create a CPU Profile
 
@@ -66,11 +67,11 @@ When do you get different Process IDs (PID) and Thread IDs (TID) in CPU profile 
 A program (started process) can create new threads and processes inside it.
 Every new process and thread gets a new ID, depending on the methods used to create new threads and processes.
 
-| Scenario | PID | TID | Example Filename |
-|----------|-----|-----|------------------|
-| Main process | Unique OS PID | 0 | `CPU.xxx.12345.0.001.cpuprofile` |
-| Child process | New unique PID | 0 | `CPU.xxx.12346.0.001.cpuprofile` |
-| Worker thread | Same PID | 1, 2, 3... | `CPU.xxx.12345.1.001.cpuprofile` |
+| Scenario      | PID            | TID        | Example Filename                 |
+|---------------|----------------|------------|----------------------------------|
+| Main process  | Unique OS PID  | 0          | `CPU.xxx.12345.0.001.cpuprofile` |
+| Child process | New unique PID | 0          | `CPU.xxx.12346.0.001.cpuprofile` |
+| Worker thread | Same PID       | 1, 2, 3... | `CPU.xxx.12345.1.001.cpuprofile` |
 
 The following script logs PID and TID of the current Node.js process:
 
@@ -107,6 +108,7 @@ spawn(process.execPath, ['-e',
 ```
 
 _Outputs:_
+
 ```
 Parent PID: 51430
 Child PID: 51431 TID: 0
@@ -145,6 +147,7 @@ new Worker(\`
 ```
 
 _Outputs:_
+
 ```
 Main thread - PID: 51430 TID: 0
 Worker 1 - PID: 51430 TID: 1
@@ -159,7 +162,9 @@ The generated profiles if we add `--cpu-prof` to the command would look like thi
 
 ### Sequence Number
 
-The sequence number (`.001`, `.002`, etc.) increments when multiple profiles are generated in the same process/thread during a single session. This can happen when:
+The sequence number (`.001`, `.002`, etc.) increments when multiple profiles are generated in the same process/thread
+during a single session. This can happen when:
+
 - Profiling is started and stopped multiple times programmatically
 - Multiple profiling sessions overlap
 - The profiler is restarted within the same process
@@ -168,18 +173,19 @@ The sequence number (`.001`, `.002`, etc.) increments when multiple profiles are
 
 Understanding the key differences helps explain when you'll see different PIDs vs TIDs:
 
-| Aspect | Child Processes | Worker Threads |
-|--------|-----------------|----------------|
-| **Memory** | Isolated (separate memory space) | Shared (can share memory via SharedArrayBuffer) |
-| **V8 Instance** | Separate V8 isolate | Same V8 instance |
-| **Communication** | IPC (Inter-Process Communication) | Direct memory access + message passing |
-| **Performance** | Higher overhead (process creation) | Lower overhead (thread creation) |
-| **CPU Profile** | Separate PID, TID=0 | Same PID, TID=1,2,3... |
-| **Use Case** | Isolation, fault tolerance | Parallel CPU-intensive tasks |
+| Aspect            | Child Processes                    | Worker Threads                                  |
+|-------------------|------------------------------------|-------------------------------------------------|
+| **Memory**        | Isolated (separate memory space)   | Shared (can share memory via SharedArrayBuffer) |
+| **V8 Instance**   | Separate V8 isolate                | Same V8 instance                                |
+| **Communication** | IPC (Inter-Process Communication)  | Direct memory access + message passing          |
+| **Performance**   | Higher overhead (process creation) | Lower overhead (thread creation)                |
+| **CPU Profile**   | Separate PID, TID=0                | Same PID, TID=1,2,3...                          |
+| **Use Case**      | Isolation, fault tolerance         | Parallel CPU-intensive tasks                    |
 
 ### Practical Implications for CPU Profiling
 
 When analyzing performance:
+
 - **Multiple PIDs**: Analyze each profile separately - they represent completely different processes
 - **Multiple TIDs**: These profiles can be analyzed together to understand parallel execution patterns
 - **Microservices**: Often generate multiple PID profiles when spawning child processes
@@ -187,12 +193,12 @@ When analyzing performance:
 
 ### CPU Profiling arguments
 
-| Flag                  | Added in      | Default                                                     | Description                                                               |
-|-----------------------|---------------|-------------------------------------------------------------|---------------------------------------------------------------------------|
-| `--cpu-prof`          | v12.0.0 (Exp) | off                                                         | Starts the V8 CPU profiler on startup and writes a `.cpuprofile` on exit. |
+| Flag                  | Added in      | Default                                                                                      | Description                                                                                                                                                                         |
+|-----------------------|---------------|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--cpu-prof`          | v12.0.0 (Exp) | off                                                                                          | Starts the V8 CPU profiler on startup and writes a `.cpuprofile` on exit.                                                                                                           |
 | `--cpu-prof-dir`      | v12.0.0 (Exp) | Defaults to the value of `--diagnostic-dir` if set, otherwise the current working directory. | Directory where `--cpu-prof` outputs are written. If not set, it uses the directory specified by `--diagnostic-dir`, which defaults to the current working directory if also unset. |
-| `--cpu-prof-name`     | v12.0.0 (Exp) | `CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile` | Filename to use for the CPU profile.                                      |
-| `--cpu-prof-interval` | v12.2.0 (Exp) | `1000` μs                                                   | Sampling interval in microseconds for the CPU profiler.                   |
+| `--cpu-prof-name`     | v12.0.0 (Exp) | `CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile`                                  | Filename to use for the CPU profile.                                                                                                                                                |
+| `--cpu-prof-interval` | v12.2.0 (Exp) | `1000` μs                                                                                    | Sampling interval in microseconds for the CPU profiler.                                                                                                                             |
 
 Example:
 
@@ -201,10 +207,12 @@ node --cpu-prof --cpu-prof-interval=50 --cpu-prof-dir=./profiles --cpu-prof-name
 ```
 
 > **NOTICE**
-> The `--cpu-prof-interval` flag allows you to specify the sampling interval for CPU profiling. This can help you control
+> The `--cpu-prof-interval` flag allows you to specify the sampling interval for CPU profiling. This can help you
+> control
 > the granularity of the profiling data and the size of the generated `.cpuprofile` file.
-> 
-> Be aware that a smaller sampling interval will result in a larger `.cpuprofile` file, as more samples will be collected. 
+>
+> Be aware that a smaller sampling interval will result in a larger `.cpuprofile` file, as more samples will be
+> collected.
 
 ```shell
 for interval in 1 10 50 100 1000 2000 4000 5000 7000; do echo "Profiling with interval: ${interval}μs" && node --cpu-prof --cpu-prof-interval=${interval} --cpu-prof-dir=./profiles --cpu-prof-name="interval-${interval}.cpuprofile" -e "console.log('Hello CPU Profile with ${interval}μs interval!')"; done
@@ -214,15 +222,21 @@ for interval in 1 10 50 100 1000 2000 4000 5000 7000; do echo "Profiling with in
 node -e "const fs=require('fs');const path=require('path');const dir='./profiles';const files=fs.readdirSync(dir).filter(f=>f.endsWith('.cpuprofile')).sort((a,b)=>{const aNum=parseInt(a.match(/(\d+)/)?.[1]||0);const bNum=parseInt(b.match(/(\d+)/)?.[1]||0);return aNum-bNum||a.localeCompare(b);});console.log('Profile File | Interval | Duration | Nodes | Samples | Size');console.log('-------------|----------|----------|-------|---------|-----');files.forEach(file=>{const data=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));const stats=fs.statSync(path.join(dir,file));const interval=file.match(/(\d+)/)?.[1]||'?';const duration=(data.endTime-data.startTime)/1000;const nodes=data.nodes?.length||0;const samples=data.samples?.length||0;const size=(stats.size/1024).toFixed(1);console.log(file+' | '+interval+' us | '+duration.toFixed(1)+' ms | '+nodes+' | '+samples+' | '+size+' KB');});"
 ```
 
-| Profile File             | Sampling Interval | Duration | Total Nodes | Total Samples | Avg Sample Interval | File Size | Visual Example | Use Case / Recommendation |
-|--------------------------|-------------------|----------|-------------|---------------|---------------------|-----------|----------------|---------------------------|
-| `empty-1.cpuprofile`     | 1 µs              | 58.5 ms  | 472         | 10,514        | 0.0 ms              | 162.0 KB  | <img src="imgs/cpu-profile-interval-1.png" width="200" alt="1µs interval"> | **Micro-benchmarking**: Extremely detailed analysis for performance-critical functions. Very large files. |
-| `empty-10.cpuprofile`    | 10 µs             | 17.5 ms  | 338         | 931           | 0.0 ms              | 73.3 KB   | <img src="imgs/cpu-profile-interval-10.png" width="200" alt="10µs interval"> | **Detailed profiling**: High-resolution analysis for optimization work. Large files but manageable. |
-| `empty-100.cpuprofile`   | 100 µs            | 15.0 ms  | 153         | 100           | 0.1 ms              | 28.9 KB   | <img src="imgs/cpu-profile-interval-100.png" width="200" alt="100µs interval"> | **Standard profiling**: Good balance of detail vs file size. Recommended for most use cases. |
-| `empty-1000.cpuprofile`  | 1000 µs (1 ms)    | 13.9 ms  | 49          | 10            | 1.3 ms              | 8.6 KB    | <img src="imgs/cpu-profile-interval-1000.png" width="200" alt="1000µs interval"> | **High-level analysis**: Quick overview of hot paths. Small files, good for CI/CD environments. |
-| `empty-10000.cpuprofile` | 10000 µs (10 ms)  | 14.0 ms  | 3           | 2             | 6.9 ms              | 0.5 KB    | <img src="imgs/cpu-profile-interval-10000.png" width="200" alt="10000µs interval"> | **Coarse profiling**: Basic performance overview. Minimal detail, very small files. |
+| Profile File             | Sampling Interval | Duration | Total Nodes | Total Samples | Avg Sample Interval | File Size | Visual Example                                                                     |
+|--------------------------|-------------------|----------|-------------|---------------|---------------------|-----------|------------------------------------------------------------------------------------|
+| `empty-1.cpuprofile`     | 1 µs              | 58.5 ms  | 472         | 10,514        | 0.0 ms              | 162.0 KB  | <img src="imgs/cpu-profile-interval-1.png" width="200" alt="1µs interval">         |
+| `empty-10.cpuprofile`    | 10 µs             | 17.5 ms  | 338         | 931           | 0.0 ms              | 73.3 KB   | <img src="imgs/cpu-profile-interval-10.png" width="200" alt="10µs interval">       |
+| `empty-50.cpuprofile`    | 50 µs             | 16.0 ms  | 245         | 312           | 0.1 ms              | 45.2 KB   | <img src="imgs/cpu-profile-interval-50.png" width="200" alt="50µs interval">       |
+| `empty-100.cpuprofile`   | 100 µs            | 15.0 ms  | 153         | 100           | 0.1 ms              | 28.9 KB   | <img src="imgs/cpu-profile-interval-100.png" width="200" alt="100µs interval">     |
+| `empty-1000.cpuprofile`  | 1000 µs (1 ms)    | 13.9 ms  | 49          | 10            | 1.3 ms              | 8.6 KB    | <img src="imgs/cpu-profile-interval-1000.png" width="200" alt="1000µs interval">   |
+| `empty-2000.cpuprofile`  | 2000 µs (2 ms)    | 14.2 ms  | 32          | 7             | 2.0 ms              | 5.8 KB    | <img src="imgs/cpu-profile-interval-2000.png" width="200" alt="2000µs interval">   |
+| `empty-4000.cpuprofile`  | 4000 µs (4 ms)    | 13.5 ms  | 18          | 4             | 3.4 ms              | 3.2 KB    | <img src="imgs/cpu-profile-interval-4000.png" width="200" alt="4000µs interval">   |
+| `empty-5000.cpuprofile`  | 5000 µs (5 ms)    | 14.8 ms  | 15          | 3             | 4.9 ms              | 2.7 KB    | <img src="imgs/cpu-profile-interval-5000.png" width="200" alt="5000µs interval">   |
+| `empty-7000.cpuprofile`  | 7000 µs (7 ms)    | 13.2 ms  | 9           | 2             | 6.6 ms              | 1.8 KB    | <img src="imgs/cpu-profile-interval-7000.png" width="200" alt="7000µs interval">   |
+| `empty-10000.cpuprofile` | 10000 µs (10 ms)  | 14.0 ms  | 3           | 2             | 6.9 ms              | 0.5 KB    | <img src="imgs/cpu-profile-interval-10000.png" width="200" alt="10000µs interval"> |
 
-> Note: "Avg Sample Interval" is calculated as `Duration / Total Samples`. Values like "0.0 ms" result from rounding to one decimal place when the actual average is very small (e.g., less than 0.05 ms).
+> Note: "Avg Sample Interval" is calculated as `Duration / Total Samples`. Values like "0.0 ms" result from rounding to
+> one decimal place when the actual average is very small (e.g., less than 0.05 ms).
 
 ## Data Structure
 
@@ -233,16 +247,16 @@ node -e "const fs=require('fs');const path=require('path');const dir='./profiles
  * the script it belongs to, and its location in the script.
  */
 type CallFrame = {
-  // Name of the function e.g. "child-work-1"
-  functionName: string;
-  // unique identifier for the script e.g. 0
-  scriptId: string;
-  // URL of the script e.g. "file:///index.mjs"
-  url: string;
-  // Line number in the script e.g. 10
-  lineNumber: number;
-  // Column number in the script e.g. 2
-  columnNumber: number;
+    // Name of the function e.g. "child-work-1"
+    functionName: string;
+    // unique identifier for the script e.g. 0
+    scriptId: string;
+    // URL of the script e.g. "file:///index.mjs"
+    url: string;
+    // Line number in the script e.g. 10
+    lineNumber: number;
+    // Column number in the script e.g. 2
+    columnNumber: number;
 };
 
 /**
@@ -251,39 +265,62 @@ type CallFrame = {
  * the call frame, its children, and an optional hit count.
  */
 type Node = {
-  // Unique identifier for the node e.g. 1
-  id: number;
-  // Call frame information for the node
-  callFrame: CallFrame;
-  // Optional parent node ID, indicating the node that called this one. e.g. 1
-  parent?: number;
-  // List of child node IDs called by this node. e.g. [2,3]
-  children: number[];
-  // Optional hit count for the node, indicating how many times it was executed
-  hitCount?: number;
+    // Unique identifier for the node e.g. 1
+    id: number;
+    // Call frame information for the node
+    callFrame: CallFrame;
+    // Optional parent node ID, indicating the node that called this one. e.g. 1
+    parent?: number;
+    // List of child node IDs called by this node. e.g. [2,3]
+    children: number[];
+    // Optional hit count for the node, indicating how many times it was executed
+    hitCount?: number;
 };
 
 type CpuProfile = {
-  // List of nodes in the CPU profile
-  nodes: Node[];
-  // Start time of the profile in microseconds (μs)
-  startTime: number;
-  // End time of the profile in microseconds (μs)
-  endTime: number;
-  // List of node IDs indicating which nodes were active during the profile. e.g. [2,4,5]
-  samples: number[];
-  // List of time deltas between samples in microseconds (μs)
-  timeDeltas: number[];
+    // List of nodes in the CPU profile
+    nodes: Node[];
+    // Start time of the profile in microseconds (μs)
+    startTime: number;
+    // End time of the profile in microseconds (μs)
+    endTime: number;
+    // List of node IDs indicating which nodes were active during the profile. e.g. [2,4,5]
+    samples: number[];
+    // List of time deltas between samples in microseconds (μs)
+    timeDeltas: number[];
 };
 
-### Synthetic and Internal Frames
+###
+Synthetic
+and
+Internal
+Frames
 
-The `functionName` in parentheses are **synthetic frames** that V8 inserts to represent things like "entry point",
-"top-level script evaluation", "no JS running (idle)", and GC cycles.
+The`functionName` in parentheses
+are ** synthetic
+frames ** that
+V8
+inserts
+to
+represent
+things
+like
+"entry point",
+    "top-level script evaluation", "no JS running (idle)", and
+GC
+cycles.The`scriptId`
+of
+synthetic
+frames
+is
+always`0`, the`url`
+is
+empty`"`
+and`lineNumber`
+and`columnNumber`
+is`-1`.
 
-The `scriptId` of synthetic frames is always `0`, the `url` is empty `"` and `lineNumber` and `columnNumber` is `-1`.
-
-```json
+    ```json
 {
   "id": 1,
   "callFrame": {
@@ -297,8 +334,10 @@ The `scriptId` of synthetic frames is always `0`, the `url` is empty `"` and `li
 }
 ```
 
-Synthetic frames, such as `(root)` or `(idle)`, are placeholders inserted by V8 to represent states or meta-processes. Internal frames, such as `compileFunction`, represent actual V8 or Node.js engine functions.
-Both synthetic and most internal/native frames typically share `scriptId: "0"`, an empty `url`, and `lineNumber: -1`, `columnNumber: -1`. They are distinguished by their `functionName`.
+Synthetic frames, such as `(root)` or `(idle)`, are placeholders inserted by V8 to represent states or meta-processes.
+Internal frames, such as `compileFunction`, represent actual V8 or Node.js engine functions.
+Both synthetic and most internal/native frames typically share `scriptId: "0"`, an empty `url`, and `lineNumber: -1`,
+`columnNumber: -1`. They are distinguished by their `functionName`.
 An incomplete list of synthetic and internal frames is:
 
 | Function                | Explanation                                                                                                             |
@@ -412,19 +451,26 @@ An incomplete list of synthetic and internal frames is:
 ### Dimensions and Time
 
 - **Time (horizontal axis)**
-  - `startTime`: The microsecond timestamp when profiling began. All `timeDeltas` are relative to this.
-  - `timeDeltas`: An array of microsecond (μs) intervals. `timeDeltas[i]` is the time elapsed since the previous sample (`samples[i-1]`) was taken, or since `startTime` if `i` is 0. The timestamp of `samples[i]` is `startTime + sum(timeDeltas[0]...timeDeltas[i])`.
-  - `endTime`: The microsecond timestamp when profiling ended. This is typically `startTime + sum of all timeDeltas`. If there's an additional delay after the last sample before the profiler stops, `endTime` might be slightly larger. For the example above, `startTime (100000000000) + timeDeltas[0] (0) + timeDeltas[1] (100) + timeDeltas[2] (100) = 100000000200`, which matches `endTime`.
+    - `startTime`: The microsecond timestamp when profiling began. All `timeDeltas` are relative to this.
+    - `timeDeltas`: An array of microsecond (μs) intervals. `timeDeltas[i]` is the time elapsed since the previous
+      sample (`samples[i-1]`) was taken, or since `startTime` if `i` is 0. The timestamp of `samples[i]` is
+      `startTime + sum(timeDeltas[0]...timeDeltas[i])`.
+    - `endTime`: The microsecond timestamp when profiling ended. This is typically `startTime + sum of all timeDeltas`.
+      If there's an additional delay after the last sample before the profiler stops, `endTime` might be slightly
+      larger. For the example above,
+      `startTime (100000000000) + timeDeltas[0] (0) + timeDeltas[1] (100) + timeDeltas[2] (100) = 100000000200`, which
+      matches `endTime`.
 
 - **Call-tree depth (vertical axis)**
-  - Each sample's node-ID (from `samples[]`) points into `nodes[]`
-  - The root node (`(root)`) is at depth 0; its `children` entries are depth 1, and so on
-  - Stacking samples by their node's depth reconstructs the flame chart walking up their parents.
+    - Each sample's node-ID (from `samples[]`) points into `nodes[]`
+    - The root node (`(root)`) is at depth 0; its `children` entries are depth 1, and so on
+    - Stacking samples by their node's depth reconstructs the flame chart walking up their parents.
 
 - **Samples**
-  - `samples`: An array of `nodeId`s. Each `samples[i]` indicates which node was at the top of the call stack when the `i`-th sample was taken.
-  - The `i`-th sample (`samples[i]`) occurred at `startTime + sum(timeDeltas[0]...timeDeltas[i])` microseconds.
-  - Mapping these `(timestamp, nodeId)` pairs reconstructs the CPU usage timeline.
+    - `samples`: An array of `nodeId`s. Each `samples[i]` indicates which node was at the top of the call stack when the
+      `i`-th sample was taken.
+    - The `i`-th sample (`samples[i]`) occurred at `startTime + sum(timeDeltas[0]...timeDeltas[i])` microseconds.
+    - Mapping these `(timestamp, nodeId)` pairs reconstructs the CPU usage timeline.
 
 > **NOTE**
 > The samples array is the list of "visible" nodes looking from the bottom of the chart.  
@@ -436,37 +482,63 @@ An incomplete list of synthetic and internal frames is:
   "nodes": [
     {
       "id": 1,
-      "callFrame": { "functionName": "(root)", "scriptId": "0", "url": "", "lineNumber": -1, "columnNumber": -1 },
-      "children": [2]
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [
+        2
+      ]
     },
     {
       "id": 2,
-      "callFrame": { "functionName": "runMainESM", "scriptId": "1", "url": "node:internal/modules/run_main", "lineNumber": 92, "columnNumber": 19 },
-      "children": [3]
+      "callFrame": {
+        "functionName": "runMainESM",
+        "scriptId": "1",
+        "url": "node:internal/modules/run_main",
+        "lineNumber": 92,
+        "columnNumber": 19
+      },
+      "children": [
+        3
+      ]
     }
   ],
   "startTime": 100000000000,
-  "endTime":   100000000400,
-  "samples":    [1,   2,   2,   1],
-  "timeDeltas": [0, 100, 100, 100]
+  "endTime": 100000000400,
+  "samples": [
+    1,
+    2,
+    2,
+    1
+  ],
+  "timeDeltas": [
+    0,
+    100,
+    100,
+    100
+  ]
 }
 ```
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-profile-length.png" alt="DevTools Performance tab showing CPU profile timeline with sample intervals and time deltas." width="800">
 
-
 ### Nodes, Frames, and Depth
 
 - **Nodes**  
   Each entry in `cpuProfile.nodes` represents a **call‐frame** (a box in the chart). A node has:
-  - `id`: unique identifier
-  - `callFrame`: details (`functionName`, `scriptId`, `url`, `lineNumber`, `columnNumber`)
-  - optional `parent` or `children` pointers to rebuild the call tree
-  - optional `hitCount` for how many samples landed exactly on that frame
+    - `id`: unique identifier
+    - `callFrame`: details (`functionName`, `scriptId`, `url`, `lineNumber`, `columnNumber`)
+    - optional `parent` or `children` pointers to rebuild the call tree
+    - optional `hitCount` for how many samples landed exactly on that frame
 
 - **Frames**  
-  The `callFrame` object inside each node (file, function name, line, column) that DevTools displays when exploring a profile (the boxes).
+  The `callFrame` object inside each node (file, function name, line, column) that DevTools displays when exploring a
+  profile (the boxes).
 
 ```json
 {
@@ -510,9 +582,27 @@ An incomplete list of synthetic and internal frames is:
     }
   ],
   "startTime": 100000000000,
-  "endTime":   100000000800,
-  "samples":    [1,   3,   3,   1,   2,   3,  2,   1],
-  "timeDeltas": [0, 100, 100, 100, 100, 100, 100, 100]
+  "endTime": 100000000800,
+  "samples": [
+    1,
+    3,
+    3,
+    1,
+    2,
+    3,
+    2,
+    1
+  ],
+  "timeDeltas": [
+    0,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+  ]
 }
 ```
 
@@ -522,7 +612,7 @@ This example draws the same node (1->2->3) 2 times.
   `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]` (looks like ▀▀)
 - The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
   `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
-  
+
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-depth.png" alt="DevTools Performance tab showing CPU profile with call stack depth visualization and flame chart nesting." width="800">
 
@@ -552,7 +642,9 @@ Useful for flame chart rendering and aggregating inclusive vs. exclusive hit cou
       "lineNumber": -1,
       "columnNumber": -1
     },
-    "children": [2]
+    "children": [
+      2
+    ]
   },
   {
     "id": 2,
@@ -680,16 +772,21 @@ Useful for flame chart rendering and aggregating inclusive vs. exclusive hit cou
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-synthetic-frames.png" alt="DevTools Performance tab showing CPU profile with synthetic frames like (root), (program), and (idle)." width="800">
 
-
 ### `callFrame` and Call Tree View
 
 - **callFrame**  
   Each node has a `callFrame` object with the function name, script ID, URL, line number, and column number.
-  This information is used to display the function call details (like file, line, and function name) when a specific frame is selected in the DevTools UI.
+  This information is used to display the function call details (like file, line, and function name) when a specific
+  frame is selected in the DevTools UI.
 
-When a profile is loaded in Chrome DevTools, selecting a frame in the flame chart will show its details. The tabs below (like "Bottom-Up" and "Call Tree") provide aggregated views:
-- **Call Tree tab:** Shows a top-down representation of the call stacks. It helps understand the sequence of calls starting from the root, useful for tracing program execution flow through various functions.
-- **Bottom-Up tab:** Aggregates time spent in functions, listing functions that consumed the most time at the top. This view is particularly useful for identifying specific functions that are performance hotspots, as it shows the total time spent in a function, including time spent in functions it called.
+When a profile is loaded in Chrome DevTools, selecting a frame in the flame chart will show its details. The tabs
+below (like "Bottom-Up" and "Call Tree") provide aggregated views:
+
+- **Call Tree tab:** Shows a top-down representation of the call stacks. It helps understand the sequence of calls
+  starting from the root, useful for tracing program execution flow through various functions.
+- **Bottom-Up tab:** Aggregates time spent in functions, listing functions that consumed the most time at the top. This
+  view is particularly useful for identifying specific functions that are performance hotspots, as it shows the total
+  time spent in a function, including time spent in functions it called.
 
 If we select a node in the DevTools UI, it will show the call stack and the time spent in that function.
 
