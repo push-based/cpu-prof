@@ -14,8 +14,7 @@ module.exports = withNx(
         format: ['esm', 'cjs'],
         assets: [
             { input: './packages/cpu-profiling', glob: './package.json', output: '.' },
-            { input: './packages/cpu-profiling', glob: './README.md', output: '.' },
-            { input: './packages/cpu-profiling', glob: './docs/*', output: './docs' }
+            { input: './packages/cpu-profiling', glob: './README.md', output: '.' }
         ],
     },
     {
