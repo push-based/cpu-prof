@@ -211,6 +211,11 @@ export function createThreadPoolEventFilter(traceEvents: TraceEvent[]) {
   const threadPoolThreads = extractThreadPoolThreads(traceEvents);
 
   return function isThreadPoolEvent(event: TraceEvent): boolean {
+    // Preserve metadata events - they provide essential context
+    if (event.ph === 'M') {
+      return false;
+    }
+
     return isEventFromThreadPoolThread(event, threadPoolThreads);
   };
 }

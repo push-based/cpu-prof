@@ -1,13 +1,13 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 
 In this document you can find information about the CLI test suite and guidelines for writing tests for the CLI.
 
 # Test suites
-On this project, we distinguish three types of functional tests by scope - unit tests, integration tests and E2E tests. All tests are written using [Vitest](https://vitest.dev/).
+On this project, we distinguish three types of functional tests by scope - unit tests, integration tests and E2E tests. All tests are written using [Vitest](mdc:https:/vitest.dev)
 
 ## Unit tests
 - Their scope refers to an isolated unit of code.
@@ -34,14 +34,14 @@ The test tests can be configured with:
 - `nx <unit-test|integration-test> <package> --coverage.enabled` - coverage report
 
 # Testing utilities
-In order to keep the maintenance cost lower, there is a folder dedicated to testing utilities called `testing`. Any fixtures, helper functions, constants or mocks usable by multiple tests should be added to the [test-utils](https://github.com/code-pushup/cli/tree/main/testing/test-utils) subfolder.
+In order to keep the maintenance cost lower, there is a folder dedicated to testing utilities called `testing`. Any fixtures, helper functions, constants or mocks usable by multiple tests should be added to the [test-utils](mdc:https:/github.com/code-pushup/cli/tree/main/testing/test-utils) subfolder.
 
 The folder structure should be `fixtures` for fixed data or examples and `utils` for utility functions.
 
 The exception to this may be a utility which is applicable only to the current package. In this case, each package shall use the `mocks` folder to mirror the hierarchy of the `testing-utils` - fixtures go into `fixtures` subfolder and functions into `utils` subfolder. TypeScript is set up to include this folder only for its test configuration.
 
 ## Mocking
-Each test suite has a predefined set of setup files which mock appropriate parts of the logic. These mock setups may be found in the [setup](https://github.com/code-pushup/cli/tree/main/testing/test-setup) folder of the `testing-utils` library.
+Each test suite has a predefined set of setup files which mock appropriate parts of the logic. These mock setups may be found in the [setup](mdc:https:/github.com/code-pushup/cli/tree/main/testing/test-setup) folder of the `testing-utils` library.
 
 One may apply them inside `vitest.(unit|integration|e2e).config.ts` in the following way:
 
@@ -59,7 +59,7 @@ export default defineConfig({
 ```
 
 > [!TIP]
-> There is an additional file [reset.mocks.ts](https://github.com/code-pushup/cli/blob/main/testing-utils/src/lib/setup/reset.mocks.ts) which may be included in the `setupFiles` to automatically reset your mocks.
+> There is an additional file [reset.mocks.ts](mdc:https:/github.com/code-pushup/cli/blob/main/testing-utils/src/lib/setup/reset.mocks.ts) which may be included in the `setupFiles` to automatically reset your mocks.
 
 The main setup is currently divided between unit and integration tests in the following way:
 - Unit tests always have the console, file system and current working directory (points to the in-memory file system) mocked.
@@ -73,11 +73,11 @@ The `tmp` folder flow should be as follows:
 - After the test suite is run, this subfolder should be removed in `afterAll`.
 
 > [!IMPORTANT]
-> A test suite should not expect the `tmp` folder to be created. Therefore, the subfolder should be created via [mkdir](https://nodejs.org/api/fs.html#fspromisesmkdirpath-options) with `{ recursive: true }`.
+> A test suite should not expect the `tmp` folder to be created. Therefore, the subfolder should be created via [mkdir](mdc:https:/nodejs.org/api/fs.html#fspromisesmkdirpath-options) with `{ recursive: true }`.
 > Likewise, a test suite should not remove the `tmp` folder itself, only the subfolder needed for the given test suite.
 
 > [!TIP]
-> `setupTestFolder` and `teardownTestFolder` utility functions from [test-folder-setup](https://github.com/code-pushup/cli/blob/main/testing/test-setup/src/lib/test-folder.setup.ts) may be used.
+> `setupTestFolder` and `teardownTestFolder` utility functions from [test-folder-setup](mdc:https:/github.com/code-pushup/cli/blob/main/testing/test-setup/src/lib/test-folder.setup.ts) may be used.
 
 # Test quality
 
@@ -228,6 +228,14 @@ it('should return success when payment is processed', () => {
 > Keep tests laser-focused. Test *what* the system does, not *how* it does it.
 
 ---
+
+#### Test data 
+
+TODO: inline data, minimal data, no setup var data.
+
+#### check data structures
+
+TODO strict equal et  maybe already here
 
 #### ✅ Choosing Between `it.each` and Separate `it` Blocks
 
@@ -476,8 +484,8 @@ By writing tests this way, you ensure they're easy to understand, maintain, and 
 
 ## ESLint rules
 
-[![CI](https://github.com/code-pushup/cli/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/code-pushup/cli/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI](mdc:https:/github.com/code-pushup/cli/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/code-pushup/cli/actions/workflows/ci.yml?query=branch%3Amain)
 
-Vitest is a powerful tool. Its methods should be fully utilised to serve the tests. In order to ensure the quality of our test code and promote Vitest's good practices, we have a set of ESLint rules in place for our test files. We use our own set of ESLint rules which can be found and reused from [@code-pushup/eslint-config](https://github.com/code-pushup/eslint-config). The test rules can be found in [@code-pushup/eslint-config/vitest](https://github.com/code-pushup/eslint-config/blob/main/docs/vitest.md).
+Vitest is a powerful tool. Its methods should be fully utilised to serve the tests. In order to ensure the quality of our test code and promote Vitest's good practices, we have a set of ESLint rules in place for our test files. We use our own set of ESLint rules which can be found and reused from [@code-pushup/eslint-config](mdc:https:/github.com/code-pushup/eslint-config). The test rules can be found in [@code-pushup/eslint-config/vitest](mdc:https:/github.com/code-pushup/eslint-config/blob/main/docs/vitest.md).
 
 Run ESLint on a specific package via `npx nx run <package>:lint`.
