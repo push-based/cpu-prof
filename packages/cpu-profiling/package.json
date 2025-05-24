@@ -15,7 +15,7 @@
     }
   },
   "bin": {
-    "@push-based/cpu-profiling": "./dist/bin.esm.js"
+    "@push-based/cpu-profiling": "./dist/profiling.esm.js"
   },
   "scripts": {
 
@@ -26,13 +26,32 @@
   ],
   "dependencies": {},
   "nx": {
+    "name": "cpu-profiling",
     "targets": {
       "measure": {
         "command": "node --cpu-prof --cpu-prof-dir profiles"
       },
       "merge": {
         "dependsOn": ["build"],
-        "command": "node packages/cpu-profiling/dist/bin.esm.js"
+        "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge --cpu-profiles"
+      },
+      "cpu-prof-cli": {
+        "dependsOn": ["build"],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-profiling/dist/profiling.esm.js --help"
+        },
+        "configurations": {
+          "help": {
+            "command": "node packages/cpu-profiling/dist/profiling.esm.js --help"
+          },
+          "reduce": {
+            "command": "node packages/cpu-profiling/dist/profiling.esm.js trace-reduce"
+          },
+          "cpu-merg": {
+            "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
+          }
+        }
       }
     }
   }

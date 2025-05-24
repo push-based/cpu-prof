@@ -33,8 +33,7 @@ directory.
 └─────────────────────────────────────── Fixed prefix = "CPU"
 ```
 
-The date and time are from when the profiling was started, not the moment it was written to disk, which is after the
-profiling finished.
+The date and time are from when wall-clock write time (when the profile was flushed).
 
 ### Process and Thread IDs
 
@@ -399,10 +398,10 @@ type CpuProfile = {
 This example draws the same node (1->2->3) 2 times.
 
 - The first time it draws them as a "tower", where each frame is the same width (takes the same time).  
-  `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]`
+  `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]` (looks like ▀▀)
 - The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
-  `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]`
-
+  `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
+  
 **DevTools Performance Tab:**
 ![minimal-cpu-profile-depth.png](imgs/_.png)
 
@@ -469,6 +468,8 @@ The `scriptId` of syntectic frames is always `0`, the `url` is empty `"` and `li
   "children": []
 }
 ```
+
+A incomplete list of synthetic frames is:
 
 | Function                | Explanation                                                                                                             |
 |-------------------------|-------------------------------------------------------------------------------------------------------------------------|
@@ -599,6 +600,17 @@ The `scriptId` of syntectic frames is always `0`, the `url` is empty `"` and `li
 
 **DevTools Performance Tab:**
 ![minimal-cpu-profile-synthetic-frames.png](imgs/minimal-cpu-profile-synthetic-frames.png)
+
+
+### `callFrame`, Event Logs and call-tree view
+
+- **callFrame**  
+  Each node has a `callFrame` object with the function name, script ID, URL, line number, and column number.
+  This information is used to display the function call in the DevTools UI.
+
+If we select a node in the DevTools UI, it will show the call stack and the time spent in that function.
+
+![minimal-cpu-profile-call-frame-information.png](imgs/minimal-cpu-profile-call-frame-information.png)
 
 ---
 

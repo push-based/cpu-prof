@@ -6,8 +6,7 @@ module.exports = withNx(
     {
         main: './src/index.ts',
         additionalEntryPoints: [
-            './src/bin.ts',
-            './src/postinstall.ts',
+            './src/bin/profiling.ts',
         ],
         outputPath: './dist',
         tsConfig: './tsconfig.lib.json',

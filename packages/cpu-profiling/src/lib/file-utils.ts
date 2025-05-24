@@ -1,0 +1,31 @@
+import fs from 'fs';
+
+/**
+ * File information interface
+ */
+export interface FileInfo {
+  name: string;
+  path: string;
+  mtime: Date;
+}
+
+/**
+ * Check if a file exists
+ */
+export function fileExists(filePath: string): boolean {
+  return fs.existsSync(filePath);
+}
+
+/**
+ * Check if a file has a .json extension
+ */
+export function isJsonFile(filePath: string): boolean {
+  return filePath.endsWith('.json');
+}
+
+/**
+ * Check if a directory exists
+ */
+export function directoryExists(dirPath: string): boolean {
+  return fs.existsSync(dirPath);
+}
