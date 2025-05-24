@@ -222,18 +222,19 @@ for interval in 1 10 50 100 1000 2000 4000 5000 7000; do echo "Profiling with in
 node -e "const fs=require('fs');const path=require('path');const dir='./profiles';const files=fs.readdirSync(dir).filter(f=>f.endsWith('.cpuprofile')).sort((a,b)=>{const aNum=parseInt(a.match(/(\d+)/)?.[1]||0);const bNum=parseInt(b.match(/(\d+)/)?.[1]||0);return aNum-bNum||a.localeCompare(b);});console.log('Profile File | Interval | Duration | Nodes | Samples | Size');console.log('-------------|----------|----------|-------|---------|-----');files.forEach(file=>{const data=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));const stats=fs.statSync(path.join(dir,file));const interval=file.match(/(\d+)/)?.[1]||'?';const duration=(data.endTime-data.startTime)/1000;const nodes=data.nodes?.length||0;const samples=data.samples?.length||0;const size=(stats.size/1024).toFixed(1);console.log(file+' | '+interval+' us | '+duration.toFixed(1)+' ms | '+nodes+' | '+samples+' | '+size+' KB');});"
 ```
 
-| Profile File             | Sampling Interval | Duration | Total Nodes | Total Samples | Avg Sample Interval | File Size | Visual Example                                                                     |
-|--------------------------|-------------------|----------|-------------|---------------|---------------------|-----------|------------------------------------------------------------------------------------|
-| `empty-1.cpuprofile`     | 1 µs              | 58.5 ms  | 472         | 10,514        | 0.0 ms              | 162.0 KB  | <img src="imgs/cpu-profile-interval-1.png" width="200" alt="1µs interval">         |
-| `empty-10.cpuprofile`    | 10 µs             | 17.5 ms  | 338         | 931           | 0.0 ms              | 73.3 KB   | <img src="imgs/cpu-profile-interval-10.png" width="200" alt="10µs interval">       |
-| `empty-50.cpuprofile`    | 50 µs             | 16.0 ms  | 245         | 312           | 0.1 ms              | 45.2 KB   | <img src="imgs/cpu-profile-interval-50.png" width="200" alt="50µs interval">       |
-| `empty-100.cpuprofile`   | 100 µs            | 15.0 ms  | 153         | 100           | 0.1 ms              | 28.9 KB   | <img src="imgs/cpu-profile-interval-100.png" width="200" alt="100µs interval">     |
-| `empty-1000.cpuprofile`  | 1000 µs (1 ms)    | 13.9 ms  | 49          | 10            | 1.3 ms              | 8.6 KB    | <img src="imgs/cpu-profile-interval-1000.png" width="200" alt="1000µs interval">   |
-| `empty-2000.cpuprofile`  | 2000 µs (2 ms)    | 14.2 ms  | 32          | 7             | 2.0 ms              | 5.8 KB    | <img src="imgs/cpu-profile-interval-2000.png" width="200" alt="2000µs interval">   |
-| `empty-4000.cpuprofile`  | 4000 µs (4 ms)    | 13.5 ms  | 18          | 4             | 3.4 ms              | 3.2 KB    | <img src="imgs/cpu-profile-interval-4000.png" width="200" alt="4000µs interval">   |
-| `empty-5000.cpuprofile`  | 5000 µs (5 ms)    | 14.8 ms  | 15          | 3             | 4.9 ms              | 2.7 KB    | <img src="imgs/cpu-profile-interval-5000.png" width="200" alt="5000µs interval">   |
-| `empty-7000.cpuprofile`  | 7000 µs (7 ms)    | 13.2 ms  | 9           | 2             | 6.6 ms              | 1.8 KB    | <img src="imgs/cpu-profile-interval-7000.png" width="200" alt="7000µs interval">   |
-| `empty-10000.cpuprofile` | 10000 µs (10 ms)  | 14.0 ms  | 3           | 2             | 6.9 ms              | 0.5 KB    | <img src="imgs/cpu-profile-interval-10000.png" width="200" alt="10000µs interval"> |
+| Profile File             | Sampling Interval | Duration | Total Nodes | Total Samples | Avg Sample Interval | File Size | Visual Example |
+|--------------------------|-------------------|----------|-------------|---------------|---------------------|-----------|----------------|
+| `empty-1.cpuprofile`     | 1 µs              | 58.5 ms  | 472         | 10,514        | 0.0 ms              | 162.0 KB  | ![1µs interval](imgs/cpu-profile-interval-1.png) |
+| `empty-10.cpuprofile`    | 10 µs             | 17.5 ms  | 338         | 931           | 0.0 ms              | 73.3 KB   | ![10µs interval](imgs/cpu-profile-interval-10.png) |
+| `empty-50.cpuprofile`    | 50 µs             | 16.0 ms  | 245         | 312           | 0.1 ms              | 45.2 KB   | ![50µs interval](imgs/cpu-profile-interval-50.png) |
+| `empty-100.cpuprofile`   | 100 µs            | 15.0 ms  | 153         | 100           | 0.1 ms              | 28.9 KB   | ![100µs interval](imgs/cpu-profile-interval-100.png) |
+| `empty-1000.cpuprofile`  | 1000 µs (1 ms)    | 13.9 ms  | 49          | 10            | 1.3 ms              | 8.6 KB    | ![1000µs interval](imgs/cpu-profile-interval-1000.png) |
+| `empty-2000.cpuprofile`  | 2000 µs (2 ms)    | 14.2 ms  | 32          | 7             | 2.0 ms              | 5.8 KB    | ![2000µs interval](imgs/cpu-profile-interval-2000.png) |
+| `empty-4000.cpuprofile`  | 4000 µs (4 ms)    | 13.5 ms  | 18          | 4             | 3.4 ms              | 3.2 KB    | ![4000µs interval](imgs/cpu-profile-interval-4000.png) |
+| `empty-5000.cpuprofile`  | 5000 µs (5 ms)    | 14.8 ms  | 15          | 3             | 4.9 ms              | 2.7 KB    | ![5000µs interval](imgs/cpu-profile-interval-5000.png) |
+| `empty-7000.cpuprofile`  | 7000 µs (7 ms)    | 13.2 ms  | 9           | 2             | 6.6 ms              | 1.8 KB    | ![7000µs interval](imgs/cpu-profile-interval-7000.png) |
+| `empty-10000.cpuprofile` | 10000 µs (10 ms)  | 14.0 ms  | 3           | 2             | 6.9 ms              | 0.5 KB    | ![10000µs interval](imgs/cpu-profile-interval-10000.png) |
+
 
 > Note: "Avg Sample Interval" is calculated as `Duration / Total Samples`. Values like "0.0 ms" result from rounding to
 > one decimal place when the actual average is very small (e.g., less than 0.05 ms).
