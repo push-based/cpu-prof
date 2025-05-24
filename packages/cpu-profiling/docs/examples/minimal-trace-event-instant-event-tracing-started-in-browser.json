@@ -1,0 +1,53 @@
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "i",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frames": [
+            {
+              "processId": 1,
+              "url": "file://has-to-be-a-valid-URL-pattern"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "args": {},
+      "cat": "devtools.timeline",
+      "dur": 10,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 1,
+      "ts": 10
+    },
+    {
+      "args": {},
+      "cat": "devtools.timeline",
+      "dur": 10,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 1
+    },
+    {
+      "args": {},
+      "cat": "devtools.timeline",
+      "dur": 10,
+      "name": "(program)",
+      "ph": "X",
+      "pid": 2,
+      "tid": 2,
+      "ts": 1
+    }
+  ]
+}

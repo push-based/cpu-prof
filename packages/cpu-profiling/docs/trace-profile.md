@@ -53,6 +53,64 @@ traceEvents: TraceEvent[];               // All trace event entries
 
 ---
 
+## PID and TID
+
+Every trace event has a `pid` and `tid` field. The DevTools performance panel will group events by those 2 IDs and nest them accordingly.
+
+**Profile content:**
+
+```json
+{
+  "traceEvents": [
+    {
+      "dur": 10,
+      "name": "function-1-1",
+      "ph": "X",
+      "pid": 1,
+      "tid": 1,
+      "ts": 10
+    },
+    {
+      "dur": 10,
+      "name": "function-1-2",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 1
+    },
+    {
+      "dur": 5,
+      "name": "child-1-2",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 5
+    },
+    {
+      "dur": 10,
+      "name": "function-2-1",
+      "ph": "X",
+      "pid": 2,
+      "tid": 1,
+      "ts": 5
+    },
+    {
+      "dur": 5,
+      "name": "function-2-2",
+      "ph": "X",
+      "pid": 2,
+      "tid": 2,
+      "ts": 7
+    }
+  ]
+}
+```
+
+**DevTools Performance Tab:**
+
+![minimal-event-trace-profile-pid-tid-grouping.png](imgs/minimal-event-trace-profile-pid-tid-grouping.png)
+
+
 ## Base Event Interface and Common Fields
 
 All trace events share some common fields like `pid`, `tid`, `ts`, etc. We define a base interface `TraceEventBase` for
@@ -80,9 +138,8 @@ interface TraceEventBase {
 
 @TODO move notes
 
-Notes:
+**Notes:**
 
-- `dur`/`tdur` are only valid for Complete events (`ph = 'X'`) to specify elapsed time.
 - The `sf`/`stack` fields optionally attach a stack trace to an event by referencing entries in the `stackFrames`
   dictionary.
 - The `cname` field can assign a predefined color name to the event in the viewer.
@@ -125,8 +182,12 @@ We define a union of all allowed phase codes (excluding legacy/deprecated):
 
 ### Duration Events
 
-```
 
+Duration events are by default visible in the panel. They maintain start end end turation information. 
+
+We skip beginning and end events as there is more research to do on my side.
+
+```
 /** Complete Event (ph='X') – combined begin/end in one event */
 export interface CompleteEvent extends TraceEventBase {
 ph: 'X';
@@ -134,8 +195,9 @@ name: string;
 dur: number; // Duration of the event (microseconds)
 tdur?: number; // Thread-duration (optional)
 }
-
 ```
+
+The properties `dur`/`tdur` are only valid for Complete events (`ph = 'X'`) to specify elapsed time. Events (of the same `pid` and `tid`) are automatically nested based on `ts` and `dur`.
 
 **Profile content:**
 
@@ -266,6 +328,201 @@ trace.
 
 Instant events default to thread scope if `s` is omitted.
 
+> **Note**
+> Instant events are used to mark the beginning and end of a trace.
+> This is important to know when you are looking at the trace in DevTools.
+> Specific trace events will not be visible in DevTools if it does not have an instant event at the beginning and end.
+
+In the followingI will list all relevant instant events that i discovered so far:
+
+- `CpuProfiler::StartProfiling`
+- `CpuProfiler::StopProfiling`
+- `TracingStartedInBrowser`
+- `TracingStartedInRenderer`
+- `TracingStartedInProcess`
+- `TracingStarted`
+
+#### CpuProfiler::StartProfiling and CpuProfiler::StopProfiling
+
+The example below focuses on the `CpuProfiler::StartProfiling` and `CpuProfiler::StopProfiling` events. The proile chunk event render, but are incomplete. 
+Profile and ProfileChunk events are not visible in DevTools if there is no `CpuProfiler::StartProfiling` event before the start of the CPU profile. The `CpuProfiler::StopProfiling` event is optional.
+
+Read more about Profile and ProfileChunk events in the [Phases - Sample Events](#sample-events) section documentation.
+
+**Profile content:**
+
+```json
+{
+    "traceEvents": [
+      {
+        "cat": "disabled-by-default-v8",
+        "name": "CpuProfiler::StartProfiling",
+        "dur": 0,
+        "ph": "I",
+        "pid": 1,
+        "tid": 1,
+        "ts": 1,
+        "args": {
+          "data": {
+            "startTime": 1
+          }
+        }
+      },
+      {
+        "cat": "disabled-by-default-v8.cpu_profiler",
+        "id": "0x1",
+        "name": "Profile",
+        "ph": "P",
+        "pid": 1,
+        "tid": 1,
+        "ts": 1,
+        "args": {
+          "data": {
+            "startTime": 1
+          }
+        }
+      },
+      {
+        "cat": "disabled-by-default-v8.cpu_profiler",
+        "name": "ProfileChunk",
+        "id": "0x1",
+        "ph": "P",
+        "pid": 1,
+        "tid": 1,
+        "ts": 0,
+        "args": {
+          "data": {
+            "cpuProfile": {
+              "nodes": [
+                {
+                  "id": 1,
+                  "callFrame": {},
+                  "children": [2]
+                },
+                {
+                  "id": 2,
+                  "callFrame": {}
+                }
+             ],
+              "samples": [2]
+            },
+            "timeDeltas": [10]
+          }
+        }
+      },
+      {
+        "cat": "disabled-by-default-v8",
+        "name": "CpuProfiler::StopProfiling",
+        "dur": 0,
+        "ph": "I",
+        "pid": 1,
+        "tid": 1,
+        "ts": 20,
+        "args": {
+          "data": {
+            "endTime": 20
+          }
+        }
+      }
+    ]
+}
+```
+
+**DevTools Performance Tab:**
+
+![minimal-event-trace-profile-cpu-profiler-start-profiling.png](imgs/minimal-event-trace-profile-cpu-profiler-start-profiling.png)
+
+#### TracingStartedInBrowser
+
+The example below focuses on the `TracingStartedInBrowser` event.
+
+The content of the profile contains:
+- `TracingStartedInBrowser` - The event that starts the tracing.
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+  - `pid`:1, `tid`: 1, `ts`: 10, `dur`: 10
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+  - `pid`:1, `tid`: 2, `ts`: 1, `dur`: 10
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+  - `pid`:2, `tid`: 2, `ts`: 1, `dur`: 10
+
+Without the `TracingStartedInBrowser` event, the DevTools will display:
+- Process 1
+  - Thread 1 `-X`
+  - Thread 2 `X-`
+- Process 2
+  - Thread 1 `X-`
+
+Adding the `TracingStartedInBrowser` event will display:
+- Process 1
+  - Thread 1 `-X`
+  - Thread 2 `X-`
+
+Also the events have now the highlighting we know and love form recorded traces in the browser.
+
+**Profile content:**
+
+```json
+{
+  "traceEvents": [
+    {
+      "cat": "devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "i",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frames": [
+            {
+              "processId": 1,
+              "url": "file://has-to-be-a-valid-URL-pattern"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 10,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 1,
+      "ts": 10
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 10,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 1
+    },
+    {
+      "args": {},
+      "cat": "disabled-by-default-devtools.timeline",
+      "dur": 10,
+      "name": "(program)",
+      "ph": "X",
+      "pid": 2,
+      "tid": 2,
+      "ts": 1
+    }
+  ]
+}
+```
+
+**DevTools Performance Tab:**
+
+| No tracing started in browser | Tracing started in bowser |
+|--------------------------------|---------------------------|
+| ![minimal-event-trace-profile-no-tracing-started-in-browser-highlighting.png](imgs/minimal-event-trace-profile-no-tracing-started-in-browser-highlighting.png) | ![minimal-event-trace-profile-tracing-started-in-browser.png](imgs/minimal-event-trace-profile-tracing-started-in-browser.png) |
+
 ### Counter Events
 
 ```
@@ -393,6 +650,8 @@ id2?: EventID2;
 
 ### Sample Events
 
+If you ever wondered what is the best way to get a CPU profile into DevTools, this is your place. The Profile and ProfileChunk events are here to visualize CPU profile chunks into DevTools process threads.
+
 ```
 /** Sample Event (ph='P') – a sampling profiler event (e.g. CPU sample) */
 export interface SampleEvent extends TraceEventBase {
@@ -418,6 +677,351 @@ data: { cpuProfile: any, timeDeltas?: number[], [key: string]: any }
 };
 }
 ```
+
+As CpuProfiles require a couple of additional events to be present in the trace.
+
+In the example contains:
+- `CpuProfiler::StartProfiling` - Start the CPU profiler.
+- `Profile` - Register the profile chunk stream.
+- `ProfileChunk` - Add a profile chunk to the stream.
+- `CpuProfiler::StopProfiling` - Stop the CPU profiler.
+
+Here we only focus on ProfileChunk events. To read about the other events, please refer to the [CpuProfiler::StartProfiling and CpuProfiler::StopProfiling](#cpuprofilerstartprofiling-and-cpuprofilerstopprofiling) section.
+
+**Profile content:**
+
+```json
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StartProfiling",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "runMainESM",
+                  "scriptId": "1",
+                  "url": "node:internal/modules/run_main",
+                  "lineNumber": 92,
+                  "columnNumber": 19
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "main-work",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                }
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              3,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StopProfiling",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 400,
+      "args": {
+        "data": {
+          "endTime": 400
+        }
+      }
+    }
+  ]
+}
+```
+
+**DevTools Performance Tab:**
+
+![minimal-trace-event-instant-event-simple-profile-chunks.png](imgs/minimal-trace-event-instant-event-simple-profile-chunks.png)
+
+
+#### Streaming Profile Chunks
+
+As the DevTools always need to be able to process live streamed data, also ProfileChunk events are streamed.
+
+The example below shows how a CPU profile can be scattered across multiple ProfileChunk events.
+
+In the example contains:
+- `CpuProfiler::StartProfiling` - Start the CPU profiler.
+- `Profile` - Register the CPU profile to a thread.
+- `ProfileChunk` - Adds only the nodes to the profile thread.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas that have a complete end  to the profile thread.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the end of the next profile.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the start of the last profile.
+- `CpuProfiler::StopProfiling` - Stop the CPU profiler.
+
+
+**Profile content:**
+
+```json
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StartProfiling",
+      "ph": "I",
+      "dur": 0,
+      "pid": 1,
+      "tid": 1,
+      "ts": 1
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 2,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 3,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "runMainESM",
+                  "scriptId": "1",
+                  "url": "node:internal/modules/run_main",
+                  "lineNumber": 92,
+                  "columnNumber": 19
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "main-work",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 4,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              1,
+              2,
+              3,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              1,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            50
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              3,
+              2
+            ]
+          },
+          "timeDeltas": [
+            50,
+            50
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              2,
+              2
+            ]
+          },
+          "timeDeltas": [
+            50,
+            50
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StopProfiling",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1400,
+      "args": {
+        "data": {
+          "endTime": 1400
+        }
+      }
+    }
+  ]
+}
+```
+
+**DevTools Performance Tab:**
+
+![minimal-trace-event-instant-event-complex-profile-chunks.png](imgs/minimal-trace-event-instant-event-complex-profile-chunks.png)
+
+In the image we see that the bottom up chart is available and correctly calculated across chunks.
 
 ### Object Events
 
@@ -536,9 +1140,30 @@ args: { name: string };
 **DevTools Performance Tab:**
 ![minimal-event-trace-profile-process-name-thread-name.png](imgs/minimal-event-trace-profile-process-name-thread-name.png)
 
----
 
-## Lanes
+#### Highliting Lanes with ThreadName metadata event
+
+**Profile content:**
+
+```json
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 1,
+      "tid": 1,
+      "ts": 0,
+      "args": {
+        "name": "CrRendererMain"
+      }
+    },
+```
+
+**DevTools Performance Tab:**
+
+![minimal-event-trace-profile-focused-cpu-profiling.png](imgs/minimal-event-trace-profile-focused-cpu-profiling.png)
+
+---
 
 
 
@@ -574,26 +1199,6 @@ export interface Sample {
   stack?: string[];    // Full stack frame ID array
 }
 ```
-
----
-
-### Usage
-
-These types can be used to validate and build trace data in TypeScript. For example, a trace parsed as `TraceFile` will
-be correctly typed whether it's an array or an object with metadata. Each event in `traceEvents` will be narrowed based
-on its `ph` field, enabling strict access to the appropriate fields. This helps ensure any generated trace JSON conforms
-to Chrome's Trace Event format specifications.
-
----
-
-### Sources
-
-- Chrome Trace Event Format documentation
-- Chromium source (`trace_event_common.h`) definitions
-- DevTools trace export examples (Profile events, etc.)
-- Catapult Trace Event Format spec (Google Doc)
-
----
 
 `dur`: 1313
 The wall-clock duration of the event—i.e. it ran for 1 313 μs from start to finish.

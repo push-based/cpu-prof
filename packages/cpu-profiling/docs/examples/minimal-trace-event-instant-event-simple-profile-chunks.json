@@ -1,0 +1,109 @@
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StartProfiling",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "runMainESM",
+                  "scriptId": "1",
+                  "url": "node:internal/modules/run_main",
+                  "lineNumber": 92,
+                  "columnNumber": 19
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "main-work",
+                  "scriptId": "2",
+                  "url": "file:///index.mjs",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                }
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              3,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StopProfiling",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 400,
+      "args": {
+        "data": {
+          "endTime": 400
+        }
+      }
+    }
+  ]
+}
