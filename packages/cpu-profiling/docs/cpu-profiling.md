@@ -286,20 +286,20 @@ type CpuProfile = {
 }
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
 ![minimal-cpu-profile.png](imgs/minimal-cpu-profile.png)
 
 ### Dimensions and Time
 
 - **Time (horizontal axis)**
   - `startTime`: the microsecond timestamp when profiling began
-  - `endTime`: equals `startTime + Σ timeDeltas`, **marking the profile’s visible end**
+  - `endTime`: equals `startTime + Σ timeDeltas`, **marking the profile's visible end**
   - `timeDeltas`: an array of intervals (μs) between each sample tick. Time deltas overflow the visible end of the measure.
 
 - **Call-tree depth (vertical axis)**
-  - Each sample’s node-ID (from `samples[]`) points into `nodes[]`
+  - Each sample's node-ID (from `samples[]`) points into `nodes[]`
   - The root node (`(root)`) is at depth 0; its `children` entries are depth 1, and so on
-  - Stacking samples by their node’s depth reconstructs the flame chart walking up their parents.
+  - Stacking samples by their node's depth reconstructs the flame chart walking up their parents.
 
 - **Samples**
   - One sample per interval: `samples[i]` occurred `timeDeltas[i]` μs after the previous one
@@ -331,7 +331,7 @@ type CpuProfile = {
 }
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
 ![minimal-cpu-profile-profile-length.png](imgs/minimal-cpu-profile-profile-length.png)
 
 
@@ -402,8 +402,8 @@ This example draws the same node (1->2->3) 2 times.
 - The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
   `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
   
-**DevTools Performance Tab:**
-![minimal-cpu-profile-depth.png](imgs/_.png)
+**DevTools Performance Tab:**  
+![minimal-cpu-profile-depth.png](imgs/minimal-cpu-profile-depth.png)
 
 ### Parent and child nodes
 
@@ -450,8 +450,8 @@ Useful for flame chart rendering and aggregating inclusive vs. exclusive hit cou
 
 ### Synthetic and Internal Frames
 
-The `functionName` in parentheses are **synthetic frames** that V8 inserts to represent things like “entry point”,
-“top-level script evaluation”, “no JS running (idle)”, and GC cycles.
+The `functionName` in parentheses are **synthetic frames** that V8 inserts to represent things like "entry point",
+"top-level script evaluation", "no JS running (idle)", and GC cycles.
 
 The `scriptId` of syntectic frames is always `0`, the `url` is empty `"` and `lineNumber` and `columnNumber` is `-1`.
 
@@ -474,18 +474,18 @@ A incomplete list of synthetic frames is:
 | Function                | Explanation                                                                                                             |
 |-------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | Synthetic               | ---                                                                                                                     |
-| **(root)**              | The synthetic root of the call tree. All other frames are descendants of this “function.”                               |
-| **(program)**           | The top‐level entry point of your script. Covers the module’s initial evaluation before any functions are invoked.      |
+| **(root)**              | The synthetic root of the call tree. All other frames are descendants of this "function."                               |
+| **(program)**           | The top‐level entry point of your script. Covers the module's initial evaluation before any functions are invoked.      |
 | **openFileHandle**      | The underlying V8/Node function that opens a file descriptor. Called by high-level APIs like `fs.open`.                 |
-| **(garbage collector)** | A special marker whenever V8’s GC runs. No JavaScript code—just time spent reclaiming memory.                           |
+| **(garbage collector)** | A special marker whenever V8's GC runs. No JavaScript code—just time spent reclaiming memory.                           |
 | **(idle)**              | Indicates the event loop is idle—nothing JavaScript-related is executing, and the process is waiting for I/O or timers. |
 | **lstat**               | The V8 binding for the `fs.lstat` syscall, used internally when you or a library check file or symlink metadata.        |
 | Internal                | ---                                                                                                                     |
-| **compileFunction**     | V8’s internal routine that parses and compiles a JS function’s source to bytecode.                                      |
-| **link**                | V8’s step of resolving closures and setting up function scopes (“linking” compiled code into the runtime).              |
-| **evaluate**            | The execution of top-level script code or VM-compiled code; e.g. running your module’s body.                            |
+| **compileFunction**     | V8's internal routine that parses and compiles a JS function's source to bytecode.                                      |
+| **link**                | V8's step of resolving closures and setting up function scopes ("linking" compiled code into the runtime).              |
+| **evaluate**            | The execution of top-level script code or VM-compiled code; e.g. running your module's body.                            |
 | **consoleCall**         | The built-in handler for `console.log` and other console methods—formats and writes to stdout/stderr.                   |
-| **Worker**              | The entry for spinning up a `Worker` thread (Node’s `worker_threads`), including setup and messaging plumbing.          |
+| **Worker**              | The entry for spinning up a `Worker` thread (Node's `worker_threads`), including setup and messaging plumbing.          |
 | **startThread**         | Platform-level call to begin a new OS thread for a Worker, wrapping the native thread creation.                         |
 | **postMessage**         | The V8/Node routine that serializes and posts data from the main thread to a Worker (or vice versa).                    |
 | **writeUtf8String**     | The internal I/O function that writes a UTF-8 string (e.g. your log output) into a buffer or file descriptor.           |
@@ -598,7 +598,7 @@ A incomplete list of synthetic frames is:
 }
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
 ![minimal-cpu-profile-synthetic-frames.png](imgs/minimal-cpu-profile-synthetic-frames.png)
 
 

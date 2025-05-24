@@ -1,11 +1,35 @@
 # Chrome DevTools Trace Event Profiling
 
-Chrome DevTools Trace Event TypeScript Definitions
-=================================================
+This document provides a comprehensive guide to the Chrome DevTools Trace Event Format, detailing its structure, event types, and practical applications. It is intended for developers who want to generate or understand trace files for performance analysis in Chrome DevTools.
+
+## Table of Contents
 
 ---
 
-## Loading a profile
+- **[Loading a profile](#loading-a-profile)**
+- **[Top-Level Minimal Trace File Structure](#top-level-minimal-trace-file-structure)**
+- **[Base Event Interface and Common Fields](#base-event-interface-and-common-fields)**
+- **[Minimal Trace Profile with Duration Events](#minimal-trace-profile-with-duration-events)**
+- **[PID and TID](#pid-and-tid)**
+- **[Event Phase and Scope Enumerations](#event-phase-and-scope-enumerations)**
+- **[Event Types in Detail](#event-types-in-detail)**
+  - [Duration Events](#duration-events)
+  - [Instant Events](#instant-events)
+    - [CpuProfiler::StartProfiling and CpuProfiler::StopProfiling](#cpuprofilerstartprofiling-and-cpuprofilerstopprofiling)
+    - [TracingStartedInBrowser](#tracingstartedinbrowser)
+  - [Counter Events](#counter-events)
+  - [Async (Nestable) Events](#async-nestable-events)
+  - [Flow Events](#flow-events)
+  - [Sample Events](#sample-events)
+    - [ProfileEvent and ProfileChunkEvent](#profileevent-and-profilechunkevent)
+    - [Streaming Profile Chunks](#streaming-profile-chunks)
+  - [Object Events](#object-events)
+  - [Metadata Events](#metadata-events)
+    - [Highlighting Lanes with ThreadName metadata event](#highlighting-lanes-with-threadname-metadata-event)
+
+---
+
+## Loading a profile in DevTools
 
 **In practice, when DevTools loads your JSON it:**
 1. Reads the initialBreadcrumb window to set the zoomed-in range.
@@ -13,20 +37,44 @@ Chrome DevTools Trace Event TypeScript Definitions
 3. Groups events into tracks by their cat value.
 4. Renders slices for all X events, vertical lines for all R marks, and counter graphs for C events.
 
-
 ## Top-Level Minimal Trace File Structure
 
 A trace file can be either a JSON array of events or an object containing a traceEvents array and additional metadata.
 We define a union type `TraceFile` to accept both:
 
 ```
-/** Union of top-level trace file formats: Array vs Object form */
 export type TraceFile = TraceEvent[] | TraceEventContainer;
 
-/** JSON Object format (with traceEvents and optional metadata): */
 export interface TraceEventContainer {
-traceEvents: TraceEvent[];               // All trace event entries
+  traceEvents: TraceEvent[];
 }
+```
+
+## Base Event Interface and Common Fields
+
+All trace events share some common fields like `pid`, `tid`, `ts`, etc. The `sf`/`stack` fields optionally attach a stack trace to an event by referencing entries in the `stackFrames` dictionary. The `cname` field can assign a predefined color name to the event in the viewer. We define a base interface `TraceEventBase` for these:
+
+```
+/** Base interface for common trace event fields */
+interface TraceEventBase {
+  ph: Phase;
+  name?: string;
+  cat?: string;
+  pid?: number;
+  tid?: number;
+  ts: number;
+  tts?: number;
+  args?: Record<string, any>;
+  dur?: number;
+  tdur?: number;
+  /** Optional stack trace fields (for events that can carry stack info) */
+  sf?: string | number;
+  stack?: Array<string|number>;
+  cname?: string;
+}
+
+> **Note**
+> While the `args` field is defined as `Record<string, any>` for flexibility, specific event types often expect particular nested structures within `args`. These expected structures are detailed in the examples for each relevant event type throughout this document.
 ```
 
 ## Minimal Trace Profile with Duration Events
@@ -48,8 +96,8 @@ traceEvents: TraceEvent[];               // All trace event entries
 }
 ```
 
-**DevTools Performance Tab:**
-![minimal-event-trace-profile.png](imgs/minimal-event-trace-profile.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-profile.png" alt="DevTools Performance tab showing a single 'function-name' duration event." width="800">
 
 ---
 
@@ -106,94 +154,69 @@ Every trace event has a `pid` and `tid` field. The DevTools performance panel wi
 }
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-pid-tid-grouping.png" alt="DevTools Performance tab showing events grouped by PID and TID." width="800">
 
-![minimal-event-trace-profile-pid-tid-grouping.png](imgs/minimal-event-trace-profile-pid-tid-grouping.png)
-
-
-## Base Event Interface and Common Fields
-
-All trace events share some common fields like `pid`, `tid`, `ts`, etc. We define a base interface `TraceEventBase` for
-these:
-
-```
-/** Base interface for common trace event fields */
-interface TraceEventBase {
-  ph: Phase;                   // Event phase (type)
-  name?: string;               // Event name (optional for some events)
-  cat?: string;                // Event category tag(s)
-  pid?: number;                // Process ID that emitted the event
-  tid?: number;                // Thread ID that emitted the event
-  ts: number;                  // Timestamp (microseconds)
-  tts?: number;                // Thread clock timestamp (microseconds, optional)
-  args?: Record<string, any>;  // Event arguments (phase-specific)
-  dur?: number;                // Duration (for 'X' complete events)
-  tdur?: number;               // Thread-duration (for 'X' events)
-  /** Optional stack trace fields (for events that can carry stack info) */
-  sf?: string | number;        // Stack frame ID (to reference stackFrames dictionary)
-  stack?: Array<string|number>;// Full stack trace frame IDs (alternative to sf)
-  cname?: string;              // Optional color name for event display
-}
-```
-
-@TODO move notes
-
-**Notes:**
-
-- The `sf`/`stack` fields optionally attach a stack trace to an event by referencing entries in the `stackFrames`
-  dictionary.
-- The `cname` field can assign a predefined color name to the event in the viewer.
-
----
 
 ## Event Phase and Scope Enumerations
 
-Each trace event has a one-letter phase (`ph`) indicating its type.  
+Each trace event has a one-letter phase (`ph`) indicating its type.
 We define a union of all allowed phase codes (excluding legacy/deprecated):
+
+**Legend for Table Symbols:**
+
+*   **Support Column:**
+    *   ✅ **(Recommended):** The event type is well-supported, standard, and generally recommended for use.
+    *   ⚠️ **(Conditional/Limited):** The event type is supported but may have specific conditions, limitations, or is intended for advanced/specific use cases. Its behavior or rendering might depend on other events or configurations.
+    *   ❌ **(Not Recommended/Deprecated):** The event type is deprecated, not standard, has significant issues, or is generally not recommended for creating new traces.
+
+*   **Visible in DevTools Column:**
+    *   ✅ **(Directly Visible):** The event directly renders a distinct visual element in the main DevTools Performance panel timeline (e.g., a bar for 'X', a marker for 'I', a flame chart segment for 'P').
+    *   ⚠️ **(Indirectly Visible/Affects Display):** The event itself might not be a primary bar/marker, but it influences the display (e.g., creating connections like flow events, affecting track names like metadata, generating counter graphs), or its visibility depends on specific contexts or DevTools settings.
+    *   ❌ **(Not Visible):** The event is processed internally by DevTools but does not typically render a distinct visual element in the main timeline views.
 
 | Phase               | Description                         | Support | Visible in DevTools |
 |---------------------|-------------------------------------|---------|---------------------|
 | **Duration Events** |                                     |         |                     |
-| `X`                 | Complete event (begin + end in one) | ✅       | 👁                  |
-| `B`                 | Duration begin                      | ⚠️      | 🚫                  |
-| `E`                 | Duration end                        | ⚠️      | 🚫                  |
+| `X`                 | Complete event (begin + end in one) | ✅       | ✅                   |
+| `B`                 | Duration begin                      | ⚠️       | ❌                   |
+| `E`                 | Duration end                        | ⚠️       | ❌                   |
 | **Instant Events**  |                                     |         |                     |
-| `I`                 | Instant event                       | ✅       | 👁                  |
+| `I`                 | Instant event                       | ✅       | ✅                   |
 | **Counter Events**  |                                     |         |                     |
-| `C`                 | Counter event                       | ✅       | 🚫                  |
+| `C`                 | Counter event                       | ✅       | ❌                   |
 | **Async Events**    |                                     |         |                     |
-| `b`                 | Async begin (nestable)              | ✅       | 🚫                  |
-| `n`                 | Async instant (nestable)            | ✅       | 🚫                  |
-| `e`                 | Async end (nestable)                | ✅       | 🚫                  |
+| `b`                 | Async begin (nestable)              | ✅       | ❌                   |
+| `n`                 | Async instant (nestable)            | ✅       | ❌                   |
+| `e`                 | Async end (nestable)                | ✅       | ❌                   |
 | **Flow Events**     |                                     |         |                     |
-| `s`                 | Flow start                          | ✅       | 🚫                  |
-| `t`                 | Flow step                           | ✅       | 🚫                  |
-| `f`                 | Flow end                            | ✅       | 🚫                  |
+| `s`                 | Flow start                          | ✅       | ⚠️                   |
+| `t`                 | Flow step                           | ✅       | ⚠️                   |
+| `f`                 | Flow end                            | ✅       | ⚠️                   |
 | **Sample Events**   |                                     |         |                     |
-| `P`                 | Sample event                        | ✅       | 👁                  |
+| `P`                 | Sample event                        | ✅       | ✅                   |
 | **Object Events**   |                                     |         |                     |
-| `N`                 | Object created                      | ✅       | 🚫                  |
-| `O`                 | Object snapshot                     | ✅       | 🚫                  |
-| `D`                 | Object destroyed                    | ✅       | 🚫                  |
+| `N`                 | Object created                      | ✅       | ❌                   |
+| `O`                 | Object snapshot                     | ✅       | ❌                   |
+| `D`                 | Object destroyed                    | ✅       | ❌                   |
 | **Metadata Events** |                                     |         |                     |
-| `M`                 | Metadata event                      | ✅       | 👁                  |
+| `M`                 | Metadata event                      | ✅       | ⚠️                   |
 
 ---
 
+## Event Types in Detail
+
 ### Duration Events
 
-
-Duration events are by default visible in the panel. They maintain start end end turation information. 
-
-We skip beginning and end events as there is more research to do on my side.
+Duration events are by default visible in the panel. They maintain start and end duration information.
 
 ```
 /** Complete Event (ph='X') – combined begin/end in one event */
 export interface CompleteEvent extends TraceEventBase {
-ph: 'X';
-name: string;
-dur: number; // Duration of the event (microseconds)
-tdur?: number; // Thread-duration (optional)
+  ph: 'X';
+  name: string;
+  dur: number;
+  tdur?: number;
 }
 ```
 
@@ -264,11 +287,8 @@ The properties `dur`/`tdur` are only valid for Complete events (`ph = 'X'`) to s
 }
 ```
 
-**DevTools Performance Tab:**
-
-![minimal-event-trace-profile-duration-event-nesting.png](imgs/minimal-event-trace-profile-duration-event-nesting.png)
-
----
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-duration-event-nesting.png" alt="DevTools Performance tab showing automatically nested duration events based on timestamp and duration." width="800">
 
 ### Instant Events
 
@@ -277,7 +297,7 @@ We define an `InstantScope` type for this:
 
 ```
 /** Scope values for instant events (ph='i') */
-export type InstantScope = 't' | 'p' | 'g';  // 't'=thread, 'p'=process, 'g'=global
+export type InstantScope = 't' | 'p' | 'g';
 ```
 
 ```
@@ -285,7 +305,7 @@ export type InstantScope = 't' | 'p' | 'g';  // 't'=thread, 'p'=process, 'g'=glo
 export interface InstantEvent extends TraceEventBase {
   ph: 'I';
   name: string;
-  s?: InstantScope;       // Scope: 't','p','g' (thread default if omitted)
+  s?: InstantScope;
 }
 ```
 
@@ -323,8 +343,8 @@ trace.
 }
 ```
 
-**DevTools Performance Tab:**
-![minimal-event-trace-profile-instant-event.png](imgs/minimal-event-trace-profile-instant-event.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-instant-event.png" alt="DevTools Performance tab displaying a 'main' duration event between two instant 'marker' events." width="800">
 
 Instant events default to thread scope if `s` is omitted.
 
@@ -333,7 +353,7 @@ Instant events default to thread scope if `s` is omitted.
 > This is important to know when you are looking at the trace in DevTools.
 > Specific trace events will not be visible in DevTools if it does not have an instant event at the beginning and end.
 
-In the followingI will list all relevant instant events that i discovered so far:
+In the following, a list of noteworthy instant events is provided. Some events have dedicated sub-sections with detailed explanations and examples:
 
 - `CpuProfiler::StartProfiling`
 - `CpuProfiler::StopProfiling`
@@ -344,7 +364,7 @@ In the followingI will list all relevant instant events that i discovered so far
 
 #### CpuProfiler::StartProfiling and CpuProfiler::StopProfiling
 
-The example below focuses on the `CpuProfiler::StartProfiling` and `CpuProfiler::StopProfiling` events. The proile chunk event render, but are incomplete. 
+The example below focuses on the `CpuProfiler::StartProfiling` and `CpuProfiler::StopProfiling` events. The profile chunk events render, but are incomplete.
 Profile and ProfileChunk events are not visible in DevTools if there is no `CpuProfiler::StartProfiling` event before the start of the CPU profile. The `CpuProfiler::StopProfiling` event is optional.
 
 Read more about Profile and ProfileChunk events in the [Phases - Sample Events](#sample-events) section documentation.
@@ -428,9 +448,8 @@ Read more about Profile and ProfileChunk events in the [Phases - Sample Events](
 }
 ```
 
-**DevTools Performance Tab:**
-
-![minimal-event-trace-profile-cpu-profiler-start-profiling.png](imgs/minimal-event-trace-profile-cpu-profiler-start-profiling.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-cpu-profiler-start-profiling.png" alt="DevTools Performance tab showing Profile and ProfileChunk events with CpuProfiler Start/Stop events." width="800">
 
 #### TracingStartedInBrowser
 
@@ -467,7 +486,7 @@ Also the events have now the highlighting we know and love form recorded traces 
     {
       "cat": "devtools.timeline",
       "name": "TracingStartedInBrowser",
-      "ph": "i",
+      "ph": "I",
       "pid": 1,
       "tid": 1,
       "ts": 1,
@@ -517,25 +536,25 @@ Also the events have now the highlighting we know and love form recorded traces 
 }
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
 
-| No tracing started in browser | Tracing started in bowser |
+| No tracing started in browser | Tracing started in browser |
 |--------------------------------|---------------------------|
-| ![minimal-event-trace-profile-no-tracing-started-in-browser-highlighting.png](imgs/minimal-event-trace-profile-no-tracing-started-in-browser-highlighting.png) | ![minimal-event-trace-profile-tracing-started-in-browser.png](imgs/minimal-event-trace-profile-tracing-started-in-browser.png) |
+| <img src="imgs/minimal-event-trace-instant-no-event-tracing-started-in-browser.png" alt="DevTools Performance tab showing events without 'TracingStartedInBrowser' highlighting." width="400"> | <img src="imgs/minimal-event-trace-instant-event-tracing-started-in-browser.png" alt="DevTools Performance tab showing events with 'TracingStartedInBrowser' event, resulting in standard browser trace highlighting." width="400"> |
 
 ### Counter Events
+
+As per the Event Phase and Scope Enumerations table, Counter events are not directly visible in the DevTools timeline. They are processed internally and can be used to track numeric values over time, often visualized in separate graphs or summaries if supported by the specific trace viewer or analysis tool, rather than as distinct visual elements in the main timeline views.
 
 ```
 /** Counter Event (ph='C') – tracks one or more numeric values over time */
 export interface CounterEvent extends TraceEventBase {
   ph: 'C';
   name: string;
-  id?: EventID;           // Optional counter ID
-  args: { [series: string]: number };  // Key-value pairs of series names to values
+  id?: EventID;
+  args: { [series: string]: number };
 }
 ```
-
-@TODO: check if they are visible in DevTools
 
 ### Async (Nestable) Events
 
@@ -544,31 +563,29 @@ export interface CounterEvent extends TraceEventBase {
 export interface AsyncBeginEvent extends TraceEventBase {
   ph: 'b';
   name: string;
-  id?: EventID;
-  id2?: EventID2;
-  scope?: string;         // Optional scope string to avoid ID conflicts
+  id?: EventID; // Represents a unique identifier for the async operation. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier, often for distinguishing local vs. global scope. Can be a string or number.
+  scope?: string;
 }
 
 /** Async Nestable Instant (ph='n') – instantaneous event in an async operation */
 export interface AsyncInstantEvent extends TraceEventBase {
-ph: 'n';
-name: string;
-id?: EventID;
-id2?: EventID2;
-scope?: string;
+  ph: 'n';
+  name: string;
+  id?: EventID; // Represents a unique identifier for the async operation. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier, often for distinguishing local vs. global scope. Can be a string or number.
+  scope?: string;
 }
 
 /** Async Nestable End (ph='e') – end of an async operation */
 export interface AsyncEndEvent extends TraceEventBase {
-ph: 'e';
-name?: string;          // Name usually optional (matches the begin event)
-id?: EventID;
-id2?: EventID2;
-scope?: string;
+  ph: 'e';
+  name?: string;
+  id?: EventID; // Represents a unique identifier for the async operation. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier, often for distinguishing local vs. global scope. Can be a string or number.
+  scope?: string;
 }
 ```
-
-@TODO: check if they are visible in DevTools
 
 ### Flow Events
 
@@ -577,76 +594,26 @@ scope?: string;
 export interface FlowStartEvent extends TraceEventBase {
   ph: 's';
   name: string;
-  id?: EventID;
-  id2?: EventID2;
+  id?: EventID; // Represents a unique identifier for the flow. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier for the flow. Can be a string or number.
 }
 
 /** Flow Step event (ph='t') – intermediate step in a flow */
 export interface FlowStepEvent extends TraceEventBase {
-ph: 't';
-name: string;
-id?: EventID;
-id2?: EventID2;
+  ph: 't';
+  name: string;
+  id?: EventID; // Represents a unique identifier for the flow. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier for the flow. Can be a string or number.
 }
 
 /** Flow End event (ph='f') – termination of a flow */
 export interface FlowEndEvent extends TraceEventBase {
-ph: 'f';
-name: string;
-id?: EventID;
-id2?: EventID2;
+  ph: 'f';
+  name: string;
+  id?: EventID; // Represents a unique identifier for the flow. Can be a string or number.
+  id2?: EventID2; // Represents a secondary identifier for the flow. Can be a string or number.
 }
 ```
-
-**Profile content:**
-
-```json
-{
-  "traceEvents": [
-    {
-      "ph": "I",
-      "name": "marker-start",
-      "pid": 1,
-      "tid": 1,
-      "ts": 1
-    },
-    {
-      "ph": "s",
-      "name": "user-click-flow",
-      "id": 42,
-      "pid": 1,
-      "tid": 1,
-      "ts": 10
-    },
-    {
-      "ph": "t",
-      "name": "user-click-flow",
-      "id": 42,
-      "pid": 1,
-      "tid": 1,
-      "ts": 15
-    },
-    {
-      "ph": "f",
-      "name": "user-click-flow",
-      "id": 42,
-      "pid": 1,
-      "tid": 1,
-      "ts": 20
-    },
-    {
-      "ph": "I",
-      "name": "marker-end",
-      "pid": 1,
-      "tid": 1,
-      "ts": 100
-    }
-  ]
-}
-```
-
-**DevTools Performance Tab:**
-@TODO: add image
 
 ### Sample Events
 
@@ -663,24 +630,25 @@ export interface SampleEvent extends TraceEventBase {
 
 /** Special case: Profile start event (often ph='P', name='Profile') */
 export interface ProfileEvent extends SampleEvent {
-name: 'Profile';
-args: {
-data: { startTime: number, [key: string]: any }
-};
+  name: 'Profile';
+  args: {
+    data: { startTime: number, [key: string]: any }
+  };
 }
 
 /** Special case: Profile data chunk event (ph='P', name='ProfileChunk') */
 export interface ProfileChunkEvent extends SampleEvent {
-name: 'ProfileChunk';
-args: {
-data: { cpuProfile: any, timeDeltas?: number[], [key: string]: any }
-};
+  name: 'ProfileChunk';
+  args: {
+    data: { cpuProfile: any, timeDeltas?: number[], [key: string]: any }
+  };
 }
-```
 
-As CpuProfiles require a couple of additional events to be present in the trace.
+#### ProfileEvent and ProfileChunkEvent
 
-In the example contains:
+As CPU profiles require a couple of additional events to be present in the trace.
+
+In the example, we include:
 - `CpuProfiler::StartProfiling` - Start the CPU profiler.
 - `Profile` - Register the profile chunk stream.
 - `ProfileChunk` - Add a profile chunk to the stream.
@@ -786,6 +754,102 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
       }
     },
     {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              1,
+              2,
+              3,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              1,
+              3
+            ]
+          },
+          "timeDeltas": [
+            0,
+            50
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              3,
+              2
+            ]
+          },
+          "timeDeltas": [
+            50,
+            50
+          ]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "samples": [
+              2,
+              2
+            ]
+          },
+          "timeDeltas": [
+            50,
+            50
+          ]
+        }
+      }
+    },
+    {
       "cat": "disabled-by-default-v8",
       "name": "CpuProfiler::StopProfiling",
       "ph": "I",
@@ -802,9 +866,8 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
 }
 ```
 
-**DevTools Performance Tab:**
-
-![minimal-trace-event-instant-event-simple-profile-chunks.png](imgs/minimal-trace-event-instant-event-simple-profile-chunks.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-instant-event-simple-profile-chunks.png" alt="DevTools Performance tab displaying a flame chart generated from Profile and ProfileChunk events." width="800">
 
 
 #### Streaming Profile Chunks
@@ -813,13 +876,13 @@ As the DevTools always need to be able to process live streamed data, also Profi
 
 The example below shows how a CPU profile can be scattered across multiple ProfileChunk events.
 
-In the example contains:
+In the example, we include:
 - `CpuProfiler::StartProfiling` - Start the CPU profiler.
 - `Profile` - Register the CPU profile to a thread.
 - `ProfileChunk` - Adds only the nodes to the profile thread.
-- `ProfileChunk` - Adds a sequence of samples and timeDeltas that have a complete end  to the profile thread.
-- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the end of the next profile.
-- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the start of the last profile.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas that have a complete end to the profile thread.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the end of the next profile chunk.
+- `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the start of the last profile chunk.
 - `CpuProfiler::StopProfiling` - Stop the CPU profiler.
 
 
@@ -1017,9 +1080,8 @@ In the example contains:
 }
 ```
 
-**DevTools Performance Tab:**
-
-![minimal-trace-event-instant-event-complex-profile-chunks.png](imgs/minimal-trace-event-instant-event-complex-profile-chunks.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-instant-event-complex-profile-chunks.png" alt="DevTools Performance tab displaying a complex flame chart generated from multiple streamed ProfileChunk events, with a correct bottom-up chart." width="800">
 
 In the image we see that the bottom up chart is available and correctly calculated across chunks.
 
@@ -1035,17 +1097,17 @@ export interface ObjectCreatedEvent extends TraceEventBase {
 
 /** Object Snapshot event (ph='O') – state snapshot of an object */
 export interface ObjectSnapshotEvent extends TraceEventBase {
-ph: 'O';
-name: string;
-id: EventID;
-args: { snapshot: any };
+  ph: 'O';
+  name: string;
+  id: EventID;
+  args: { snapshot: any };
 }
 
 /** Object Destroyed event (ph='D') – an object is destroyed/freed */
 export interface ObjectDestroyedEvent extends TraceEventBase {
-ph: 'D';
-name: string;
-id: EventID;
+  ph: 'D';
+  name: string;
+  id: EventID;
 }
 ```
 
@@ -1102,12 +1164,12 @@ interface MetadataEventBase extends TraceEventBase {
 }
 
 export interface ProcessNameEvent extends MetadataEventBase {
-name: 'process_name';
-args: { name: string };
+  name: 'process_name';
+  args: { name: string };
 }
 export interface ThreadNameEvent extends MetadataEventBase {
-name: 'thread_name';
-args: { name: string };
+  name: 'thread_name';
+  args: { name: string };
 }
 ```
 
@@ -1137,11 +1199,14 @@ args: { name: string };
 }
 ```
 
-**DevTools Performance Tab:**
-![minimal-event-trace-profile-process-name-thread-name.png](imgs/minimal-event-trace-profile-process-name-thread-name.png)
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-event-trace-process-name-thread-name.png" alt="DevTools Performance tab displaying process and thread names set by metadata events." width="800">
 
 
-#### Highliting Lanes with ThreadName metadata event
+#### Highlighting Lanes with ThreadName metadata event
+
+<!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
+<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-profiling.png) -->
 
 **Profile content:**
 
@@ -1159,72 +1224,10 @@ args: { name: string };
     },
 ```
 
-**DevTools Performance Tab:**
+**DevTools Performance Tab:**  
 
-![minimal-event-trace-profile-focused-cpu-profiling.png](imgs/minimal-event-trace-profile-focused-cpu-profiling.png)
+<!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
+<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-profiling.png) -->
 
 ---
 
-
-
-## Stack Frame and Sample Data Types
-
-When stack traces are recorded, trace files can include a `stackFrames` dictionary mapping stack frame IDs to details. A
-`StackFrame` object typically contains:
-
-```
-/** Stack frame information for stackFrames dictionary entries */
-export interface StackFrame {
-  name?: string;       // Function or symbol name for this frame
-  category?: string;   // Category or module of the frame
-  file?: string;       // Source file URL or script name
-  line?: number;       // Line number in source
-  column?: number;     // Column number in source
-  parent?: string;     // ID of the parent frame
-}
-```
-
-The optional `samples` array contains sampled stack events that augment the timeline:
-
-```
-/** Sampling profiler data record (for top-level samples array) */
-export interface Sample {
-  cpu?: number;        // CPU core number where sample was taken
-  name: string;        // Name of the sample (e.g., event or function name)
-  ts: number;          // Timestamp of the sample
-  pid: number;         // Process ID
-  tid: number;         // Thread ID
-  weight?: number;     // Sample weight
-  sf?: string;         // Stack frame ID
-  stack?: string[];    // Full stack frame ID array
-}
-```
-
-`dur`: 1313
-The wall-clock duration of the event—i.e. it ran for 1 313 μs from start to finish.
-
-`tdur`: 3249
-The thread-clock duration, measuring CPU time on that thread—3 249 μs here, which can exceed `dur` if the work was
-parallelized or preempted.
-
-{
-"args": {},
-"cat": "v8",
-"dur": 10,
-"name": "CpuProfiler::StartProfiling",
-"ph": "I",
-"pid": 10001,
-"tid": 20001,
-"ts": 100000000000
-},
-
-{
-"args": {},
-"cat": "v8",
-"dur": 10,
-"name": "CpuProfiler::EndProfiling",
-"ph": "I",
-"pid": 10001,
-"tid": 20001,
-"ts": 100000000210
-},
