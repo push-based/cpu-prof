@@ -928,3 +928,25 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-synthetic-frames.png" alt="synthetic-frames.png" width="800">
+
+## Real life examples
+
+```shell
+# .env -> NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./profiles --cpu-prof-interval=20"
+# nx.json -> { "tui" : { "autoExit": 0 } }
+
+node --env-file .env --cpu-prof-name=vanilla-eslint.cpuprofile ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
+node --env-file .env --cpu-prof-name=nx-eslint.cpuprofile ./node_modules/.bin/nx lint cpu-profiling
+```
+
+```shell
+# fire off both profilers in the background…
+node --env-file .env --cpu-prof-name=vanilla-eslint.cpuprofile \
+  ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling &
+
+node --env-file .env --cpu-prof-name=nx-eslint.cpuprofile \
+  ./node_modules/.bin/nx lint cpu-profiling &
+
+# …then wait for both to finish
+wait
+```
