@@ -1,5 +1,37 @@
 # Node CPU Profiling
 
+## Table of Contents
+
+---
+
+- **[What is CPU profiling and why do we need it?](#what-is-cpu-profiling-and-why-do-we-need-it)**
+- **[Create a CPU Profile](#create-a-cpu-profile)**
+  - [You can start CPU profiling in different ways:](#you-can-start-cpu-profiling-in-different-ways)
+  - [Troubleshooting](#troubleshooting)
+    - [My profile files are appearing on different places in the file system based on the cwd of every process.](#my-profile-files-are-appearing-on-different-places-in-the-file-system-based-on-the-cwd-of-every-process)
+    - [Error: `--cpu-prof is not allowed in NODE_OPTIONS`](#error---cpu-prof-is-not-allowed-in-node_options)
+  - [CPU Profile Filename](#cpu-profile-filename)
+  - [Process and Thread IDs](#process-and-thread-ids)
+    - [What Determines the Process ID (PID)?](#what-determines-the-process-id-pid)
+    - [What Determines the Thread ID (TID)?](#what-determines-the-thread-id-tid)
+  - [CPU Profiling Arguments](#cpu-profiling-arguments)
+    - [`--cpu-prof`](#--cpu-prof)
+    - [`--cpu-prof-dir`](#--cpu-prof-dir)
+    - [`--cpu-prof-name`](#--cpu-prof-name)
+    - [`--cpu-prof-interval`](#--cpu-prof-interval)
+      - [How to use interval?](#how-to-use-interval)
+      - [Illustrative Example: Impact of Interval Choice](#illustrative-example-impact-of-interval-choice)
+        - [Step 1: Generate Profiles with Different Intervals](#step-1-generate-profiles-with-different-intervals)
+        - [Step 2: Analyze the Generated Profiles](#step-2-analyze-the-generated-profiles)
+        - [Step 3: Results Analysis](#step-3-results-analysis)
+  - [Examples of Combining Arguments](#examples-of-combining-arguments)
+- **[Data Structure](#data-structure)**
+  - [Dimensions and Time](#dimensions-and-time)
+  - [Nodes](#nodes)
+    - [Parent and child nodes](#parent-and-child-nodes)
+    - [CallFrame, and Depth](#callframe-and-depth)
+      - [Synthetic and Internal Frames](#synthetic-and-internal-frames)
+
 ## What is CPU profiling and why do we need it?
 
 CPU profiling is a technique used to analyze the performance of a program by collecting data about its CPU usage. It
@@ -12,12 +44,50 @@ To create a CPU profile, you can use the `--cpu-prof` flag when running your Nod
 
 > **Official docs:**: [Node.js CPU Profiling](https://nodejs.org/api/inspector.html#inspector_cpu_profiling)
 
+### You can start CPU profiling in different ways:
+
+**Direct command line flags:**
 ```shell
-node --cpu-prof index.js
+node --cpu-prof -e "console.log('CPU')"
 ```
 
-This command will create a file named `CPU.<timestamp>.<pid>.<tid>.<sequence>.cpuprofile` in the current working
-directory.
+**Using NODE_OPTIONS (Node.js v23.x+):**
+```shell
+NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
+```
+
+### Troubleshooting
+
+#### My profile files are appearing on different places in the file system based on the cwd of every process.
+
+This is because of the way Node.js handles the `--cpu-prof` flag. It will use the CWD of the process to determine the location of the profile file. To avoid this, you can use --cpu-prof-dir with a absolute path.
+
+```shell
+# Linux
+node --cpu-prof --cpu-prof-dir=/Users/username/reponame/profiles -e "console.log('CPU')"
+
+# Windows
+node --cpu-prof --cpu-prof-dir=C:\Users\username\reponame\profiles -e "console.log('CPU')"
+```
+
+#### Error: `--cpu-prof is not allowed in NODE_OPTIONS`
+
+Node.js maintains a security whitelist for `NODE_OPTIONS`. CPU profiling flags were historically blocked for security reasons.
+
+**Version Support:**
+- **≤ v22.x**: All CPU profiling flags blocked in `NODE_OPTIONS`
+- **≥ v23.x**: All CPU profiling flags allowed ([PR #57018](https://github.com/nodejs/node/pull/57018))
+
+**Test your Node.js version support:**
+```bash
+NODE_OPTIONS="--cpu-prof" node -e "console.log('test')" 2>/dev/null && echo "✅ Supported" || echo "❌ Not supported"
+```
+
+**Workarounds for v22.x and earlier:**
+```bash
+# Use the patch script. This will start profiling for every tread programatically.
+node --require ./cpu-prof.js -e "console.log('CPU')"
+```
 
 ### CPU Profile Filename
 
@@ -37,83 +107,79 @@ The date and time are from when wall-clock write time (when the profile was flus
 
 ### Process and Thread IDs
 
-As we see the file name contains a PID and TID, but what creates new `PID` and `TID` in `.cpuprofile` files?
+The CPU profile filename includes both a Process ID (PID) and a Thread ID (TID). Understanding how these IDs are generated is crucial for interpreting profile files, especially in applications involving multiple processes or worker threads.
 
-A program (started process) can create new threads and processes inside it.
-Every new process and thread gets a new ID, depending on the methods used to create new threads and processes.
+A Node.js application starts as a single process. This main process can then spawn child processes or create worker threads. Each new process and worker thread is assigned a distinct ID, which is reflected in the CPU profile filenames. Node.js provides built-in mechanisms to access these identifiers. For instance, `process.pid` gives the Process ID. For Thread IDs, `worker_threads.threadId` provides the ID for worker threads, while the main thread is conventionally identified as `0` in profiling contexts, as it doesn't have a `threadId` property in the same way.
 
-The following script logs PID and TID of the started node program
+The following script demonstrates how to retrieve these values:
 
-```shell
-node -e "const { spawn } = require('child_process'); 
-const { threadId } = require(\"worker_threads\");
-console.log(\"PID:\", process.pid, \"TID:\", threadId);"
+```bash
+node -p "const { threadId } = require('node:worker_threads'); 'PID: ' + process.pid + ', TID: ' + threadId"
 ```
 
-_Outputs:_
+Output:
 `PID: 51430 TID: 0`
 
-**`PID` → Process ID**
+### What Determines the Process ID (PID)?
 
-- Comes from the **OS-level process ID**
-- A new PID is created whenever you start a new process, such as:
+- Represents the **OS-level process ID**.
+- A new PID is generated each time a new process is created. Common ways to create new processes in Node.js include:
     - `child_process.fork()`
     - `child_process.spawn()`
     - `child_process.exec()`
-    - Running `node` directly (CLI, script)
+    - Directly running the `node` executable (e.g., starting a new script).
 
-```shell
-node -e "const { spawn } = require('child_process');
-spawn(
-  process.execPath,
-  ['-e','const { threadId } = require(\"worker_threads\"); console.log(\"PID:\", process.pid, \"TID:\", threadId);'],
-  { stdio: 'inherit' }
-);
-spawn(
-  process.execPath,
-  ['-e','const { threadId } = require(\"worker_threads\"); console.log(\"PID:\", process.pid, \"TID:\", threadId);'],
-  { stdio: 'inherit' }
-);
+Consider the following script that spawns two child processes:
+```bash
+NODE_OPTIONS="--cpu-prof" node -e "
+const { spawn } = require('child_process');
+const { threadId: t } = require('worker_threads');
+const cs = \"const { threadId: t } = require('worker_threads'); console.log('spawn PID:', process.pid, 'TID:', t);\";
+spawn(process.execPath, ['-e', cs], { stdio: 'inherit' });
+spawn(process.execPath, ['-e', cs], { stdio: 'inherit' });
+console.log('Parent PID:' , process.pid, 'TID:', t);
 "
 ```
 
-_Outputs:_
-`PID: 51430 TID: 0`
-`PID: 51431 TID: 0`
+Output (order may vary slightly due to asynchronous nature):
+`Parent PID: 51430 TID: 0`
+`spawn PID: 51431 TID: 0`
+`spawn PID: 51432 TID: 0`
 
-The generated profiles if we add `--cpu-prof` to the command would look like this:
+If `--cpu-prof` is added to the command (e.g., `node --cpu-prof script.js`), CPU profiles would be generated for the parent process and each child process, distinguishable by their PIDs in the filenames:
+- `CPU.<timestamp>.51430.0.001.cpuprofile` (Parent process)
+- `CPU.<timestamp>.51431.0.002.cpuprofile` (First child process)
+- `CPU.<timestamp>.51432.0.003.cpuprofile` (Second child process)
 
-- `CPU.20250510.135416.51430.0.001.cpuprofile`
-- `CPU.20250510.135416.51431.0.001.cpuprofile`
+### What Determines the Thread ID (TID)?
 
-**`TID` → Thread ID**
+- Represents V8's internal thread identifier.
+- By default, Node.js applications run in a single main thread, which typically has a TID of `0`.
+- A new, unique TID is assigned when a `Worker` thread is created using the `node:worker_threads` module.
 
-- Comes from V8's internal thread registry
-- Most Node.js apps are single-threaded → TID = `0` or `1`
-- A new TID is created only when you spawn a `Worker`:
-    - `new Worker()` from `node:worker_threads`
-    - Each worker gets a new `threadId` from the runtime
+The following script creates two worker threads:
 
-```shell
-node -e 'const { Worker } = require("worker_threads");
-new Worker(
-  `const { threadId } = require("worker_threads");
-   console.log("PID: " + process.pid + "  TID: " + threadId);`,
-  { eval: true }
-);
-'
+```bash
+NODE_OPTIONS="--cpu-prof" node -e "
+const { Worker, threadId, isMainThread } = require('worker_threads');
+const workerScript = \"const { threadId: t } = require('worker_threads'); console.log('Worker PID:', process.pid, 'TID:', t);\";
+new Worker(workerScript, { eval: true });
+new Worker(workerScript, { eval: true });
+console.log('Main PID:', process.pid, 'TID:', threadId);
+"
 ```
 
-_Outputs:_
-`PID: 51430 TID: 1`
-`PID: 51430 TID: 2`
+Output (order of worker messages may vary):
+`Main PID: 51430  TID: 0`
+`Worker PID: 51430  TID: 1 (Worker 1)`
+`Worker PID: 51430  TID: 2 (Worker 2)`
 
-The generated profiles if we add `--cpu-prof` to the command would look like this:
+If `--cpu-prof` is used with this script, profiles are generated for the main thread and each worker thread, distinguished by their TIDs (and potentially sequence numbers if they exit around the same time):
+- `CPU.<timestamp>.51430.0.001.cpuprofile` (Main thread)
+- `CPU.<timestamp>.51430.1.002.cpuprofile` (Worker 1)
+- `CPU.<timestamp>.51430.2.003.cpuprofile` (Worker 2)
 
-- `CPU.20250510.135416.51430.1.001.cpuprofile`
-- `CPU.20250510.135416.51430.2.002.cpuprofile`
-
-### CPU Profiling arguments
+### CPU Profiling Arguments
 
 > **Note:** The "Added in" versions indicate when these flags were introduced. Some flags were initially experimental. Always consult the official [Node.js documentation](https://nodejs.org/api/cli.html) for the most current information on their status and behavior in your Node.js version.
 
@@ -124,17 +190,15 @@ The generated profiles if we add `--cpu-prof` to the command would look like thi
 | `--cpu-prof-name`     | v12.0.0 (Exp) | `CPU.${yyyymmdd}.${hhmmss}.${pid}.${tid}.${seq}.cpuprofile` | Filename to use for the CPU profile.                                      |
 | `--cpu-prof-interval` | v12.2.0 (Exp) | `1000` (microseconds/µs)                                    | Sampling interval in microseconds for the CPU profiler.                   |
 
-The following command-line arguments can be used to control CPU profiling in Node.js. These options can also be set using the `NODE_OPTIONS` environment variable (e.g., `NODE_OPTIONS="--cpu-prof --cpu-prof-interval=50" node index.js`).
-
 #### `--cpu-prof`
 
 *   **Purpose**: Starts the V8 CPU profiler on application startup. When the Node.js process exits, a `.cpuprofile` file containing the profiling data is written.
 *   **Default**: `off`
 *   **Usage Example**:
     ```shell
-    node --cpu-prof my-app.js
+    node --cpu-prof -e "console.log('CPU')"
     ```
-    This command will profile `my-app.js` and generate a profile file (e.g., `CPU.<timestamp>.<pid>.<tid>.<sequence>.cpuprofile`) in the current working directory upon exit.
+    This command will profile and generate a profile file (e.g., `CPU.<timestamp>.<pid>.<tid>.<sequence>.cpuprofile`) in the current working directory upon exit.
 
 #### `--cpu-prof-dir`
 
@@ -142,9 +206,9 @@ The following command-line arguments can be used to control CPU profiling in Nod
 *   **Default**: The current working directory. If `--diagnostic-dir` is set, it defaults to that directory instead.
 *   **Usage Example**:
     ```shell
-    node --cpu-prof --cpu-prof-dir=./profiles my-app.js
+    node --cpu-prof --cpu-prof-dir=./profiles -e "console.log('CPU')"
     ```
-    This will save the CPU profile for `my-app.js` into the `./profiles` subdirectory (relative to the current working directory). If the directory doesn't exist, Node.js will attempt to create it.
+    This will save the CPU profile into the `./profiles` subdirectory (relative to the current working directory). If the directory doesn't exist, Node.js will attempt to create it.
 *   **Notes**:
     *   If `--cpu-prof-name` specifies an absolute path, `--cpu-prof-dir` is ignored.
     *   Ensure the specified directory is writable by the Node.js process.
@@ -155,7 +219,7 @@ The following command-line arguments can be used to control CPU profiling in Nod
 *   **Default**: `CPU.<yyyymmdd>.<hhmmss>.<pid>.<tid>.<seq>.cpuprofile` (see [CPU Profile Filename](#cpu-profile-filename) for details on the pattern).
 *   **Usage Example**:
     ```shell
-    node --cpu-prof --cpu-prof-name="my-custom-profile.cpuprofile" my-app.js
+    node --cpu-prof --cpu-prof-name="my-custom-profile.cpuprofile" -e "console.log('CPU')"
     ```
     This will generate a profile file named `my-custom-profile.cpuprofile`. If `--cpu-prof-dir` is also specified, the file will be placed in that directory; otherwise, it will be in the current working directory.
 *   **Notes**:
@@ -171,29 +235,63 @@ The following command-line arguments can be used to control CPU profiling in Nod
     node --cpu-prof --cpu-prof-interval=100 -e "console.log('CPU')"
     ```
     This command profiles an inline script (`console.log('CPU')`) with a sampling interval of 100 microseconds.
-*   **Considerations for Choosing a Sampling Interval**:
 
 ##### How to use interval?
 
-    The `--cpu-prof-interval` flag specifies the sampling frequency in microseconds.
-    *   A **smaller interval** (e.g., `50` µs, `100` µs) collects more samples, providing a **highly detailed profile**. This is useful for short-running processes or identifying fine-grained bottlenecks. However, it results in **larger `.cpuprofile` files** and can add slightly **more overhead** to the profiled application.
-    *   A **larger interval** (e.g., `1000` µs, `5000` µs) collects fewer samples, leading to **smaller profile files** and **less overhead**. This is suitable for longer-running processes or when a high-level overview of CPU usage is sufficient.
+The `--cpu-prof-interval` flag specifies the sampling frequency in microseconds.
+*   A **smaller interval** (e.g., `50` µs, `100` µs) collects more samples, providing a **highly detailed profile**. This is useful for short-running processes or identifying fine-grained bottlenecks. However, it results in **larger `.cpuprofile` files** and can add slightly **more overhead** to the profiled application.
+*   A **larger interval** (e.g., `1000` µs, `5000` µs) collects fewer samples, leading to **smaller profile files** and **less overhead**. This is suitable for longer-running processes or when a high-level overview of CPU usage is sufficient.
 
-    Start with the default (`1000` µs) and adjust based on the granularity of data you need and the acceptable size of the generated profile files. The table below illustrates the impact of different intervals on a sample application.
+Start with the default (`1000` µs) and adjust based on the granularity of data you need and the acceptable size of the generated profile files. The table below illustrates the impact of different intervals on a sample application.
 
 ##### Illustrative Example: Impact of Interval Choice
 
-The following example demonstrates the practical impact of varying the `--cpu-prof-interval`. We'll generate profiles for a very simple script using different intervals and then analyze the resulting `.cpuprofile` files to observe these effects.
+This example demonstrates how different `--cpu-prof-interval` values affect the resulting CPU profile files. We'll profile a simple script with various intervals and analyze the differences in detail, file size, and overhead.
 
-Generate profiles:
+###### Step 1: Generate Profiles with Different Intervals
+
+Run the following command to create profiles with intervals ranging from 1μs to 10,000μs:
+
 ```shell
-for interval in 5000 6000 7000; do echo "Profiling with interval: ${interval}μs" && node --cpu-prof --cpu-prof-interval=${interval} --cpu-prof-dir=./profiles --cpu-prof-name="empty-${interval}.cpuprofile" -e "console.log('Hello CPU Profile with ${interval}μs interval!')"; done
+for interval in 1 10 50 100 1000 2000 3000 4000 5000 6000 7000 10000; do 
+  echo "Profiling with interval: ${interval}μs" && \
+  node --cpu-prof \
+       --cpu-prof-interval=${interval} \
+       --cpu-prof-dir=./profiles \
+       --cpu-prof-name="interval${interval}.cpuprofile" \
+       -e "console.log('Hello CPU Profile with ${interval}μs interval!')"
+done
 ```
 
-Analyze and print:
+###### Step 2: Analyze the Generated Profiles
+
+Use this command to compare the profiles and display their characteristics:
+
 ```shell
-node -e "const fs=require('fs');const path=require('path');const dir='./profiles';const files=fs.readdirSync(dir).filter(f=>f.endsWith('.cpuprofile')).sort((a,b)=>{const aNum=parseInt(a.match(/(\d+)/)?.[1]||0);const bNum=parseInt(b.match(/(\d+)/)?.[1]||0);return aNum-bNum||a.localeCompare(b);});console.log('| Profile File | Interval | Duration (Script) | Nodes | Samples | Size |');console.log('|-------------|----------|-------------------|-------|---------|-----|');files.forEach(file=>{const data=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));const stats=fs.statSync(path.join(dir,file));const interval=file.match(/(\d+)/)?.[1]||'?';const duration=(data.endTime-data.startTime)/1000;const nodes=data.nodes?.length||0;const samples=data.samples?.length||0;const size=(stats.size/1024).toFixed(1);console.log('| '+file+' | '+interval+' us | '+duration.toFixed(1)+' ms | '+nodes+' | '+samples+' | '+size+' KB |');});"
+node -e "
+const fs = require('fs');
+console.table(fs.readdirSync('./profiles')
+  .filter(f => f.endsWith('.cpuprofile'))
+  .map(f => {
+    let j = JSON.parse(fs.readFileSync('./profiles/' + f));
+    let s = fs.statSync('./profiles/' + f);
+    let i = f.match(/\d+/)?.[0] || '?';
+    let d = ((j.endTime - j.startTime) / 1e3).toFixed(1);
+    return { 
+      File: f, 
+      Interval: i + 'μs', 
+      Duration: d + 'ms', 
+      Nodes: j.nodes.length, 
+      Samples: j.samples.length, 
+      'Size(KB)': (s.size / 1024).toFixed(1) 
+    };
+  }));
+"
 ```
+
+###### Step 3: Results Analysis
+
+The table below shows how sampling interval affects profile characteristics:
 
 | Profile File             | Sampling Interval | Duration (Script) | Total Nodes | Total Samples | File Size | Visual Example |
 |--------------------------|-------------------|-------------------|-------------|---------------|-----------|----------------|
@@ -208,81 +306,53 @@ node -e "const fs=require('fs');const path=require('path');const dir='./profiles
 | `empty-7000.cpuprofile`  | 7000 µs (7 ms)    | 13.2 ms           | 9           | 2             | 1.8 KB    | <img src="imgs/cpu-profile-interval-7000.png" alt="7000µs interval" width="200"> |
 | `empty-10000.cpuprofile` | 10000 µs (10 ms)  | 14.0 ms           | 3           | 2             | 0.5 KB    | <img src="imgs/cpu-profile-interval-10000.png" alt="10000µs interval" width="200"> |
 
-> **Note:** The "Duration (Script)" column reflects the execution time of the very simple example script profiled. Real-world applications will have different durations, file sizes, and node/sample counts.
-
---
-
 ### Examples of Combining Arguments
 
-Here are a few examples demonstrating how these flags can be used together:
+1. **Experiment Comparison**  
+Organized profiling for A/B testing or feature comparison experiments.
+```shell
+# Compare different implementations
+node --cpu-prof --cpu-prof-name="version-a.cpuprofile" version-a.js
+node --cpu-prof --cpu-prof-name="version-b.cpuprofile" version-b.js
+```
 
-1.  **Profile an inline script with a custom interval, output directory, and name:**
-    ```shell
-    node --cpu-prof --cpu-prof-interval=50 --cpu-prof-dir=./profiles --cpu-prof-name="my-inline-script-profile.cpuprofile" -e "for(let i=0; i<1e7; i++); console.log('Done')"
-    ```
-    This will:
-    *   Enable CPU profiling (`--cpu-prof`).
-    *   Set the sampling interval to 50 microseconds (`--cpu-prof-interval=50`).
-    *   Save the profile to the `./profiles` directory (`--cpu-prof-dir=./profiles`).
-    *   Name the profile `my-inline-script-profile.cpuprofile` (`--cpu-prof-name`).
-    *   Execute a short inline script.
+2. **Production Monitoring**  
+Low-overhead profiling with reduced sampling frequency.
+```shell
+node --cpu-prof --cpu-prof-interval=500 main.js
+```
 
-2.  **Profile an existing script file `my-app.js` with default settings for name and interval, but a specific output directory:**
-    ```shell
-    node --cpu-prof --cpu-prof-dir=./app-profiles my-app.js
-    ```
-    This will generate a profile file with the default naming convention (e.g., `CPU.<timestamp>.<pid>.<tid>.<sequence>.cpuprofile`) inside the `./app-profiles` directory.
+3. **Performance Benchmarking**  
+High-detail profiling with frequent sampling for bottleneck analysis.
+```shell
+node --cpu-prof --cpu-prof-interval=20 --cpu-prof-dir=./microbench-graph-creation util.js
+```
 
-3.  **Using `NODE_OPTIONS` to set profiling flags:**
-    ```shell
-    NODE_OPTIONS="--cpu-prof --cpu-prof-interval=200 --cpu-prof-dir=/tmp/node_profiles" node my-app.js
-    ```
-    This is equivalent to passing the flags directly on the command line. The profile for `my-app.js` will be saved in `/tmp/node_profiles` with a 200µs interval.
+4. **CI/CD Performance Testing**  
+Automated profiling in build pipelines using NODE_OPTIONS (Node.js v23.x+).  
+- This works for spawning child processes as well as worker threads.
+- All profiles end up in the same directory due to the absolute path.
+- The sampling interval is very high to enable long running processes to be profiled.
+```shell
+NODE_OPTIONS="--cpu-prof --cpu-prof-interval=5000 --cpu-prof-dir=/Users/username/reponame/profiles" node -e main.js
+```
+
+5. **Handling options with .env**
+
+```text
+# .env
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/username/reponame/profiles
+```
 
 ```shell
-node --cpu-prof --cpu-prof-interval=100 --cpu-prof-dir=tmp-prof-intervals --cpu-prof-name="empty-100.cpuprofile" packages/cpu-profiling/mocks/minimal-child-process.mjs
-node -e "const p=JSON.parse(require('fs').readFileSync('empty-100.cpuprofile').size/1024).toFixed(1) + 'KB');"
+node --env-file .env main.js
 ```
 
 ## Data Structure
 
+CPU profiles are JSON files that contain structured data representing the execution timeline and call hierarchy of your Node.js application. The profile consists of nodes representing function calls, timing information, and sampling data that can be visualized in DevTools.
+
 ```ts
-/**
- * Represents a single call frame in the CPU profile.
- * Each call frame contains information about the function being executed,
- * the script it belongs to, and its location in the script.
- */
-type CallFrame = {
-  // Name of the function e.g. "child-work-1"
-  functionName: string;
-  // unique identifier for the script e.g. 0
-  scriptId: string;
-  // URL of the script e.g. "file:///index.mjs"
-  url: string;
-  // Line number in the script e.g. 10
-  lineNumber: number;
-  // Column number in the script e.g. 2
-  columnNumber: number;
-};
-
-/**
- * Represents a node in the CPU profile.
- * Each node corresponds to a function call and contains information about
- * the call frame, its children, and an optional hit count.
- */
-type Node = {
-  // Unique identifier for the node e.g. 1
-  id: number;
-  // Call frame information for the node
-  callFrame: CallFrame;
-  // Optional parent node ID, indicating the node that called this one. e.g. 1
-  parent?: number;
-  // List of child node IDs called by this node. e.g. [2,3]
-  children: number[];
-  // Optional hit count for the node, indicating how many times it was executed
-  hitCount?: number;
-};
-
 type CpuProfile = {
   // List of nodes in the CPU profile
   nodes: Node[];
@@ -297,13 +367,11 @@ type CpuProfile = {
 };
 ```
 
-## Example for a Minimal CPU Profile
+In the example below, we see a minimal CPU profile.
 
-**Filename:**
-`CPU.20250510.135416.51623.0.001.cpuprofile`
+**Profile:** [`minimal-cpu-profile.cpuprofile`](./examples/minimal-cpu-profile.cpuprofile)
 
 **Profile content:**
-
 ```json
 {
   "nodes": [
@@ -316,9 +384,7 @@ type CpuProfile = {
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2
-      ]
+      "children": [2]
     },
     {
       "id": 2,
@@ -329,9 +395,7 @@ type CpuProfile = {
         "lineNumber": 92,
         "columnNumber": 19
       },
-      "children": [
-        3
-      ]
+      "children": [3]
     },
     {
       "id": 3,
@@ -368,8 +432,8 @@ type CpuProfile = {
       }
     }
   ],
-  "startTime": 100000000000,
-  "endTime": 100000000300,
+  "startTime": 1,
+  "endTime": 400,
   "samples": [
     2,
     4,
@@ -383,29 +447,25 @@ type CpuProfile = {
 }
 ```
 
-**DevTools Performance Tab:**
-<img src="imgs/minimal-cpu-profile.png" alt="minimal-cpu-profile.png" width="100%" style="max-width: 600px;">
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile.png" alt="minimal-cpu-profile.png" width="800">
 
 ### Dimensions and Time
 
-- **Time (horizontal axis)**
-  - `startTime`: the microsecond timestamp when profiling began
-  - `endTime`: equals `startTime + Σ timeDeltas`, **marking the profile's visible end**
-  - `timeDeltas`: an array of intervals (μs) between each sample tick. Time deltas overflow the visible end of the measure.
+CPU profiles represent execution data across two primary dimensions: time (horizontal axis) and call-tree depth (vertical axis). Understanding these dimensions is crucial for interpreting flame charts and performance data.
 
-- **Call-tree depth (vertical axis)**
-  - Each sample's node-ID (from `samples[]`) points into `nodes[]`
-  - The root node (`(root)`) is at depth 0; its `children` entries are depth 1, and so on
-  - Stacking samples by their node's depth reconstructs the flame chart walking up their parents.
+**Timing Data:**
+- `startTime` - the microsecond timestamp when profiling began
+- `endTime` - equals `startTime + Σ timeDeltas`, marking the profile's visible end
+- `timeDeltas` - an array of intervals (μs) between each sample tick. Time deltas overflow the visible end of the measure.
+- `samples` - an array of node IDs indicating which nodes were active during the profile.
 
-- **Samples**
-  - One sample per interval: `samples[i]` occurred `timeDeltas[i]` μs after the previous one
-  - Mapping `(time, nodeID)` pairs yields the full CPU usage timeline
+**Time (horizontal axis)** represents the execution timeline with `startTime` marking when profiling began, `endTime` marking the profile's visible end, and `timeDeltas` providing intervals between samples. **Call-tree depth (vertical axis)** shows the function call hierarchy where the root node is at depth 0, and each level represents nested function calls. The `samples` array contains the "leaf frames" - the deepest executing functions at each time interval, with their parent chain automatically reconstructed for visualization.
 
-> **NOTE**
-> The samples array is the list of "visible" nodes looking from the bottom of the chart.  
-> Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too.
-> Therefore, the samples array is a list "leaf frame" in the chart.
+> **NOTE**  
+> The samples array is the list of "visible" nodes looking from the bottom of the chart. Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too. Therefore, the samples array is a list "leaf frame" in the chart.
+
+**Profile:** [`minimal-cpu-profile-timing-data.cpuprofile`](./examples/minimal-cpu-profile-timing-data.cpuprofile)
 
 ```json
 {
@@ -421,28 +481,135 @@ type CpuProfile = {
       "children": [3]
     }
   ],
-  "startTime": 100000000000,
-  "endTime":   100000000400,
+  "startTime": 1,
+  "endTime":   400,
   "samples":    [1,   2,   2,   1],
   "timeDeltas": [0, 100, 100, 100]
 }
 ```
 
-**DevTools Performance Tab:**
-<img src="imgs/minimal-cpu-profile-profile-length.png" alt="minimal-cpu-profile-profile-length.png" width="100%" style="max-width: 600px;">
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile-profile-length.png" alt="minimal-cpu-profile-profile-length.png" width="800">
 
+### Nodes
 
-### Nodes, Frames, and Depth
+```ts
+/**
+ * Represents a node in the CPU profile.
+ * Each node corresponds to a function call and contains information about
+ * the call frame, its children, and an optional hit count.
+ */
+type Node = {
+  // Unique identifier for the node e.g. 1
+  id: number;
+  // Call frame information for the node
+  callFrame: CallFrame;
+  // Optional parent node ID, indicating the node that called this one. e.g. 1
+  parent?: number;
+  // List of child node IDs called by this node. e.g. [2,3]
+  children: number[];
+  // Optional hit count for the node, indicating how many times it was executed
+  hitCount?: number;
+};
+```
 
-- **Nodes**  
-  Each entry in `cpuProfile.nodes` represents a **call‐frame** (a box in the chart). A node has:
-  - `id`: unique identifier
-  - `callFrame`: details (`functionName`, `scriptId`, `url`, `lineNumber`, `columnNumber`)
-  - optional `parent` or `children` pointers to rebuild the call tree
-  - optional `hitCount` for how many samples landed exactly on that frame
+#### Parent and child nodes
 
-- **Frames**  
-  The `callFrame` object inside each node (file, function name, line, column) that DevTools displays when exploring a profile (the boxes).
+Node relationships define the call hierarchy through parent-child references that mirror the JavaScript call stack. These relationships enable reconstruction of the complete call tree for flame chart visualization and performance analysis.
+
+```ts
+export interface Node {
+  id: number;
+  callFrame: CallFrame;
+  parent?: number;
+  children: number[];
+  hitCount?: number;
+}
+```
+
+`parent` contains the optional ID of the immediate caller in the call tree (omitted on the root node).  
+`children` is an array of IDs for frames directly invoked by this node, mirroring the inverted parent relationships. 
+
+Traversal starts at the root (no parent) and recurses through children to rebuild the full call hierarchy, useful for flame chart rendering and aggregating inclusive vs. exclusive hit counts.
+
+**Profile:** [`minimal-cpu-profile-nodes-parent-child.cpuprofile`](./examples/minimal-cpu-profile-nodes-parent-child.cpuprofile)
+
+**Profile content:**
+```json
+{
+  "nodes": [
+  {
+    "id": 1,
+    "callFrame": {
+      "functionName": "(root)",
+      "scriptId": "0",
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1
+    },
+    "children": [2]
+  },
+  {
+    "id": 2,
+    "callFrame": {
+      "functionName": "runMainESM",
+      "scriptId": "1",
+      "url": "node:internal/modules/run_main",
+      "lineNumber": 92,
+      "columnNumber": 19
+    },
+    "parent": 1,
+    "children": [3]
+  },
+  {
+    "id": 3,
+    "callFrame": {
+      "functionName": "main",
+      "scriptId": "2",
+      "url": "index.js",
+      "lineNumber": 3,
+      "columnNumber": 63
+    },
+    "parent": 2
+  }
+],
+  "startTime": 1,
+  "endTime":   400,
+  "samples":    [1,   3,   1],
+  "timeDeltas": [0, 100, 100]
+}
+```
+
+**DevTools Performance Tab:**  
+<img src="imgs/parent-child-nodes.png" alt="parent-child-nodes.png" width="800">
+
+#### CallFrame, and Depth
+
+CallFrame is a structure that contains information about the function being executed, the script it belongs to, and its location in the script.
+
+```ts
+/**
+ * Represents a single call frame in the CPU profile.
+ * Each call frame contains information about the function being executed,
+ * the script it belongs to, and its location in the script.
+ */
+type CallFrame = {
+  // Name of the function being executed
+  functionName: string;
+  // Unique identifier for the script
+  scriptId: string;
+  // URL or path of the script file
+  url: string;
+  // Line number in the script
+  lineNumber: number;
+  // Column number in the script
+  columnNumber: number;
+};
+```
+
+**Nodes** are entries in `cpuProfile.nodes` representing call-frames (boxes in the chart) with unique IDs, call frame details, and optional parent/children pointers for tree reconstruction. **Frames** are the `callFrame` objects containing source location information (file, function name, line, column) that DevTools displays. The depth determines vertical stacking in flame charts, with deeper calls appearing lower in the visualization.
+
+**Profile:** [`minimal-cpu-profile-nodes-call-frame-depth.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-depth.cpuprofile)
 
 ```json
 {
@@ -485,8 +652,8 @@ type CpuProfile = {
       "children": []
     }
   ],
-  "startTime": 100000000000,
-  "endTime":   100000000800,
+  "startTime": 1,
+  "endTime":   800,
   "samples":    [1,   3,   3,   1,   2,   3,  2,   1],
   "timeDeltas": [0, 100, 100, 100, 100, 100, 100, 100]
 }
@@ -499,95 +666,33 @@ This example draws the same node (1->2->3) 2 times.
 - The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
   `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
   
-**DevTools Performance Tab:**
-<img src="imgs/minimal-cpu-profile-depth.png" alt="minimal-cpu-profile-depth.png" width="100%" style="max-width: 600px;">
+  TODO make cool ascii rxplanation of samples.
 
-### Parent and child nodes
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile-depth.png" alt="minimal-cpu-profile-depth.png" width="800">
 
-Each entry in cpuProfile.nodes represents a call‐frame and has a unique id.
+##### Synthetic and Internal Frames
 
-**parent**
-(Optional) The id of its immediate caller in the call tree.
-Omitted on the root node.
+Synthetic frames are special entries that V8 inserts to represent runtime states and operations that don't correspond to user JavaScript code. These frames provide important context about the execution environment and system-level operations.
 
-**children**
-An array of ids for the frames it directly invoked.
-Mirrors the inverted parent relationships.
-
-Traversal starts at the root (no parent), then recurse through children to rebuild the full call hierarchy.
-Useful for flame chart rendering and aggregating inclusive vs. exclusive hit counts.
-
-```json
-[
-  {
-    "id": 1,
-    "callFrame": {
-      "functionName": "(root)",
-      "scriptId": "0",
-      "url": "",
-      "lineNumber": -1,
-      "columnNumber": -1
-    },
-    "children": [2]
-  },
-  {
-    "id": 2,
-    "callFrame": {
-      "functionName": "runMainESM",
-      "scriptId": "1",
-      "url": "node:internal/modules/run_main",
-      "lineNumber": 92,
-      "columnNumber": 19
-    },
-    "parent": 1,
-    "children": []
-  }
-]
+```ts
+type SyntheticFrame = {
+  // Function name in parentheses indicating synthetic nature
+  functionName: string; // e.g. "(root)", "(program)", "(idle)", "(garbage collector)"
+  // Always "0" for synthetic frames
+  scriptId: "0";
+  // Always empty string for synthetic frames
+  url: "";
+  // Typically -1 for synthetic frames
+  lineNumber: -1;
+  // Typically -1 for synthetic frames
+  columnNumber: -1;
+};
 ```
 
-### Synthetic and Internal Frames
+Synthetic frames have `functionName` in parentheses representing entry points, top-level script evaluation, idle time, and GC cycles. The `scriptId` is always `"0"`, the `url` is empty `""`, and `lineNumber`/`columnNumber` are typically `-1`. These frames help distinguish between user code execution and runtime overhead in performance analysis.
 
-The `functionName` in parentheses are **synthetic frames** that V8 inserts to represent things like "entry point",
-"top-level script evaluation", "no JS running (idle)", and GC cycles.
-
-The `scriptId` of synthetic frames is always `0`, the `url` is empty `""` and `lineNumber` and `columnNumber` is `-1`.
-
-```json
-{
-  "id": 1,
-  "callFrame": {
-    "functionName": "(root)",
-    "scriptId": "0",
-    "url": "",
-    "lineNumber": -1,
-    "columnNumber": -1
-  },
-  "children": []
-}
-```
-
-An incomplete list of synthetic frames is:
-
-| Function                | Explanation                                                                                                             |
-|-------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| Synthetic               | ---                                                                                                                     |
-| **(root)**              | The synthetic root of the call tree. All other frames are descendants of this "function."                               |
-| **(program)**           | The top‐level entry point of your script. Covers the module's initial evaluation before any functions are invoked.      |
-| **openFileHandle**      | The underlying V8/Node function that opens a file descriptor. Called by high-level APIs like `fs.open`.                 |
-| **(garbage collector)** | A special marker whenever V8's GC runs. No JavaScript code—just time spent reclaiming memory.                           |
-| **(idle)**              | Indicates the event loop is idle—nothing JavaScript-related is executing, and the process is waiting for I/O or timers. |
-| **lstat**               | The V8 binding for the `fs.lstat` syscall, used internally when you or a library check file or symlink metadata.        |
-| Internal                | ---                                                                                                                     |
-| **compileFunction**     | V8's internal routine that parses and compiles a JS function's source to bytecode.                                      |
-| **link**                | V8's step of resolving closures and setting up function scopes ("linking" compiled code into the runtime).              |
-| **evaluate**            | The execution of top-level script code or VM-compiled code; e.g. running your module's body.                            |
-| **consoleCall**         | The built-in handler for `console.log` and other console methods—formats and writes to stdout/stderr.                   |
-| **Worker**              | The entry for spinning up a `Worker` thread (Node's `worker_threads`), including setup and messaging plumbing.          |
-| **startThread**         | Platform-level call to begin a new OS thread for a Worker, wrapping the native thread creation.                         |
-| **postMessage**         | The V8/Node routine that serializes and posts data from the main thread to a Worker (or vice versa).                    |
-| **writeUtf8String**     | The internal I/O function that writes a UTF-8 string (e.g. your log output) into a buffer or file descriptor.           |
-
-### Example - CPU Profile including synthetic nodes
+**Profile:** [`minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile)
 
 ```json
 {
@@ -601,11 +706,7 @@ An incomplete list of synthetic frames is:
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2,
-        4,
-        3
-      ]
+      "children": [2]
     },
     {
       "id": 2,
@@ -615,33 +716,11 @@ An incomplete list of synthetic frames is:
         "url": "",
         "lineNumber": -1,
         "columnNumber": -1
-      }
+      },
+      "children": [3]
     },
     {
       "id": 3,
-      "callFrame": {
-        "functionName": "(idle)",
-        "scriptId": "0",
-        "url": "",
-        "lineNumber": -1,
-        "columnNumber": -1
-      }
-    },
-    {
-      "id": 4,
-      "callFrame": {
-        "functionName": "runMainESM",
-        "scriptId": "1",
-        "url": "node:internal/modules/run_main",
-        "lineNumber": 92,
-        "columnNumber": 19
-      },
-      "children": [
-        5
-      ]
-    },
-    {
-      "id": 5,
       "callFrame": {
         "functionName": "main-work",
         "scriptId": "2",
@@ -649,66 +728,15 @@ An incomplete list of synthetic frames is:
         "lineNumber": 10,
         "columnNumber": 0
       },
-      "children": [
-        6,
-        7
-      ]
-    },
-    {
-      "id": 6,
-      "callFrame": {
-        "functionName": "child-work-1",
-        "scriptId": "2",
-        "url": "file:///index.mjs",
-        "lineNumber": 11,
-        "columnNumber": 2
-      }
-    },
-    {
-      "id": 7,
-      "callFrame": {
-        "functionName": "child-work-2",
-        "scriptId": "2",
-        "url": "file:///index.mjs",
-        "lineNumber": 12,
-        "columnNumber": 2
-      }
+      "children": []
     }
   ],
-  "startTime": 100000000000,
-  "endTime": 100000000500,
-  "samples": [
-    2,
-    3,
-    4,
-    5,
-    3
-  ],
-  "timeDeltas": [
-    0,
-    100,
-    100,
-    100,
-    100,
-    100
-  ]
+  "startTime": 1,
+  "endTime": 300,
+  "samples": [3, 3, 3],
+  "timeDeltas": [0, 100, 100]
 }
 ```
 
-**DevTools Performance Tab:**
-<img src="imgs/minimal-cpu-profile-synthetic-frames.png" alt="minimal-cpu-profile-synthetic-frames.png" width="100%" style="max-width: 600px;">
-
-
-### `callFrame`, Event Logs and call-tree view
-
-- **callFrame**  
-  Each node has a `callFrame` object with the function name, script ID, URL, line number, and column number.
-  This information is used to display the function call in the DevTools UI.
-
-If we select a node in the DevTools UI, it will show the call stack and the time spent in that function.
-
-<img src="imgs/minimal-cpu-profile-call-frame-information.png" alt="Detailed view of a call frame in Chrome DevTools Performance tab" width="100%" style="max-width: 600px;">
-
----
-
-`
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile-synthetic-frames.png" alt="synthetic-frames.png" width="800">

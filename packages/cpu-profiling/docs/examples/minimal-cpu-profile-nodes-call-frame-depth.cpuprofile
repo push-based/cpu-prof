@@ -35,22 +35,11 @@
         "lineNumber": 10,
         "columnNumber": 0
       },
-      "children": [4]
-    },
-    {
-          "id": 4,
-          "callFrame": {
-            "functionName": "child-work",
-            "scriptId": "3",
-            "url": "file:///index.mjs",
-            "lineNumber": 15,
-            "columnNumber": 0
-          },
-          "children": []
-        }
+      "children": []
+    }
   ],
-  "startTime": 100000000000,
-  "endTime":   100000000400,
-  "samples":    [1,   2,   3,   4],
-  "timeDeltas": [0, 100, 100, 100]
-}
+  "startTime": 1,
+  "endTime":   800,
+  "samples":    [1,   3,   3,   1,   2,   3,  2,   1],
+  "timeDeltas": [0, 100, 100, 100, 100, 100, 100, 100]
+} 

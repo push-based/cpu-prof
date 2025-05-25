@@ -50,3 +50,74 @@ node ./tools/bin.ts --args=show,projects
 node ./tools/bin.ts --args=show,projects --verbose
 node ./tools/bin.ts -v -p -o./tools/demo -f=nx-show-projects.json
 ```
+
+
+---
+
+here is a example of a scheme explaining data structure
+
+### heading
+
+description
+
+```ts
+export interface XY {
+}
+```
+
+additional information relevant afterreading the type.
+
+explanation for the example profile
+
+**Filename:**
+`CPU.20250510.135416.51623.0.001.cpuprofile`
+
+**Profile content:**
+```json
+###
+```
+
+**DevTools Performance Tab:**  
+<img src=".." alt=".." width="800">
+
+---
+
+can you try to implement the same schema in cpu-profiling.md.
+
+first explain the schema then look for places then refacotr
+
+
+---
+
+## Micro-Prompt: `grep`-Sync Markdown TOC
+
+**1. Get Headings:**
+   ```bash
+   grep -n "^##\\+ " your-file.md 
+   ```
+   (`-n`=line numbers; `^##\\+ `=headings H2-H6).
+
+**2. Analyze & Rebuild TOC:**
+   Compare `grep` output to your TOC in `your-file.md`. Edit TOC to match `grep` data:
+
+   *   **Hierarchy Mapping (from `grep` `^##\\+ ` to TOC indent):**
+       *   `##`: `**[Text](#link)**` (0 spaces indent)
+       *   `###`: `- [Text](#link)` (2 spaces indent)
+       *   `####`: `- [Text](#link)` (4 spaces indent)
+       *   (etc., +2 spaces/level, no `**`)
+   *   **Anchor Links (`#link`):** Lowercase heading, spaces to hyphens.
+
+**Example Fix (`cpu-profiling.md` "Data Structure" section):**
+   `grep` showed `### Dimensions and Time` under `## Data Structure`.
+   TOC changed from:
+   ```markdown
+   - **[Data Structure](#data-structure)**
+   - **[Dimensions and Time](#dimensions-and-time)** 
+   ```
+   To (correctly nested):
+   ```markdown
+   - **[Data Structure](#data-structure)**
+     - [Dimensions and Time](#dimensions-and-time)
+   ```
+
+---

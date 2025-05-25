@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [2]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "(program)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [3]
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "main-work",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "children": []
+    }
+  ],
+  "startTime": 1,
+  "endTime": 300,
+  "samples": [3, 3, 3],
+  "timeDeltas": [0, 100, 100]
+} 

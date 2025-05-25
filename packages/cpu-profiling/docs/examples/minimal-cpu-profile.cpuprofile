@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "runMainESM",
+        "scriptId": "1",
+        "url": "node:internal/modules/run_main",
+        "lineNumber": 92,
+        "columnNumber": 19
+      },
+      "children": [
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "main-work",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "children": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "child-work-1",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      }
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "child-work-2",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 12,
+        "columnNumber": 2
+      }
+    }
+  ],
+  "startTime": 1,
+  "endTime": 400,
+  "samples": [
+    2,
+    4,
+    5
+  ],
+  "timeDeltas": [
+    0,
+    100,
+    100
+  ]
+}
