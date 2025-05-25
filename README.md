@@ -89,7 +89,7 @@ first explain the schema then look for places then refacotr
 
 ---
 
-## Micro-Prompt: `grep`-Sync Markdown TOC
+## Update ToC ->  `grep`-Sync Markdown TOC
 
 **1. Get Headings:**
    ```bash

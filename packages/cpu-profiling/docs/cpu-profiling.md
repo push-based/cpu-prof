@@ -26,10 +26,13 @@
         - [Step 3: Results Analysis](#step-3-results-analysis)
   - [Examples of Combining Arguments](#examples-of-combining-arguments)
 - **[Data Structure](#data-structure)**
-  - [Dimensions and Time](#dimensions-and-time)
+  - [Dimensions and Timing Data](#dimensions-and-timing-data)
+  - [Time deltas](#time-deltas)
+  - [Samples](#samples)
   - [Nodes](#nodes)
     - [Parent and child nodes](#parent-and-child-nodes)
-    - [CallFrame, and Depth](#callframe-and-depth)
+    - [CallFrame](#callframe)
+      - [Source Location and label](#source-location-and-label)
       - [Synthetic and Internal Frames](#synthetic-and-internal-frames)
 
 ## What is CPU profiling and why do we need it?
@@ -450,20 +453,24 @@ In the example below, we see a minimal CPU profile.
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile.png" alt="minimal-cpu-profile.png" width="800">
 
-### Dimensions and Time
+### Dimensions and Timing Data
 
 CPU profiles represent execution data across two primary dimensions: time (horizontal axis) and call-tree depth (vertical axis). Understanding these dimensions is crucial for interpreting flame charts and performance data.
 
-**Timing Data:**
+**Dimensions:**
 - `startTime` - the microsecond timestamp when profiling began
 - `endTime` - equals `startTime + Σ timeDeltas`, marking the profile's visible end
+**Timing Data:**
 - `timeDeltas` - an array of intervals (μs) between each sample tick. Time deltas overflow the visible end of the measure.
 - `samples` - an array of node IDs indicating which nodes were active during the profile.
 
-**Time (horizontal axis)** represents the execution timeline with `startTime` marking when profiling began, `endTime` marking the profile's visible end, and `timeDeltas` providing intervals between samples. **Call-tree depth (vertical axis)** shows the function call hierarchy where the root node is at depth 0, and each level represents nested function calls. The `samples` array contains the "leaf frames" - the deepest executing functions at each time interval, with their parent chain automatically reconstructed for visualization.
+**Time (horizontal axis)** represents the execution timeline with `startTime` marking when profiling began, `endTime` marking the profile's visible end, and `timeDeltas` providing intervals between samples.  
+**Call-tree depth (vertical axis)** shows the function call hierarchy where the root node is at depth 0, and each level represents nested function calls. The `samples` array contains the "leaf frames" - the deepest executing functions at each time interval, with their parent chain automatically reconstructed for visualization.
 
 > **NOTE**  
 > The samples array is the list of "visible" nodes looking from the bottom of the chart. Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too. Therefore, the samples array is a list "leaf frame" in the chart.
+
+The example below shows a profile with 1 node (ID 2) centered in the middle of the chart. This is done by `timeDelta` to the node and `endTime` to the end of the profile.
 
 **Profile:** [`minimal-cpu-profile-timing-data.cpuprofile`](./examples/minimal-cpu-profile-timing-data.cpuprofile)
 
@@ -490,6 +497,167 @@ CPU profiles represent execution data across two primary dimensions: time (horiz
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-profile-length.png" alt="minimal-cpu-profile-profile-length.png" width="800">
+
+
+### Time deltas
+
+**Profile:** [`minimal-cpu-profile-timing-data-time-deltas.cpuprofile`](./examples/minimal-cpu-profile-timing-data-time-deltas.cpuprofile)
+```json
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [2, 3]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "work-1",
+        "scriptId": "1",
+        "url": "file:///a.js",
+        "lineNumber": 92,
+        "columnNumber": 19
+      }
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "work-2",
+        "scriptId": "2",
+        "url": "file:///b.js",
+        "lineNumber": 92,
+        "columnNumber": 19
+      }
+    }
+  ],
+  "startTime": 4,
+  "endTime": 27,
+  "samples": [
+    1, 2, 1, 3, 1, 2, 1, 3
+  ],
+  "timeDeltas": [
+    0, 1, 3, 2, 5, 1, 4, 2
+  ]
+}
+```
+
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile-timing-data-time-deltas.png" alt="minimal-cpu-profile-timing-data-time-deltas.png" width="800">  
+
+### Samples
+
+Samples are the list of "visible" nodes looking from the bottom of the chart. Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too. Therefore, the samples array is a list "leaf frame" in the chart. 
+
+**Profile:** [`minimal-cpu-profile-timing-data-samples.cpuprofile`](./examples/minimal-cpu-profile-timing-data-samples.cpuprofile)
+```json
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [2, 3]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "work-1",
+        "scriptId": "1",
+        "url": "file:///a.js",
+        "lineNumber": 92,
+        "columnNumber": 19
+      },
+      "children": [4]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "helper",
+        "scriptId": "1",
+        "url": "file:///a.js",
+        "lineNumber": 98,
+        "columnNumber": 5
+      },
+      "children": [5]
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "compute",
+        "scriptId": "1",
+        "url": "file:///a.js",
+        "lineNumber": 99,
+        "columnNumber": 5
+      }
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "work-2",
+        "scriptId": "2",
+        "url": "file:///b.js",
+        "lineNumber": 92,
+        "columnNumber": 19
+      },
+      "children": [6]
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "fetch-data",
+        "scriptId": "2",
+        "url": "file:///b.js",
+        "lineNumber": 120,
+        "columnNumber": 3
+      },
+      "children": [7]
+    },
+    {
+      "id": 7,
+      "callFrame": {
+        "functionName": "parse-result",
+        "scriptId": "2",
+        "url": "file:///b.js",
+        "lineNumber": 121,
+        "columnNumber": 5
+      }
+    }
+  ],
+  "startTime": 1,
+  "endTime": 160,
+  "samples": [
+    1, 2, 4, 5, 4, 2, 1,
+    1, 3, 6, 7, 6, 7, 6, 3, 1
+  ],
+  "timeDeltas": [
+    0, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10
+  ]
+}
+```
+
+This example draws the same node (1->2->3) 2 times.
+
+- The first time it draws them as a "tower", where each frame is the same width (takes the same time).  
+  `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]` (looks like ▀▀)
+- The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
+  `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
+
+
+**DevTools Performance Tab:**  
+<img src="imgs/minimal-cpu-profile-timing-data-samples.png" alt="minimal-cpu-profile-timing-data-samples.png" width="800">  
 
 ### Nodes
 
@@ -533,8 +701,6 @@ export interface Node {
 Traversal starts at the root (no parent) and recurses through children to rebuild the full call hierarchy, useful for flame chart rendering and aggregating inclusive vs. exclusive hit counts.
 
 **Profile:** [`minimal-cpu-profile-nodes-parent-child.cpuprofile`](./examples/minimal-cpu-profile-nodes-parent-child.cpuprofile)
-
-**Profile content:**
 ```json
 {
   "nodes": [
@@ -583,16 +749,12 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
 **DevTools Performance Tab:**  
 <img src="imgs/parent-child-nodes.png" alt="parent-child-nodes.png" width="800">
 
-#### CallFrame, and Depth
+#### CallFrame
 
-CallFrame is a structure that contains information about the function being executed, the script it belongs to, and its location in the script.
+**Frames** are the `callFrame` objects containing source location information (file, function name, line, column) that DevTools displays. The depth determines vertical stacking in flame charts, with deeper calls appearing lower in the visualization.
+
 
 ```ts
-/**
- * Represents a single call frame in the CPU profile.
- * Each call frame contains information about the function being executed,
- * the script it belongs to, and its location in the script.
- */
 type CallFrame = {
   // Name of the function being executed
   functionName: string;
@@ -607,10 +769,17 @@ type CallFrame = {
 };
 ```
 
-**Nodes** are entries in `cpuProfile.nodes` representing call-frames (boxes in the chart) with unique IDs, call frame details, and optional parent/children pointers for tree reconstruction. **Frames** are the `callFrame` objects containing source location information (file, function name, line, column) that DevTools displays. The depth determines vertical stacking in flame charts, with deeper calls appearing lower in the visualization.
+##### Source Location and label
 
-**Profile:** [`minimal-cpu-profile-nodes-call-frame-depth.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-depth.cpuprofile)
+The `callFrame` object provides details about the source code location and helps identify functions in the DevTools profiler.
 
+- `functionName`: The name of the executed function.
+- `url`: The file path or URL of the script. This also determines the color-coding of frames in the flame chart (same URL means same color).
+- `scriptId`: A unique identifier for the script.
+- `lineNumber`: The line number within the script.
+- `columnNumber`: The column number within the script.
+
+**Profile:** [`minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile)
 ```json
 {
   "nodes": [
@@ -623,70 +792,57 @@ type CallFrame = {
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2
-      ]
+      "children": [2]
     },
     {
       "id": 2,
       "callFrame": {
-        "functionName": "runMainESM",
+        "functionName": "work-1",
         "scriptId": "1",
-        "url": "node:internal/modules/run_main",
+        "url": "file:///1.js",
         "lineNumber": 92,
         "columnNumber": 19
       },
-      "children": [
-        3
-      ]
+      "children": [3, 4]
     },
     {
       "id": 3,
       "callFrame": {
-        "functionName": "main-work",
+        "functionName": "child-work-1",
+        "scriptId": "1",
+        "url": "file:///1.js",
+        "lineNumber": 12,
+        "columnNumber": 34
+      }
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "work-2",
         "scriptId": "2",
-        "url": "file:///index.mjs",
-        "lineNumber": 10,
-        "columnNumber": 0
-      },
-      "children": []
+        "url": "file:///2.js",
+        "lineNumber": 12,
+        "columnNumber": 34
+      }
     }
   ],
   "startTime": 1,
-  "endTime":   800,
-  "samples":    [1,   3,   3,   1,   2,   3,  2,   1],
-  "timeDeltas": [0, 100, 100, 100, 100, 100, 100, 100]
+  "endTime": 40,
+  "samples": [
+     1, 3, 4, 1
+  ],
+  "timeDeltas": [
+    0, 10, 10, 10
+  ]
 }
 ```
 
-This example draws the same node (1->2->3) 2 times.
-
-- The first time it draws them as a "tower", where each frame is the same width (takes the same time).  
-  `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]` (looks like ▀▀)
-- The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
-  `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
-
 **DevTools Performance Tab:**  
-<img src="imgs/minimal-cpu-profile-depth.png" alt="minimal-cpu-profile-depth.png" width="800">
+<img src="imgs/minimal-cpu-profile-source-location.png" alt="minimal-cpu-profile-source-location.png" width="800">
 
 ##### Synthetic and Internal Frames
 
 Synthetic frames are special entries that V8 inserts to represent runtime states and operations that don't correspond to user JavaScript code. These frames provide important context about the execution environment and system-level operations.
-
-```ts
-type SyntheticFrame = {
-  // Function name in parentheses indicating synthetic nature
-  functionName: string; // e.g. "(root)", "(program)", "(idle)", "(garbage collector)"
-  // Always "0" for synthetic frames
-  scriptId: "0";
-  // Always empty string for synthetic frames
-  url: "";
-  // Typically -1 for synthetic frames
-  lineNumber: -1;
-  // Typically -1 for synthetic frames
-  columnNumber: -1;
-};
-```
 
 Synthetic frames have `functionName` in parentheses representing entry points, top-level script evaluation, idle time, and GC cycles. The `scriptId` is always `"0"`, the `url` is empty `""`, and `lineNumber`/`columnNumber` are typically `-1`. These frames help distinguish between user code execution and runtime overhead in performance analysis.
 
