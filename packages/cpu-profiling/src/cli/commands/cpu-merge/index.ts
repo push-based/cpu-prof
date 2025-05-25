@@ -7,7 +7,7 @@ import { handler } from './handler';
  * Merge command module for yargs
  */
 export const mergeCommand: CommandModule<{}, MergeArgs> = {
-  command: 'cpu-merge [inputFiles..]',
+  command: 'cpu-merge <inputDir>',
   describe:
     'Merge multiple Chrome DevTools trace files or CPU profile files into a single file',
   builder,
