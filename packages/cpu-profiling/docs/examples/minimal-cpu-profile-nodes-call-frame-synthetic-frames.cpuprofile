@@ -9,7 +9,7 @@
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [2]
+      "children": [2, 3, 5, 6]
     },
     {
       "id": 2,
@@ -20,7 +20,7 @@
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [3]
+      "children": []
     },
     {
       "id": 3,
@@ -31,11 +31,45 @@
         "lineNumber": 10,
         "columnNumber": 0
       },
+      "children": [
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "child-work-1",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      }
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "(garbage collector)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": []
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "(idle)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
       "children": []
     }
   ],
   "startTime": 1,
-  "endTime": 300,
-  "samples": [3, 3, 3],
-  "timeDeltas": [0, 100, 100]
+  "endTime": 700,
+  "samples":    [1,   2,   3,   4,   5,   6],
+  "timeDeltas": [0, 100, 100, 100, 100, 100]
 } 

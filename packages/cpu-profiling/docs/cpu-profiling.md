@@ -478,7 +478,7 @@ CPU profiles represent execution data across two primary dimensions: time (horiz
     {
       "id": 2,
       "callFrame": { "functionName": "runMainESM", "scriptId": "1", "url": "node:internal/modules/run_main", "lineNumber": 92, "columnNumber": 19 },
-      "children": [3]
+      "children": []
     }
   ],
   "startTime": 1,
@@ -665,8 +665,6 @@ This example draws the same node (1->2->3) 2 times.
   `"samples":    [1,   3,   3,   1], "timeDeltas": [0, 100, 100, 100]` (looks like ▀▀)
 - The second time it draws them as a "flame", where each frame is slightly smaller nested into the parent one.  
   `"samples":    [1,   2,   3,  2,   1], "timeDeltas": [0, 100, 100, 100, 100]` (looks like ▔▀▔)
-  
-  TODO make cool ascii rxplanation of samples.
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-cpu-profile-depth.png" alt="minimal-cpu-profile-depth.png" width="800">
@@ -706,7 +704,7 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [2]
+      "children": [2, 3, 5, 6]
     },
     {
       "id": 2,
@@ -717,7 +715,7 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [3]
+      "children": []
     },
     {
       "id": 3,
@@ -728,14 +726,48 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
         "lineNumber": 10,
         "columnNumber": 0
       },
+      "children": [
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "child-work-1",
+        "scriptId": "2",
+        "url": "file:///index.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      }
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "(garbage collector)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": []
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "(idle)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
       "children": []
     }
   ],
   "startTime": 1,
-  "endTime": 300,
-  "samples": [3, 3, 3],
-  "timeDeltas": [0, 100, 100]
-}
+  "endTime": 700,
+  "samples":    [1,   2,   3,   4,   5,   6],
+  "timeDeltas": [0, 100, 100, 100, 100, 100]
+} 
 ```
 
 **DevTools Performance Tab:**  
