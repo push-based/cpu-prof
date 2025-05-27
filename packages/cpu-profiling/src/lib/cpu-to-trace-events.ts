@@ -44,7 +44,7 @@ export function cpuProfileToTraceProfileEvents(
   return [
     // CpuProfiler::StartProfiling event is needed to make it visible in the panel
     {
-      cat: 'disabled-by-default-v8',
+      cat: 'v8',
       name: 'CpuProfiler::StartProfiling',
       dur: 0,
       ph: 'i',
@@ -59,7 +59,7 @@ export function cpuProfileToTraceProfileEvents(
     },
     // 1 Profile event is needed to make the panel aware of the profile
     {
-      cat: 'disabled-by-default-v8.cpu_profiler',
+      cat: 'v8.cpu_profiler',
       id: `0x${id}`,
       name: 'Profile',
       ph: 'P',
@@ -75,7 +75,7 @@ export function cpuProfileToTraceProfileEvents(
     },
     // 1 ProfileChunk event is needed to including the full profile
     {
-      cat: 'disabled-by-default-v8.cpu_profiler',
+      cat: 'v8.cpu_profiler',
       name: 'ProfileChunk',
       id: `0x${id}`,
       ph: 'P',
@@ -94,7 +94,7 @@ export function cpuProfileToTraceProfileEvents(
     },
     // CpuProfiler::StopProfiling event is optional but here for completeness
     {
-      cat: 'disabled-by-default-v8',
+      cat: 'v8',
       name: 'CpuProfiler::StopProfiling',
       dur: 0,
       ph: 'i',
@@ -113,7 +113,7 @@ export function cpuProfileToTraceProfileEvents(
 export function getThreadNameTraceEvent(
   pid: number,
   tid: number,
-  name: string = 'CrRendererMain'
+  name: string
 ): ThreadNameEvent {
   return {
     cat: '__metadata',
@@ -157,7 +157,7 @@ export function getRunTaskTraceEvent(
   const { ts, dur } = opt;
   return {
     args: {},
-    cat: 'disabled-by-default-devtools.timeline',
+    cat: 'devtools.timeline',
     dur,
     name: 'RunTask',
     ph: 'X',
@@ -178,7 +178,7 @@ export function getStartTracing(
 ): TracingStartedInBrowserEvent {
   const { traceStartTs, frameTreeNodeId = 1, url } = opt;
   return {
-    cat: 'disabled-by-default-devtools.timeline',
+    cat: 'devtools.timeline',
     name: 'TracingStartedInBrowser',
     ph: 'i',
     pid,
@@ -244,7 +244,7 @@ export function cpuProfilesToTraceFile(
         return [
           // @TODO handle naming more intuitively
           ...(sourceFilePath
-            ? [getProcessNameTraceEvent(pid, tid, sourceFilePath)]
+            ? [getProcessNameTraceEvent(pid, tid)]
             : []),
           getThreadNameTraceEvent(
             pid,

@@ -29,7 +29,7 @@ describe('mergeCpuProfileFiles', () => {
     const outputFileContent = await readFile(outputFile, 'utf8');
     const output = JSON.parse(outputFileContent);
 
-    expect(
+    await expect(
       JSON.stringify(
         {
           ...output,

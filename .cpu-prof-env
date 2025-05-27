@@ -6,3 +6,6 @@ NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/n
 
 # Node <22
 # NODE_OPTIONS="--require cpu-prof.js"
+
+# ESLINT Profile summary
+TIMING=true

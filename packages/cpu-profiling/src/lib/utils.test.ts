@@ -14,7 +14,7 @@ import { mkdir } from 'node:fs/promises';
 const PACKAGE_ROOT = join(__dirname, '..');
 const PROJECT_ROOT = join(PACKAGE_ROOT, '../..');
 const TMP_DIR = join(PROJECT_ROOT, 'tmp');
-const MOCKS_DIR = join(PACKAGE_ROOT, 'mocks');
+const MOCKS_DIR = join(PACKAGE_ROOT, '..', 'mocks');
 
 describe.todo(
   'CPU profile file name generation - This is here to test the official docs and our assumptions',

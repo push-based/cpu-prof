@@ -23,8 +23,6 @@ const createTestProfileInfo = (overrides = {}) => ({
   pid: 10001,
   tid: 20001,
   sequence: 1,
-  sourceFilePath: 'main.mjs',
-  execArgs: ['node', '--cpu-prof', 'main.mjs'],
   ...overrides,
 });
 
@@ -60,9 +58,7 @@ describe('cpuProfilesToTraceFile', () => {
       createTestProfileInfo({ tid: 20002 }),
       createTestProfileInfo({
         tid: 20003,
-        startDate: new Date('2025-05-17T20:56:30.714Z'),
-        sourceFilePath: 'build.mjs',
-        execArgs: ['node', '--cpu-prof', 'build.mjs'],
+        startDate: new Date('2025-05-17T20:56:30.714Z')
       }),
     ];
 
