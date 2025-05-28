@@ -1,20 +1,21 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   cpuProfilesToTraceFile,
-  cpuProfileToTraceEvents,
+  cpuProfileToTraceProfileEvents,
   getProcessNameTraceEvent,
 } from './cpu-to-trace-events';
-import * as profileSelection from '../profile-selection';
+import * as profileSelection from './profile-selection';
 import { mkdir } from 'fs/promises';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { CPUProfile } from './cpuprofile.types';
 import { readFileSync } from 'fs';
-import { CpuProfileInfo } from '../types';
+import { CpuProfileInfo } from './cpuprofile.types';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const minimalProfilesPath = join(
   __dirname,
+  '..',
   '..',
   '..',
   'mocks',

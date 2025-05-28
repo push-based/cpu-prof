@@ -3,13 +3,13 @@ import { getMainProfileInfo } from './profile-selection';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
-import { CPUProfile } from './cpu/cpuprofile.types';
+import { CPUProfile } from './cpuprofile.types';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const minimalCpuProfile: CPUProfile = JSON.parse(
   (
     await readFile(
-      join(__dirname, '../../mocks/fixtures/minimal.cpuprofile'),
+      join(__dirname, '../../../mocks/fixtures/minimal.cpuprofile'),
       'utf8'
     )
   ).toString()

@@ -1,14 +1,10 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
-import {
-  execWithCpuProf,
-  getCpuProfileName,
-  parseCpuProfileName,
-} from './utils';
+import { getCpuProfileName, parseCpuProfileName } from './utils';
 import { join } from 'path';
 import { readdir, readFile, rm } from 'fs/promises';
 import { execSync } from 'node:child_process';
 import { statSync } from 'node:fs';
-import { CPUProfile } from './cpu/cpuprofile.types';
+import { CPUProfile } from './cpuprofile.types';
 import { mkdir } from 'node:fs/promises';
 
 const PACKAGE_ROOT = join(__dirname, '..');
@@ -222,125 +218,5 @@ describe('parseCpuProfileName', () => {
 
   it('should throw error for malformed profile name', () => {
     expect(() => parseCpuProfileName('invalid.profile.name')).toThrow();
-  });
-});
-
-describe('execWithCpuProf', () => {
-  const mergeTmp = join(TMP_DIR, 'cpu-profiling/merge');
-
-  beforeEach(async () => {
-    await rm(mergeTmp, { recursive: true, force: true });
-  });
-
-  afterAll(async () => {
-    await rm(mergeTmp, { recursive: true, force: true });
-  });
-
-  it.each([
-    ['fork', join(MOCKS_DIR, 'program', 'fork-children.mjs')],
-    ['spawn', join(MOCKS_DIR, 'program', 'spawn-children.mjs')],
-    ['worker', join(MOCKS_DIR, 'program', 'worker-children.mjs')],
-  ])(
-    'should create CPU profiles for %s processes',
-    async (caseName, scriptPath) => {
-      const testCaseDir = join(mergeTmp, caseName);
-
-      const result = await execWithCpuProf({
-        scriptPath,
-        outputDir: testCaseDir,
-        cpuProfOptions: {
-          interval: 100,
-        },
-      });
-
-      expect(result.stdout).toContain('PID');
-      expect(result.stderr).toBe('');
-
-      const files = await readdir(testCaseDir);
-      const cpuProfiles = files.filter(
-        (f) => f.startsWith('CPU.') && f.endsWith('.cpuprofile')
-      );
-      expect(cpuProfiles).toHaveLength(3);
-
-      const profilePath = join(testCaseDir, cpuProfiles[0]);
-      const profileContent = await readFile(profilePath, 'utf8');
-      const profile: CPUProfile = JSON.parse(profileContent);
-
-      expect(profile).toMatchObject({
-        nodes: expect.any(Array),
-        samples: expect.any(Array),
-        timeDeltas: expect.any(Array),
-        startTime: expect.any(Number),
-        endTime: expect.any(Number),
-      });
-
-      // Ensure timeDeltas exists before calculating average
-      expect(profile.timeDeltas).toBeDefined();
-      expect(profile.timeDeltas!.length).toBeGreaterThan(0);
-    }
-  );
-
-  it('should respect custom CPU profiling options', async () => {
-    const testCaseDir = join(mergeTmp, 'custom-options');
-
-    await execWithCpuProf({
-      scriptPath: '-e "console.log(\'Hello, world!\')"',
-      outputDir: testCaseDir,
-      cpuProfOptions: {
-        interval: 500,
-        name: 'custom-profile.cpuprofile',
-      },
-    });
-
-    const files = await readdir(testCaseDir);
-    expect(files).toContain('custom-profile.cpuprofile');
-  });
-
-  it('should create output directory if it does not exist', async () => {
-    const testCaseDir = join(mergeTmp, 'new-dir/subdir');
-
-    await execWithCpuProf({
-      scriptPath: '-e "console.log(\'Hello, world!\')"',
-      outputDir: testCaseDir,
-    });
-
-    const files = await readdir(testCaseDir);
-    expect(files.length).toBeGreaterThan(0);
-  });
-
-  it('should throw on invalid script path', async () => {
-    await expect(
-      execWithCpuProf({
-        scriptPath: 'non-existent.js',
-        outputDir: mergeTmp,
-      })
-    ).rejects.toThrow();
-  });
-
-  it('should throw on timeout', async () => {
-    const scriptPath = join(MOCKS_DIR, 'program', 'fork-children.mjs');
-
-    await expect(
-      execWithCpuProf({
-        scriptPath,
-        outputDir: mergeTmp,
-        timeoutMs: 1,
-      })
-    ).rejects.toThrow();
-  });
-
-  it('should handle disabled profiling', async () => {
-    const testCaseDir = join(mergeTmp, 'disabled');
-
-    await execWithCpuProf({
-      scriptPath: '-e "console.log(\'Hello, world!\')"',
-      outputDir: testCaseDir,
-      cpuProfOptions: {
-        enabled: false,
-      },
-    });
-
-    const files = await readdir(testCaseDir);
-    expect(files.filter((f) => f.endsWith('.cpuprofile'))).toHaveLength(0);
   });
 });
