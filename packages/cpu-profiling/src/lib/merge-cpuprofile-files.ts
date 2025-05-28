@@ -9,7 +9,7 @@ import { CpuProfileInfo } from './types';
 export async function mergeCpuProfileFiles(
   sourceDir: string,
   outputFile: string,
-  options: { smosh?: boolean } = {}
+  options: { smosh?: boolean | 'pid' | 'tid' } = {}
 ): Promise<void> {
   const filesInDir: string[] = await readdir(sourceDir);
   const outputFileNameIfInSourceDir =

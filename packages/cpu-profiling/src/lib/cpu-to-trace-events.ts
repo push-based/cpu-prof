@@ -220,22 +220,50 @@ export function getTraceMetadata(info?: CpuProfileInfo): TraceMetadata {
 }
 
 /**
+ * Prepares CPU profile information based on the smosh option.
+ * Smosh options control how process IDs (pid) and thread IDs (tid) are handled:
+ * - false: Keep original values
+ * - true: Set both pid and tid to 1
+ * - 'pid': Set pid to 1 and use index as tid
+ * - 'tid': Set tid to 1 and keep original pid
+ */
+function prepareProfileInfos(
+  cpuProfileInfos: CpuProfileInfo[],
+  smosh: boolean | 'pid' | 'tid' = false
+): CpuProfileInfo[] {
+  if (smosh === false) return cpuProfileInfos;
+  if (smosh === true) {
+    return cpuProfileInfos.map((info, idx) => {
+      const { pid: _, tid: __, ...rest } = info;
+      return { ...rest, pid: 1, tid: 1 };
+    });
+  }
+  if (smosh === 'pid') {
+    return cpuProfileInfos.map((info, idx) => {
+      const { pid: _, ...rest } = info;
+      return { ...rest, pid: 1 };
+    });
+  }
+  if (smosh === 'tid') {
+    return cpuProfileInfos.map((info) => {
+      const { tid: _, ...rest } = info;
+      return { ...rest, tid: 1 };
+    });
+  }
+  return cpuProfileInfos;
+}
+
+/**
  * Wraps a V8 CPU profile into a Trace Event-Format JSON,
  * and injects minimal timeline events for DevTools
  **/
 export function cpuProfilesToTraceFile(
   cpuProfileInfos: CpuProfileInfo[],
-  options: { smosh?: boolean }
+  options: { smosh?: boolean | 'pid' | 'tid' }
 ): TraceFile {
   const { smosh = false } = options ?? {};
 
-  const preparedProfileInfos = smosh
-    ? cpuProfileInfos.map(({ pid, tid, ...info }) => ({
-        ...info,
-        pid: 1,
-        tid: 1,
-      }))
-    : cpuProfileInfos;
+  const preparedProfileInfos = prepareProfileInfos(cpuProfileInfos, smosh);
 
   const mainProfileInfo = getMainProfileInfo(preparedProfileInfos);
   const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
@@ -243,15 +271,14 @@ export function cpuProfilesToTraceFile(
   const traceFile: TraceFile = {
     metadata: getTraceMetadata(mainProfileInfo),
     traceEvents: [
-      /*       getStartTracing(mainPid, mainTid, {
-                      traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
-                      // has to be valid URL @TODO
-                      url: `file://test-file`,
-                      frameTreeNodeId: sequence
-                  }),*/
+      getStartTracing(mainPid, mainTid, {
+        traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
+        // has to be valid URL @TODO
+        url: `file://test-file`,
+        frameTreeNodeId: sequence,
+      }),
       ...preparedProfileInfos.flatMap((info) => {
         const { cpuProfile, pid, tid, sourceFilePath } = info;
-        const { startTime, timeDeltas = [] } = cpuProfile;
         return [
           // @TODO handle naming more intuitively
           ...(sourceFilePath ? [getProcessNameTraceEvent(pid, tid, '')] : []),

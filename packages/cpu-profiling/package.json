@@ -33,7 +33,7 @@
       },
       "merge": {
         "dependsOn": ["build"],
-        "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge --cpu-profiles"
+        "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
       },
       "cpu-prof-cli": {
         "dependsOn": ["build"],
@@ -48,7 +48,7 @@
           "reduce": {
             "command": "node packages/cpu-profiling/dist/profiling.esm.js trace-reduce"
           },
-          "cpu-merg": {
+          "cpu-merge": {
             "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
           }
         }

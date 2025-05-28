@@ -7,49 +7,76 @@
   },
   "traceEvents": [
     {
+      "cat": "devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frameTreeNodeId": 1,
+          "frames": [
+            {
+              "frame": "frame-1",
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "name": "",
+              "processId": 1,
+              "url": "file://test-file"
+            }
+          ],
+          "persistentIds": true
+        }
+      }
+    },
+    {
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
-      "args": {}
+      "args": {
+        "name": ""
+      }
     },
     {
       "cat": "v8",
       "name": "CpuProfiler::StartProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 100000000000,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 1
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x10001200010",
+      "id": "0x110",
       "name": "Profile",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 100000000000,
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 1
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x10001200010",
+      "id": "0x110",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
       "args": {
         "data": {
@@ -65,30 +92,18 @@
                   "columnNumber": -1
                 },
                 "children": [
-                  2
+                  2,
+                  3
                 ]
               },
               {
                 "id": 2,
                 "callFrame": {
-                  "functionName": "runMainESM",
+                  "functionName": "work-1",
                   "scriptId": "1",
-                  "url": "node:internal/modules/run_main",
+                  "url": "file:///a.js",
                   "lineNumber": 92,
                   "columnNumber": 19
-                },
-                "children": [
-                  3
-                ]
-              },
-              {
-                "id": 3,
-                "callFrame": {
-                  "functionName": "main-work",
-                  "scriptId": "2",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 10,
-                  "columnNumber": 0
                 },
                 "children": [
                   4
@@ -97,11 +112,24 @@
               {
                 "id": 4,
                 "callFrame": {
-                  "functionName": "child-work",
-                  "scriptId": "3",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 15,
-                  "columnNumber": 0
+                  "functionName": "helper",
+                  "scriptId": "1",
+                  "url": "file:///a.js",
+                  "lineNumber": 98,
+                  "columnNumber": 5
+                },
+                "children": [
+                  5
+                ]
+              },
+              {
+                "id": 5,
+                "callFrame": {
+                  "functionName": "compute",
+                  "scriptId": "1",
+                  "url": "file:///a.js",
+                  "lineNumber": 99,
+                  "columnNumber": 5
                 },
                 "children": []
               }
@@ -109,15 +137,21 @@
             "samples": [
               1,
               2,
-              3,
-              4
+              4,
+              5,
+              4,
+              2,
+              1
             ]
           },
           "timeDeltas": [
             0,
-            100,
-            100,
-            100
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
           ]
         }
       }
@@ -126,72 +160,62 @@
       "cat": "v8",
       "name": "CpuProfiler::StopProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 100000000400,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 160,
       "args": {
         "data": {
-          "endTime": 100000000400
+          "endTime": 160
         }
       }
-    },
-    {
-      "args": {},
-      "cat": "devtools.timeline",
-      "dur": 10,
-      "name": "RunTask",
-      "ph": "X",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 100000000400
     },
     {
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
-      "pid": 10001,
-      "tid": 20002,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
       "args": {
-        "name": " undefined"
+        "name": ""
       }
     },
     {
       "cat": "v8",
       "name": "CpuProfiler::StartProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20002,
-      "ts": 100000000000,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 0,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 0
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x10001200020",
+      "id": "0x110",
       "name": "Profile",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20002,
-      "ts": 100000000000,
+      "pid": 1,
+      "tid": 1,
+      "ts": 0,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 0
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x10001200020",
+      "id": "0x110",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20002,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
       "args": {
         "data": {
@@ -207,59 +231,69 @@
                   "columnNumber": -1
                 },
                 "children": [
-                  2
-                ]
-              },
-              {
-                "id": 2,
-                "callFrame": {
-                  "functionName": "runMainESM",
-                  "scriptId": "1",
-                  "url": "node:internal/modules/run_main",
-                  "lineNumber": 92,
-                  "columnNumber": 19
-                },
-                "children": [
                   3
                 ]
               },
               {
                 "id": 3,
                 "callFrame": {
-                  "functionName": "main-work",
+                  "functionName": "work-2",
                   "scriptId": "2",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 10,
-                  "columnNumber": 0
+                  "url": "file:///b.js",
+                  "lineNumber": 92,
+                  "columnNumber": 19
                 },
                 "children": [
-                  4
+                  6
                 ]
               },
               {
-                "id": 4,
+                "id": 6,
                 "callFrame": {
-                  "functionName": "child-work",
-                  "scriptId": "3",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 15,
-                  "columnNumber": 0
+                  "functionName": "fetch-data",
+                  "scriptId": "2",
+                  "url": "file:///b.js",
+                  "lineNumber": 120,
+                  "columnNumber": 3
+                },
+                "children": [
+                  7
+                ]
+              },
+              {
+                "id": 7,
+                "callFrame": {
+                  "functionName": "parse-result",
+                  "scriptId": "2",
+                  "url": "file:///b.js",
+                  "lineNumber": 121,
+                  "columnNumber": 5
                 },
                 "children": []
               }
             ],
             "samples": [
               1,
-              2,
               3,
-              4
+              6,
+              7,
+              6,
+              7,
+              6,
+              3,
+              1
             ]
           },
           "timeDeltas": [
-            0,
-            100,
-            100,
-            100
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
           ]
         }
       }
@@ -268,72 +302,62 @@
       "cat": "v8",
       "name": "CpuProfiler::StopProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20002,
-      "ts": 100000000400,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 160,
       "args": {
         "data": {
-          "endTime": 100000000400
+          "endTime": 160
         }
       }
-    },
-    {
-      "args": {},
-      "cat": "devtools.timeline",
-      "dur": 10,
-      "name": "RunTask",
-      "ph": "X",
-      "pid": 10001,
-      "tid": 20002,
-      "ts": 100000000400
     },
     {
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
-      "pid": 10001,
-      "tid": 20003,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
       "args": {
-        "name": " undefined"
+        "name": ""
       }
     },
     {
       "cat": "v8",
       "name": "CpuProfiler::StartProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20003,
-      "ts": 100000000000,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 1
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x10001200030",
+      "id": "0x110",
       "name": "Profile",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20003,
-      "ts": 100000000000,
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
       "args": {
         "data": {
-          "startTime": 100000000000
+          "startTime": 1
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x10001200030",
+      "id": "0x110",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20003,
+      "pid": 1,
+      "tid": 1,
       "ts": 0,
       "args": {
         "data": {
@@ -349,30 +373,18 @@
                   "columnNumber": -1
                 },
                 "children": [
-                  2
+                  2,
+                  3
                 ]
               },
               {
                 "id": 2,
                 "callFrame": {
-                  "functionName": "runMainESM",
+                  "functionName": "work-1",
                   "scriptId": "1",
-                  "url": "node:internal/modules/run_main",
+                  "url": "file:///a.js",
                   "lineNumber": 92,
                   "columnNumber": 19
-                },
-                "children": [
-                  3
-                ]
-              },
-              {
-                "id": 3,
-                "callFrame": {
-                  "functionName": "main-work",
-                  "scriptId": "2",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 10,
-                  "columnNumber": 0
                 },
                 "children": [
                   4
@@ -381,11 +393,24 @@
               {
                 "id": 4,
                 "callFrame": {
-                  "functionName": "child-work",
-                  "scriptId": "3",
-                  "url": "file:///index.mjs",
-                  "lineNumber": 15,
-                  "columnNumber": 0
+                  "functionName": "helper",
+                  "scriptId": "1",
+                  "url": "file:///a.js",
+                  "lineNumber": 98,
+                  "columnNumber": 5
+                },
+                "children": [
+                  5
+                ]
+              },
+              {
+                "id": 5,
+                "callFrame": {
+                  "functionName": "compute",
+                  "scriptId": "1",
+                  "url": "file:///a.js",
+                  "lineNumber": 99,
+                  "columnNumber": 5
                 },
                 "children": []
               }
@@ -393,15 +418,21 @@
             "samples": [
               1,
               2,
-              3,
-              4
+              4,
+              5,
+              4,
+              2,
+              1
             ]
           },
           "timeDeltas": [
             0,
-            100,
-            100,
-            100
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
           ]
         }
       }
@@ -410,25 +441,15 @@
       "cat": "v8",
       "name": "CpuProfiler::StopProfiling",
       "dur": 0,
-      "ph": "i",
-      "pid": 10001,
-      "tid": 20003,
-      "ts": 100000000400,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 160,
       "args": {
         "data": {
-          "endTime": 100000000400
+          "endTime": 160
         }
       }
-    },
-    {
-      "args": {},
-      "cat": "devtools.timeline",
-      "dur": 10,
-      "name": "RunTask",
-      "ph": "X",
-      "pid": 10001,
-      "tid": 20003,
-      "ts": 100000000400
     }
   ]
 }
