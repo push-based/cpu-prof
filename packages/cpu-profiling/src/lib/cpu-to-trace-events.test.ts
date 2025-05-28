@@ -177,7 +177,7 @@ describe('cpuProfilesToTraceFile', () => {
     );
   });
 
-  it('should convert multiple CPU profiles with smosh option a trace file format', async () => {
+  it('should convert multiple CPU profiles with smosh=all option to a trace file format', async () => {
     const profiles = [
       createTestProfileInfo(),
       createTestProfileInfo({
