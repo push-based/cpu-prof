@@ -1,10 +1,10 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
-import { parseCpuProfileName } from './utils';
+import { parseCpuProfileName } from './cpu/utils';
 import { readdir } from 'fs/promises';
-import { CPUProfile } from './cpuprofile.types';
-import { cpuProfilesToTraceFile } from './cpu-to-trace-events';
-import { CpuProfileInfo } from './types';
+import { CPUProfile } from './cpu/cpuprofile.types';
+import { cpuProfilesToTraceFile } from './cpu/cpu-to-trace-events';
+import { CpuProfileInfo } from './cpu/cpuprofile.types';
 
 export async function mergeCpuProfileFiles(
   sourceDir: string,

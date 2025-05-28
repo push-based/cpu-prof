@@ -10,8 +10,8 @@
       "cat": "devtools.timeline",
       "name": "TracingStartedInBrowser",
       "ph": "I",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 10,
+      "tid": 11,
       "ts": 1,
       "s": "t",
       "args": {
@@ -23,7 +23,7 @@
               "isInPrimaryMainFrame": true,
               "isOutermostMainFrame": true,
               "name": "",
-              "processId": 10001,
+              "processId": 10,
               "url": "file://test-file"
             }
           ],
@@ -35,8 +35,8 @@
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 10,
+      "tid": 11,
       "ts": 0,
       "args": {
         "name": ""
@@ -47,8 +47,8 @@
       "name": "CpuProfiler::StartProfiling",
       "dur": 0,
       "ph": "I",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 10,
+      "tid": 11,
       "ts": 1,
       "args": {
         "data": {
@@ -58,11 +58,11 @@
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x10001200010",
+      "id": "0x10110",
       "name": "Profile",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 10,
+      "tid": 11,
       "ts": 1,
       "args": {
         "data": {
@@ -73,10 +73,10 @@
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x10001200010",
+      "id": "0x10110",
       "ph": "P",
-      "pid": 10001,
-      "tid": 20001,
+      "pid": 10,
+      "tid": 11,
       "ts": 0,
       "args": {
         "data": {
@@ -91,45 +91,67 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [2, 3]
+                "children": [
+                  2
+                ]
               },
               {
                 "id": 2,
                 "callFrame": {
-                  "functionName": "work-1",
+                  "functionName": "step-1",
                   "scriptId": "1",
-                  "url": "file:///a.js",
-                  "lineNumber": 92,
-                  "columnNumber": 19
+                  "url": "file:///b.js",
+                  "lineNumber": 10,
+                  "columnNumber": 0
                 },
-                "children": [4]
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "step-2",
+                  "scriptId": "1",
+                  "url": "file:///b.js",
+                  "lineNumber": 20,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4
+                ]
               },
               {
                 "id": 4,
                 "callFrame": {
-                  "functionName": "helper",
+                  "functionName": "step-3",
                   "scriptId": "1",
-                  "url": "file:///a.js",
-                  "lineNumber": 98,
-                  "columnNumber": 5
-                },
-                "children": [5]
-              },
-              {
-                "id": 5,
-                "callFrame": {
-                  "functionName": "compute",
-                  "scriptId": "1",
-                  "url": "file:///a.js",
-                  "lineNumber": 99,
-                  "columnNumber": 5
+                  "url": "file:///b.js",
+                  "lineNumber": 30,
+                  "columnNumber": 0
                 },
                 "children": []
               }
             ],
-            "samples": [1, 2, 4, 5, 4, 2, 1]
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              3,
+              2,
+              1
+            ]
           },
-          "timeDeltas": [0, 10, 10, 10, 10, 10, 10]
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
         }
       }
     },
@@ -138,12 +160,12 @@
       "name": "CpuProfiler::StopProfiling",
       "dur": 0,
       "ph": "I",
-      "pid": 10001,
-      "tid": 20001,
-      "ts": 160,
+      "pid": 10,
+      "tid": 11,
+      "ts": 70,
       "args": {
         "data": {
-          "endTime": 160
+          "endTime": 70
         }
       }
     }

@@ -5,7 +5,7 @@ import {
   coerceStringArray,
   coerceNumberArray,
   coerceStringArrayWithDefaults,
-} from '../../../lib/utils';
+} from '../../../lib/cpu/utils';
 import { validateTraceReduceArgs } from './helpers';
 import { findNewestTraceFile, generateOutputFilename } from '../../utils';
 
