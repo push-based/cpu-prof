@@ -96,7 +96,7 @@ export type Phase =
   | 'E'
   | 'X'
   // Instant events:
-  | 'i'
+  | 'I'
   // Counter events:
   | 'C'
   // Async events (nestable):
@@ -177,7 +177,7 @@ export interface CompleteEvent extends TraceEventBase {
 }
 
 export interface InstantEvent extends TraceEventBase {
-  ph: 'i';
+  ph: 'I';
   dur: 0;
   name: string;
   s?: InstantScope;
@@ -256,7 +256,7 @@ export interface Frame {
  * Event marking that tracing has started in the browser.
  */
 export interface TracingStartedInBrowserEvent extends TraceEventBase {
-  ph: 'i';
+  ph: 'I';
   cat: Category<'devtools.timeline'>;
   name: 'TracingStartedInBrowser';
   pid: number;

@@ -8,7 +8,8 @@ import { CpuProfileInfo } from './types';
 
 export async function mergeCpuProfileFiles(
   sourceDir: string,
-  outputFile: string
+  outputFile: string,
+  options: { smosh?: boolean } = {}
 ): Promise<void> {
   const filesInDir: string[] = await readdir(sourceDir);
   const outputFileNameIfInSourceDir =
@@ -46,6 +47,6 @@ export async function mergeCpuProfileFiles(
     })
   );
 
-  const output = cpuProfilesToTraceFile(profiles);
+  const output = cpuProfilesToTraceFile(profiles, options);
   await writeFile(outputFile, JSON.stringify(output, null, 2));
 }

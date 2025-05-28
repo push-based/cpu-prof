@@ -1,15 +1,15 @@
 import { CPUProfile } from './cpuprofile.types';
 import {
-  TraceMetadata,
-  TraceEvent,
-  TraceFile,
-  ThreadNameEvent,
-  ProcessNameEvent,
-  ProfileEvent,
-  ProfileChunkEvent,
-  TracingStartedInBrowserEvent,
   CpuProfilerStartProfilingEvent,
   CpuProfilerStopProfilingEvent,
+  ProcessNameEvent,
+  ProfileChunkEvent,
+  ProfileEvent,
+  ThreadNameEvent,
+  TraceEvent,
+  TraceFile,
+  TraceMetadata,
+  TracingStartedInBrowserEvent,
 } from './traceprofile.types';
 import { basename } from 'node:path';
 import { getMainProfileInfo } from './profile-selection';
@@ -47,7 +47,7 @@ export function cpuProfileToTraceProfileEvents(
       cat: 'v8',
       name: 'CpuProfiler::StartProfiling',
       dur: 0,
-      ph: 'i',
+      ph: 'I',
       pid,
       tid,
       ts: startTime,
@@ -97,7 +97,7 @@ export function cpuProfileToTraceProfileEvents(
       cat: 'v8',
       name: 'CpuProfiler::StopProfiling',
       dur: 0,
-      ph: 'i',
+      ph: 'I',
       pid,
       tid,
       ts: endTime,
@@ -180,7 +180,7 @@ export function getStartTracing(
   return {
     cat: 'devtools.timeline',
     name: 'TracingStartedInBrowser',
-    ph: 'i',
+    ph: 'I',
     pid,
     tid,
     ts: traceStartTs,
@@ -224,41 +224,41 @@ export function getTraceMetadata(info?: CpuProfileInfo): TraceMetadata {
  * and injects minimal timeline events for DevTools
  **/
 export function cpuProfilesToTraceFile(
-  cpuProfileInfos: CpuProfileInfo[]
+  cpuProfileInfos: CpuProfileInfo[],
+  options: { smosh?: boolean }
 ): TraceFile {
-  const mainProfileInfo = getMainProfileInfo(cpuProfileInfos);
+  const { smosh = false } = options ?? {};
+
+  const preparedProfileInfos = smosh
+    ? cpuProfileInfos.map(({ pid, tid, ...info }) => ({
+        ...info,
+        pid: 1,
+        tid: 1,
+      }))
+    : cpuProfileInfos;
+
+  const mainProfileInfo = getMainProfileInfo(preparedProfileInfos);
   const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
 
   const traceFile: TraceFile = {
     metadata: getTraceMetadata(mainProfileInfo),
     traceEvents: [
-      /* getStartTracing(mainPid, mainTid, {
-                traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
-                // has to be valid URL @TODO
-                url: `file://${getThreadName({...mainProfileInfo, sourceFilePath: ''})}`,
-                frameTreeNodeId: sequence
-            }),*/
-      ...cpuProfileInfos.flatMap((info) => {
+      /*       getStartTracing(mainPid, mainTid, {
+                      traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
+                      // has to be valid URL @TODO
+                      url: `file://test-file`,
+                      frameTreeNodeId: sequence
+                  }),*/
+      ...preparedProfileInfos.flatMap((info) => {
         const { cpuProfile, pid, tid, sourceFilePath } = info;
         const { startTime, timeDeltas = [] } = cpuProfile;
         return [
           // @TODO handle naming more intuitively
-          ...(sourceFilePath
-            ? [getProcessNameTraceEvent(pid, tid)]
-            : []),
-          getThreadNameTraceEvent(
-            pid,
-            tid,
-            pid !== mainPid || tid !== mainTid ? getThreadName(info) : undefined
-          ),
+          ...(sourceFilePath ? [getProcessNameTraceEvent(pid, tid, '')] : []),
+          getThreadNameTraceEvent(pid, tid, ''),
           ...cpuProfileToTraceProfileEvents(cpuProfile, {
             pid,
             tid,
-          }),
-          // have a random event at the end to hackfix broken view @Todo find real problem
-          getRunTaskTraceEvent(pid, tid, {
-            ts: (startTime ?? 0) + timeDeltas.reduce((ts, d) => ts + d) + 100,
-            dur: 10,
           }),
         ];
       }),
