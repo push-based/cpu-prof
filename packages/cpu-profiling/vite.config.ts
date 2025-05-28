@@ -21,8 +21,8 @@ export default defineConfig(() => ({
       exclude: [
         'src/**/__snapshots__/**',
         'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-        'src/**/index.ts'
-      ]
+        'src/**/index.ts',
+      ],
     },
   },
 }));

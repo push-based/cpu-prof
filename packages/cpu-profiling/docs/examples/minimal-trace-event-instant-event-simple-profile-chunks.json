@@ -48,9 +48,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -61,9 +59,7 @@
                   "lineNumber": 92,
                   "columnNumber": 19
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -76,19 +72,9 @@
                 }
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              3
-            ]
+            "samples": [1, 2, 3, 3]
           },
-          "timeDeltas": [
-            0,
-            100,
-            100,
-            100
-          ]
+          "timeDeltas": [0, 100, 100, 100]
         }
       }
     },

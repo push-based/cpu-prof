@@ -229,10 +229,10 @@ export function getTraceMetadata(info?: CpuProfileInfo): TraceMetadata {
  */
 function prepareProfileInfos(
   cpuProfileInfos: CpuProfileInfo[],
-  smosh: boolean | 'pid' | 'tid' = false
+  smosh: false | 'all' | 'pid' | 'tid' = false
 ): CpuProfileInfo[] {
   if (smosh === false) return cpuProfileInfos;
-  if (smosh === true) {
+  if (smosh === 'all') {
     return cpuProfileInfos.map((info, idx) => {
       const { pid: _, tid: __, ...rest } = info;
       return { ...rest, pid: 1, tid: 1 };
@@ -259,37 +259,48 @@ function prepareProfileInfos(
  **/
 export function cpuProfilesToTraceFile(
   cpuProfileInfos: CpuProfileInfo[],
-  options: { smosh?: boolean | 'pid' | 'tid' }
+  options?: { smosh?: 'all' | 'pid' | 'tid'; startTracingInBrowser?: boolean }
 ): TraceFile {
-  const { smosh = false } = options ?? {};
+  const { smosh = false, startTracingInBrowser = true } = options ?? {};
 
   const preparedProfileInfos = prepareProfileInfos(cpuProfileInfos, smosh);
 
   const mainProfileInfo = getMainProfileInfo(preparedProfileInfos);
   const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
 
-  const traceFile: TraceFile = {
-    metadata: getTraceMetadata(mainProfileInfo),
-    traceEvents: [
+  const traceEvents = [];
+
+  // Conditionally add TracingStartedInBrowser event
+  if (startTracingInBrowser) {
+    traceEvents.push(
       getStartTracing(mainPid, mainTid, {
         traceStartTs: mainProfileInfo.cpuProfile.startTime ?? 0,
         // has to be valid URL @TODO
         url: `file://test-file`,
         frameTreeNodeId: sequence,
-      }),
-      ...preparedProfileInfos.flatMap((info) => {
-        const { cpuProfile, pid, tid, sourceFilePath } = info;
-        return [
-          // @TODO handle naming more intuitively
-          ...(sourceFilePath ? [getProcessNameTraceEvent(pid, tid, '')] : []),
-          getThreadNameTraceEvent(pid, tid, ''),
-          ...cpuProfileToTraceProfileEvents(cpuProfile, {
-            pid,
-            tid,
-          }),
-        ];
-      }),
-    ],
+      })
+    );
+  }
+
+  // Add the rest of the trace events
+  traceEvents.push(
+    ...preparedProfileInfos.flatMap((info) => {
+      const { cpuProfile, pid, tid, sourceFilePath } = info;
+      return [
+        // @TODO handle naming more intuitively
+        ...(sourceFilePath ? [getProcessNameTraceEvent(pid, tid, '')] : []),
+        getThreadNameTraceEvent(pid, tid, ''),
+        ...cpuProfileToTraceProfileEvents(cpuProfile, {
+          pid,
+          tid,
+        }),
+      ];
+    })
+  );
+
+  const traceFile: TraceFile = {
+    metadata: getTraceMetadata(mainProfileInfo),
+    traceEvents,
   };
 
   return traceFile;

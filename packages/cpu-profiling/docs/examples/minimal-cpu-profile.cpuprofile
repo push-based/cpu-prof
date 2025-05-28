@@ -9,9 +9,7 @@
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2
-      ]
+      "children": [2]
     },
     {
       "id": 2,
@@ -22,9 +20,7 @@
         "lineNumber": 92,
         "columnNumber": 19
       },
-      "children": [
-        3
-      ]
+      "children": [3]
     },
     {
       "id": 3,
@@ -35,10 +31,7 @@
         "lineNumber": 10,
         "columnNumber": 0
       },
-      "children": [
-        4,
-        5
-      ]
+      "children": [4, 5]
     },
     {
       "id": 4,
@@ -63,14 +56,6 @@
   ],
   "startTime": 1,
   "endTime": 400,
-  "samples": [
-    2,
-    4,
-    5
-  ],
-  "timeDeltas": [
-    0,
-    100,
-    100
-  ]
+  "samples": [2, 4, 5],
+  "timeDeltas": [0, 100, 100]
 }

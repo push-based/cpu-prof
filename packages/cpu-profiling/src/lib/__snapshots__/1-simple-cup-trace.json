@@ -7,6 +7,31 @@
   },
   "traceEvents": [
     {
+      "cat": "devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 10001,
+      "tid": 20001,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frameTreeNodeId": 1,
+          "frames": [
+            {
+              "frame": "frame-1",
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "name": "",
+              "processId": 10001,
+              "url": "file://test-file"
+            }
+          ],
+          "persistentIds": true
+        }
+      }
+    },
+    {
       "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
@@ -66,10 +91,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2,
-                  3
-                ]
+                "children": [2, 3]
               },
               {
                 "id": 2,
@@ -80,9 +102,7 @@
                   "lineNumber": 92,
                   "columnNumber": 19
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -93,9 +113,7 @@
                   "lineNumber": 98,
                   "columnNumber": 5
                 },
-                "children": [
-                  5
-                ]
+                "children": [5]
               },
               {
                 "id": 5,
@@ -109,25 +127,9 @@
                 "children": []
               }
             ],
-            "samples": [
-              1,
-              2,
-              4,
-              5,
-              4,
-              2,
-              1
-            ]
+            "samples": [1, 2, 4, 5, 4, 2, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10]
         }
       }
     },

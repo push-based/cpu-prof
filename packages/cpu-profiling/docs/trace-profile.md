@@ -32,6 +32,7 @@ This document provides a comprehensive guide to the Chrome DevTools Trace Event 
 ## Loading a profile in DevTools
 
 **In practice, when DevTools loads your JSON it:**
+
 1. Reads the initialBreadcrumb window to set the zoomed-in range.
 2. Applies any hidden/expandable rules.
 3. Groups events into tracks by their cat value.
@@ -157,7 +158,6 @@ Every trace event has a `pid` and `tid` field. The DevTools performance panel wi
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-event-trace-pid-tid-grouping.png" alt="DevTools Performance tab showing events grouped by PID and TID." width="800">
 
-
 ## Event Phase and Scope Enumerations
 
 Each trace event has a one-letter phase (`ph`) indicating its type.
@@ -165,42 +165,43 @@ We define a union of all allowed phase codes (excluding legacy/deprecated):
 
 **Legend for Table Symbols:**
 
-*   **Support Column:**
-    *   ✅ **(Recommended):** The event type is well-supported, standard, and generally recommended for use.
-    *   ⚠️ **(Conditional/Limited):** The event type is supported but may have specific conditions, limitations, or is intended for advanced/specific use cases. Its behavior or rendering might depend on other events or configurations.
-    *   ❌ **(Not Recommended/Deprecated):** The event type is deprecated, not standard, has significant issues, or is generally not recommended for creating new traces.
+- **Support Column:**
 
-*   **Visible in DevTools Column:**
-    *   ✅ **(Directly Visible):** The event directly renders a distinct visual element in the main DevTools Performance panel timeline (e.g., a bar for 'X', a marker for 'I', a flame chart segment for 'P').
-    *   ⚠️ **(Indirectly Visible/Affects Display):** The event itself might not be a primary bar/marker, but it influences the display (e.g., creating connections like flow events, affecting track names like metadata, generating counter graphs), or its visibility depends on specific contexts or DevTools settings.
-    *   ❌ **(Not Visible):** The event is processed internally by DevTools but does not typically render a distinct visual element in the main timeline views.
+  - ✅ **(Recommended):** The event type is well-supported, standard, and generally recommended for use.
+  - ⚠️ **(Conditional/Limited):** The event type is supported but may have specific conditions, limitations, or is intended for advanced/specific use cases. Its behavior or rendering might depend on other events or configurations.
+  - ❌ **(Not Recommended/Deprecated):** The event type is deprecated, not standard, has significant issues, or is generally not recommended for creating new traces.
+
+- **Visible in DevTools Column:**
+  - ✅ **(Directly Visible):** The event directly renders a distinct visual element in the main DevTools Performance panel timeline (e.g., a bar for 'X', a marker for 'I', a flame chart segment for 'P').
+  - ⚠️ **(Indirectly Visible/Affects Display):** The event itself might not be a primary bar/marker, but it influences the display (e.g., creating connections like flow events, affecting track names like metadata, generating counter graphs), or its visibility depends on specific contexts or DevTools settings.
+  - ❌ **(Not Visible):** The event is processed internally by DevTools but does not typically render a distinct visual element in the main timeline views.
 
 | Phase               | Description                         | Support | Visible in DevTools |
-|---------------------|-------------------------------------|---------|---------------------|
+| ------------------- | ----------------------------------- | ------- | ------------------- |
 | **Duration Events** |                                     |         |                     |
-| `X`                 | Complete event (begin + end in one) | ✅       | ✅                   |
-| `B`                 | Duration begin                      | ⚠️       | ❌                   |
-| `E`                 | Duration end                        | ⚠️       | ❌                   |
+| `X`                 | Complete event (begin + end in one) | ✅      | ✅                  |
+| `B`                 | Duration begin                      | ⚠️      | ❌                  |
+| `E`                 | Duration end                        | ⚠️      | ❌                  |
 | **Instant Events**  |                                     |         |                     |
-| `I`                 | Instant event                       | ✅       | ✅                   |
+| `I`                 | Instant event                       | ✅      | ✅                  |
 | **Counter Events**  |                                     |         |                     |
-| `C`                 | Counter event                       | ✅       | ❌                   |
+| `C`                 | Counter event                       | ✅      | ❌                  |
 | **Async Events**    |                                     |         |                     |
-| `b`                 | Async begin (nestable)              | ✅       | ❌                   |
-| `n`                 | Async instant (nestable)            | ✅       | ❌                   |
-| `e`                 | Async end (nestable)                | ✅       | ❌                   |
+| `b`                 | Async begin (nestable)              | ✅      | ❌                  |
+| `n`                 | Async instant (nestable)            | ✅      | ❌                  |
+| `e`                 | Async end (nestable)                | ✅      | ❌                  |
 | **Flow Events**     |                                     |         |                     |
-| `s`                 | Flow start                          | ✅       | ⚠️                   |
-| `t`                 | Flow step                           | ✅       | ⚠️                   |
-| `f`                 | Flow end                            | ✅       | ⚠️                   |
+| `s`                 | Flow start                          | ✅      | ⚠️                  |
+| `t`                 | Flow step                           | ✅      | ⚠️                  |
+| `f`                 | Flow end                            | ✅      | ⚠️                  |
 | **Sample Events**   |                                     |         |                     |
-| `P`                 | Sample event                        | ✅       | ✅                   |
+| `P`                 | Sample event                        | ✅      | ✅                  |
 | **Object Events**   |                                     |         |                     |
-| `N`                 | Object created                      | ✅       | ❌                   |
-| `O`                 | Object snapshot                     | ✅       | ❌                   |
-| `D`                 | Object destroyed                    | ✅       | ❌                   |
+| `N`                 | Object created                      | ✅      | ❌                  |
+| `O`                 | Object snapshot                     | ✅      | ❌                  |
+| `D`                 | Object destroyed                    | ✅      | ❌                  |
 | **Metadata Events** |                                     |         |                     |
-| `M`                 | Metadata event                      | ✅       | ⚠️                   |
+| `M`                 | Metadata event                      | ✅      | ⚠️                  |
 
 ---
 
@@ -373,78 +374,78 @@ Read more about Profile and ProfileChunk events in the [Phases - Sample Events](
 
 ```json
 {
-    "traceEvents": [
-      {
-        "cat": "disabled-by-default-v8",
-        "name": "CpuProfiler::StartProfiling",
-        "dur": 0,
-        "ph": "I",
-        "pid": 1,
-        "tid": 1,
-        "ts": 1,
-        "args": {
-          "data": {
-            "startTime": 1
-          }
-        }
-      },
-      {
-        "cat": "disabled-by-default-v8.cpu_profiler",
-        "id": "0x1",
-        "name": "Profile",
-        "ph": "P",
-        "pid": 1,
-        "tid": 1,
-        "ts": 1,
-        "args": {
-          "data": {
-            "startTime": 1
-          }
-        }
-      },
-      {
-        "cat": "disabled-by-default-v8.cpu_profiler",
-        "name": "ProfileChunk",
-        "id": "0x1",
-        "ph": "P",
-        "pid": 1,
-        "tid": 1,
-        "ts": 0,
-        "args": {
-          "data": {
-            "cpuProfile": {
-              "nodes": [
-                {
-                  "id": 1,
-                  "callFrame": {},
-                  "children": [2]
-                },
-                {
-                  "id": 2,
-                  "callFrame": {}
-                }
-             ],
-              "samples": [2]
-            },
-            "timeDeltas": [10]
-          }
-        }
-      },
-      {
-        "cat": "disabled-by-default-v8",
-        "name": "CpuProfiler::StopProfiling",
-        "dur": 0,
-        "ph": "I",
-        "pid": 1,
-        "tid": 1,
-        "ts": 20,
-        "args": {
-          "data": {
-            "endTime": 20
-          }
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
         }
       }
-    ]
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 0,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {},
+                "children": [2]
+              },
+              {
+                "id": 2,
+                "callFrame": {}
+              }
+            ],
+            "samples": [2]
+          },
+          "timeDeltas": [10]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 20,
+      "args": {
+        "data": {
+          "endTime": 20
+        }
+      }
+    }
+  ]
 }
 ```
 
@@ -456,15 +457,17 @@ Read more about Profile and ProfileChunk events in the [Phases - Sample Events](
 The example below focuses on the `TracingStartedInBrowser` event.
 
 The content of the profile contains:
+
 - `TracingStartedInBrowser` - The event that starts the tracing.
-- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as `name`
   - `pid`:1, `tid`: 1, `ts`: 10, `dur`: 10
-- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as `name`
   - `pid`:1, `tid`: 2, `ts`: 1, `dur`: 10
-- `RunTask` - A `CompletedTraceEvent` with `RunTask` as  `name` 
+- `RunTask` - A `CompletedTraceEvent` with `RunTask` as `name`
   - `pid`:2, `tid`: 2, `ts`: 1, `dur`: 10
 
 Without the `TracingStartedInBrowser` event, the DevTools will display:
+
 - Process 1
   - Thread 1 `-X`
   - Thread 2 `X-`
@@ -472,6 +475,7 @@ Without the `TracingStartedInBrowser` event, the DevTools will display:
   - Thread 1 `X-`
 
 Adding the `TracingStartedInBrowser` event will display:
+
 - Process 1
   - Thread 1 `-X`
   - Thread 2 `X-`
@@ -536,10 +540,10 @@ Also the events have now the highlighting we know and love form recorded traces 
 }
 ```
 
-**DevTools Performance Tab:**  
+**DevTools Performance Tab:**
 
-| No tracing started in browser | Tracing started in browser |
-|--------------------------------|---------------------------|
+| No tracing started in browser                                                                                                                                                                  | Tracing started in browser                                                                                                                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <img src="imgs/minimal-event-trace-instant-no-event-tracing-started-in-browser.png" alt="DevTools Performance tab showing events without 'TracingStartedInBrowser' highlighting." width="400"> | <img src="imgs/minimal-event-trace-instant-event-tracing-started-in-browser.png" alt="DevTools Performance tab showing events with 'TracingStartedInBrowser' event, resulting in standard browser trace highlighting." width="400"> |
 
 ### Counter Events
@@ -619,7 +623,7 @@ export interface FlowEndEvent extends TraceEventBase {
 
 If you ever wondered what is the best way to get a CPU profile into DevTools, this is your place. The Profile and ProfileChunk events are here to visualize CPU profile chunks into DevTools process threads.
 
-```
+````
 /** Sample Event (ph='P') – a sampling profiler event (e.g. CPU sample) */
 export interface SampleEvent extends TraceEventBase {
   ph: 'P';
@@ -864,11 +868,10 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
     }
   ]
 }
-```
+````
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-event-trace-instant-event-simple-profile-chunks.png" alt="DevTools Performance tab displaying a flame chart generated from Profile and ProfileChunk events." width="800">
-
 
 #### Streaming Profile Chunks
 
@@ -877,6 +880,7 @@ As the DevTools always need to be able to process live streamed data, also Profi
 The example below shows how a CPU profile can be scattered across multiple ProfileChunk events.
 
 In the example, we include:
+
 - `CpuProfiler::StartProfiling` - Start the CPU profiler.
 - `Profile` - Register the CPU profile to a thread.
 - `ProfileChunk` - Adds only the nodes to the profile thread.
@@ -884,7 +888,6 @@ In the example, we include:
 - `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the end of the next profile chunk.
 - `ProfileChunk` - Adds a sequence of samples and timeDeltas to the profile thread that connects with the start of the last profile chunk.
 - `CpuProfiler::StopProfiling` - Stop the CPU profiler.
-
 
 **Profile content:**
 
@@ -935,9 +938,7 @@ In the example, we include:
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -948,9 +949,7 @@ In the example, we include:
                   "lineNumber": 92,
                   "columnNumber": 19
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -978,19 +977,9 @@ In the example, we include:
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              1,
-              2,
-              3,
-              3
-            ]
+            "samples": [1, 2, 3, 3]
           },
-          "timeDeltas": [
-            0,
-            100,
-            100,
-            100
-          ]
+          "timeDeltas": [0, 100, 100, 100]
         }
       }
     },
@@ -1005,15 +994,9 @@ In the example, we include:
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              1,
-              3
-            ]
+            "samples": [1, 3]
           },
-          "timeDeltas": [
-            0,
-            50
-          ]
+          "timeDeltas": [0, 50]
         }
       }
     },
@@ -1028,15 +1011,9 @@ In the example, we include:
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              3,
-              2
-            ]
+            "samples": [3, 2]
           },
-          "timeDeltas": [
-            50,
-            50
-          ]
+          "timeDeltas": [50, 50]
         }
       }
     },
@@ -1051,15 +1028,9 @@ In the example, we include:
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              2,
-              2
-            ]
+            "samples": [2, 2]
           },
-          "timeDeltas": [
-            50,
-            50
-          ]
+          "timeDeltas": [50, 50]
         }
       }
     },
@@ -1202,7 +1173,6 @@ export interface ThreadNameEvent extends MetadataEventBase {
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-event-trace-process-name-thread-name.png" alt="DevTools Performance tab displaying process and thread names set by metadata events." width="800">
 
-
 #### Highlighting Lanes with ThreadName metadata event
 
 <!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
@@ -1224,10 +1194,9 @@ export interface ThreadNameEvent extends MetadataEventBase {
     },
 ```
 
-**DevTools Performance Tab:**  
+**DevTools Performance Tab:**
 
 <!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
 <!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-profiling.png) -->
 
 ---
-

@@ -1,4 +1,3 @@
-import path from 'path';
 import { isAbsolute, join } from 'node:path';
 import type { MergeArgs, ProcessedMergeArgs } from './types';
 
@@ -6,7 +5,7 @@ import type { MergeArgs, ProcessedMergeArgs } from './types';
  * Process and validate CLI arguments for the merge command
  */
 export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
-  let { inputDir, outputDir, verbose, smosh } = argv;
+  let { inputDir, outputDir, verbose, smosh, startTracingInBrowser } = argv;
 
   if (!inputDir) {
     // Should be caught by yargs due to <inputDir> being required (demandOption)
@@ -36,7 +35,7 @@ export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
     if (smosh) {
       console.log(
         `  🔄 Smosh mode enabled: ${
-          smosh === true
+          smosh === 'all'
             ? 'All profiles will be merged into a single thread'
             : smosh === 'pid'
             ? 'All profiles will share the same process ID'
@@ -50,6 +49,7 @@ export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
     inputDir: resolvedInputDir,
     outputDir: resolvedOutputDir,
     verbose: verbose || false,
-    smosh: smosh || false,
+    smosh: smosh,
+    startTracingInBrowser: startTracingInBrowser ?? true,
   };
 }

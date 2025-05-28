@@ -7,6 +7,7 @@ Running ESLint on with Nx is dramatically slower than running it without Nx.
 ## Executing ESLint Directly
 
 1. Run eslint directly with CPU profiling enabled through `NODE_OPTIONS`
+
 ```shell
 # - `NODE_OPTIONS` is used to set the Node.js options acros processes and threads. using `--env-file` or `--cpu-prof`, basically any argumebt is not guarantied to be passed to child processes/threads.
 #   - `--cpu-prof` is used to enable the CPU profiling.
@@ -16,9 +17,11 @@ Running ESLint on with Nx is dramatically slower than running it without Nx.
 #   - `packages/cpu-profiling` is the path to the directory containing the files to lint.
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
 ```
+
 This will create a `.cpuprofile` file in the folder `profiles/eslint`.
 
-**Files:** 
+**Files:**
+
 - [`eslint-cpu-profile.cpuprofile`](./eslint-cpu-profile.cpuprofile)
 
 2. Open Chrome DevTools and navigate to the "Performance" tab.
@@ -32,7 +35,7 @@ TIMING=1 nx run cpu-profiling:lint --output-file=/<Users>/<user-name>/<workspace
 ```
 
 | Rule                                 | Time (ms) | Relative |
-|:------------------------------------|----------:|--------:|
+| :----------------------------------- | --------: | -------: |
 | @typescript-eslint/no-unused-vars    |    40.036 |    46.5% |
 | @nx/enforce-module-boundaries        |    10.716 |    12.4% |
 | no-control-regex                     |     2.428 |     2.8% |
@@ -47,13 +50,16 @@ TIMING=1 nx run cpu-profiling:lint --output-file=/<Users>/<user-name>/<workspace
 ## Executing ESLint with NX
 
 1. Run eslint with NX with CPU profiling enabled through `NODE_OPTIONS`
+
 ```shell
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/nx-eslint" nx lint cpu-profiling
 ```
+
 This will create 2 different `.cpuprofile` file in the folder `profiles/nx-eslint`.
 One for the `nx` command and one for the `eslint` command. The reason for this is that the `eslint` command is executed by the `nx` in a different precces by using `spawn` and or `Worker` class.
 
-**Files:** 
+**Files:**
+
 - [`eslint-cpu-profile-nx.cpuprofile`](./nx.cpuprofile)
 - [`eslint-cpu-profile-eslint.cpuprofile`](./nx-eslint-lint.cpuprofile)
 
@@ -66,9 +72,8 @@ One for the `nx` command and one for the `eslint` command. The reason for this i
 TIMING=1 nx run cpu-profiling:lint --output-file=profiles/all/lint-stats.json --format=json --stats
 ```
 
-
 | Rule                                 | Time (ms) | Relative |
-|:------------------------------------|----------:|--------:|
+| :----------------------------------- | --------: | -------: |
 | @nx/dependency-checks                |    42.028 |    33.3% |
 | @typescript-eslint/no-unused-vars    |    40.930 |    32.5% |
 | @nx/enforce-module-boundaries        |    10.589 |     8.4% |
@@ -80,11 +85,10 @@ TIMING=1 nx run cpu-profiling:lint --output-file=profiles/all/lint-stats.json --
 | @typescript-eslint/ban-ts-comment    |     1.207 |     1.0% |
 | no-loss-of-precision                 |     1.201 |     1.0% |
 
-
 ### Thoughts
 
 - big JSNO files are in the codebase
 - selint-parser long CPU
 - nx rule biggest time %
 - nx rule in addition to other rules
-- 
+-

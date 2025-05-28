@@ -8,7 +8,9 @@ const __dirname = dirname(__filename);
 const numProcesses = parseInt(process.argv[2] || '2', 10);
 const childScript = join(__dirname, 'child-process.mjs');
 
-console.log(`PID ${process.pid}; forking ${numProcesses} processes, 3 times each at 100ms intervals`);
+console.log(
+  `PID ${process.pid}; forking ${numProcesses} processes, 3 times each at 100ms intervals`
+);
 
 const children = [];
 

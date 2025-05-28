@@ -45,10 +45,6 @@
   ],
   "startTime": 1,
   "endTime": 40,
-  "samples": [
-     1, 3, 4, 1
-  ],
-  "timeDeltas": [
-    0, 10, 10, 10
-  ]
+  "samples": [1, 3, 4, 1],
+  "timeDeltas": [0, 10, 10, 10]
 }

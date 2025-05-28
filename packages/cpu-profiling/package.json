@@ -17,9 +17,7 @@
   "bin": {
     "@push-based/cpu-profiling": "./dist/profiling.esm.js"
   },
-  "scripts": {
-
-  },
+  "scripts": {},
   "files": [
     "dist",
     "!**/*.tsbuildinfo"
@@ -32,11 +30,15 @@
         "command": "node --cpu-prof --cpu-prof-dir profiles"
       },
       "merge": {
-        "dependsOn": ["build"],
+        "dependsOn": [
+          "build"
+        ],
         "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
       },
       "cpu-prof-cli": {
-        "dependsOn": ["build"],
+        "dependsOn": [
+          "build"
+        ],
         "executor": "nx:run-commands",
         "options": {
           "command": "node packages/cpu-profiling/dist/profiling.esm.js --help"
@@ -54,6 +56,8 @@
         }
       }
     },
-    "tags": ["package"]
+    "tags": [
+      "package"
+    ]
   }
 }

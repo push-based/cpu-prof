@@ -28,7 +28,8 @@ export async function handler(argv: MergeArgs): Promise<void> {
 async function handleCpuProfileMerge(
   processedArgs: ProcessedMergeArgs
 ): Promise<void> {
-  const { inputDir, outputDir, verbose, smosh } = processedArgs;
+  const { inputDir, outputDir, verbose, smosh, startTracingInBrowser } =
+    processedArgs;
 
   if (!inputDir || inputDir === '') {
     throw new Error('Input directory is required for CPU profile mode');
@@ -46,7 +47,10 @@ async function handleCpuProfileMerge(
   }
 
   // Use the existing mergeCpuProfileFiles function with the full file path
-  await mergeCpuProfileFiles(inputDir, outputFilePath, { smosh });
+  await mergeCpuProfileFiles(inputDir, outputFilePath, {
+    smosh,
+    startTracingInBrowser,
+  });
 
   // Read the created file to get statistics
   const resultContent = await readFile(outputFilePath, 'utf8');

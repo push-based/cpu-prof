@@ -13,7 +13,7 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
       normalize: true,
       demandOption: true,
     })
-    .group(['help', 'verbose', 'output'], 'Basic Options:')
+    .group(['help', 'verbose'], 'Basic Options:')
     .option('outputDir', {
       alias: 'o',
       describe:
@@ -21,21 +21,19 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
       type: 'string',
       normalize: true,
     })
+    .option('startTracingInBrowser', {
+      alias: 'b',
+      describe:
+        'Include TracingStartedInBrowser event for better DevTools visualization',
+      type: 'boolean',
+      default: true,
+    })
     .option('smosh', {
       alias: 's',
       describe:
-        'Merge profiles with specific ID normalization. Use --smosh to normalize both PID and TID, --smosh pid to normalize only PID, or --smosh tid to normalize only TID',
+        'Merge profiles with specific ID normalization. Use --smosh all to normalize both PID and TID, --smosh pid to normalize only PID, or --smosh tid to normalize only TID. Omit flag to disable normalization.',
       type: 'string',
-      choices: ['pid', 'tid'],
-      coerce: (arg: string | boolean) => {
-        // If --no-smosh is used, arg will be false
-        if (arg === false) return false;
-        // If --smosh is used without value, arg will be true
-        if (arg === true) return true;
-        // Otherwise it should be 'pid' or 'tid'
-        return arg;
-      },
-      default: false,
+      choices: ['pid', 'tid', 'all'],
     })
     .option('verbose', {
       alias: 'v',
@@ -62,5 +60,5 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
       }
 
       return true;
-    });
+    }) as Argv<MergeArgs>;
 }
