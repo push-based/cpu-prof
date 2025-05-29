@@ -1,10 +1,21 @@
-import { readFile, writeFile } from 'node:fs/promises';
-import { basename, dirname, join } from 'node:path';
+import { mkdir, readFile, writeFile } from 'fs/promises';
+import { extname, join } from 'path';
+import { CpuProfileInfo } from './cpu/cpuprofile.types';
+import { cpuProfilesToTraceFile } from './trace/utils';
+import { basename, dirname } from 'node:path';
 import { parseCpuProfileName } from './cpu/utils';
 import { readdir } from 'fs/promises';
 import { CPUProfile } from './cpu/cpuprofile.types';
-import { cpuProfilesToTraceFile } from './cpu/cpu-to-trace-events';
-import { CpuProfileInfo } from './cpu/cpuprofile.types';
+
+async function loadCpuProfiles(filePaths: string[]): Promise<CpuProfileInfo[]> {
+  return Promise.all(
+    filePaths.map(async (file) => {
+      const content = await readFile(file, 'utf8');
+      const cpuProfile = JSON.parse(content) as CPUProfile;
+      return { cpuProfile, ...parseCpuProfileName(basename(file)) };
+    })
+  );
+}
 
 export async function mergeCpuProfileFiles(
   sourceDir: string,
@@ -42,14 +53,8 @@ export async function mergeCpuProfileFiles(
       `No valid CPU profiles found in ${sourceDir} to merge (after excluding output file and/or previous merged files).`
     );
   }
-  const profiles: CpuProfileInfo[] = await Promise.all(
-    filesToProcess.map(async (file) => {
-      const content = await readFile(file, 'utf8');
-      const cpuProfile = JSON.parse(content) as CPUProfile;
-      return { cpuProfile, ...parseCpuProfileName(basename(file)) };
-    })
-  );
+  const profiles: CpuProfileInfo[] = await loadCpuProfiles(filesToProcess);
 
-  const output = cpuProfilesToTraceFile(profiles, options);
+  const output = cpuProfilesToTraceFile(profiles);
   await writeFile(outputFile, JSON.stringify(output, null, 2));
 }

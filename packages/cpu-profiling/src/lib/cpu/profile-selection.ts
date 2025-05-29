@@ -1,4 +1,4 @@
-import { CpuProfileInfo } from './types';
+import { CpuProfileInfo } from './cpuprofile.types';
 
 export function getMainProfileInfo(
   cpuProfileInfos: CpuProfileInfo[]

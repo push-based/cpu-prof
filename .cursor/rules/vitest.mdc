@@ -82,6 +82,7 @@ The `tmp` folder flow should be as follows:
 # Test quality
 
 ## Good practices
+
 ### Motivation
 I found it best to imagine **I am writing tests for a colleague who hasn't implemented that feature**. They are most likely reviewing my code, debugging a failing test or checking the test coverage. So they want to either find out **what behaviour** is being tested (and **how**) or where the tested **values** come from. And the less time they spend on trying to understand the tests, the better.
 
@@ -130,7 +131,7 @@ it('should return the user object containing the passed filter property when doF
 
 ---
 
-#### ✅ Describe Blocks for Scoped Context
+#### ✅ Keep describe blocks flat. Use them for Scoped Context only.
 
 Use `describe` **only** to group tests that share setup or context. Don’t nest for no reason.
 
