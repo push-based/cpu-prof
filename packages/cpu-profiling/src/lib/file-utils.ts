@@ -24,8 +24,28 @@ export function isJsonFile(filePath: string): boolean {
 }
 
 /**
+ * Ensure a directory exists
+ */
+export function ensureDirectoryExists(dirPath: string): void {
+  if (!directoryExists(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+/**
  * Check if a directory exists
  */
 export function directoryExists(dirPath: string): boolean {
   return fs.existsSync(dirPath);
+}
+
+/**
+ * Check if a path is a directory
+ */
+export function isDirectory(path: string): boolean {
+  try {
+    return fs.statSync(path).isDirectory();
+  } catch {
+    return false;
+  }
 }

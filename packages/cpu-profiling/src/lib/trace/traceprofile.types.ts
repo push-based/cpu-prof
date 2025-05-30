@@ -162,15 +162,20 @@ export interface EventID2 {
 
 export interface DurationBeginEvent extends TraceEventBase {
   ph: 'B';
-  name: string;
+  pid: number;
+  tid: number;
 }
 
 export interface DurationEndEvent extends TraceEventBase {
   ph: 'E';
+  pid: number;
+  tid: number;
 }
 
 export interface CompleteEvent extends TraceEventBase {
   ph: 'X';
+  pid: number;
+  tid: number;
   name: string;
   dur: number;
   tdur?: number;
@@ -179,6 +184,8 @@ export interface CompleteEvent extends TraceEventBase {
 export interface InstantEvent extends TraceEventBase {
   ph: 'I';
   dur: 0;
+  pid: number;
+  tid: number;
   name: string;
   s?: InstantScope;
 }

@@ -13,10 +13,9 @@ import {
   getProfileEvent,
   getProfileChunkEvent,
   getCpuProfilerStopProfilingEvent,
-  getThreadNameTraceEvent,
-  getProcessNameTraceEvent,
-  getThreadName,
   getTraceMetadata,
+  getStartTracing,
+  getProcessNameTraceEvent,
 } from './trace-event-creators';
 import { getMainProfileInfo } from '../cpu/profile-selection';
 
@@ -62,50 +61,102 @@ export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
 
 export function cpuProfilesToTraceFile(
   cpuProfileInfos: CpuProfileInfo[],
-  options?: { mainProfileMatcher?: (info: CpuProfileInfo) => boolean }
+  options?: {
+    smosh?: 'all' | 'pid' | 'tid' | 'none';
+    startTracingInBrowser?: boolean;
+  }
 ): TraceFile {
   if (cpuProfileInfos.length === 0) {
     throw new Error('No CPU profiles provided');
   }
 
+  const { smosh = 'none', startTracingInBrowser } = options ?? {};
+
   // Use custom matcher if provided, otherwise use the default selection logic
-  const mainProfileInfo = options?.mainProfileMatcher
-    ? cpuProfileInfos.find(options.mainProfileMatcher) ?? cpuProfileInfos[0]
-    : getMainProfileInfo(cpuProfileInfos);
+  const mainProfileInfo = getMainProfileInfo(cpuProfileInfos);
 
   const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
 
-  const allEvents: TraceEvent[] = [];
+  let allEvents: TraceEvent[] = [];
 
-  // Add metadata events
-  allEvents.push(
-    getProcessNameTraceEvent(mainPid, mainTid, 'CPU Profile'),
-    getThreadNameTraceEvent(mainPid, mainTid, getThreadName(mainProfileInfo))
-  );
+  // Add TracingStartedInBrowser event if requested
+  if (startTracingInBrowser) {
+    allEvents = [
+      ...allEvents,
+      getProcessNameTraceEvent(mainPid, mainTid, 'crRendererMain'),
+      getStartTracing(mainPid, mainTid, {
+        traceStartTs: 1,
+        url: 'file:///merged-cpu-profile',
+      }),
+    ];
+  }
 
-  // Process each profile
-  cpuProfileInfos.forEach((profileInfo, index) => {
-    const { pid = mainPid, tid = mainTid + index, cpuProfile } = profileInfo;
-    const events = cpuProfileToTraceProfileEvents(cpuProfile, {
-      pid,
-      tid,
-      sequence: sequence + index,
-    });
-    allEvents.push(...events);
-
-    // Add thread name for each profile
-    if (index > 0) {
-      allEvents.push(
-        getThreadNameTraceEvent(pid, tid, getThreadName(profileInfo))
-      );
-    }
-  });
+  allEvents = [
+    ...allEvents,
+    ...cpuProfileInfos.flatMap((profileInfo, index) => {
+      const { pid = mainPid, tid = mainTid + index, cpuProfile } = profileInfo;
+      return cpuProfileToTraceProfileEvents(cpuProfile, {
+        pid,
+        tid,
+        sequence: sequence + index,
+      });
+    }),
+  ];
 
   const sortedEvents = sortTraceEvents(allEvents);
   const metadata = getTraceMetadata(mainProfileInfo);
 
   return {
-    traceEvents: sortedEvents,
+    traceEvents:
+      smosh === 'none'
+        ? sortedEvents
+        : smoshEvents(sortedEvents, {
+            smosh,
+            mainPid,
+            mainTid,
+          }),
     metadata,
   } as TraceEventContainer;
+}
+
+function smoshEvents(
+  events: TraceEvent[],
+  options?: {
+    smosh: 'all' | 'pid' | 'tid' | 'none';
+    mainPid: number;
+    mainTid: number;
+  }
+): TraceEvent[] {
+  const { smosh = 'none', mainPid = 1, mainTid = 0 } = options ?? {};
+  // if smosh is all, return all events
+  if (smosh === 'all') {
+    return events.map((e) => {
+      return {
+        ...e,
+        pid: mainPid,
+        tid: mainTid,
+      };
+    });
+  }
+  // if smosh is pid, return events with pid === mainPid
+  if (smosh === 'pid') {
+    return events.map((e, idx) => {
+      return {
+        ...e,
+        pid: mainPid,
+        tid: idx, // scientific tid to avoid conflicts
+      };
+    });
+  }
+  // if smosh is tid, return events with tid === mainTid
+  if (smosh === 'tid') {
+    return events.map((e) => {
+      return {
+        ...e,
+        tid: mainTid,
+      };
+    });
+  }
+  // if smosh is none, return all events
+  return events;
 }

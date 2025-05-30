@@ -1,9 +1,18 @@
 import { defineConfig } from 'vite';
+import * as path from 'path';
 
 export default defineConfig(() => ({
   root: __dirname,
   cacheDir: '../node_modules/.vite/cpu-profiling-e2e',
   plugins: [],
+  resolve: {
+    alias: {
+      '@push-based/testing-utils': path.resolve(
+        __dirname,
+        '../../testing/utils/dist'
+      ),
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

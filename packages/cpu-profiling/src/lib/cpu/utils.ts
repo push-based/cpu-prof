@@ -9,6 +9,45 @@ export type CpuProfileNameOptions = {
 
 const cpuProfileSeqMap = new Map();
 
+export type CpuProfileFileName =
+  `${string}.${string}.${string}.${number}.${number}.${number}.cpuprofile}`;
+
+/**
+ * CPU profile filename pattern for validation and parsing
+ */
+const CPU_PROFILE_FILENAME_PATTERN =
+  /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)(?:\.(?<ext>.*))?$/;
+
+/**
+ * Type guard that validates and casts a string to CpuProfileFileName type.
+ *
+ * @param {string} filename - The filename to validate and cast
+ * @returns {filename is CpuProfileFileName} True if the filename is a valid CPU profile name
+ *
+ * @example
+ * const filename = 'CPU.20250510.134625.51430.1.001.cpuprofile';
+ * if (isCpuProfileFileName(filename)) {
+ *   // filename is now typed as CpuProfileFileName
+ *   console.log(filename); // TypeScript knows this is a valid CPU profile filename
+ * }
+ */
+export function isCpuProfileFileName(
+  filename: string
+): filename is CpuProfileFileName {
+  if (!CPU_PROFILE_FILENAME_PATTERN.test(filename)) {
+    return false;
+  }
+  return true;
+}
+
+// assert that the filename is a valid cpu profile filename
+export function assertCpuProfileFileName(
+  filename: string
+): asserts filename is CpuProfileFileName {
+  if (!isCpuProfileFileName(filename)) {
+    throw new Error(`Invalid CPU profile filename: ${filename}`);
+  }
+}
 /**
  * Generates a CPU profile filename like:
  * PREFIX.YYYYMMDD.HHMMSS.PID.TID.SEQ.cpuprofile
@@ -73,15 +112,10 @@ export function getCpuProfileName(
  *  }
  */
 export function parseCpuProfileName(
-  file: string
+  file: CpuProfileFileName
 ): Required<Omit<CpuProfileNameOptions, 'prefix' | 'extension'>> &
   Pick<CpuProfileNameOptions, 'prefix' | 'extension'> {
-  const pattern =
-    /^(?<prefix>[^.]+)\.(?<ymd>\d{8})\.(?<hms>\d{6})\.(?<pid>\d+)\.(?<tid>\d+)\.(?<seq>\d+)(?:\.(?<ext>.*))?$/;
-  const match = file.match(pattern);
-  if (!match?.groups) {
-    throw new Error(`Invalid CPU profile filename: ${file}`);
-  }
+  const match = file.match(CPU_PROFILE_FILENAME_PATTERN);
 
   const {
     prefix,
@@ -91,7 +125,7 @@ export function parseCpuProfileName(
     tid = 0,
     seq,
     ext: extension = '',
-  } = match.groups;
+  } = match?.groups ?? {};
 
   const year = +ymd.slice(0, 4);
   const month = +ymd.slice(4, 6) - 1;
@@ -112,74 +146,4 @@ export function parseCpuProfileName(
 
 export function microsecondsToDate(microseconds: number): Date {
   return new Date(microseconds / 1000);
-}
-
-/**
- * Helper function to coerce string array arguments from CLI input
- */
-export function coerceStringArray(
-  arg: string[] | string | boolean
-): string[] | undefined {
-  if (arg === false || arg === undefined) {
-    return undefined;
-  }
-  if (typeof arg === 'string') {
-    return arg.split(',').map((item: string) => item.trim());
-  }
-  if (Array.isArray(arg)) {
-    return arg.flatMap((item: string) =>
-      item.split(',').map((s: string) => s.trim())
-    );
-  }
-  return undefined;
-}
-
-/**
- * Helper function to coerce number array arguments from CLI input
- */
-export function coerceNumberArray(
-  arg: string[] | string | boolean,
-  type: 'PID' | 'TID'
-): number[] | undefined {
-  if (arg === false || arg === undefined) {
-    return undefined;
-  }
-  const values =
-    typeof arg === 'string'
-      ? arg.split(',')
-      : Array.isArray(arg)
-      ? arg.flatMap((item: string) => item.split(','))
-      : [];
-  return values.map((id: string) => {
-    const numId = parseInt(id.trim(), 10);
-    if (isNaN(numId)) {
-      throw new Error(`Invalid ${type}: ${id}. ${type}s must be numbers.`);
-    }
-    return numId;
-  });
-}
-
-/**
- * Helper function to coerce string array arguments with default values
- */
-export function coerceStringArrayWithDefaults(
-  arg: string[] | string | boolean,
-  defaults: string[] = []
-): string[] {
-  // Handle yargs negation (--no-exclude-*)
-  if (arg === false || arg === undefined) {
-    return [];
-  }
-
-  if (typeof arg === 'string') {
-    const userValues = arg.split(',').map((item: string) => item.trim());
-    return [...new Set([...defaults, ...userValues])];
-  }
-  if (Array.isArray(arg)) {
-    const userValues = arg.flatMap((item: string) =>
-      item.split(',').map((s: string) => s.trim())
-    );
-    return [...new Set([...defaults, ...userValues])];
-  }
-  return defaults;
 }

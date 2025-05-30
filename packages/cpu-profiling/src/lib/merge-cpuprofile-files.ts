@@ -1,21 +1,15 @@
-import { readFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { CpuProfileInfo } from './cpu/cpuprofile.types';
 import { cpuProfilesToTraceFile } from './trace/utils';
-import { basename, dirname } from 'node:path';
-import { parseCpuProfileName } from './cpu/utils';
+import { dirname } from 'node:path';
+import { isCpuProfileFileName } from './cpu/utils';
 import { readdir } from 'fs/promises';
-import { CPUProfile } from './cpu/cpuprofile.types';
-
-async function loadCpuProfiles(filePaths: string[]): Promise<CpuProfileInfo[]> {
-  return Promise.all(
-    filePaths.map(async (file) => {
-      const content = await readFile(file, 'utf8');
-      const cpuProfile = JSON.parse(content) as CPUProfile;
-      return { cpuProfile, ...parseCpuProfileName(basename(file)) };
-    })
-  );
-}
+import { isDirectory, ensureDirectoryExists } from './file-utils';
+import {
+  loadCpuProfiles,
+  type CpuProfileFilePath,
+} from './cpu/load-cpu-profiles';
 
 export async function mergeCpuProfileFiles(
   sourceDir: string,
@@ -26,27 +20,16 @@ export async function mergeCpuProfileFiles(
   } = {}
 ): Promise<void> {
   const filesInDir: string[] = await readdir(sourceDir);
-  const outputFileNameIfInSourceDir =
-    dirname(outputFile) === sourceDir ? basename(outputFile) : null;
 
-  const filesToProcess = filesInDir
+  const filesToProcess: CpuProfileFilePath[] = filesInDir
     .filter((file) => {
-      // 1. Never process the exact file we are about to write to, if it's in the sourceDir.
-      if (file === outputFileNameIfInSourceDir) {
-        return false;
-      }
-      // 2. If the default "merged-profile.json" is in sourceDir,
-      //    and we are NOT currently writing to "sourceDir/merged-profile.json" (i.e. outputFileNameIfInSourceDir is not "merged-profile.json"),
-      //    then ignore the "merged-profile.json" in sourceDir to prevent it from being included if current output is different.
-      if (
-        file === 'merged-profile.json' &&
-        outputFileNameIfInSourceDir !== 'merged-profile.json'
-      ) {
+      const filePath = join(sourceDir, file);
+      if (isDirectory(filePath) || !isCpuProfileFileName(file)) {
         return false;
       }
       return true;
     })
-    .map((file) => join(sourceDir, file));
+    .map((file) => join(sourceDir, file) as CpuProfileFilePath);
 
   if (filesToProcess.length === 0) {
     throw new Error(
@@ -55,6 +38,7 @@ export async function mergeCpuProfileFiles(
   }
   const profiles: CpuProfileInfo[] = await loadCpuProfiles(filesToProcess);
 
-  const output = cpuProfilesToTraceFile(profiles);
+  const output = cpuProfilesToTraceFile(profiles, options);
+  await ensureDirectoryExists(dirname(outputFile));
   await writeFile(outputFile, JSON.stringify(output, null, 2));
 }

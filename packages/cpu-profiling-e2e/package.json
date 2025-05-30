@@ -18,11 +18,12 @@
     "@nx-advanced-perf-logging/cpu-profiling"
   ],
   "targets": {
-    "unit-test": {
-      "executor": "@nx/vitest:vitest"
-    },
-    "integration-test": {
-      "executor": "@nx/vitest:vitest"
+    "e2e-test": {
+      "dependsOn": ["^build"],
+      "executor": "@nx/vitest:vitest",
+      "options": {
+        "config": "vitest.e2e.config.ts"
+      }
     }
   }
 }

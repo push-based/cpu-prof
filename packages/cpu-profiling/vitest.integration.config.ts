@@ -15,7 +15,7 @@ export default defineConfig(() => ({
     include: [
       'src/**/*.integration.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
     ],
-    setupFiles: ['../../testing/vitest-setup/src/lib/fs-memfs.setup-file.ts'],
+    setupFiles: ['../../testing/setup/src/reset.setup-file.ts'],
     reporters: ['default'],
     coverage: {
       reportsDirectory: './test-output/vitest/coverage',
