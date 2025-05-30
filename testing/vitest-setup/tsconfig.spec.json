@@ -9,5 +9,10 @@
       "path": "../../../testing/setup/tsconfig.json"
     }
   ],
-  "include": ["vite.config.ts", "src/**/*.ts", "src/**/*.unit.test.ts", "src/**/*.integration.test.ts"]
+  "include": [
+    "vite.config.ts",
+    "src/**/*.ts",
+    "src/**/*.unit.test.ts",
+    "src/**/*.integration.test.ts"
+  ]
 }

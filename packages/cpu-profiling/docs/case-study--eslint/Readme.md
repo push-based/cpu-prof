@@ -10,10 +10,7 @@ Running ESLint on with Nx is dramatically slower than running it without Nx.
 
 `/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx`
 
-
 TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
-
-
 
 ```shell
 # - `NODE_OPTIONS` is used to set the Node.js options acros processes and threads. using `--cpu-prof`, basically any argumebt is not guarantied to be passed to child processes/threads.
@@ -54,19 +51,18 @@ TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=
 | no-unused-private-class-members      |     1.261 |     1.5% |
 | @typescript-eslint/ban-ts-comment    |     1.257 |     1.5% |
 
-Rule                                 | Time (ms) | Relative
-:------------------------------------|----------:|--------:
-@nx/enforce-module-boundaries        |   158.420 |    62.8%
-@typescript-eslint/no-unused-vars    |    39.058 |    15.5%
-no-misleading-character-class        |     5.997 |     2.4%
-no-useless-escape                    |     4.056 |     1.6%
-no-control-regex                     |     3.578 |     1.4%
-@typescript-eslint/no-empty-function |     3.359 |     1.3%
-no-fallthrough                       |     2.642 |     1.0%
-no-useless-backreference             |     2.451 |     1.0%
-no-var                               |     2.080 |     0.8%
-prefer-spread                        |     1.983 |     0.8%
-
+| Rule                                 | Time (ms) | Relative |
+| :----------------------------------- | --------: | -------: |
+| @nx/enforce-module-boundaries        |   158.420 |    62.8% |
+| @typescript-eslint/no-unused-vars    |    39.058 |    15.5% |
+| no-misleading-character-class        |     5.997 |     2.4% |
+| no-useless-escape                    |     4.056 |     1.6% |
+| no-control-regex                     |     3.578 |     1.4% |
+| @typescript-eslint/no-empty-function |     3.359 |     1.3% |
+| no-fallthrough                       |     2.642 |     1.0% |
+| no-useless-backreference             |     2.451 |     1.0% |
+| no-var                               |     2.080 |     0.8% |
+| prefer-spread                        |     1.983 |     0.8% |
 
 ## Executing ESLint with NX
 

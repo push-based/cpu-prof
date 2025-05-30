@@ -1,13 +1,13 @@
 import {
-    type ChildProcess,
-    type ChildProcessByStdio,
-    type SpawnOptionsWithStdioTuple,
-    type StdioPipe,
-    spawn,
+  type ChildProcess,
+  type ChildProcessByStdio,
+  type SpawnOptionsWithStdioTuple,
+  type StdioPipe,
+  spawn,
 } from 'node:child_process';
-import type {Readable, Writable} from 'node:stream';
-import path from "node:path";
-import * as ansis from "ansis"
+import type { Readable, Writable } from 'node:stream';
+import path from 'node:path';
+import * as ansis from 'ansis';
 /**
  * Represents the process result.
  * @category Types
@@ -17,11 +17,11 @@ import * as ansis from "ansis"
  * @property {number | null} code - The exit code of the process.
  */
 export type ProcessResult = {
-    stdout: string;
-    stderr: string;
-    code: number | null;
-    date: string;
-    duration: number;
+  stdout: string;
+  stderr: string;
+  code: number | null;
+  date: string;
+  duration: number;
 };
 
 /**
@@ -43,16 +43,16 @@ export type ProcessResult = {
  *
  */
 export class ProcessError extends Error {
-    code: number | null;
-    stderr: string;
-    stdout: string;
+  code: number | null;
+  stderr: string;
+  stdout: string;
 
-    constructor(result: ProcessResult) {
-        super(result.stderr);
-        this.code = result.code;
-        this.stderr = result.stderr;
-        this.stdout = result.stdout;
-    }
+  constructor(result: ProcessResult) {
+    super(result.stderr);
+    this.code = result.code;
+    this.stderr = result.stderr;
+    this.stdout = result.stdout;
+  }
 }
 
 /**
@@ -85,13 +85,13 @@ export class ProcessError extends Error {
  *
  */
 export type ProcessConfig = Omit<
-    SpawnOptionsWithStdioTuple<StdioPipe, StdioPipe, StdioPipe>,
-    'stdio'
+  SpawnOptionsWithStdioTuple<StdioPipe, StdioPipe, StdioPipe>,
+  'stdio'
 > & {
-    command: string;
-    args?: string[];
-    observer?: ProcessObserver;
-    ignoreExitCode?: boolean;
+  command: string;
+  args?: string[];
+  observer?: ProcessObserver;
+  ignoreExitCode?: boolean;
 };
 
 /**
@@ -108,12 +108,11 @@ export type ProcessConfig = Omit<
  *  }
  */
 export type ProcessObserver = {
-    onStdout?: (stdout: string, sourceProcess?: ChildProcess) => void;
-    onStderr?: (stderr: string, sourceProcess?: ChildProcess) => void;
-    onError?: (error: ProcessError) => void;
-    onComplete?: () => void;
+  onStdout?: (stdout: string, sourceProcess?: ChildProcess) => void;
+  onStderr?: (stderr: string, sourceProcess?: ChildProcess) => void;
+  onError?: (error: ProcessError) => void;
+  onComplete?: () => void;
 };
-
 
 /**
  * Calculates the duration between two timestamps.
@@ -125,7 +124,7 @@ export type ProcessObserver = {
  *
  */
 export function calcDuration(start: number, stop?: number): number {
-    return Math.round((stop ?? performance.now()) - start);
+  return Math.round((stop ?? performance.now()) - start);
 }
 
 /**
@@ -137,22 +136,21 @@ export function calcDuration(start: number, stop?: number): number {
  * @returns {string} - ANSI-colored formatted command string.
  */
 export function formatCommandLog(
-    command: string,
-    args: string[] = [],
-    cwd: string = process.cwd(),
+  command: string,
+  args: string[] = [],
+  cwd: string = process.cwd()
 ): string {
-    const relativeDir = path.relative(process.cwd(), cwd);
+  const relativeDir = path.relative(process.cwd(), cwd);
 
-    return [
-        ...(relativeDir && relativeDir !== '.'
-            ? [ansis.italic(ansis.gray(relativeDir))]
-            : []),
-        ansis.yellow('$'),
-        ansis.gray(command),
-        ansis.gray(args.map(arg => arg).join(' ')),
-    ].join(' ');
+  return [
+    ...(relativeDir && relativeDir !== '.'
+      ? [ansis.italic(ansis.gray(relativeDir))]
+      : []),
+    ansis.yellow('$'),
+    ansis.gray(command),
+    ansis.gray(args.map((arg) => arg).join(' ')),
+  ].join(' ');
 }
-
 
 /**
  * Executes a process and returns a promise with the result as `ProcessResult`.
@@ -182,54 +180,55 @@ export function formatCommandLog(
  *
  * @param cfg - see {@link ProcessConfig}
  */
-export function executeProcess(cfg: ProcessConfig, logger: {log?: (...args: string[]) => void} = {}): Promise<ProcessResult> {
-    const {command, args, observer, ignoreExitCode = false, ...options} = cfg;
-    const {onStdout, onStderr, onError, onComplete} = observer ?? {};
-    const date = new Date().toISOString();
-    const start = performance.now();
+export function executeProcess(
+  cfg: ProcessConfig,
+  logger: { log?: (...args: string[]) => void } = {}
+): Promise<ProcessResult> {
+  const { command, args, observer, ignoreExitCode = false, ...options } = cfg;
+  const { onStdout, onStderr, onError, onComplete } = observer ?? {};
+  const date = new Date().toISOString();
+  const start = performance.now();
 
-    logger?.log && logger.log(
-        formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`),
-    );
+  logger?.log &&
+    logger.log(formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`));
 
+  return new Promise((resolve, reject) => {
+    // shell:true tells Windows to use shell command for spawning a child process
+    const spawnedProcess = spawn(command, args ?? [], {
+      shell: true,
+      windowsHide: true,
+      ...options,
+    }) as ChildProcessByStdio<Writable, Readable, Readable>;
 
-    return new Promise((resolve, reject) => {
-        // shell:true tells Windows to use shell command for spawning a child process
-        const spawnedProcess = spawn(command, args ?? [], {
-            shell: true,
-            windowsHide: true,
-            ...options,
-        }) as ChildProcessByStdio<Writable, Readable, Readable>;
+    // eslint-disable-next-line functional/no-let
+    let stdout = '';
+    // eslint-disable-next-line functional/no-let
+    let stderr = '';
 
-        // eslint-disable-next-line functional/no-let
-        let stdout = '';
-        // eslint-disable-next-line functional/no-let
-        let stderr = '';
-
-        spawnedProcess.stdout.on('data', data => {
-            stdout += String(data);
-            onStdout?.(String(data), spawnedProcess);
-        });
-
-        spawnedProcess.stderr.on('data', data => {
-            stderr += String(data);
-            onStderr?.(String(data), spawnedProcess);
-        });
-
-        spawnedProcess.on('error', err => {
-            stderr += err.toString();
-        });
-
-        spawnedProcess.on('close', code => {
-            const timings = {date, duration: calcDuration(start)};
-            if (code === 0 || ignoreExitCode) {
-                onComplete?.();
-                resolve({code, stdout, stderr, ...timings});
-            } else {
-                const errorMsg = new ProcessError({code, stdout, stderr, ...timings});
-                onError?.(errorMsg);
-                reject(errorMsg);
-            }
-        });
+    spawnedProcess.stdout.on('data', (data) => {
+      stdout += String(data);
+      onStdout?.(String(data), spawnedProcess);
     });
+
+    spawnedProcess.stderr.on('data', (data) => {
+      stderr += String(data);
+      onStderr?.(String(data), spawnedProcess);
+    });
+
+    spawnedProcess.on('error', (err) => {
+      stderr += err.toString();
+    });
+
+    spawnedProcess.on('close', (code) => {
+      const timings = { date, duration: calcDuration(start) };
+      if (code === 0 || ignoreExitCode) {
+        onComplete?.();
+        resolve({ code, stdout, stderr, ...timings });
+      } else {
+        const errorMsg = new ProcessError({ code, stdout, stderr, ...timings });
+        onError?.(errorMsg);
+        reject(errorMsg);
+      }
+    });
+  });
 }

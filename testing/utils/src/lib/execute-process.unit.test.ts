@@ -70,12 +70,12 @@ describe('executeProcess', () => {
     expect(spyObserver.onStdout).toHaveBeenCalledTimes(2); // intro + 1 run before error
     expect(spyObserver.onStdout).toHaveBeenLastCalledWith(
       'process:update\n',
-      expect.any(ChildProcess),
+      expect.any(ChildProcess)
     );
     expect(spyObserver.onStderr).toHaveBeenCalled();
     expect(spyObserver.onStderr).toHaveBeenCalledWith(
       expect.stringContaining('dummy-error'),
-      expect.any(ChildProcess),
+      expect.any(ChildProcess)
     );
     expect(spyObserver.onError).toHaveBeenCalledOnce();
     expect(spyObserver.onComplete).not.toHaveBeenCalled();
