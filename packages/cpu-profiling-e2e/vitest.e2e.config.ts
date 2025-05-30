@@ -1,28 +1,20 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
+import { createSharedE2eVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
 
-export default defineConfig(() => ({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/packages/cpu-profiling',
-  plugins: [],
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-  test: {
-    watch: false,
-    globals: true,
-    environment: 'node',
-    include: ['src/**/*.e2e.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    reporters: ['default'],
-    coverage: {
-      reportsDirectory: './test-output/vitest/coverage',
-      provider: 'v8' as const,
-      include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      exclude: [
-        'src/**/__snapshots__/**',
-        'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-        'src/**/index.ts',
-      ],
-    },
-  },
-}));
+export default defineConfig(() => {
+  const baseConfig = createSharedE2eVitestConfig({
+    projectRoot: __dirname,
+    workspaceRoot: '../..',
+  });
+
+  return {
+    ...baseConfig,
+    root: __dirname,
+    cacheDir: '../../node_modules/.vite/packages/cpu-profiling',
+    plugins: [],
+    // Uncomment this if you are using workers.
+    // worker: {
+    //  plugins: [ nxViteTsPaths() ],
+    // }
+  };
+});

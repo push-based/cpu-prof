@@ -25,6 +25,19 @@
     "sourceRoot": "testing/utils/src",
     "projectType": "library",
     "name": "testing-utils",
-    "targets": {}
+    "targets": {
+        "unit-test": {
+            "executor": "@nx/vitest:vitest",
+            "options": {
+            "config": "vitest.unit.config.ts"
+            }
+        },
+        "integration-test": {
+            "executor": "@nx/vitest:vitest",
+            "options": {
+            "config": "vitest.integration.config.mts"
+            }
+        }
+    }
   }
 }

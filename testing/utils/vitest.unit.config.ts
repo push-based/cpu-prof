@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitest/config';
-import { createSharedIntegrationVitestConfig } from '../vitest-setup/src/lib/configuration';
+import { createSharedUnitVitestConfig } from '../vitest-setup/src/lib/configuration';
 
 export default defineConfig(() => {
-  const baseConfig = createSharedIntegrationVitestConfig({
+  const baseConfig = createSharedUnitVitestConfig({
     projectRoot: __dirname,
     workspaceRoot: '../..',
   });

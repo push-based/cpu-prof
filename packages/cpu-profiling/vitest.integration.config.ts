@@ -1,31 +1,30 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
+import { createSharedIntegrationVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
 
-export default defineConfig(() => ({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/packages/cpu-profiling',
-  plugins: [],
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-  test: {
-    watch: false,
-    globals: true,
-    environment: 'node',
-    include: [
-      'src/**/*.integration.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-    ],
-    setupFiles: ['../../testing/setup/src/reset.setup-file.ts'],
-    reporters: ['default'],
-    coverage: {
-      reportsDirectory: './test-output/vitest/coverage',
-      provider: 'v8' as const,
-      include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      exclude: [
-        'src/**/__snapshots__/**',
-        'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-        'src/**/index.ts',
-      ],
+export default defineConfig(() => {
+  const baseConfig = createSharedIntegrationVitestConfig({
+    projectRoot: __dirname,
+    workspaceRoot: '../..',
+  });
+
+  return {
+    root: __dirname,
+    cacheDir: '../../node_modules/.vite/packages/cpu-profiling',
+    plugins: [],
+    // Uncomment this if you are using workers.
+    // worker: {
+    //  plugins: [ nxViteTsPaths() ],
+    // },
+    test: {
+      ...baseConfig.test,
+      setupFiles: ['../../testing/setup/src/reset.setup-file.ts'],
+      coverage: {
+        ...baseConfig.test.coverage,
+        exclude: [
+          ...baseConfig.test.coverage.exclude,
+          'src/cli/commands/trace-reduce/**',
+        ],
+      },
     },
-  },
-}));
+  };
+});
