@@ -19,7 +19,9 @@
   ],
   "targets": {
     "e2e-test": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "executor": "@nx/vitest:vitest",
       "options": {
         "config": "vitest.e2e.config.ts"

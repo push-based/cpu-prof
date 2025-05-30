@@ -24,6 +24,7 @@ describe('cpu-merge-command', () => {
   it('should run without error and log results to terminal', async () => {
     const inputDir = join(tmpCpuMergeCommandDir, 'terminal-logs');
 
+    await mkdir(inputDir, { recursive: true });
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
@@ -49,6 +50,7 @@ describe('cpu-merge-command', () => {
     const caseName = 'default-options';
     const inputDir = join(tmpCpuMergeCommandDir, caseName);
 
+    await mkdir(inputDir, { recursive: true });
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
@@ -89,6 +91,7 @@ describe('cpu-merge-command', () => {
     const inputDir = join(tmpCpuMergeCommandDir, caseName);
     const outputDir = join(inputDir, 'output');
 
+    await mkdir(inputDir, { recursive: true });
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
@@ -114,6 +117,7 @@ describe('cpu-merge-command', () => {
     const inputDir = join(tmpCpuMergeCommandDir, caseName);
     const outputDir = join(inputDir, 'output');
 
+    await mkdir(inputDir, { recursive: true });
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
