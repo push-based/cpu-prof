@@ -8,11 +8,7 @@ export default defineConfig(() => {
   });
 
   return {
-    root: __dirname,
-    cacheDir: '../../node_modules/.vite/testing-utils',
+    ...baseConfig,
     plugins: [],
-    test: {
-      ...baseConfig.test,
-    },
   };
 });

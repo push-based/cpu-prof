@@ -8,8 +8,7 @@ export default defineConfig(() => {
   });
 
   return {
-    root: __dirname,
-    cacheDir: '../../node_modules/.vite/packages/cpu-profiling',
+    ...baseConfig,
     plugins: [],
     // Uncomment this if you are using workers.
     // worker: {
