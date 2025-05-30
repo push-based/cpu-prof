@@ -234,8 +234,8 @@ If `--cpu-prof` is used with this script, profiles are generated for the main th
   ```
   This will generate a profile file named `my-custom-profile.cpuprofile`. If `--cpu-prof-dir` is also specified, the file will be placed in that directory; otherwise, it will be in the current working directory.
 - **Notes**:
-  - You can include the same placeholders available in the default filename (e.g., `${pid}`, `${timestamp}`) in your custom name.
-  - If an absolute path is provided (e.g., `/tmp/my-custom-profile.cpuprofile`), the file will be saved there, and `--cpu-prof-dir` will be ignored.
+  - You **CAN NOT** use placeholders for filenames filename (e.g., `${pid}`, `${timestamp}`) in your custom name.
+  - If an absolute path is provided (e.g., `/tmp/my-custom-profile.cpuprofile`), the file **WILL NOT** be saved there.
 
 #### `--cpu-prof-interval`
 

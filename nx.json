@@ -28,7 +28,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["cpu-profiling-e2e/*"]
     },
     {
       "plugin": "@nx/vite/plugin",
@@ -48,6 +49,13 @@
       "plugin": "@nx/vite/plugin",
       "options": {
         "testTargetName": "integration-test"
+      },
+      "exclude": []
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "testTargetName": "e2e-test"
       },
       "exclude": []
     },
@@ -81,11 +89,35 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["cpu-profiling-e2e/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
+      }
     }
   ],
   "targetDefaults": {
-    "test": {
-      "dependsOn": ["^build"]
+    "unit-test": {
+      "dependsOn": ["^build"],
+      "executor": "@nx/vitest:vitest",
+      "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
+      "options": {
+        "config": "packages/{projectName}/vitest.unit.config.ts"
+      }
+    },
+    "integration-test": {
+      "dependsOn": ["^build"],
+      "outputs": ["{workspaceRoot}/coverage/integration/{projectName}"],
+      "executor": "@nx/vitest:vitest"
+    },
+    "e2e-test": {
+      "dependsOn": ["^build"],
+      "executor": "@nx/vitest:vitest",
+      "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"]
     },
     "lint": {
       "cache": true,

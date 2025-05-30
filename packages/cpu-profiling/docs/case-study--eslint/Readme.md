@@ -8,14 +8,21 @@ Running ESLint on with Nx is dramatically slower than running it without Nx.
 
 1. Run eslint directly with CPU profiling enabled through `NODE_OPTIONS`
 
+`/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx`
+
+
+TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
+
+
+
 ```shell
-# - `NODE_OPTIONS` is used to set the Node.js options acros processes and threads. using `--env-file` or `--cpu-prof`, basically any argumebt is not guarantied to be passed to child processes/threads.
+# - `NODE_OPTIONS` is used to set the Node.js options acros processes and threads. using `--cpu-prof`, basically any argumebt is not guarantied to be passed to child processes/threads.
 #   - `--cpu-prof` is used to enable the CPU profiling.
 #   - `--cpu-prof-dir` is the directory to save the CPU profile. We set it to a absolute path tto ensure that any created process or thread will create it's `.cpuprofile` file in the same directory.  If we don't do this, the `.cpuprofile` will be created eaches process current working directory wich can vary.
 # - `node ./node_modules/.bin/eslint` is the command to execute the ESLint CLI.
 #   - `--config eslint.config.mjs` is the path to the ESLint configuration file.
 #   - `packages/cpu-profiling` is the path to the directory containing the files to lint.
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<absolute-path-to-repo>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
 ```
 
 This will create a `.cpuprofile` file in the folder `profiles/eslint`.
@@ -31,7 +38,7 @@ This will create a `.cpuprofile` file in the folder `profiles/eslint`.
 
 ```shell
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
-TIMING=1 nx run cpu-profiling:lint --output-file=/<Users>/<user-name>/<workspace>/profiles/eslint/lint-stats.json --format=json --stats
+TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=/<Users>/<user-name>/<workspace>/profiles/eslint/lint-stats.json --format=json --stats
 ```
 
 | Rule                                 | Time (ms) | Relative |
@@ -46,6 +53,20 @@ TIMING=1 nx run cpu-profiling:lint --output-file=/<Users>/<user-name>/<workspace
 | no-extra-boolean-cast                |     1.440 |     1.7% |
 | no-unused-private-class-members      |     1.261 |     1.5% |
 | @typescript-eslint/ban-ts-comment    |     1.257 |     1.5% |
+
+Rule                                 | Time (ms) | Relative
+:------------------------------------|----------:|--------:
+@nx/enforce-module-boundaries        |   158.420 |    62.8%
+@typescript-eslint/no-unused-vars    |    39.058 |    15.5%
+no-misleading-character-class        |     5.997 |     2.4%
+no-useless-escape                    |     4.056 |     1.6%
+no-control-regex                     |     3.578 |     1.4%
+@typescript-eslint/no-empty-function |     3.359 |     1.3%
+no-fallthrough                       |     2.642 |     1.0%
+no-useless-backreference             |     2.451 |     1.0%
+no-var                               |     2.080 |     0.8%
+prefer-spread                        |     1.983 |     0.8%
+
 
 ## Executing ESLint with NX
 
@@ -70,6 +91,9 @@ One for the `nx` command and one for the `eslint` command. The reason for this i
 
 ```shell
 TIMING=1 nx run cpu-profiling:lint --output-file=profiles/all/lint-stats.json --format=json --stats
+
+TIMING=1 nx run cpu-profiling:lint --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
+
 ```
 
 | Rule                                 | Time (ms) | Relative |

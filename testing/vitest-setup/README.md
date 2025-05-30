@@ -1,7 +1,7 @@
 # testing-vitest-setup
 
 This library provides a set of setup scripts for testing.
-As this package is never directly referenced, but only it's files it does not maintain a `index.ts` entry point.
+As this package is never directly referenced, but only it's files it does not maintain a `cpu-merge-command.ts` entry point.
 
 ## The many content divides into:
 

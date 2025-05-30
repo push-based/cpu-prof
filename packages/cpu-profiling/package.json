@@ -26,14 +26,20 @@
   "nx": {
     "name": "cpu-profiling",
     "targets": {
+      "unit-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.unit.config.ts"
+        }
+      },
+      "integration-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.integration.config.ts"
+        }
+      },
       "measure": {
         "command": "node --cpu-prof --cpu-prof-dir profiles"
-      },
-      "merge": {
-        "dependsOn": [
-          "build"
-        ],
-        "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
       },
       "cpu-prof-cli": {
         "dependsOn": [
