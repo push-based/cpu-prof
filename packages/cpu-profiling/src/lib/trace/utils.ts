@@ -1,4 +1,3 @@
-import { basename } from 'path';
 import { CPUProfile, CpuProfileInfo } from '../cpu/cpuprofile.types';
 import {
   CpuProfilerStartProfilingEvent,
@@ -19,6 +18,7 @@ import {
   getThreadName,
   getTraceMetadata,
 } from './trace-event-creators';
+import { getMainProfileInfo } from '../cpu/profile-selection';
 
 export function cpuProfileToTraceProfileEvents(
   cpuProfile: CPUProfile,
@@ -68,10 +68,11 @@ export function cpuProfilesToTraceFile(
     throw new Error('No CPU profiles provided');
   }
 
-  const mainProfileInfo = getMainProfileInfo(
-    cpuProfileInfos,
-    options?.mainProfileMatcher
-  );
+  // Use custom matcher if provided, otherwise use the default selection logic
+  const mainProfileInfo = options?.mainProfileMatcher
+    ? cpuProfileInfos.find(options.mainProfileMatcher) ?? cpuProfileInfos[0]
+    : getMainProfileInfo(cpuProfileInfos);
+
   const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
 
   const allEvents: TraceEvent[] = [];
@@ -107,19 +108,4 @@ export function cpuProfilesToTraceFile(
     traceEvents: sortedEvents,
     metadata,
   } as TraceEventContainer;
-}
-
-function getMainProfileInfo(
-  cpuProfileInfos: CpuProfileInfo[],
-  mainProfileMatcher?: (info: CpuProfileInfo) => boolean
-): CpuProfileInfo {
-  if (mainProfileMatcher) {
-    const mainProfile = cpuProfileInfos.find(mainProfileMatcher);
-    if (mainProfile) {
-      return mainProfile;
-    }
-  }
-
-  // Default to first profile
-  return cpuProfileInfos[0];
 }

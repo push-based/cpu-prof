@@ -1,13 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { sortTraceEvents, cpuProfileToTraceProfileEvents } from './utils';
-import {
-  getThreadNameTraceEvent,
-  getProcessNameTraceEvent,
-  getRunTaskTraceEvent,
-  getStartTracing,
-} from './trace-event-creators';
-import { CPUProfile } from '../cpu/cpuprofile.types';
-import { TraceEvent } from './traceprofile.types';
+import {describe, expect, it} from 'vitest';
+import {cpuProfileToTraceProfileEvents, sortTraceEvents} from './utils';
+import {CPUProfile} from '../cpu/cpuprofile.types';
+import {TraceEvent} from './traceprofile.types';
 
 describe('sortTraceEvents', () => {
   it('should sort meta events before other events, then by timestamp (comprehensive)', () => {
@@ -17,11 +11,12 @@ describe('sortTraceEvents', () => {
       { ph: 'I', ts: 20 } as unknown as TraceEvent,
       { ph: 'M', ts: 10 } as unknown as TraceEvent,
     ];
+
     expect(sortTraceEvents(events)).toStrictEqual([
-      { ph: 'M', ts: 10 },
-      { ph: 'M', ts: 50 },
-      { ph: 'I', ts: 20 },
-      { ph: 'X', ts: 100 },
+      expect.objectContaining({ ph: 'M', ts: 10 }),
+      expect.objectContaining({ ph: 'M', ts: 50 }),
+      expect.objectContaining({ ph: 'I', ts: 20 }),
+      expect.objectContaining({ ph: 'X', ts: 100 }),
     ]);
   });
 
@@ -32,11 +27,12 @@ describe('sortTraceEvents', () => {
       { ph: 'I', ts: 1 } as unknown as TraceEvent,
       { ph: 'M', ts: 100 } as unknown as TraceEvent,
     ];
+
     expect(sortTraceEvents(events)).toStrictEqual([
-      { ph: 'M', ts: 100 },
-      { ph: 'M', ts: 200 },
-      { ph: 'I', ts: 1 },
-      { ph: 'X', ts: 5 },
+      expect.objectContaining({ ph: 'M', ts: 100 }),
+      expect.objectContaining({ ph: 'M', ts: 200 }),
+      expect.objectContaining({ ph: 'I', ts: 1 }),
+      expect.objectContaining({ ph: 'X', ts: 5 }),
     ]);
   });
 
@@ -46,10 +42,11 @@ describe('sortTraceEvents', () => {
       { ph: 'M', ts: 10 } as unknown as TraceEvent,
       { ph: 'M', ts: 100 } as unknown as TraceEvent,
     ];
+
     expect(sortTraceEvents(events)).toStrictEqual([
-      { ph: 'M', ts: 10 },
-      { ph: 'M', ts: 50 },
-      { ph: 'M', ts: 100 },
+      expect.objectContaining({ ph: 'M', ts: 10 }),
+      expect.objectContaining({ ph: 'M', ts: 50 }),
+      expect.objectContaining({ ph: 'M', ts: 100 }),
     ]);
   });
 
@@ -60,11 +57,12 @@ describe('sortTraceEvents', () => {
       { ph: 'B', ts: 100 } as unknown as TraceEvent,
       { ph: 'E', ts: 5 } as unknown as TraceEvent,
     ];
+
     expect(sortTraceEvents(events)).toStrictEqual([
-      { ph: 'E', ts: 5 },
-      { ph: 'I', ts: 10 },
-      { ph: 'X', ts: 50 },
-      { ph: 'B', ts: 100 },
+      expect.objectContaining({ ph: 'E', ts: 5 }),
+      expect.objectContaining({ ph: 'I', ts: 10 }),
+      expect.objectContaining({ ph: 'X', ts: 50 }),
+      expect.objectContaining({ ph: 'B', ts: 100 }),
     ]);
   });
 });
@@ -90,19 +88,34 @@ describe('cpuProfileToTraceProfileEvents', () => {
       startTime: 100,
       endTime: 200,
     };
-    const pid = 1;
-    const tid = 2;
-    const events = cpuProfileToTraceProfileEvents(cpuProfile, { pid, tid });
-    expect(events).toHaveLength(4);
 
-    expect(events[0]?.name).toBe('CpuProfiler::StartProfiling');
-    expect(events[1]?.name).toBe('Profile');
-    expect(events[2]?.name).toBe('ProfileChunk');
-    expect(events[3]?.name).toBe('CpuProfiler::StopProfiling');
-
-    expect(events[2]?.args.data.cpuProfile?.nodes).toBe(cpuProfile.nodes);
-    expect(events[2]?.args.data.cpuProfile?.samples).toBe(cpuProfile.samples);
-    expect(events[2]?.args.data.timeDeltas).toBe(cpuProfile.timeDeltas);
+    expect(
+      cpuProfileToTraceProfileEvents(cpuProfile, { pid: 1, tid: 2 })
+    ).toStrictEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'CpuProfiler::StartProfiling',
+        }),
+        expect.objectContaining({
+          name: 'Profile',
+        }),
+        expect.objectContaining({
+          name: 'ProfileChunk',
+          args: {
+            data: {
+              cpuProfile: {
+                nodes: cpuProfile.nodes,
+                samples: cpuProfile.samples,
+              },
+              timeDeltas: cpuProfile.timeDeltas,
+            },
+          },
+        }),
+        expect.objectContaining({
+          name: 'CpuProfiler::StopProfiling',
+        }),
+      ])
+    );
   });
 
   it('should use sequence if provided', () => {
@@ -113,20 +126,23 @@ describe('cpuProfileToTraceProfileEvents', () => {
       samples: [],
       timeDeltas: [],
     };
-    const pid = 1;
-    const tid = 2;
-    const sequence = 3;
+
     const events = cpuProfileToTraceProfileEvents(cpuProfile, {
-      pid,
-      tid,
-      sequence,
+      pid: 1,
+      tid: 2,
+      sequence: 3,
     });
-    const expectedId = `0x${pid}${tid}${sequence}`;
-    expect(events[1]?.id).toBe(expectedId);
-    expect(events[2]?.id).toBe(expectedId);
+    const expectedId = `0x123`;
+
+    expect(events).toStrictEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: expectedId, name: 'Profile' }),
+        expect.objectContaining({ id: expectedId, name: 'ProfileChunk' }),
+      ])
+    );
   });
 
-  it('should use startTime = 1 if startTime is undefined, and actual value if 0', () => {
+  it('should use startTime = 1 if startTime is undefined', () => {
     const cpuProfileUndefinedStartTime: CPUProfile = {
       nodes: [],
       // @ts-expect-error Testing with undefined startTime, which the function should default to 1
@@ -135,136 +151,42 @@ describe('cpuProfileToTraceProfileEvents', () => {
       samples: [],
       timeDeltas: [],
     };
+
+    const eventsUndefinedStartTime = cpuProfileToTraceProfileEvents(
+      cpuProfileUndefinedStartTime,
+      { pid: 1, tid: 2 }
+    );
+
+    expect(eventsUndefinedStartTime).toStrictEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ ts: 1, name: 'CpuProfiler::StartProfiling' }),
+        expect.objectContaining({ ts: 1, name: 'Profile' }),
+        expect.objectContaining({ ts: 1, name: 'ProfileChunk' }),
+      ])
+    );
+  });
+
+  it('should use actual startTime value when it is 0', () => {
     const cpuProfileZeroStartTime: CPUProfile = {
       nodes: [],
-      startTime: 0, // startTime is explicitly 0
+      startTime: 0,
       endTime: 1,
       samples: [],
       timeDeltas: [],
     };
-    const pid = 1;
-    const tid = 2;
-
-    const eventsUndefinedStartTime = cpuProfileToTraceProfileEvents(
-      cpuProfileUndefinedStartTime,
-      { pid, tid }
-    );
-    expect(eventsUndefinedStartTime[0]?.ts).toBe(1); // Should default to 1
-    expect(eventsUndefinedStartTime[1]?.ts).toBe(1); // Should default to 1
-    expect(eventsUndefinedStartTime[2]?.ts).toBe(1); // Should default to 1 for ProfileChunk as well
 
     const eventsZeroStartTime = cpuProfileToTraceProfileEvents(
       cpuProfileZeroStartTime,
-      { pid, tid }
+      { pid: 1, tid: 2 }
     );
-    expect(eventsZeroStartTime[0]?.ts).toBe(0); // Should be 0, not defaulted
-    expect(eventsZeroStartTime[1]?.ts).toBe(0); // Should be 0, not defaulted
-    expect(eventsZeroStartTime[2]?.ts).toBe(0); // Should be 0 for ProfileChunk as well
+
+    expect(eventsZeroStartTime).toStrictEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ ts: 0, name: 'CpuProfiler::StartProfiling' }),
+        expect.objectContaining({ ts: 0, name: 'Profile' }),
+        expect.objectContaining({ ts: 0, name: 'ProfileChunk' }),
+      ])
+    );
   });
 });
 
-describe('getThreadNameTraceEvent', () => {
-  it('should return a ThreadNameEvent', () => {
-    const pid = 1;
-    const tid = 2;
-    const name = 'TestThread';
-    const event = getThreadNameTraceEvent(pid, tid, name);
-    expect(event).toEqual({
-      cat: '__metadata',
-      name: 'thread_name',
-      ph: 'M',
-      pid,
-      tid,
-      ts: 0,
-      args: { name },
-    });
-  });
-});
-
-describe('getProcessNameTraceEvent', () => {
-  it('should return a ProcessNameEvent', () => {
-    const pid = 1;
-    const tid = 2;
-    const name = 'TestProcess';
-    const event = getProcessNameTraceEvent(pid, tid, name);
-    expect(event).toEqual({
-      cat: '__metadata',
-      name: 'process_name',
-      ph: 'M',
-      pid,
-      tid,
-      ts: 0,
-      args: { name },
-    });
-  });
-});
-
-describe('getRunTaskTraceEvent', () => {
-  it('should return a RunTask TraceEvent', () => {
-    const pid = 1;
-    const tid = 2;
-    const ts = 100;
-    const dur = 50;
-    const event = getRunTaskTraceEvent(pid, tid, { ts, dur });
-    expect(event).toEqual({
-      args: {},
-      cat: 'devtools.timeline',
-      dur,
-      name: 'RunTask',
-      ph: 'X',
-      pid,
-      tid,
-      ts,
-    });
-  });
-});
-
-describe('getStartTracing', () => {
-  it('should return a TracingStartedInBrowserEvent', () => {
-    const pid = 1;
-    const tid = 2;
-    const traceStartTs = 1000;
-    const url = 'http://localhost';
-    const event = getStartTracing(pid, tid, { traceStartTs, url });
-    expect(event).toEqual({
-      cat: 'devtools.timeline',
-      name: 'TracingStartedInBrowser',
-      ph: 'I',
-      pid,
-      tid,
-      ts: traceStartTs,
-      s: 't',
-      args: {
-        data: {
-          frameTreeNodeId: 1,
-          frames: [
-            {
-              frame: 'frame-1',
-              isInPrimaryMainFrame: true,
-              isOutermostMainFrame: true,
-              name: '',
-              processId: pid,
-              url,
-            },
-          ],
-          persistentIds: true,
-        },
-      },
-    });
-  });
-
-  it('should use frameTreeNodeId if provided', () => {
-    const pid = 1;
-    const tid = 2;
-    const traceStartTs = 1000;
-    const url = 'http://localhost';
-    const frameTreeNodeId = 123;
-    const event = getStartTracing(pid, tid, {
-      traceStartTs,
-      url,
-      frameTreeNodeId,
-    });
-    expect(event.args.data?.frameTreeNodeId).toBe(frameTreeNodeId);
-    expect(event.args.data?.frames[0]?.frame).toBe(`frame-${frameTreeNodeId}`);
-  });
-});

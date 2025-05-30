@@ -87,7 +87,7 @@ export function parseCpuProfileName(
     prefix,
     ymd,
     hms,
-    pid = 0,
+    pid = 1,
     tid = 0,
     seq,
     ext: extension = '',

@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { extname, join } from 'path';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 import { CpuProfileInfo } from './cpu/cpuprofile.types';
 import { cpuProfilesToTraceFile } from './trace/utils';
 import { basename, dirname } from 'node:path';

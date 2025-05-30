@@ -37,6 +37,7 @@
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "memfs": "^4.17.2",
     "nx": "21.0.3",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
