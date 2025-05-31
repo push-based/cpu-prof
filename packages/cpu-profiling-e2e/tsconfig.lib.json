@@ -10,7 +10,14 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
-  "references": [],
+  "references": [
+    {
+      "path": "../../testing/vitest-setup/tsconfig.lib.json"
+    },
+    {
+      "path": "../../testing/utils/tsconfig.lib.json"
+    }
+  ],
   "exclude": [
     "vite.config.ts",
     "vite.config.mts",

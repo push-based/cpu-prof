@@ -15,6 +15,7 @@ export default defineConfig(() => {
       setupFiles: [
         '../../testing/vitest-setup/src/lib/fs-memfs.setup-file.ts',
         '../../testing/setup/src/reset.setup-file.ts',
+        '../../testing/setup/src/console.setup-file.ts',
       ],
       coverage: {
         ...baseConfig.test.coverage,
