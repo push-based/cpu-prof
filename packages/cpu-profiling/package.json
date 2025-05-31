@@ -15,7 +15,7 @@
     }
   },
   "bin": {
-    "@push-based/cpu-profiling": "./dist/profiling.esm.js"
+    "@push-based/cpu-prof": "./dist/cpu-prof.esm.js"
   },
   "scripts": {},
   "files": [

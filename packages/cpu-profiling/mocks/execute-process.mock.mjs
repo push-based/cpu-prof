@@ -31,4 +31,4 @@ await new Promise((resolve) => {
   }, interval);
 });
 
-console.info('process:complete'); 
+console.info('process:complete');

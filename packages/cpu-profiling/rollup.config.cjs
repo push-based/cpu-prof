@@ -7,7 +7,7 @@ module.exports = withNx(
     outputPath: './dist',
     tsConfig: './tsconfig.lib.json',
     compiler: 'swc',
-    format: ['esm', 'cjs'],
+    format: ['esm'],
     assets: [
       {
         input: './packages/cpu-profiling',

@@ -31,7 +31,7 @@ const iterations = 100000;
 
 for (let i = 0; i < iterations; i++) {
   sum += Math.sqrt(i) * Math.sin(i) + Math.cos(i);
-  
+
   // Add some nested function calls to create interesting call stacks
   if (i % 1000 === 0) {
     performNestedWork(i);

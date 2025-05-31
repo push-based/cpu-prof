@@ -11,7 +11,9 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "mocks/execute-process.ts", "mocks/execute-process-helper.mock.ts"],
+  "include": [
+    "src/**/*.ts"
+  ],
   "references": [
     {
       "path": "../../testing/vitest-setup/tsconfig.lib.json"

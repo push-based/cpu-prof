@@ -1,17 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { executeProcess } from '@push-based/testing-utils';
-import { join } from 'path';
-
-const cliPath = join(
-  __dirname,
-  '../../../packages/cpu-profiling/dist/cpu-prof.esm.js'
-);
+import { executeProcess } from '../../../testing/utils/src/index.js';
+import { CLI_PATH } from '../mocks/constants';
 
 describe('help-command', () => {
   it('should display help information for cpu-merge command', async () => {
     const { stdout, stderr, code } = await executeProcess({
-      command: 'node',
-      args: [cliPath, 'cpu-merge', '--help'],
+      command: '../../node_modules/.bin/ts-node',
+      args: [CLI_PATH, 'cpu-merge', '--help'],
     });
 
     expect(stdout).toMatchInlineSnapshot(`
