@@ -9,15 +9,13 @@ export function builder(yargs: Argv): Argv<MeasureArgs> {
   return (
     yargs
       .parserConfiguration({ 'populate--': true })
+      .strictOptions()
       // .positional('command_to_profile', { // Removed as it is now handled by --
       //   describe: 'The command to execute and profile (e.g., node, npm, npx)',
       //   type: 'string',
       //   demandOption: true,
       // })
-      .group(
-        ['dir', 'interval', 'name', 'verbose', 'help'],
-        'CPU Measure Options:'
-      )
+      .group(['dir', 'interval', 'name', 'help'], 'CPU Measure Options:')
       .option('interval', {
         alias: 'i',
         describe: 'Interval in milliseconds to sample the command.',
@@ -39,24 +37,18 @@ export function builder(yargs: Argv): Argv<MeasureArgs> {
         type: 'string',
         normalize: true,
       })
-      .option('verbose', {
-        alias: 'v',
-        describe: 'Enable verbose logging',
-        type: 'boolean',
-        default: false,
-      })
       .example(
-        '$0 cpu-measure -- my_script.js --arg-for-script --dir ./profiles',
+        '$0 cpu-measure -d ./profiles -- my_script.js --arg-for-script',
         'Profile `node my_script.js --arg-for-script` and save to ./profiles'
       )
       .example(
-        '$0 cpu-measure -- my_app.js --name build-profile --interval 500',
+        '$0 cpu-measure -n build-profile -i 500 -- my_app.js',
         'Profile `node my_app.js`, name it `build-profile` with 500ms interval'
       ).epilog(`
       Pass the Node.js script to profile and its arguments after "--".
       Examples:
       $0 cpu-measure -- my_script.js --arg-for-script
-      $0 cpu-measure -- app.js --verbose
+      $0 cpu-measure -- app.js
     `)
   );
 }

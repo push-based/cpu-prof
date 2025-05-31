@@ -16,6 +16,10 @@ Manually test examples:
 
 # Measure
 
+## Measure a .js script
+
+`node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-measure -v -- /Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/cpu-profiling-e2e/mocks/single.process.js`
+
 - `node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`
 - `node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`
 - `node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`

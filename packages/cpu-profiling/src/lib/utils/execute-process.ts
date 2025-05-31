@@ -164,6 +164,41 @@ export function formatCommandLog(
 }
 
 /**
+ * Logs the details of a command execution, including the command, arguments,
+ * CWD, and specific NODE_OPTIONS intended for display.
+ */
+function logCommandExecutionDetails(
+  command: string,
+  args: string[] | undefined,
+  cwd: string | URL | undefined,
+  nodeOptionsForLogging: string | undefined,
+  logger: { log?: (...args: string[]) => void }
+): void {
+  if (!logger?.log) {
+    return;
+  }
+
+  const logParts = [
+    formatCommandLog(
+      command,
+      args,
+      cwd instanceof URL ? cwd.pathname : cwd ?? process.cwd()
+    ),
+  ];
+
+  if (nodeOptionsForLogging) {
+    const nodeOptionsDisplayString = `${ansis.green(
+      'NODE_OPTIONS'
+    )}=${ansis.blueBright(String(nodeOptionsForLogging))}`;
+    logParts.push(ansis.dim('with env: ') + nodeOptionsDisplayString);
+  }
+  // No other environment variables will be logged here, adhering to the previous request
+  // to only log the constructed NODE_OPTIONS for profiling in this specific "with env:" part.
+
+  logger.log(logParts.join(' '));
+}
+
+/**
  * Executes a process and returns a promise with the result as `ProcessResult`.
  *
  * @example
@@ -200,37 +235,33 @@ export function executeProcess(
     args,
     observer,
     ignoreExitCode = false,
-    env,
+    env: rawEnv, // Renamed to avoid confusion, this includes __FOR_LOGGING_NODE_OPTIONS__
     ...options
   } = cfg;
   const { onStdout, onStderr, onError, onComplete } = observer ?? {};
   const date = new Date().toISOString();
   const start = performance.now();
 
-  // Enhanced logging: command, args, cwd, and env
-  if (logger?.log) {
-    const logParts = [
-      formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`),
-    ];
-    if (env && Object.keys(env).length > 0) {
-      const envString = Object.entries(env)
-        .sort(([keyA], [keyB]) => keyA.localeCompare(keyB)) // Sort for consistent output
-        .map(
-          ([key, value]) =>
-            `${ansis.green(key)}=${ansis.blueBright(String(value))}`
-        )
-        .join(' ');
-      logParts.push(ansis.dim('with env: ') + envString);
-    }
-    logger.log(logParts.join(' '));
-  }
+  // Prepare the actual environment for the spawned process by removing our logging-only key
+  const actualEnvForSpawn = { ...rawEnv };
+  const nodeOptionsForLogging = actualEnvForSpawn.__FOR_LOGGING_NODE_OPTIONS__;
+  delete actualEnvForSpawn.__FOR_LOGGING_NODE_OPTIONS__;
+
+  // Log command execution details using the new helper function
+  logCommandExecutionDetails(
+    command,
+    args,
+    cfg.cwd,
+    nodeOptionsForLogging as string | undefined,
+    logger
+  );
 
   return new Promise((resolve, reject) => {
     // shell:true tells Windows to use shell command for spawning a child process
     const spawnedProcess = spawn(command, args ?? [], {
       shell: false,
       windowsHide: true,
-      env: { ...process.env, ...env },
+      env: { ...process.env, ...actualEnvForSpawn }, // Use the cleaned env for spawn
       ...options,
     }) as ChildProcessByStdio<Writable, Readable, Readable>;
 

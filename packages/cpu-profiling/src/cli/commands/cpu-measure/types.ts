@@ -1,3 +1,6 @@
+/**
+ * Arguments for the cpu-measure command
+ */
 export interface MeasureArgs {
   // command_to_profile is the first positional argument
   // command_to_profile: string; // This is now part of '--'
@@ -13,5 +16,5 @@ export interface MeasureArgs {
   interval?: number;
   dir?: string;
   name?: string;
-  verbose?: boolean;
+  // verbose?: boolean; // Removed verbose property
 }

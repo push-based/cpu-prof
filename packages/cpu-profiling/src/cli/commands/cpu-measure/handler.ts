@@ -5,7 +5,7 @@ import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
  * Handle the cpu-measure command execution for Node.js scripts
  */
 export async function handler(argv: MeasureArgs): Promise<void> {
-  const { verbose, dir, interval, name } = argv;
+  const { dir, interval, name } = argv;
 
   const argsAfterDoubleDash = argv['--'] as string[] | undefined;
   if (!argsAfterDoubleDash || argsAfterDoubleDash.length === 0) {
@@ -19,19 +19,6 @@ export async function handler(argv: MeasureArgs): Promise<void> {
   const command_to_profile = argsAfterDoubleDash[0];
   // The rest are its arguments.
   const finalArgsForChild: string[] = argsAfterDoubleDash.slice(1).map(String);
-
-  if (verbose) {
-    console.log(`🔧 CPU Profiling Mode:`);
-    console.log(`  🚀 Executable/Script: ${command_to_profile}`);
-    if (finalArgsForChild.length > 0) {
-      console.log(`  🚀 Arguments: ${finalArgsForChild.join(' ')}`);
-    }
-    console.log(`  ⏱️  Interval: ${interval}ms`);
-    console.log(`  📁 Output directory: ${dir}`);
-    if (name) {
-      console.log(`  🏷️  Profile name: ${name}`);
-    }
-  }
 
   try {
     await runWithCpuProf(command_to_profile, finalArgsForChild, {
