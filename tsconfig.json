@@ -31,12 +31,6 @@
       "path": "./dummy/pkg-4"
     },
     {
-      "path": "./packages/cpu-profiling"
-    },
-    {
-      "path": "./packages/cpu-profiling-e2e"
-    },
-    {
       "path": "./testing/vitest-setup"
     },
     {
@@ -44,6 +38,12 @@
     },
     {
       "path": "./testing/utils"
+    },
+    {
+      "path": "./packages/cpu-prof-e2e"
+    },
+    {
+      "path": "./packages/cpu-prof"
     }
   ]
 }

@@ -1176,7 +1176,7 @@ export interface ThreadNameEvent extends MetadataEventBase {
 #### Highlighting Lanes with ThreadName metadata event
 
 <!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
-<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-profiling.png) -->
+<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-prof.png) -->
 
 **Profile content:**
 
@@ -1197,6 +1197,6 @@ export interface ThreadNameEvent extends MetadataEventBase {
 **DevTools Performance Tab:**
 
 <!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
-<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-profiling.png) -->
+<!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-prof.png) -->
 
 ---

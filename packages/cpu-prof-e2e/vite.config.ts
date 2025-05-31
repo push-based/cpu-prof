@@ -3,7 +3,7 @@ import * as path from 'path';
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../node_modules/.vite/cpu-profiling-e2e',
+  cacheDir: '../node_modules/.vite/cpu-prof-e2e',
   plugins: [],
   resolve: {
     alias: {

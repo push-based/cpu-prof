@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { executeProcess } from '../../cpu-profiling/src/lib/utils/execute-process';
+import { executeProcess } from '../../cpu-prof/src/lib/utils/execute-process';
 import { CLI_PATH } from '../mocks/constants';
 import { join } from 'path';
 

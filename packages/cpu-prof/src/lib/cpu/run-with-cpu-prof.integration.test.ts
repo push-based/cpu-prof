@@ -46,6 +46,12 @@ describe('runWithCpuProf', () => {
     ).resolves.toEqual({ code: 0 });
   });
 
+  it('should be able to run "nx --help"', async () => {
+    await expect(runWithCpuProf('nx', ['--help'], {}, logger)).resolves.toEqual(
+      { code: 0 }
+    );
+  });
+
   it('logs warning for non-node command', async () => {
     await expect(
       runWithCpuProf('bash', ['-c', 'echo ok'], {}, logger)

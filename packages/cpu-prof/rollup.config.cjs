@@ -9,11 +9,11 @@ module.exports = withNx(
     compiler: 'swc',
     assets: [
       {
-        input: './packages/cpu-profiling',
+        input: './packages/cpu-prof',
         glob: './package.json',
         output: '.',
       },
-      { input: './packages/cpu-profiling', glob: './README.md', output: '.' },
+      { input: './packages/cpu-prof', glob: './README.md', output: '.' },
     ],
     // output: { sourcemap: true }, // Example, if needed
   }

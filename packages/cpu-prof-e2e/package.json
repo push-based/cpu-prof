@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/cpu-profiling-e2e",
+  "name": "@e2e/cpu-prof-e2e",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "implicitDependencies": [
-    "@nx-advanced-perf-logging/cpu-profiling"
+    "@nx-advanced-perf-logging/cpu-prof"
   ],
   "targets": {
     "e2e-test": {

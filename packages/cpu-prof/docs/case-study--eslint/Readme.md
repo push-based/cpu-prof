@@ -10,7 +10,7 @@ Running ESLint on with Nx is dramatically slower than running it without Nx.
 
 `/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx`
 
-TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
+TIMING=1 eslint --config eslint.config.mjs packages/cpu-prof --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
 
 ```shell
 # - `NODE_OPTIONS` is used to set the Node.js options acros processes and threads. using `--cpu-prof`, basically any argumebt is not guarantied to be passed to child processes/threads.
@@ -18,8 +18,8 @@ TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=
 #   - `--cpu-prof-dir` is the directory to save the CPU profile. We set it to a absolute path tto ensure that any created process or thread will create it's `.cpuprofile` file in the same directory.  If we don't do this, the `.cpuprofile` will be created eaches process current working directory wich can vary.
 # - `node ./node_modules/.bin/eslint` is the command to execute the ESLint CLI.
 #   - `--config eslint.config.mjs` is the path to the ESLint configuration file.
-#   - `packages/cpu-profiling` is the path to the directory containing the files to lint.
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<absolute-path-to-repo>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
+#   - `packages/cpu-prof` is the path to the directory containing the files to lint.
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<absolute-path-to-repo>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
 ```
 
 This will create a `.cpuprofile` file in the folder `profiles/eslint`.
@@ -34,8 +34,8 @@ This will create a `.cpuprofile` file in the folder `profiles/eslint`.
 ### Adding timing arguments to the command
 
 ```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
-TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=/<Users>/<user-name>/<workspace>/profiles/eslint/lint-stats.json --format=json --stats
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
+TIMING=1 eslint --config eslint.config.mjs packages/cpu-prof --output-file=/<Users>/<user-name>/<workspace>/profiles/eslint/lint-stats.json --format=json --stats
 ```
 
 | Rule                                 | Time (ms) | Relative |
@@ -69,7 +69,7 @@ TIMING=1 eslint --config eslint.config.mjs packages/cpu-profiling --output-file=
 1. Run eslint with NX with CPU profiling enabled through `NODE_OPTIONS`
 
 ```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/nx-eslint" nx lint cpu-profiling
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/nx-eslint" nx lint cpu-prof
 ```
 
 This will create 2 different `.cpuprofile` file in the folder `profiles/nx-eslint`.
@@ -86,9 +86,9 @@ One for the `nx` command and one for the `eslint` command. The reason for this i
 ### Adding timing arguments to the command
 
 ```shell
-TIMING=1 nx run cpu-profiling:lint --output-file=profiles/all/lint-stats.json --format=json --stats
+TIMING=1 nx run cpu-prof:lint --output-file=profiles/all/lint-stats.json --format=json --stats
 
-TIMING=1 nx run cpu-profiling:lint --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
+TIMING=1 nx run cpu-prof:lint --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
 
 ```
 

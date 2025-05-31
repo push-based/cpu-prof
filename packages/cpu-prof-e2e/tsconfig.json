@@ -7,7 +7,7 @@
       "path": "../../testing/vitest-setup"
     },
     {
-      "path": "../cpu-profiling"
+      "path": "../cpu-prof"
     },
     {
       "path": "./tsconfig.lib.json"

@@ -15,7 +15,7 @@
       "path": "../../testing/vitest-setup/tsconfig.lib.json"
     },
     {
-      "path": "../cpu-profiling/tsconfig.lib.json"
+      "path": "../cpu-prof/tsconfig.lib.json"
     }
   ],
   "exclude": [

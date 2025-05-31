@@ -259,7 +259,7 @@ Default Behavior:
   • v8.compile category filtering: enabled  
   • Minimum duration filtering: ${DEFAULT_DUR_MIN}μs
   • Default excluded names: ${DEFAULT_EXCLUDE_NAMES}
-  • If no input file provided, uses newest .json file from ./packages/cpu-profiling/mocks/fixtures/
+  • If no input file provided, uses newest .json file from ./packages/cpu-prof/mocks/fixtures/
   • If no output file specified, adds .reduced.json to the input filename
   • Use --no-<option> to disable any boolean filter (e.g., --no-network, --no-animation)
   • Use --no-dur-min to disable minimum duration filtering

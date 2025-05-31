@@ -4,9 +4,9 @@
 
 ---
 
-- **[What is CPU profiling and why do we need it?](#what-is-cpu-profiling-and-why-do-we-need-it)**
+- **[What is CPU profiling and why do we need it?](#what-is-cpu-prof-and-why-do-we-need-it)**
 - **[Create a CPU Profile](#create-a-cpu-profile)**
-  - [You can start CPU profiling in different ways:](#you-can-start-cpu-profiling-in-different-ways)
+  - [You can start CPU profiling in different ways:](#you-can-start-cpu-prof-in-different-ways)
   - [Troubleshooting](#troubleshooting)
     - [My profile files are appearing on different places in the file system based on the cwd of every process.](#my-profile-files-are-appearing-on-different-places-in-the-file-system-based-on-the-cwd-of-every-process)
     - [Error: `--cpu-prof is not allowed in NODE_OPTIONS`](#error---cpu-prof-is-not-allowed-in-node_options)
@@ -14,7 +14,7 @@
   - [Process and Thread IDs](#process-and-thread-ids)
     - [What Determines the Process ID (PID)?](#what-determines-the-process-id-pid)
     - [What Determines the Thread ID (TID)?](#what-determines-the-thread-id-tid)
-  - [CPU Profiling Arguments](#cpu-profiling-arguments)
+  - [CPU Profiling Arguments](#cpu-prof-arguments)
     - [`--cpu-prof`](#--cpu-prof)
     - [`--cpu-prof-dir`](#--cpu-prof-dir)
     - [`--cpu-prof-name`](#--cpu-prof-name)
@@ -936,16 +936,16 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
 UNDER CONSTRUCTION
 
 ```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-profiling
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof
 ```
 
 ```shell
 # fire off both profilers in the background…
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-profiling &
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof &
 
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-profiling
-node --env-file .cpu-prof-env NODE_OPTIONS="--cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-profiling &
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof
+node --env-file .cpu-prof-env NODE_OPTIONS="--cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof &
 
 # …then wait for both to finish
 wait
