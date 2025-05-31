@@ -2,53 +2,46 @@ import type { Argv } from 'yargs';
 import { isAbsolute, join } from 'node:path';
 import type { MeasureArgs } from './types';
 
-/**
- * Build the yargs command configuration for cpu-measure
- */
 export function builder(yargs: Argv): Argv<MeasureArgs> {
-  return (
-    yargs
-      .parserConfiguration({ 'populate--': true })
-      .strictOptions()
-      // .positional('command_to_profile', { // Removed as it is now handled by --
-      //   describe: 'The command to execute and profile (e.g., node, npm, npx)',
-      //   type: 'string',
-      //   demandOption: true,
-      // })
-      .group(['dir', 'interval', 'name', 'help'], 'CPU Measure Options:')
-      .option('interval', {
-        alias: 'i',
-        describe: 'Interval in milliseconds to sample the command.',
-        type: 'number',
-      })
-      .option('dir', {
-        alias: 'd',
-        describe: 'Directory to save the profile.',
-        type: 'string',
-        normalize: true,
-        default: join(process.cwd(), 'profiles'),
-        coerce: (dir: string) => {
-          return isAbsolute(dir) ? dir : join(process.cwd(), dir);
-        },
-      })
-      .option('name', {
-        alias: 'n',
-        describe: 'Name of the profile (auto-generated if not specified).',
-        type: 'string',
-        normalize: true,
-      })
-      .example(
-        '$0 cpu-measure -d ./profiles -- my_script.js --arg-for-script',
-        'Profile `node my_script.js --arg-for-script` and save to ./profiles'
-      )
-      .example(
-        '$0 cpu-measure -n build-profile -i 500 -- my_app.js',
-        'Profile `node my_app.js`, name it `build-profile` with 500ms interval'
-      ).epilog(`
-      Pass the Node.js script to profile and its arguments after "--".
-      Examples:
-      $0 cpu-measure -- my_script.js --arg-for-script
-      $0 cpu-measure -- app.js
-    `)
-  );
+  return yargs
+    .parserConfiguration({ 'halt-at-non-option': true })
+    .group(
+      ['cpu-prof-dir', 'cpu-prof-interval', 'cpu-prof-name', 'help'],
+      'CPU Measure Options:'
+    )
+    .option('cpu-prof-interval', {
+      describe: 'Interval in milliseconds to sample the command.',
+      type: 'number',
+    })
+    .option('cpu-prof-dir', {
+      describe: 'Directory to save the profile.',
+      type: 'string',
+      normalize: true,
+      default: join(process.cwd(), 'profiles'),
+      coerce: (dir: string) => {
+        return isAbsolute(dir) ? dir : join(process.cwd(), dir);
+      },
+    })
+    .option('cpu-prof-name', {
+      describe: 'Name of the profile (auto-generated if not specified).',
+      type: 'string',
+      normalize: true,
+    })
+    .example(
+      '$0 cpu-measure --cpu-prof-dir ./profiles node my_script.js --arg-for-script',
+      'Profile `node my_script.js --arg-for-script` and save to ./profiles. Options can be anywhere.'
+    )
+    .example(
+      '$0 cpu-measure node my_app.js --cpu-prof-name build-profile --cpu-prof-interval 500',
+      'Profile `node my_app.js`, name it `build-profile` with 500ms interval. Options can be interspersed.'
+    )
+    .epilog(
+      `The command to profile and its arguments are automatically detected.
+CPU Measure options (like --cpu-prof-dir) can be placed anywhere.
+
+Examples:
+  $0 cpu-measure node my_script.js --arg-for-script
+  $0 cpu-measure --cpu-prof-dir ./custom-profiles node my_app.js
+  $0 cpu-measure node my_app.js --cpu-prof-interval 100`
+    );
 }

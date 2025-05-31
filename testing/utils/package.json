@@ -1,0 +1,43 @@
+{
+  "name": "@push-based/testing-utils",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "ts-morph": "^24.0.0",
+    "typescript": "5.6.3"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "^4.5.0"
+  },
+  "nx": {
+    "sourceRoot": "testing/utils/src",
+    "projectType": "library",
+    "name": "testing-utils",
+    "targets": {
+      "unit-test": {
+        "executor": "@nx/vitest:vitest",
+        "options": {
+          "config": "vitest.unit.config.ts"
+        }
+      },
+      "integration-test": {
+        "executor": "@nx/vitest:vitest",
+        "options": {
+          "config": "vitest.integration.config.mts"
+        }
+      }
+    }
+  }
+}

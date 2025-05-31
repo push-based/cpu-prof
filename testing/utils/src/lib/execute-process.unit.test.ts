@@ -1,10 +1,7 @@
 import { ChildProcess } from 'node:child_process';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { getAsyncProcessRunnerConfig } from '../../../mocks/execute-process-helper.mock.js';
-import {
-  type ProcessObserver,
-  executeProcess,
-} from '../../../mocks/execute-process.js';
+import { describe, expect, it, vi } from 'vitest';
+import { getAsyncProcessRunnerConfig } from './execute-process-helper.mock.js';
+import { type ProcessObserver, executeProcess } from './execute-process.js';
 
 describe('executeProcess', () => {
   const spyObserver: ProcessObserver = {

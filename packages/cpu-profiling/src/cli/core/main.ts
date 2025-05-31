@@ -10,7 +10,6 @@ export async function main(): Promise<void> {
     )
     .demandCommand(0, 1, '', 'Too many commands specified')
     .recommendCommands()
-    .strict()
     .help()
     .alias('help', 'h')
     .version()

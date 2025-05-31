@@ -1,34 +1,46 @@
 import type { MeasureArgs } from './types';
 import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
 
-/**
- * Handle the cpu-measure command execution for Node.js scripts
- */
 export async function handler(argv: MeasureArgs): Promise<void> {
-  const { dir, interval, name } = argv;
+  const {
+    ['cpu-prof-dir']: cpuProfDir,
+    ['cpu-prof-interval']: cpuProfInterval,
+    ['cpu-prof-name']: cpuProfName,
+  } = argv;
 
-  const argsAfterDoubleDash = argv['--'] as string[] | undefined;
-  if (!argsAfterDoubleDash || argsAfterDoubleDash.length === 0) {
+  let commandArgsForProfiling = (
+    argv._ && argv._.length > 0 ? argv._.slice(1) : []
+  ) as string[];
+
+  if (
+    commandArgsForProfiling.length > 0 &&
+    commandArgsForProfiling[0] === 'cpu-measure'
+  ) {
+    commandArgsForProfiling = commandArgsForProfiling.slice(1);
+  }
+
+  const commandArgsInput = commandArgsForProfiling;
+
+  if (!commandArgsInput || commandArgsInput.length === 0) {
     console.error(
-      '❌ Error: No command or script provided after --. Usage: cpu-measure -- <command_or_script.js> [args...]'
+      '❌ Error: No command or script provided to profile. Usage: cpu-measure [options] <command_or_script.js> [args...]'
     );
     process.exit(1);
   }
 
-  // The first item after '--' is the command/script to be profiled.
-  const command_to_profile = argsAfterDoubleDash[0];
-  // The rest are its arguments.
-  const finalArgsForChild: string[] = argsAfterDoubleDash.slice(1).map(String);
+  const command_to_profile = commandArgsInput[0];
+  const finalArgsForChild: string[] = commandArgsInput.slice(1);
 
   try {
     await runWithCpuProf(command_to_profile, finalArgsForChild, {
-      dir: dir!, // dir has a default from builder
-      interval: interval!, // interval has a default from builder
-      name,
+      dir: cpuProfDir!,
+      interval: cpuProfInterval!,
+      name: cpuProfName,
     });
-    // runWithCpuProf is expected to log its own success/failure or profiling details
   } catch (error) {
-    const errorMessage = (error as Error).message;
+    const e = error as Error;
+    const errorMessage = e.message || 'Unknown error';
+
     if (errorMessage && errorMessage.includes('not allowed in NODE_OPTIONS')) {
       console.error(
         '❌ Error: Node.js has restricted some V8 options (like --cpu-prof) from being set via NODE_OPTIONS.\n' +
@@ -38,9 +50,7 @@ export async function handler(argv: MeasureArgs): Promise<void> {
           '   Alternatively, the profiling tool might need an update to pass these V8 options directly to the Node.js command if possible.'
       );
     } else {
-      console.error(
-        `❌ Error during CPU profiling: ${errorMessage || 'Unknown error'}`
-      );
+      console.error(`❌ Error during CPU profiling: ${errorMessage}`);
     }
     process.exit(1);
   }
