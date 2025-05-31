@@ -8,9 +8,11 @@ export async function main(): Promise<void> {
     .usage(
       'Usage: $0 <command> [options]\n\nPushBased Profiling - Advanced CPU profiling and trace file utilities'
     )
+    .parserConfiguration({ 'unknown-options-as-args': true })
+    .parserConfiguration({ 'unknown-options-as-args': true })
     .demandCommand(0, 1, '', 'Too many commands specified')
     .recommendCommands()
-    .strict()
+    .strictCommands()
     .help()
     .alias('help', 'h')
     .version()

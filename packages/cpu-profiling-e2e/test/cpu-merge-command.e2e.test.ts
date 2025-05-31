@@ -6,6 +6,7 @@ import { existsSync } from 'fs';
 import { CLI_PATH } from '../mocks/constants';
 
 describe('cpu-merge-command', () => {
+  const cliPath = join(__dirname, '../../../', CLI_PATH);
   const mocksPath = join(__dirname, '../mocks');
   const mocksMinimalPath = join(mocksPath, 'minimal');
   const tmpCpuMergeCommandDir = join(
@@ -31,8 +32,8 @@ describe('cpu-merge-command', () => {
     );
 
     const { stdout, stderr, code } = await executeProcess({
-      command: '../../node_modules/.bin/ts-node',
-      args: [CLI_PATH, 'cpu-merge', inputDir],
+      command: 'node',
+      args: [cliPath, 'cpu-merge', inputDir],
     });
 
     expect(stdout).toContain('✅ CPU profiles merged successfully!');
@@ -64,8 +65,8 @@ describe('cpu-merge-command', () => {
     );
 
     const { stdout, stderr, code } = await executeProcess({
-      command: '../../node_modules/.bin/ts-node',
-      args: [CLI_PATH, 'cpu-merge', inputDir],
+      command: 'node',
+      args: [cliPath, 'cpu-merge', inputDir],
     });
 
     expect(stdout).toContain('📊 Generated 10 trace events');
@@ -98,8 +99,8 @@ describe('cpu-merge-command', () => {
     );
 
     const { stdout, stderr, code } = await executeProcess({
-      command: '../../node_modules/.bin/ts-node',
-      args: [CLI_PATH, 'cpu-merge', inputDir, '--outputDir', outputDir],
+      command: 'node',
+      args: [cliPath, 'cpu-merge', inputDir, '--outputDir', outputDir],
     });
 
     expect(stderr).toBe('');
@@ -125,13 +126,7 @@ describe('cpu-merge-command', () => {
 
     const { stdout, stderr, code } = await executeProcess({
       command: 'node',
-      args: [
-        CLI_PATH,
-        CLI_SCRIPT,
-        'cpu-merge',
-        inputDir,
-        '--startTracingInBrowser',
-      ],
+      args: [cliPath, 'cpu-merge', inputDir, '--startTracingInBrowser'],
     });
 
     expect(stderr).toBe('');

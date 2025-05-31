@@ -92,6 +92,7 @@ export type ProcessConfig = Omit<
   args?: string[];
   observer?: ProcessObserver;
   ignoreExitCode?: boolean;
+  env?: NodeJS.ProcessEnv;
 };
 
 /**
@@ -184,7 +185,14 @@ export function executeProcess(
   cfg: ProcessConfig,
   logger: { log?: (...args: string[]) => void } = {}
 ): Promise<ProcessResult> {
-  const { command, args, observer, ignoreExitCode = false, ...options } = cfg;
+  const {
+    command,
+    args,
+    observer,
+    ignoreExitCode = false,
+    env,
+    ...options
+  } = cfg;
   const { onStdout, onStderr, onError, onComplete } = observer ?? {};
   const date = new Date().toISOString();
   const start = performance.now();
@@ -195,8 +203,9 @@ export function executeProcess(
   return new Promise((resolve, reject) => {
     // shell:true tells Windows to use shell command for spawning a child process
     const spawnedProcess = spawn(command, args ?? [], {
-      shell: true,
+      shell: false,
       windowsHide: true,
+      env: { ...process.env, ...env },
       ...options,
     }) as ChildProcessByStdio<Writable, Readable, Readable>;
 

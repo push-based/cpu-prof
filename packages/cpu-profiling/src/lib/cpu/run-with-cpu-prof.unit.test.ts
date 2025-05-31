@@ -37,10 +37,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile --cpu-prof-interval=1000" node',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node script.js'],
       cwd: './test-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile --cpu-prof-interval=1000',
+      },
     });
   });
 
@@ -54,9 +57,12 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command: 'NODE_OPTIONS="--cpu-prof" node',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node script.js'],
       cwd: '', // cwd uses the dir value as-is
+      env: {
+        NODE_OPTIONS: '--cpu-prof',
+      },
     });
   });
 
@@ -70,10 +76,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=custom-name" node',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node script.js'],
       cwd: './test-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=custom-name',
+      },
     });
   });
 
@@ -121,10 +130,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./build-profiles --cpu-prof-name=build-profile --cpu-prof-interval=500" npm',
-      args: ['run', 'build', '--', '--prod'],
+      command: 'node',
+      args: ['npm run build -- --prod'],
       cwd: './build-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./build-profiles --cpu-prof-name=build-profile --cpu-prof-interval=500',
+      },
     });
   });
 
@@ -138,10 +150,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/absolute/path/profiles --cpu-prof-name=abs-profile --cpu-prof-interval=2000" node',
-      args: ['index.js'],
+      command: 'node',
+      args: ['node index.js'],
       cwd: '/absolute/path/profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=/absolute/path/profiles --cpu-prof-name=abs-profile --cpu-prof-interval=2000',
+      },
     });
   });
 
@@ -164,10 +179,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile" node',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node script.js'],
       cwd: './test-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile',
+      },
     });
   });
 
@@ -181,10 +199,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-interval=1000" node',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node script.js'],
       cwd: './test-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-interval=1000',
+      },
     });
   });
 
@@ -194,10 +215,13 @@ describe('runWithCpuProf', () => {
     ).resolves.not.toThrow();
 
     expect(mockExecuteProcess).toHaveBeenCalledWith({
-      command:
-        'NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile --cpu-prof-interval=1000" node --inspect',
-      args: ['script.js'],
+      command: 'node',
+      args: ['node --inspect script.js'],
       cwd: './test-profiles',
+      env: {
+        NODE_OPTIONS:
+          '--cpu-prof --cpu-prof-dir=./test-profiles --cpu-prof-name=test-profile --cpu-prof-interval=1000',
+      },
     });
   });
 });

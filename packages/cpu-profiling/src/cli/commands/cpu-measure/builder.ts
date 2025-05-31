@@ -7,21 +7,15 @@ import type { MeasureArgs } from './types';
  */
 export function builder(yargs: Argv): Argv<MeasureArgs> {
   return yargs
-    .positional('command', {
-      describe: 'Command to measure',
+    .positional('command_to_profile', {
+      describe: 'The command to execute and profile (e.g., node, npm, npx)',
       type: 'string',
-      normalize: true,
       demandOption: true,
     })
-    .group(['help', 'verbose'], 'Basic Options:')
-    .option('args', {
-      alias: 'a',
-      describe:
-        'Arguments for the command to measure (space-separated string).',
-      type: 'string',
-      normalize: true,
-      default: '',
-    })
+    .group(
+      ['dir', 'interval', 'name', 'verbose', 'help'],
+      'CPU Measure Options:'
+    )
     .option('interval', {
       alias: 'i',
       describe: 'Interval in milliseconds to sample the command.',
@@ -50,17 +44,17 @@ export function builder(yargs: Argv): Argv<MeasureArgs> {
       type: 'boolean',
       default: false,
     })
-
     .example(
-      '$0 cpu-measure node --args="./index.js"',
-      'Measure the command node with arguments ./index.js'
+      '$0 cpu-measure node -e "console.log(42)" --dir ./profiles',
+      'Profile `node -e "console.log(42)"` and save to ./profiles'
     )
     .example(
-      '$0 cpu-measure npm --args="run build" --interval=500 --dir="./profiles" --name="build-profile"',
-      'Measure npm run build with 500ms interval, saving to ./profiles directory with name build-profile'
+      '$0 cpu-measure npm run build --name build-profile --interval 500',
+      'Profile `npm run build`, name it `build-profile` with 500ms interval'
     ).epilog(`
+      Pass the command to profile and its arguments directly, followed by options for cpu-measure.
       Examples:
-      $0 cpu-measure node --args="./index.js"
-      $0 cpu-measure npm --args="run build" --interval=500 --dir="./profiles" --name="build-profile"
+      $0 cpu-measure node my_script.js --arg-for-script
+      $0 cpu-measure npm install --verbose
     `);
 }

@@ -21,17 +21,12 @@ export async function runWithCpuProf(
   args: string[],
   options: {
     dir: string;
-    name: string;
     interval: number;
+    name?: string;
   },
   logger: { log: (...args: string[]) => void } = console
 ): Promise<void> {
   const { dir, name, interval } = options;
-
-  if (command === 'node') {
-    logger.log(`Command ${command} is not supported`);
-    return;
-  }
 
   const cpuProfArgs = [
     '--cpu-prof',
@@ -41,14 +36,14 @@ export async function runWithCpuProf(
   ];
 
   const { stderr, code, duration } = await executeProcess({
-    command,
-    args: [...cpuProfArgs, ...args],
+    command: command,
+    args: args,
     cwd: dir,
+    env: { NODE_OPTIONS: cpuProfArgs.join(' ') },
   });
 
   if (code === 0) {
     logger.log(`Profiles generated in ${duration}ms - ${dir}`);
-    // console.log(stdout); // TODO: implement verbose mode
   } else {
     logger.log(`Failed to generate profiles in ${duration}ms - ${dir}`);
     logger.log(stderr);

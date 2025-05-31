@@ -7,7 +7,7 @@ import { handler } from './handler';
  * CPU measure command module for yargs
  */
 export const measureCommand: CommandModule<{}, MeasureArgs> = {
-  command: 'cpu-measure <command>',
+  command: 'cpu-measure <command_to_profile>',
   describe:
     'Run a command with CPU profiling enabled and save the profile to disk',
   builder,
