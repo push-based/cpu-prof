@@ -35,53 +35,50 @@ export async function runWithCpuProf(
     ...(interval ? [`--cpu-prof-interval=${interval}`] : []),
   ];
 
-  const nodeOptionsForLogging = cpuProfFlags.join(' ');
+  const nodeOptionsValue = cpuProfFlags.join(' ');
 
-  let finalCommand = initialCommand;
-  let finalArgs = [...initialArgs];
+  // The command and arguments to execute directly.
+  // Profiling flags will be passed via NODE_OPTIONS.
+  const finalCommand = initialCommand;
+  const finalArgs = [...initialArgs];
+
   // executionEnv is for the actual child process
   const executionEnv = { ...process.env };
-  // Ensure problematic NODE_OPTIONS are not passed to the child through its actual environment
-  delete executionEnv.NODE_OPTIONS;
+  // Set NODE_OPTIONS for the child process to enable profiling.
+  // Also, ensure any pre-existing NODE_OPTIONS is not simply overwritten,
+  // though for this specific tool, we are explicitly setting it.
+  executionEnv.NODE_OPTIONS = nodeOptionsValue;
 
-  // Prepare a separate env object for executeProcess logging, including the desired NODE_OPTIONS string
+  // Prepare a separate env object for executeProcess logging,
+  // including the desired NODE_OPTIONS string for display purposes.
   const envForExecuteProcessLogging = {
-    ...executionEnv, // Include other env vars that might be passed to the child
-    __FOR_LOGGING_NODE_OPTIONS__: nodeOptionsForLogging,
+    ...executionEnv, // This now includes our desired NODE_OPTIONS
+    // __FOR_LOGGING_NODE_OPTIONS__ is used by executeProcess to know what to display.
+    __FOR_LOGGING_NODE_OPTIONS__: nodeOptionsValue,
   };
 
+  // The logic for prepending cpuProfFlags to command arguments is removed,
+  // as flags are now passed exclusively through NODE_OPTIONS.
+
+  // A simple check for .js files or node executable.
+  // This warning can still be relevant if the command isn't node-related.
   const isNodeExecutable =
     initialCommand.endsWith('node') || initialCommand.endsWith('node.exe');
-  // A simple check for .js files. More robust checks could be added (e.g., shebang).
   const isJsFile = initialCommand.endsWith('.js');
 
-  if (isNodeExecutable) {
-    // Case: initialCommand is 'node', initialArgs are like ['script.js', ...scriptArgs]
-    // Prepend cpuProfFlags to initialArgs.
-    finalArgs = [...cpuProfFlags, ...initialArgs];
-  } else if (isJsFile) {
-    // Case: initialCommand is 'path/to/script.js', initialArgs are script arguments.
-    // We need to invoke this with 'node' and pass cpuProfFlags to node.
-    finalCommand = 'node'; // Or a configurable path to the node executable
-    finalArgs = [...cpuProfFlags, initialCommand, ...initialArgs];
-  } else {
-    // Command is not 'node' and not recognized as a .js file.
-    // CPU profiling flags are unlikely to apply correctly to non-Node.js commands directly.
+  if (!isNodeExecutable && !isJsFile) {
     logger.log(
-      `Warning: CPU profiling flags are intended for Node.js scripts. ` +
+      `Warning: CPU profiling flags are set via NODE_OPTIONS and intended for Node.js scripts. ` +
         `Command '${initialCommand}' may not be profiled as expected.`
     );
-    // In this case, we run the command as is, without attempting to add CPU profiling flags,
-    // as we don't know how to apply them.
   }
 
   const { stderr, code, duration } = await executeProcess(
     {
       command: finalCommand,
       args: finalArgs,
-      // Pass the special env for executeProcess to use for logging
-      // The actual env for the spawned process will be handled inside executeProcess
-      // by stripping __FOR_LOGGING_NODE_OPTIONS__ before spawn.
+      // Pass the env that includes NODE_OPTIONS for the child and
+      // __FOR_LOGGING_NODE_OPTIONS__ for the logger.
       env: envForExecuteProcessLogging,
     },
     logger

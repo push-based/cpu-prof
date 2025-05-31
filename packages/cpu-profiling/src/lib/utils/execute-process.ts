@@ -134,27 +134,43 @@ export function calcDuration(start: number, stop?: number): number {
  * @param {string} command - The command to execute.
  * @param {string[]} args - Array of command arguments.
  * @param {string} [cwd] - Optional current working directory for the command.
+ * @param {string} [nodeOptions] - Optional node options to include in the command string.
  * @returns {string} - ANSI-colored formatted command string.
  */
 export function formatCommandLog(
   command: string,
   args: string[] = [],
-  cwd: string = process.cwd()
+  cwd: string = process.cwd(),
+  nodeOptions?: string
 ): string {
   const relativeDir = path.relative(process.cwd(), cwd);
   const logElements: string[] = [];
 
-  // Add CWD if it's relevant
-  if (relativeDir && relativeDir !== '.') {
+  // Add CWD if it's relevant and not the root of the project
+  if (relativeDir && relativeDir !== '') {
     logElements.push(ansis.italic.gray(relativeDir));
   }
 
+  // Add NODE_OPTIONS if provided
+  if (nodeOptions) {
+    logElements.push(
+      `${ansis.green('NODE_OPTIONS')}="${ansis.blueBright(nodeOptions)}"`
+    );
+  }
+
   // Add prompt, command, and arguments with distinct styling
-  logElements.push(ansis.bold.yellow('$'));
+  // logElements.push(ansis.bold.yellow('$')); // We don't want the $ sign
   logElements.push(ansis.cyan(command));
 
   if (args.length > 0) {
-    logElements.push(ansis.magenta(args[0])); // Primary argument/script
+    // Color the main script/command differently if it's a path
+    const firstArgIsPath = args[0].includes('/') || args[0].includes('\\');
+    if (firstArgIsPath) {
+      logElements.push(ansis.magenta(args[0]));
+    } else {
+      logElements.push(ansis.white(args[0]));
+    }
+
     if (args.length > 1) {
       logElements.push(ansis.gray(args.slice(1).join(' '))); // Subsequent arguments
     }
@@ -178,24 +194,23 @@ function logCommandExecutionDetails(
     return;
   }
 
-  const logParts = [
-    formatCommandLog(
-      command,
-      args,
-      cwd instanceof URL ? cwd.pathname : cwd ?? process.cwd()
-    ),
-  ];
+  // The environment for the child process is prepared here.
+  // We extract __FOR_LOGGING_NODE_OPTIONS__ if it exists,
+  // and ensure the actual NODE_OPTIONS is not part of the baseEnv passed to spawn.
+  // This ensures that NODE_OPTIONS is only set for the child process if explicitly intended.
+  const displayCwd = cwd instanceof URL ? cwd.pathname : cwd ?? process.cwd();
 
-  if (nodeOptionsForLogging) {
-    const nodeOptionsDisplayString = `${ansis.green(
-      'NODE_OPTIONS'
-    )}=${ansis.blueBright(String(nodeOptionsForLogging))}`;
-    logParts.push(ansis.dim('with env: ') + nodeOptionsDisplayString);
-  }
-  // No other environment variables will be logged here, adhering to the previous request
-  // to only log the constructed NODE_OPTIONS for profiling in this specific "with env:" part.
+  // Pass nodeOptionsForLogging to formatCommandLog
+  const commandDisplayString = formatCommandLog(
+    command,
+    args,
+    displayCwd,
+    nodeOptionsForLogging // Pass it here
+  );
 
-  logger.log(logParts.join(' '));
+  // Construct the log message.
+  // No longer adding "with env:" as NODE_OPTIONS is part of formatCommandLog
+  logger.log(commandDisplayString);
 }
 
 /**
