@@ -35,15 +35,6 @@
     },
     {
       "path": "./packages/cpu-profiling-e2e"
-    },
-    {
-      "path": "./testing/vitest-setup"
-    },
-    {
-      "path": "./testing/setup"
-    },
-    {
-      "path": "./testing/utils"
     }
   ]
 }

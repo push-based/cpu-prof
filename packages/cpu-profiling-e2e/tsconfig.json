@@ -4,10 +4,7 @@
   "include": [],
   "references": [
     {
-      "path": "../../testing/vitest-setup"
-    },
-    {
-      "path": "../../testing/utils"
+      "path": "../cpu-profiling"
     },
     {
       "path": "./tsconfig.lib.json"

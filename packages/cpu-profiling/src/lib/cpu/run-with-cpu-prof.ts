@@ -1,4 +1,4 @@
-import { executeProcess } from '../../../mocks/execute-process';
+import { executeProcess } from '../utils/execute-process';
 
 /**
  * Run a command with cpu-prof and log the result
@@ -35,12 +35,14 @@ export async function runWithCpuProf(
     ...(interval ? [`--cpu-prof-interval=${interval}`] : []),
   ];
 
-  const { stderr, code, duration } = await executeProcess({
-    command: command,
-    args: args,
-    cwd: dir,
-    env: { NODE_OPTIONS: cpuProfArgs.join(' ') },
-  });
+  const { stderr, code, duration } = await executeProcess(
+    {
+      command,
+      args,
+      env: { NODE_OPTIONS: cpuProfArgs.join(' ') },
+    },
+    logger
+  );
 
   if (code === 0) {
     logger.log(`Profiles generated in ${duration}ms - ${dir}`);

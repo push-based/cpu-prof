@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { executeProcess } from '../../../testing/utils/src/index.js';
+import { executeProcess } from '../../cpu-profiling/src/lib/utils/execute-process';
 import { join } from 'path';
 import { cp, mkdir, rm, readFile } from 'fs/promises';
 import { existsSync } from 'fs';

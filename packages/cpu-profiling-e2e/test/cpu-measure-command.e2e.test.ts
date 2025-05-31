@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { executeProcess } from '../../../testing/utils/src/index.js';
+import { executeProcess } from '../../cpu-profiling/src/lib/utils/execute-process';
 import { join } from 'path';
 import { mkdir, rm, readdir, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -28,12 +28,12 @@ describe('cpu-measure-command', () => {
       args: [
         cliPath,
         'cpu-measure',
-        'node',
-        '--',
-        mockProcessPath,
         '--dir',
         outputDir,
         '--verbose',
+        '--',
+        'node',
+        mockProcessPath,
       ],
     });
 

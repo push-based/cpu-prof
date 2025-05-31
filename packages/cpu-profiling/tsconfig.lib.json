@@ -11,14 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "references": [
-    {
-      "path": "../../testing/vitest-setup/tsconfig.lib.json"
-    }
-  ],
+  "include": ["src/**/*.ts"],
+  "references": [],
   "exclude": [
     "vite.config.ts",
     "vite.config.mts",
@@ -32,6 +26,6 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "node_modules/**",
+    "node_modules/**"
   ]
 }

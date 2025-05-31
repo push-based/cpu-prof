@@ -142,15 +142,25 @@ export function formatCommandLog(
   cwd: string = process.cwd()
 ): string {
   const relativeDir = path.relative(process.cwd(), cwd);
+  const logElements: string[] = [];
 
-  return [
-    ...(relativeDir && relativeDir !== '.'
-      ? [ansis.italic(ansis.gray(relativeDir))]
-      : []),
-    ansis.yellow('$'),
-    ansis.gray(command),
-    ansis.gray(args.map((arg) => arg).join(' ')),
-  ].join(' ');
+  // Add CWD if it's relevant
+  if (relativeDir && relativeDir !== '.') {
+    logElements.push(ansis.italic.gray(relativeDir));
+  }
+
+  // Add prompt, command, and arguments with distinct styling
+  logElements.push(ansis.bold.yellow('$'));
+  logElements.push(ansis.cyan(command));
+
+  if (args.length > 0) {
+    logElements.push(ansis.magenta(args[0])); // Primary argument/script
+    if (args.length > 1) {
+      logElements.push(ansis.gray(args.slice(1).join(' '))); // Subsequent arguments
+    }
+  }
+
+  return logElements.join(' ');
 }
 
 /**
@@ -197,8 +207,23 @@ export function executeProcess(
   const date = new Date().toISOString();
   const start = performance.now();
 
-  logger?.log &&
-    logger.log(formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`));
+  // Enhanced logging: command, args, cwd, and env
+  if (logger?.log) {
+    const logParts = [
+      formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`),
+    ];
+    if (env && Object.keys(env).length > 0) {
+      const envString = Object.entries(env)
+        .sort(([keyA], [keyB]) => keyA.localeCompare(keyB)) // Sort for consistent output
+        .map(
+          ([key, value]) =>
+            `${ansis.green(key)}=${ansis.blueBright(String(value))}`
+        )
+        .join(' ');
+      logParts.push(ansis.dim('with env: ') + envString);
+    }
+    logger.log(logParts.join(' '));
+  }
 
   return new Promise((resolve, reject) => {
     // shell:true tells Windows to use shell command for spawning a child process
