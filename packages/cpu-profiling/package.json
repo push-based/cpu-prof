@@ -1,8 +1,8 @@
 {
-  "name": "@push-based/cpu-profiling",
+  "name": "@push-based/cpu-prof",
   "version": "0.0.1",
   "type": "module",
-  "main": "./dist/index.cjs.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -11,12 +11,12 @@
       "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js",
-      "default": "./dist/index.cjs.js"
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.cjs"
     }
   },
   "bin": {
-    "@push-based/cpu-prof": "./dist/cpu-prof.cjs.js"
+    "@push-based/cpu-prof": "./dist/cpu-prof.cjs"
   },
   "scripts": {},
   "files": [
@@ -27,7 +27,7 @@
     "yargs": "^17.7.2"
   },
   "nx": {
-    "name": "cpu-profiling",
+    "name": "cpu-prof",
     "targets": {
       "unit-test": {
         "executor": "@nx/vite:test",
@@ -41,27 +41,40 @@
           "config": "packages/{projectName}/vitest.integration.config.ts"
         }
       },
-      "measure": {
-        "command": "node --cpu-prof --cpu-prof-dir profiles"
-      },
-      "cpu-prof-cli": {
+      "help": {
         "dependsOn": [
           "build"
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "node packages/cpu-profiling/dist/profiling.esm.js --help"
-        },
-        "configurations": {
-          "help": {
-            "command": "node packages/cpu-profiling/dist/profiling.esm.js --help"
-          },
-          "reduce": {
-            "command": "node packages/cpu-profiling/dist/profiling.esm.js trace-reduce"
-          },
-          "cpu-merge": {
-            "command": "node packages/cpu-profiling/dist/profiling.esm.js cpu-merge"
-          }
+          "command": "node packages/cpu-profiling/dist/cpu-prof.esm.js --help"
+        }
+      },
+      "reduce": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-profiling/dist/cpu-prof.esm.js trace-reduce"
+        }
+      },
+      "measure": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-measure"
+        }
+      },
+      "merge": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-profiling/dist/cpu-prof.esm.js cpu-merge"
         }
       }
     },

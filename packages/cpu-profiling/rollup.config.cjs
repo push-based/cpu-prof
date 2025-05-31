@@ -7,7 +7,6 @@ module.exports = withNx(
     outputPath: './dist',
     tsConfig: './tsconfig.lib.json',
     compiler: 'swc',
-    format: ['cjs', 'esm'],
     assets: [
       {
         input: './packages/cpu-profiling',
@@ -16,10 +15,8 @@ module.exports = withNx(
       },
       { input: './packages/cpu-profiling', glob: './README.md', output: '.' },
     ],
-  },
-  {
-    // Provide additional rollup configuration here. See: https://rollupjs.org/configuration-options
-    // e.g.
-    // output: { sourcemap: true },
+    // output: { sourcemap: true }, // Example, if needed
   }
+  // Removed the second argument to withNx, as it was causing issues with output formats.
+  // withNx will handle ESM and CJS outputs automatically.
 );
