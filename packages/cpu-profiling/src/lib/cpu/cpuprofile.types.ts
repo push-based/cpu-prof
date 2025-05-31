@@ -44,3 +44,9 @@ export interface CpuProfileInfo {
   sourceFilePath?: string;
   execArgs?: string[];
 }
+
+export interface CpuProfileArguments {
+  dir?: string;
+  interval?: number;
+  name?: string;
+}

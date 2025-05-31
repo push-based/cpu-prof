@@ -25,7 +25,7 @@ describe('help-command', () => {
         -v, --verbose  Enable verbose logging                                   [boolean] [default: false]
 
       Options:
-        -V, --version                Show version number                                         [boolean]
+            --version                Show version number                                         [boolean]
         -o, --outputDir              Output directory for merged profiles. Defaults to inputDir if not spe
                                      cified.                                                      [string]
         -b, --startTracingInBrowser  Include TracingStartedInBrowser event for better DevTools visualizati

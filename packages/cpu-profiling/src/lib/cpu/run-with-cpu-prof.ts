@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import path from 'node:path';
+import { CpuProfileArguments } from './cpuprofile.types';
 import * as ansis from 'ansis';
 
 interface ProcessStdOutput {
@@ -55,17 +55,12 @@ interface PreparedCommand {
   finalCommand: string;
   finalArgs: string[];
   nodeOptionsValue: string;
-  warningMessage?: string;
 }
 
 function prepareCommandForProfiling(
   initialCommand: string,
   initialArgs: string[],
-  options: {
-    dir: string;
-    interval?: number;
-    name?: string;
-  }
+  options: CpuProfileArguments
 ): PreparedCommand {
   const {
     dir: cpuProfDir,
@@ -73,8 +68,10 @@ function prepareCommandForProfiling(
     interval: cpuProfInterval,
   } = options;
 
+  // Only set profiling flags if at least one profiling option is provided
+  const hasProfiling = cpuProfDir || cpuProfName || cpuProfInterval;
   const cpuProfFlags = [
-    '--cpu-prof',
+    ...(hasProfiling ? ['--cpu-prof'] : []),
     ...(cpuProfDir ? [`--cpu-prof-dir=${cpuProfDir}`] : []),
     ...(cpuProfName ? [`--cpu-prof-name=${cpuProfName}`] : []),
     ...(cpuProfInterval ? [`--cpu-prof-interval=${cpuProfInterval}`] : []),
@@ -83,7 +80,6 @@ function prepareCommandForProfiling(
 
   let finalCommand = initialCommand;
   let finalArgs = [...initialArgs];
-  let warningMessage: string | undefined;
 
   const isNodeExecutable =
     initialCommand.endsWith('node') || initialCommand.endsWith('node.exe');
@@ -92,14 +88,19 @@ function prepareCommandForProfiling(
   if (isJsFile && !isNodeExecutable) {
     finalArgs = [initialCommand, ...initialArgs];
     finalCommand = 'node';
-  } else if (!isNodeExecutable && !isJsFile) {
-    warningMessage =
+  } else if (!isNodeExecutable && !isJsFile && hasProfiling) {
+    throw new Error(
       `Warning: CPU profiling flags are set via NODE_OPTIONS. ` +
-      `Command '${initialCommand}' is not a Node.js executable or .js file, ` +
-      `and may not be profiled as expected.`;
+        `Command '${initialCommand}' is not a Node.js executable or .js file, ` +
+        `and may not be profiled as expected.`
+    );
   }
 
-  return { finalCommand, finalArgs, nodeOptionsValue, warningMessage };
+  return {
+    finalCommand,
+    finalArgs,
+    nodeOptionsValue,
+  };
 }
 
 async function executeChildProcess(
@@ -134,20 +135,17 @@ export async function runWithCpuProf(
   initialCommand: string,
   initialArgs: string[],
   options: {
-    dir: string;
+    dir?: string;
     interval?: number;
     name?: string;
   },
   logger: { log: (...args: string[]) => void } = console
 ): Promise<ProcessStdOutput> {
-  const { finalCommand, finalArgs, nodeOptionsValue, warningMessage } =
+  const { finalCommand, finalArgs, nodeOptionsValue } =
     prepareCommandForProfiling(initialCommand, initialArgs, options);
 
-  if (warningMessage) {
-    logger.log(warningMessage);
-  }
-
   const actualEnvForSpawn = { ...process.env, NODE_OPTIONS: nodeOptionsValue };
+
   logCommandExecutionDetails(finalCommand, finalArgs, nodeOptionsValue, logger);
 
   try {

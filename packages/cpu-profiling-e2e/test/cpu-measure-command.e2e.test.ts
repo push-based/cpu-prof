@@ -28,12 +28,11 @@ describe('cpu-measure-command', () => {
       args: [
         cliPath,
         'cpu-measure',
-        '--dir',
-        outputDir,
-        '--verbose',
-        '--',
         'node',
-        mockProcessPath,
+        '-e',
+        '"console.log(1)"',
+        '--cpu-prof-dir',
+        outputDir,
       ],
     });
 
