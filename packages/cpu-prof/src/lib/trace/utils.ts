@@ -16,6 +16,7 @@ import {
   getTraceMetadata,
   getStartTracing,
   getProcessNameTraceEvent,
+  getThreadNameTraceEvent,
 } from './trace-event-creators';
 import { getMainProfileInfo } from '../cpu/profile-selection';
 
@@ -79,7 +80,6 @@ export function cpuProfilesToTraceFile(
 
   let allEvents: TraceEvent[] = [];
 
-  // Add TracingStartedInBrowser event if requested
   if (startTracingInBrowser) {
     allEvents = [
       ...allEvents,
@@ -100,28 +100,25 @@ export function cpuProfilesToTraceFile(
   allEvents = [
     ...allEvents,
     ...preparedProfiles.flatMap((profileInfo, index) => {
-      // When smosh is 'pid', the tid is already adjusted by smoshCpuProfiles.
-      // We need to ensure that the tid used here is the one from preparedProfiles.
-      // For other smosh types, or if pid/tid are not set in profileInfo, we fallback to mainPid/mainTid + index.
-      const pidToUse =
-        profileInfo.pid !== undefined ? profileInfo.pid : mainPid;
-      const tidToUse =
-        profileInfo.tid !== undefined ? profileInfo.tid : mainTid + index;
-      const { cpuProfile } = profileInfo;
-      return cpuProfileToTraceProfileEvents(cpuProfile, {
-        pid: pidToUse,
-        tid: tidToUse,
-        sequence: sequence + index,
-      });
+      const { cpuProfile, tid, pid, sequence } = profileInfo;
+      return [
+        getProcessNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
+        getThreadNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
+        ...cpuProfileToTraceProfileEvents(cpuProfile, {
+          pid,
+          tid,
+          sequence: sequence ?? index,
+        }),
+      ];
     }),
   ];
 
   const sortedEvents = sortTraceEvents(allEvents);
-  const metadata = getTraceMetadata(mainProfileInfo);
+  const cleanedEvents = cleanProfiningEvents(sortedEvents);
 
   return {
-    traceEvents: sortedEvents, // smoshing is now done on profiles
-    metadata,
+    metadata: getTraceMetadata(mainProfileInfo),
+    traceEvents: cleanedEvents, // smoshing is now done on profiles
   } as TraceEventContainer;
 }
 
@@ -137,36 +134,104 @@ export function smoshCpuProfiles(
 ): CpuProfileInfo[] {
   const { smosh, mainPid, mainTid } = options;
 
-  if (smosh === 'off') {
-    return profileInfos.map((profileInfo) => ({
-      pid: profileInfo.pid,
-      tid: profileInfo.tid,
-      cpuProfile: profileInfo.cpuProfile,
-    }));
+  if (smosh === 'off' || smosh === undefined) {
+    return profileInfos;
   }
 
   return profileInfos.map((profileInfo, index) => {
-    const { cpuProfile } = profileInfo;
-    // Initialize with original pid/tid, these act as defaults if not overwritten by a specific smosh type.
-    const smoshedProfile: CpuProfileInfo = {
-      pid: profileInfo.pid,
-      tid: profileInfo.tid,
-      cpuProfile,
-    };
-
-    if (smosh === 'all') {
-      smoshedProfile.pid = mainPid;
-      smoshedProfile.tid = mainTid;
-    } else if (smosh === 'pid') {
-      smoshedProfile.pid = mainPid;
-      // Use the original tid from profileInfo plus the index (as per last working version)
-      smoshedProfile.tid = profileInfo.tid + index;
+    if (smosh === 'pid') {
+      return {
+        ...profileInfo,
+        pid: mainPid,
+        tid: parseInt(profileInfo.pid + '0' + index), // Assign sequential tids based on pid
+      };
     } else if (smosh === 'tid') {
-      // pid is already profileInfo.pid from initialization
-      smoshedProfile.tid = mainTid;
+      return {
+        ...profileInfo,
+        tid: mainTid,
+      };
     }
-    // 'off' case is handled by early return.
-    // 'all', 'pid', 'tid' are the only remaining SmoshType values.
-    return smoshedProfile;
+    // 'all' case is handled by early return.
+    return {
+      ...profileInfo,
+      pid: mainPid,
+      tid: mainTid,
+    };
   });
+}
+
+/**
+ * It can happen that moltiple 'CpuProfiler::StartProfiling' and 'CpuProfiler::StopProfiling' events are present in the same profile.
+ * This function will keep only the earliest and latest start and end profiling events per tid.
+ *
+ * @param traceEvents
+ * @returns
+ */
+export function cleanProfiningEvents(traceEvents: TraceEvent[]): TraceEvent[] {
+  const eventsByPidTid: Record<string, TraceEvent[]> = {};
+
+  // Group events by pid and tid
+  for (const event of traceEvents) {
+    // pid and tid can be undefined for some meta events, those should be kept as is
+    if (event.pid === undefined || event.tid === undefined) {
+      const key = 'meta';
+      if (!eventsByPidTid[key]) {
+        eventsByPidTid[key] = [];
+      }
+      eventsByPidTid[key].push(event);
+      continue;
+    }
+    const key = `${event.pid}-${event.tid}`;
+    if (!eventsByPidTid[key]) {
+      eventsByPidTid[key] = [];
+    }
+    eventsByPidTid[key].push(event);
+  }
+
+  const cleanedEvents: TraceEvent[] = [];
+
+  for (const key in eventsByPidTid) {
+    const groupEvents = eventsByPidTid[key];
+    if (key === 'meta') {
+      cleanedEvents.push(...groupEvents);
+      continue;
+    }
+
+    const startProfilingEvents = groupEvents.filter(
+      (e) => e.name === 'CpuProfiler::StartProfiling'
+    );
+    const stopProfilingEvents = groupEvents.filter(
+      (e) => e.name === 'CpuProfiler::StopProfiling'
+    );
+    const profileEvents = groupEvents.filter((e) => e.name === 'Profile');
+    const otherEvents = groupEvents.filter(
+      (e) =>
+        e.name !== 'CpuProfiler::StartProfiling' &&
+        e.name !== 'CpuProfiler::StopProfiling' &&
+        e.name !== 'Profile'
+    );
+
+    if (startProfilingEvents.length > 0) {
+      const earliestStart = startProfilingEvents.reduce((prev, curr) =>
+        prev.ts < curr.ts ? prev : curr
+      );
+      cleanedEvents.push(earliestStart);
+    }
+
+    // Keep only the first Profile event if multiple exist
+    if (profileEvents.length > 0) {
+      cleanedEvents.push(profileEvents[0]);
+    }
+
+    cleanedEvents.push(...otherEvents);
+
+    if (stopProfilingEvents.length > 0) {
+      const latestStop = stopProfilingEvents.reduce((prev, curr) =>
+        prev.ts > curr.ts ? prev : curr
+      );
+      cleanedEvents.push(latestStop);
+    }
+  }
+  // Sort events again as the order might have changed
+  return sortTraceEvents(cleanedEvents);
 }

@@ -15,8 +15,8 @@
       "id": 2,
       "callFrame": {
         "functionName": "flatLine_L1",
-        "scriptId": "1",
-        "url": "file:///app.js",
+        "scriptId": "1-flat-line",
+        "url": "file:///flat-line.js",
         "lineNumber": 4,
         "columnNumber": 0
       },
@@ -27,8 +27,8 @@
       "id": 3,
       "callFrame": {
         "functionName": "flatLine_L2",
-        "scriptId": "1",
-        "url": "file:///app.js",
+        "scriptId": "1-flat-line",
+        "url": "file:///flat-line.js",
         "lineNumber": 5,
         "columnNumber": 0
       },
@@ -39,8 +39,8 @@
       "id": 4,
       "callFrame": {
         "functionName": "flatLine_Task",
-        "scriptId": "1",
-        "url": "file:///app.js",
+        "scriptId": "1-flat-line",
+        "url": "file:///flat-line.js",
         "lineNumber": 6,
         "columnNumber": 0
       },

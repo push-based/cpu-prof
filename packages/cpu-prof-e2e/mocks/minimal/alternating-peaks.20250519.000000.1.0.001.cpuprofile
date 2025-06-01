@@ -15,8 +15,8 @@
       "id": 2,
       "callFrame": {
         "functionName": "L1_A",
-        "scriptId": "1",
-        "url": "file:///tasks.js",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
         "lineNumber": 9,
         "columnNumber": 0
       },
@@ -27,8 +27,8 @@
       "id": 3,
       "callFrame": {
         "functionName": "alternating_peakA",
-        "scriptId": "1",
-        "url": "file:///tasks.js",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
         "lineNumber": 10,
         "columnNumber": 0
       },
@@ -38,8 +38,8 @@
       "id": 4,
       "callFrame": {
         "functionName": "L1_B",
-        "scriptId": "2",
-        "url": "file:///tasks.js",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
         "lineNumber": 19,
         "columnNumber": 0
       },
@@ -50,8 +50,8 @@
       "id": 5,
       "callFrame": {
         "functionName": "alternating_peakB",
-        "scriptId": "2",
-        "url": "file:///tasks.js",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
         "lineNumber": 20,
         "columnNumber": 0
       },

@@ -1,6 +1,7 @@
 import type { Argv } from 'yargs';
 import { directoryExists } from '../../../lib/file-utils';
 import type { MergeArgs } from './types';
+import { join } from 'path';
 
 /**
  * Build the yargs command configuration for merge
@@ -20,6 +21,7 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
         'Output directory for merged profiles. Defaults to inputDir if not specified.',
       type: 'string',
       normalize: true,
+      default: join(process.cwd(), 'profiles'),
     })
     .option('startTracingInBrowser', {
       alias: 'b',
