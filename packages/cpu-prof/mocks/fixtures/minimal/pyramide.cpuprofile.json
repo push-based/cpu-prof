@@ -15,8 +15,8 @@
       "id": 2,
       "callFrame": {
         "functionName": "step-1",
-        "scriptId": "1",
-        "url": "file:///b.js",
+        "scriptId": "1-pyramide",
+        "url": "file:///pyramide.js",
         "lineNumber": 10,
         "columnNumber": 0
       },
@@ -26,8 +26,8 @@
       "id": 3,
       "callFrame": {
         "functionName": "step-2",
-        "scriptId": "1",
-        "url": "file:///b.js",
+        "scriptId": "1-pyramide",
+        "url": "file:///pyramide.js",
         "lineNumber": 20,
         "columnNumber": 0
       },
@@ -37,8 +37,8 @@
       "id": 4,
       "callFrame": {
         "functionName": "step-3",
-        "scriptId": "1",
-        "url": "file:///b.js",
+        "scriptId": "1-pyramide",
+        "url": "file:///pyramide.js",
         "lineNumber": 30,
         "columnNumber": 0
       },

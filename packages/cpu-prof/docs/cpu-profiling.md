@@ -81,6 +81,7 @@ This is because of the way Node.js handles the `--cpu-prof` flag. It will use th
         └── CPU.20250601.191007.42154.0.004.cpuprofile
 └── ...
 ```
+
 Now all of them are in one place:
 
 ```shell
@@ -99,7 +100,6 @@ node --cpu-prof --cpu-prof-dir=C:\Users\username\reponame\profiles -e "console.l
     ├── CPU.20250601.191007.42154.0.003.cpuprofile
     └── CPU.20250601.191007.42154.0.004.cpuprofile
 ```
-
 
 #### Error: `--cpu-prof is not allowed in NODE_OPTIONS`
 

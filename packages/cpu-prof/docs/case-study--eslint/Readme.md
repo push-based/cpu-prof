@@ -35,7 +35,7 @@ This will create a `.cpuprofile` file in the folder `profiles/eslint`.
 
 ```shell
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/<Users>/<user-name>/<workspace>/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
-TIMING=1 eslint --config eslint.config.mjs packages/cpu-prof --output-file=/<Users>/<user-name>/<workspace>/profiles/eslint/lint-stats.json --format=json --stats
+TIMING=1 eslint --config eslint.config.mjs packages/cpu-prof --output-file=./profiles/eslint/lint-stats.json --format=json --stats
 ```
 
 | Rule                                 | Time (ms) | Relative |

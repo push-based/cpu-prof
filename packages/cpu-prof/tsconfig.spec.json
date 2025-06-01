@@ -11,7 +11,9 @@
     ],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "vite.config.ts",
@@ -26,7 +28,8 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "mocks/fixtures/minimal/**/*.json"
   ],
   "references": [
     {

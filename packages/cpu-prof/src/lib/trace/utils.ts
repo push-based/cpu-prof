@@ -62,7 +62,7 @@ export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
 export function cpuProfilesToTraceFile(
   cpuProfileInfos: CpuProfileInfo[],
   options?: {
-    smosh?: 'all' | 'pid' | 'tid' | 'none';
+    smosh?: SmoshType;
     startTracingInBrowser?: boolean;
   }
 ): TraceFile {
@@ -70,7 +70,7 @@ export function cpuProfilesToTraceFile(
     throw new Error('No CPU profiles provided');
   }
 
-  const { smosh = 'none', startTracingInBrowser } = options ?? {};
+  const { smosh = 'off', startTracingInBrowser = false } = options ?? {};
 
   // Use custom matcher if provided, otherwise use the default selection logic
   const mainProfileInfo = getMainProfileInfo(cpuProfileInfos);
@@ -91,13 +91,26 @@ export function cpuProfilesToTraceFile(
     ];
   }
 
+  const preparedProfiles = smoshCpuProfiles(cpuProfileInfos, {
+    smosh,
+    mainPid,
+    mainTid,
+  });
+
   allEvents = [
     ...allEvents,
-    ...cpuProfileInfos.flatMap((profileInfo, index) => {
-      const { pid = mainPid, tid = mainTid + index, cpuProfile } = profileInfo;
+    ...preparedProfiles.flatMap((profileInfo, index) => {
+      // When smosh is 'pid', the tid is already adjusted by smoshCpuProfiles.
+      // We need to ensure that the tid used here is the one from preparedProfiles.
+      // For other smosh types, or if pid/tid are not set in profileInfo, we fallback to mainPid/mainTid + index.
+      const pidToUse =
+        profileInfo.pid !== undefined ? profileInfo.pid : mainPid;
+      const tidToUse =
+        profileInfo.tid !== undefined ? profileInfo.tid : mainTid + index;
+      const { cpuProfile } = profileInfo;
       return cpuProfileToTraceProfileEvents(cpuProfile, {
-        pid,
-        tid,
+        pid: pidToUse,
+        tid: tidToUse,
         sequence: sequence + index,
       });
     }),
@@ -107,56 +120,53 @@ export function cpuProfilesToTraceFile(
   const metadata = getTraceMetadata(mainProfileInfo);
 
   return {
-    traceEvents:
-      smosh === 'none'
-        ? sortedEvents
-        : smoshEvents(sortedEvents, {
-            smosh,
-            mainPid,
-            mainTid,
-          }),
+    traceEvents: sortedEvents, // smoshing is now done on profiles
     metadata,
   } as TraceEventContainer;
 }
 
-function smoshEvents(
-  events: TraceEvent[],
-  options?: {
-    smosh: 'all' | 'pid' | 'tid' | 'none';
+export type SmoshType = 'all' | 'pid' | 'tid' | 'off';
+
+export function smoshCpuProfiles(
+  profileInfos: CpuProfileInfo[],
+  options: {
+    smosh: SmoshType;
     mainPid: number;
     mainTid: number;
   }
-): TraceEvent[] {
-  const { smosh = 'none', mainPid = 1, mainTid = 0 } = options ?? {};
-  // if smosh is all, return all events
-  if (smosh === 'all') {
-    return events.map((e) => {
-      return {
-        ...e,
-        pid: mainPid,
-        tid: mainTid,
-      };
-    });
+): CpuProfileInfo[] {
+  const { smosh, mainPid, mainTid } = options;
+
+  if (smosh === 'off') {
+    return profileInfos.map((profileInfo) => ({
+      pid: profileInfo.pid,
+      tid: profileInfo.tid,
+      cpuProfile: profileInfo.cpuProfile,
+    }));
   }
-  // if smosh is pid, return events with pid === mainPid
-  if (smosh === 'pid') {
-    return events.map((e, idx) => {
-      return {
-        ...e,
-        pid: mainPid,
-        tid: idx, // scientific tid to avoid conflicts
-      };
-    });
-  }
-  // if smosh is tid, return events with tid === mainTid
-  if (smosh === 'tid') {
-    return events.map((e) => {
-      return {
-        ...e,
-        tid: mainTid,
-      };
-    });
-  }
-  // if smosh is none, return all events
-  return events;
+
+  return profileInfos.map((profileInfo, index) => {
+    const { cpuProfile } = profileInfo;
+    // Initialize with original pid/tid, these act as defaults if not overwritten by a specific smosh type.
+    const smoshedProfile: CpuProfileInfo = {
+      pid: profileInfo.pid,
+      tid: profileInfo.tid,
+      cpuProfile,
+    };
+
+    if (smosh === 'all') {
+      smoshedProfile.pid = mainPid;
+      smoshedProfile.tid = mainTid;
+    } else if (smosh === 'pid') {
+      smoshedProfile.pid = mainPid;
+      // Use the original tid from profileInfo plus the index (as per last working version)
+      smoshedProfile.tid = profileInfo.tid + index;
+    } else if (smosh === 'tid') {
+      // pid is already profileInfo.pid from initialization
+      smoshedProfile.tid = mainTid;
+    }
+    // 'off' case is handled by early return.
+    // 'all', 'pid', 'tid' are the only remaining SmoshType values.
+    return smoshedProfile;
+  });
 }

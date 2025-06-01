@@ -1,8 +1,5 @@
 import * as ansis from 'ansis';
-import {
-  executeProcess,
-  type ProcessResult,
-} from '../execute-process';
+import { executeProcess, type ProcessResult } from '../execute-process';
 
 function formatCommandLog(
   command: string,
@@ -56,7 +53,7 @@ export async function runWithCpuProf(
     const result = await executeProcess({
       command,
       args: argsArray,
-      env
+      env,
     });
     logger.log(`Profiles generated  - ${cpuProfDir}`);
     return { code: result.code };

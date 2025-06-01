@@ -15,7 +15,7 @@ export async function mergeCpuProfileFiles(
   sourceDir: string,
   outputFile: string,
   options: {
-    smosh?: 'all' | 'pid' | 'tid';
+    smosh?: 'all' | 'pid' | 'tid' | 'off';
     startTracingInBrowser?: boolean;
   } = {}
 ): Promise<void> {

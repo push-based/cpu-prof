@@ -1,8 +1,8 @@
 # @push-based/cpu-prof
 
 ---
-Node.js CPU Profiling and Profile Composition
----
+
+## Node.js CPU Profiling and Profile Composition
 
 The `@push-based/cpu-prof` package provides tools and utilities for collecting, and merging Node.js CPU profiles and and visualize them as Chrome trace files.
 Measure, drag & drop into Chrome, voilà.
@@ -18,7 +18,7 @@ Measure, drag & drop into Chrome, voilà.
   - Merge multiple CPU profile files into a single trace for easier analysis.
   - Visualize CPU profiles as Chrome trace files.
   - Merge multiple CPU profile files into a single trace for easier analysis.
-- **TypeScript API**: 
+- **TypeScript API**:
   - Programmatic access to all core features.
   - Use it in your own tools and workflows.
 
@@ -39,6 +39,7 @@ This guide provides instructions for using the `@push-based/cpu-prof` CLI.
 ### `measure` command
 
 **Usage:**
+
 ```bash
 npx @push-based/cpu-prof measure <positionals...> [args...]
 ```
@@ -48,11 +49,11 @@ Collects CPU profiles from a Node.js process. It will handle the profiling argum
 In addition it prints the enriched command to the terminal for to have the plain command visible.
 
 **Options:**
-| Option                  | Type      | Default        | Description                                  |
+| Option | Type | Default | Description |
 |-------------------------|-----------|----------------|----------------------------------------------|
-| **`--cpu-prof-dir <dir>`**  | `string`  | `./profiles`   | Directory to save the profile                |
-| **`--cpu-prof-interval <ms>`**| `number`  | (not specified)| Sampling interval in milliseconds            |
-| **`--cpu-prof-name <name>`**  | `string`  | (auto-generated)| Name of the profile (auto-generated if not specified) |
+| **`--cpu-prof-dir <dir>`** | `string` | `./profiles` | Directory to save the profile |
+| **`--cpu-prof-interval <ms>`**| `number` | (not specified)| Sampling interval in milliseconds |
+| **`--cpu-prof-name <name>`** | `string` | (auto-generated)| Name of the profile (auto-generated if not specified) |
 
 **Examples:**
 
@@ -68,7 +69,7 @@ In addition it prints the enriched command to the terminal for to have the plain
 #### Added DX for profiling
 
 The CLI does nothing special to the existing Node tooling but makes it easier to use.
-By default it will apply ensure  cpu profiling arguments are applied to all childprocesses and threads and the fildes end up in the same directory. 
+By default it will apply ensure cpu profiling arguments are applied to all childprocesses and threads and the fildes end up in the same directory.
 
 For smart defaults visit the [Troublshooting section](./docs/cpu-profiling.md).
 
@@ -99,6 +100,7 @@ Instead of searchin the profiles across the code base:
         └── CPU.20250601.191007.42154.0.004.cpuprofile
 └── ...
 ```
+
 Now all of them are in one place:
 
 ```text
@@ -113,6 +115,7 @@ Now all of them are in one place:
 ### `merge` command
 
 **Usage:**
+
 ```bash
 npx @push-based/cpu-prof merge <inputDir> [args...]
 ```
@@ -121,17 +124,17 @@ npx @push-based/cpu-prof merge <inputDir> [args...]
 Merges multiple CPU profile files from a specified directory into a single trace file. This is useful for analyzing combined CPU usage across different processes or time periods. The merged profile can be visualized in Chrome DevTools.
 
 **Arguments:**
-| Argument         | Type      | Description                                  |
+| Argument | Type | Description |
 |------------------|-----------|----------------------------------------------|
-| **`<inputDir>`** | `string`  | Directory containing CPU profile files to merge |
+| **`<inputDir>`** | `string` | Directory containing CPU profile files to merge |
 
 **Options:**
-| Option                             | Type      | Default        | Description                                                                                                                                        |
+| Option | Type | Default | Description |
 |------------------------------------|-----------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| **`--outputDir <dir>`** (`-o`)     | `string`  | (inputDir)     | Output directory for merged profiles. Defaults to inputDir if not specified.                                                                     |
-| **`--startTracingInBrowser`** (`-b`)| `boolean` | `true`         | Include `TracingStartedInBrowser` event for better DevTools visualization.                                                                         |
-| **`--smosh <type>`** (`-s`)        | `string`  | (not specified)| Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
-| **`--verbose`** (`-v`)             | `boolean` | `false`        | Enable verbose logging.                                                                                                                            |
+| **`--outputDir <dir>`** (`-o`) | `string` | (inputDir) | Output directory for merged profiles. Defaults to inputDir if not specified. |
+| **`--startTracingInBrowser`** (`-b`)| `boolean` | `true` | Include `TracingStartedInBrowser` event for better DevTools visualization. |
+| **`--smosh <type>`** (`-s`) | `string` | (not specified)| Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
+| **`--verbose`** (`-v`) | `boolean` | `false` | Enable verbose logging. |
 
 **Examples:**
 
@@ -139,11 +142,9 @@ Merges multiple CPU profile files from a specified directory into a single trace
 - `cpu-prof merge ./profiles -o ./merged-profiles` - Merge profiles and save to a different output directory
 - `cpu-prof merge ./profiles --smosh all` - Merge profiles with PID and TID normalization
 
-
 ## Additional Resources
 
 - [CPU Profiling](./docs/cpu-profiling.md) - How to use the CLI and the API
 - [Chrome Trace Viewer](https://ui.perfetto.dev/) - How to visualize the profiles
-- [Node.js CPU Profiling](https://nodejs.org/api/perf_hooks.html#performanceprofiling) - Node.js API for CPU profiling
-- [Node.js Performance Hooks](https://nodejs.org/api/perf_hooks.html) - Node.js API for performance monitoring
-- [Node.js Performance Hooks](https://nodejs.org/api/perf_hooks.html) - Node.js API for performance monitoring
+- [Node.js CPU Profiling](https://nodejs.org/api/perf_hooks.html#performanceprofiling) - Node.js API for Profiling
+- [Node.js --cpu-prof](https://nodejs.org/docs/v22.16.0/api/cli.html#--cpu-prof) - Node.js API for CPU Profiling args

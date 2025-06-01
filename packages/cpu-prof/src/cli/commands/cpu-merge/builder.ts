@@ -26,14 +26,15 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
       describe:
         'Include TracingStartedInBrowser event for better DevTools visualization',
       type: 'boolean',
-      default: true,
+      default: false,
     })
     .option('smosh', {
       alias: 's',
       describe:
         'Merge profiles with specific ID normalization. Use --smosh all to normalize both PID and TID, --smosh pid to normalize only PID, or --smosh tid to normalize only TID. Omit flag to disable normalization.',
       type: 'string',
-      choices: ['pid', 'tid', 'all'],
+      choices: ['pid', 'tid', 'all', 'off'],
+      default: 'off',
     })
     .option('verbose', {
       alias: 'v',
