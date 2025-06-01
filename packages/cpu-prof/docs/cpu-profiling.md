@@ -67,6 +67,22 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 
 This is because of the way Node.js handles the `--cpu-prof` flag. It will use the CWD of the process to determine the location of the profile file. To avoid this, you can use --cpu-prof-dir with a absolute path.
 
+```text
+/root
+├── CPU.20250601.191007.42154.0.001.cpuprofile
+└── packages
+    ├── pak1
+    │   └── CPU.20250601.191007.42154.0.003.cpuprofile
+    ├── pak2
+    │   └── src
+    │       └── lib
+    │           └── CPU.20250601.191007.42154.0.002.cpuprofile
+    └── pak3
+        └── CPU.20250601.191007.42154.0.004.cpuprofile
+└── ...
+```
+Now all of them are in one place:
+
 ```shell
 # Linux
 node --cpu-prof --cpu-prof-dir=/Users/username/reponame/profiles -e "console.log('CPU')"
@@ -74,6 +90,16 @@ node --cpu-prof --cpu-prof-dir=/Users/username/reponame/profiles -e "console.log
 # Windows
 node --cpu-prof --cpu-prof-dir=C:\Users\username\reponame\profiles -e "console.log('CPU')"
 ```
+
+```text
+/root
+└── profiles
+    ├── CPU.20250601.191007.42154.0.001.cpuprofile
+    ├── CPU.20250601.191007.42154.0.002.cpuprofile
+    ├── CPU.20250601.191007.42154.0.003.cpuprofile
+    └── CPU.20250601.191007.42154.0.004.cpuprofile
+```
+
 
 #### Error: `--cpu-prof is not allowed in NODE_OPTIONS`
 

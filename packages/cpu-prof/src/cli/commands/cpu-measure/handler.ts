@@ -1,5 +1,6 @@
 import type { MeasureArgs } from './types';
 import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
+import { filterCliOptions } from './utils';
 
 export async function handler(argv: MeasureArgs): Promise<void> {
   const { _: positionalArgs = [], ...options } = argv;
@@ -20,23 +21,29 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     ...(cpuProfInterval ? { cpuProfInterval } : {}),
     ...(cpuProfName ? { cpuProfName } : {}),
   };
-  const cpuMeasureArgs = positionalArgs.slice(1);
 
-  const positionalArgsForCommand = cpuMeasureArgs.slice(1);
-
-  if (!commandToProfile) {
+  if (
+    !commandToProfile ||
+    !Array.isArray(commandToProfile) ||
+    commandToProfile.length === 0
+  ) {
     console.error(
       '❌ Error: No command or script provided to profile. Usage: cpu-measure <command_or_script.js> [args...]'
     );
     process.exit(1);
   }
 
+  const [actualCommand, ...actualCommandArgs] = commandToProfile;
+
+  // Filter commandOptions to prefer kebab-case and remove duplicate camelCase keys
+  const filteredCommandOptions = filterCliOptions(commandOptions);
+
   try {
     await runWithCpuProf(
-      commandToProfile,
+      actualCommand,
       {
-        _: positionalArgsForCommand,
-        ...commandOptions,
+        _: actualCommandArgs,
+        ...filteredCommandOptions,
       },
       nodeOptions
     );
@@ -44,9 +51,6 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     const e = error as Error;
     let errorMessage = e.message || 'Unknown error';
 
-    // Check if the error is from the spawned process itself (e.g. NODE_OPTIONS restriction)
-    // This requires runWithCpuProf to propagate stderr or more detailed error messages.
-    // For now, the existing check might be based on a simple string match of the error thrown by runWithCpuProf.
     if (errorMessage && errorMessage.includes('not allowed in NODE_OPTIONS')) {
       console.error(
         '❌ Error: Node.js has restricted some V8 options (like --cpu-prof) from being set via NODE_OPTIONS.\n' +

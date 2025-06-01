@@ -1,15 +1,6 @@
-import type { CommandModule } from 'yargs';
+import { measureCommand } from './builder';
 import type { MeasureArgs } from './types';
-import { builder } from './builder';
-import { handler } from './handler';
-
-export const measureCommand: CommandModule<{}, MeasureArgs> = {
-  command: 'measure <commandToProfile>',
-  describe:
-    'Run a Node.js script with CPU profiling enabled and save the profile to disk',
-  builder,
-  handler,
-};
+import { measureCommand } from './builder';
 
 export default measureCommand;
 

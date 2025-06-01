@@ -1,14 +1,26 @@
-# CPU Profiling and Profile Composition
+# @push-based/cpu-prof
+
+---
+Node.js CPU Profiling and Profile Composition
+---
 
 The `@push-based/cpu-prof` package provides tools and utilities for collecting, and merging Node.js CPU profiles and and visualize them as Chrome trace files.
 Measure, drag & drop into Chrome, voilà.
 
 ## Features
 
-- **CPU Profile Collection**: Collect CPU profiles from Node.js processes.
-- **Profile Merging**: Merge multiple CPU profile files into a single trace for easier analysis.
-- **Helpful & Actionalble Errors**: Command-line interface for all major operations.
-- **TypeScript API**: Programmatic access to all core features.
+- **CPU Profiling Support**:
+  - Smart defaults to reduce friction
+  - Intuitive error messages as well as actionable feedback on how to fix the issue
+  - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+  - All profiles can be dragged and dropped into Chrome DevTools
+- **CPU Profile Analysis**:
+  - Merge multiple CPU profile files into a single trace for easier analysis.
+  - Visualize CPU profiles as Chrome trace files.
+  - Merge multiple CPU profile files into a single trace for easier analysis.
+- **TypeScript API**: 
+  - Programmatic access to all core features.
+  - Use it in your own tools and workflows.
 
 ---
 
@@ -26,52 +38,112 @@ This guide provides instructions for using the `@push-based/cpu-prof` CLI.
 
 ### `measure` command
 
-Collects CPU profiles from a Node.js process. It will handle the profiling arguments so you don't need to think about the order. Intuitive error messages as well as actionable feedback on how to fix the issue. All profiles end up in the same folder independent of the CWD. 
-
-**Syntax:**
+**Usage:**
 ```bash
-npx @push-based/cpu-prof measure [options] -- node your_script.js [args]
+npx @push-based/cpu-prof measure <positionals...> [args...]
 ```
+
+**Description:**
+Collects CPU profiles from a Node.js process. It will handle the profiling arguments so you don't need to think about the order. Intuitive error messages as well as actionable feedback on how to fix the issue. All profiles end up in the same folder independent of the CWD.
+In addition it prints the enriched command to the terminal for to have the plain command visible.
 
 **Options:**
-| Option                  | Default        | Description                                  |
-|-------------------------|----------------|----------------------------------------------|
-| `--cpu-prof-dir <dir>`  | `./profiles`   | Directory to save the profile                |
-| `--cpu-prof-interval <ms>`| (not specified)| Sampling interval in milliseconds            |
-| `--cpu-prof-name <name>`  | (auto-generated)| Name of the profile (auto-generated if not specified) |
+| Option                  | Type      | Default        | Description                                  |
+|-------------------------|-----------|----------------|----------------------------------------------|
+| **`--cpu-prof-dir <dir>`**  | `string`  | `./profiles`   | Directory to save the profile                |
+| **`--cpu-prof-interval <ms>`**| `number`  | (not specified)| Sampling interval in milliseconds            |
+| **`--cpu-prof-name <name>`**  | `string`  | (auto-generated)| Name of the profile (auto-generated if not specified) |
 
 **Examples:**
-```bash
-# Collect a profile and save it to ./profiles
-npx @push-based/cpu-prof measure ./profiles node my_script.js --cpu-prof-dir --arg
 
-# Collect a profile with a specific name and sampling interval
-npx @push-based/cpu-prof measure node my_app.js --cpu-prof-name build-profile --cpu-prof-interval 500
+- `cpu-prof measure --help` - Print help
+- `cpu-prof measure "node -e 'console.log(42)'"` - Profile node evel execution
+- `cpu-prof measure node ./script.js` - Profile node script
+- `cpu-prof measure npm -v` - Profile npm version check
+- `cpu-prof measure npx eslint --print-config ./eslint.config.mjs` - Profile eslint getConfig
+- `cpu-prof measure npx eslint ./eslint.config.mjs` - Profile eslint getConfig + linting
+- `cpu-prof measure nx show projects` - Profile Nx ProjsetGraph
+- `cpu-prof measure nx show project cpu-prof --json` - Profile Nx TaskGraph
+
+#### Added DX for profiling
+
+The CLI does nothing special to the existing Node tooling but makes it easier to use.
+By default it will apply ensure  cpu profiling arguments are applied to all childprocesses and threads and the fildes end up in the same directory. 
+
+For smart defaults visit the [Troublshooting section](./docs/cpu-profiling.md).
+
+If you use a Node version lower than 22 it will not thow a unintuitive error but explains the situatuion and suggests you to update to Node >=22.
+
+Then you can run a short command to profile the script:
+
+```bash
+cpu-prof measure node ./script.js
+# will run:
+# NODE_OPTIONS="--cpu-prof --cpu-prof-dir Users/user/workspace/profiles" node ./script.js
+# and save the profile in ./profiles
 ```
 
----
+Instead of searchin the profiles across the code base:
+
+```text
+/root
+├── CPU.20250601.191007.42154.0.001.cpuprofile
+└── packages
+    ├── pak1
+    │   └── CPU.20250601.191007.42154.0.003.cpuprofile
+    ├── pak2
+    │   └── src
+    │       └── lib
+    │           └── CPU.20250601.191007.42154.0.002.cpuprofile
+    └── pak3
+        └── CPU.20250601.191007.42154.0.004.cpuprofile
+└── ...
+```
+Now all of them are in one place:
+
+```text
+/root
+└── profiles
+    ├── CPU.20250601.191007.42154.0.001.cpuprofile
+    ├── CPU.20250601.191007.42154.0.002.cpuprofile
+    ├── CPU.20250601.191007.42154.0.003.cpuprofile
+    └── CPU.20250601.191007.42154.0.004.cpuprofile
+```
 
 ### `merge` command
 
-Merges multiple CPU profile files into a single trace file. This is helpful while debugging as you can see all profiles under each other aligned in time.
-
-**Syntax:**
+**Usage:**
 ```bash
-npx @push-based/cpu-prof merge <inputDir> [options]
+npx @push-based/cpu-prof merge <inputDir> [args...]
 ```
 
-**Parameters:**
-| Parameter Type | Name                           | Default        | Description                                      |
-|----------------|--------------------------------|----------------|--------------------------------------------------|
-| Argument       | `<inputDir>`                   | (required)     | Directory containing CPU profile files to merge    |
-| **Options**    |                                |                |                                                  |
-|                | `--outputDir, -o <dir>`        | `<inputDir>`   | Output directory for merged profiles             |
-|                | `--startTracingInBrowser, -b`  | `true`         | Include `TracingStartedInBrowser` event          |
-|                | `--smosh, -s <mode>`           | (not specified)| Merge profiles with ID normalization (`all`, `pid`, `tid`) |
-|                | `--verbose, -v`                | `false`        | Enable verbose logging                           |
+**Description:**
+Merges multiple CPU profile files from a specified directory into a single trace file. This is useful for analyzing combined CPU usage across different processes or time periods. The merged profile can be visualized in Chrome DevTools.
 
-**Example:**
-```bash
-# Merge profiles from ./profiles and save the output to ./merged
-npx @push-based/cpu-prof merge ./profiles
-```
+**Arguments:**
+| Argument         | Type      | Description                                  |
+|------------------|-----------|----------------------------------------------|
+| **`<inputDir>`** | `string`  | Directory containing CPU profile files to merge |
+
+**Options:**
+| Option                             | Type      | Default        | Description                                                                                                                                        |
+|------------------------------------|-----------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`--outputDir <dir>`** (`-o`)     | `string`  | (inputDir)     | Output directory for merged profiles. Defaults to inputDir if not specified.                                                                     |
+| **`--startTracingInBrowser`** (`-b`)| `boolean` | `true`         | Include `TracingStartedInBrowser` event for better DevTools visualization.                                                                         |
+| **`--smosh <type>`** (`-s`)        | `string`  | (not specified)| Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
+| **`--verbose`** (`-v`)             | `boolean` | `false`        | Enable verbose logging.                                                                                                                            |
+
+**Examples:**
+
+- `cpu-prof merge ./path/to/profiles` - Merge all profiles from a directory
+- `cpu-prof merge ./profiles -o ./merged-profiles` - Merge profiles and save to a different output directory
+- `cpu-prof merge ./profiles --smosh all` - Merge profiles with PID and TID normalization
+
+
+## Additional Resources
+
+- [CPU Profiling](./docs/cpu-profiling.md) - How to use the CLI and the API
+- [Chrome Trace Viewer](https://ui.perfetto.dev/) - How to visualize the profiles
+- [Node.js CPU Profiling](https://nodejs.org/api/perf_hooks.html#performanceprofiling) - Node.js API for CPU profiling
+- [Node.js Performance Hooks](https://nodejs.org/api/perf_hooks.html) - Node.js API for performance monitoring
+- [Node.js Performance Hooks](https://nodejs.org/api/perf_hooks.html) - Node.js API for performance monitoring

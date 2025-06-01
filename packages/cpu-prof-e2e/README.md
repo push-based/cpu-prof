@@ -13,17 +13,16 @@ Manually test examples:
 
 # Measure
 
-- `cpu-prof measure --help`
-- `cpu-prof measure npm -v`
-- `cpu-prof measure "node -e 'console.log(42)'"` 
-- `cpu-prof measure node ./script.js`
-
-
-`node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- /Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/cpu-prof-e2e/mocks/single.process.js`
-
+- `cpu-prof measure --help` - print help
+- `cpu-prof measure "node -e 'console.log(42)'"` - profile node evel execution
+- `cpu-prof measure node ./script.js` - profile node script
+- `cpu-prof measure npm -v` - profile npm version check
+- `cpu-prof measure npx eslint --print-config ./eslint.config.mjs` - profile eslint getConfig
+- `cpu-prof measure npx eslint ./eslint.config.mjs` - profile eslint getConfig + linting
+- `cpu-prof measure nx show projects` - profile Nx ProjsetGraph
+- `cpu-prof measure nx show project cpu-prof --json` - profile Nx TaskGraph
 
 # Merge
 
-- `node packages/cpu-prof/dist/cpu-prof.esm.js --help`
-- `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-merge -- ./packages/cpu-prof-e2e/mocks/ng-serve-cpu`
-- `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-merge -- ./packages/cpu-prof-e2e/mocks/ng-build-cpu`
+- `cpu-prof merge --help` - print help
+- `cpu-prof merge ./profiles` - merge cpuprofiles in ./profiles
