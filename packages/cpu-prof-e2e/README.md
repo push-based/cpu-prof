@@ -9,6 +9,7 @@ Run `nx e2e-test cpu-prof-e2e` to execute the unit tests via [Vitest](https://vi
 Manually test examples:
 
 ## General
+
 - `cpu-prof --help`
 
 # Measure
