@@ -4,7 +4,7 @@ import { builder } from './builder';
 import { handler } from './handler';
 
 export const measureCommand: CommandModule<{}, MeasureArgs> = {
-  command: 'cpu-measure',
+  command: 'cpu-measure <commandToProfile>',
   describe:
     'Run a Node.js script with CPU profiling enabled and save the profile to disk',
   builder,

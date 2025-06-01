@@ -4,7 +4,6 @@ import type { MeasureArgs } from './types';
 
 export function builder(yargs: Argv): Argv<MeasureArgs> {
   return yargs
-    .parserConfiguration({ 'halt-at-non-option': true })
     .group(
       ['cpu-prof-dir', 'cpu-prof-interval', 'cpu-prof-name', 'help'],
       'CPU Measure Options:'
@@ -36,12 +35,6 @@ export function builder(yargs: Argv): Argv<MeasureArgs> {
       'Profile `node my_app.js`, name it `build-profile` with 500ms interval. Options can be interspersed.'
     )
     .epilog(
-      `The command to profile and its arguments are automatically detected.
-CPU Measure options (like --cpu-prof-dir) can be placed anywhere.
-
-Examples:
-  $0 cpu-measure node my_script.js --arg-for-script
-  $0 cpu-measure --cpu-prof-dir ./custom-profiles node my_app.js
-  $0 cpu-measure node my_app.js --cpu-prof-interval 100`
+      `The command to profile and its arguments are explicitly parsed via the command definition.\nCPU Measure options (like --cpu-prof-dir) can be placed anywhere.\n\nExamples:\n  $0 cpu-measure node my_script.js --arg-for-script\n  $0 cpu-measure --cpu-prof-dir ./custom-profiles node my_app.js\n  $0 cpu-measure node my_app.js --cpu-prof-interval 100`
     );
 }

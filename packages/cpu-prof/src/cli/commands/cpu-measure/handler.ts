@@ -2,55 +2,64 @@ import type { MeasureArgs } from './types';
 import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
 
 export async function handler(argv: MeasureArgs): Promise<void> {
+  const { _: positionalArgs = [], ...options } = argv;
   const {
-    ['cpu-prof-dir']: cpuProfDir,
-    ['cpu-prof-interval']: cpuProfInterval,
-    ['cpu-prof-name']: cpuProfName,
-  } = argv;
+    $0,
+    cpuProfDir,
+    ['cpu-prof-dir']: cpuProfDir2,
+    cpuProfInterval,
+    ['cpu-prof-interval']: cpuProfInterval2,
+    cpuProfName,
+    ['cpu-prof-name']: cpuProfName2,
+    commandToProfile,
+    ['command-to-profile']: commandToProfile2,
+    ...commandOptions
+  } = options;
+  const nodeOptions = {
+    ...(cpuProfDir ? { cpuProfDir } : {}),
+    ...(cpuProfInterval ? { cpuProfInterval } : {}),
+    ...(cpuProfName ? { cpuProfName } : {}),
+  };
+  const cpuMeasureArgs = positionalArgs.slice(1);
 
-  let commandArgsForProfiling = (
-    argv._ && argv._.length > 0 ? argv._.slice(1) : []
-  ) as string[];
+  const positionalArgsForCommand = cpuMeasureArgs.slice(1);
 
-  if (
-    commandArgsForProfiling.length > 0 &&
-    commandArgsForProfiling[0] === 'cpu-measure'
-  ) {
-    commandArgsForProfiling = commandArgsForProfiling.slice(1);
-  }
-
-  const commandArgsInput = commandArgsForProfiling;
-
-  if (!commandArgsInput || commandArgsInput.length === 0) {
+  if (!commandToProfile) {
     console.error(
-      '❌ Error: No command or script provided to profile. Usage: cpu-measure [options] <command_or_script.js> [args...]'
+      '❌ Error: No command or script provided to profile. Usage: cpu-measure <command_or_script.js> [args...]'
     );
     process.exit(1);
   }
 
-  const command_to_profile = commandArgsInput[0];
-  const finalArgsForChild: string[] = commandArgsInput.slice(1);
-
   try {
-    await runWithCpuProf(command_to_profile, finalArgsForChild, {
-      dir: cpuProfDir!,
-      interval: cpuProfInterval!,
-      name: cpuProfName,
-    });
+    await runWithCpuProf(
+      commandToProfile,
+      {
+        _: positionalArgsForCommand,
+        ...commandOptions,
+      },
+      nodeOptions
+    );
   } catch (error) {
     const e = error as Error;
-    const errorMessage = e.message || 'Unknown error';
+    let errorMessage = e.message || 'Unknown error';
 
+    // Check if the error is from the spawned process itself (e.g. NODE_OPTIONS restriction)
+    // This requires runWithCpuProf to propagate stderr or more detailed error messages.
+    // For now, the existing check might be based on a simple string match of the error thrown by runWithCpuProf.
     if (errorMessage && errorMessage.includes('not allowed in NODE_OPTIONS')) {
       console.error(
         '❌ Error: Node.js has restricted some V8 options (like --cpu-prof) from being set via NODE_OPTIONS.\n' +
           '   This is a security feature in recent Node.js versions.\n' +
           '   The V8 option "--cpu-prof" specifically was disallowed.\n' +
-          '   If you have a Node.js version where this works, you can switch to it (e.g., `nvm use <version>`).\n' +
-          '   Alternatively, the profiling tool might need an update to pass these V8 options directly to the Node.js command if possible.'
+          '   It works in Node.js version > 22, you can switch to it (e.g., `nvm use <version>`).\n'
       );
+    } else if (errorMessage.includes('Command failed with exit code')) {
+      // Generic failure from executeChildProcess, could append more details if available
+      console.error(`❌ Error during CPU profiling: ${errorMessage}.`);
     } else {
-      console.error(`❌ Error during CPU profiling: ${errorMessage}`);
+      // Other types of errors (e.g., issues within runWithCpuProf before spawning)
+      console.error(`❌ Error during CPU profiling setup: ${errorMessage}`);
     }
     process.exit(1);
   }

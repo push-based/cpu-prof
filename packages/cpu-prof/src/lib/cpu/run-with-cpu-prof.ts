@@ -1,19 +1,9 @@
 import { spawn } from 'node:child_process';
-import { CpuProfileArguments } from './cpuprofile.types';
 import * as ansis from 'ansis';
+import { mkdir } from 'node:fs/promises';
 
 interface ProcessStdOutput {
   code: string | number | null;
-}
-
-class MinimalProcessError extends Error {
-  code: string | number | null;
-
-  constructor(message: string, code: string | number | null) {
-    super(message);
-    this.code = code;
-    this.name = 'MinimalProcessError';
-  }
 }
 
 function formatCommandLog(
@@ -34,75 +24,6 @@ function formatCommandLog(
   return logElements.join(' ');
 }
 
-function logCommandExecutionDetails(
-  command: string,
-  args: string[] | undefined,
-  nodeOptionsForLogging: string | undefined,
-  logger: { log: (...args: string[]) => void }
-): void {
-  if (!logger?.log) {
-    return;
-  }
-  const commandDisplayString = formatCommandLog(
-    command,
-    args,
-    nodeOptionsForLogging
-  );
-  logger.log(commandDisplayString);
-}
-
-interface PreparedCommand {
-  finalCommand: string;
-  finalArgs: string[];
-  nodeOptionsValue: string;
-}
-
-function prepareCommandForProfiling(
-  initialCommand: string,
-  initialArgs: string[],
-  options: CpuProfileArguments
-): PreparedCommand {
-  const {
-    dir: cpuProfDir,
-    name: cpuProfName,
-    interval: cpuProfInterval,
-  } = options;
-
-  // Only set profiling flags if at least one profiling option is provided
-  const hasProfiling = cpuProfDir || cpuProfName || cpuProfInterval;
-  const cpuProfFlags = [
-    ...(hasProfiling ? ['--cpu-prof'] : []),
-    ...(cpuProfDir ? [`--cpu-prof-dir=${cpuProfDir}`] : []),
-    ...(cpuProfName ? [`--cpu-prof-name=${cpuProfName}`] : []),
-    ...(cpuProfInterval ? [`--cpu-prof-interval=${cpuProfInterval}`] : []),
-  ];
-  const nodeOptionsValue = cpuProfFlags.join(' ');
-
-  let finalCommand = initialCommand;
-  let finalArgs = [...initialArgs];
-
-  const isNodeExecutable =
-    initialCommand.endsWith('node') || initialCommand.endsWith('node.exe');
-  const isJsFile = initialCommand.endsWith('.js');
-
-  if (isJsFile && !isNodeExecutable) {
-    finalArgs = [initialCommand, ...initialArgs];
-    finalCommand = 'node';
-  } else if (!isNodeExecutable && !isJsFile && hasProfiling) {
-    throw new Error(
-      `Warning: CPU profiling flags are set via NODE_OPTIONS. ` +
-        `Command '${initialCommand}' is not a Node.js executable or .js file, ` +
-        `and may not be profiled as expected.`
-    );
-  }
-
-  return {
-    finalCommand,
-    finalArgs,
-    nodeOptionsValue,
-  };
-}
-
 async function executeChildProcess(
   command: string,
   args: string[],
@@ -117,7 +38,7 @@ async function executeChildProcess(
     });
 
     spawnedProcess.on('error', (err: NodeJS.ErrnoException) => {
-      reject(new MinimalProcessError(err.message, err.code || null));
+      reject(err);
     });
 
     spawnedProcess.on('close', (code) => {
@@ -125,39 +46,104 @@ async function executeChildProcess(
         resolve({ code });
       } else {
         const message = `Command failed with exit code ${code}`;
-        reject(new MinimalProcessError(message, code));
+        reject(new Error(message));
       }
     });
   });
 }
 
 export async function runWithCpuProf(
-  initialCommand: string,
-  initialArgs: string[],
+  command: string,
+  args: Record<string, ArgumentValue>,
   options: {
-    dir?: string;
-    interval?: number;
-    name?: string;
+    cpuProfDir?: string;
+    cpuProfInterval?: number;
+    cpuProfName?: string;
   },
   logger: { log: (...args: string[]) => void } = console
 ): Promise<ProcessStdOutput> {
-  const { finalCommand, finalArgs, nodeOptionsValue } =
-    prepareCommandForProfiling(initialCommand, initialArgs, options);
+  const { cpuProfDir, cpuProfInterval, cpuProfName } = options;
+  const nodeOptions = objectToCliArgs({
+    ['cpu-prof']: true,
+    ...(cpuProfDir ? { ['cpu-prof-dir']: cpuProfDir } : {}),
+    ...(cpuProfInterval ? { ['cpu-prof-interval']: cpuProfInterval } : {}),
+    ...(cpuProfName ? { ['cpu-prof-name']: cpuProfName } : {}),
+  }).join(' ');
+  const argsArray = objectToCliArgs(args);
 
-  const actualEnvForSpawn = { ...process.env, NODE_OPTIONS: nodeOptionsValue };
-
-  logCommandExecutionDetails(finalCommand, finalArgs, nodeOptionsValue, logger);
+  logger.log(formatCommandLog(command, argsArray, nodeOptions));
 
   try {
-    const result = await executeChildProcess(
-      finalCommand,
-      finalArgs,
-      actualEnvForSpawn
-    );
-    logger.log(`Profiles generated - ${options.dir}`);
+    const result = await executeChildProcess(command, argsArray, {
+      ...process.env,
+      NODE_OPTIONS: nodeOptions,
+    });
+    logger.log(`Profiles generated  - ${cpuProfDir}`);
     return result;
   } catch (error) {
-    logger.log(`Failed to generate profiles - ${options.dir}`);
+    logger.log(`Failed to generate profiles - ${cpuProfDir}`);
     throw error;
   }
+}
+
+type ArgumentValue = number | string | boolean | string[];
+export type CliArgsObject<T extends object = Record<string, ArgumentValue>> =
+  T extends never
+    ? Record<string, ArgumentValue | undefined> | { _: string }
+    : T;
+
+/**
+ * Converts an object with different types of values into an array of command-line arguments.
+ *
+ * @example
+ * const args = objectToCliArgs({
+ *   _: ['node', 'index.js'], // node index.js
+ *   name: 'Juanita', // --name=Juanita
+ *   formats: ['json', 'md'] // --format=json --format=md
+ * });
+ */
+export function objectToCliArgs<
+  T extends object = Record<string, ArgumentValue>
+>(params?: CliArgsObject<T>): string[] {
+  if (!params) {
+    return [];
+  }
+
+  return Object.entries(params).flatMap(([key, value]) => {
+    // process/file/script
+    if (key === '_') {
+      return Array.isArray(value) ? value : [`${value}`];
+    }
+    const prefix = key.length === 1 ? '-' : '--';
+    // "-*" arguments (shorthands)
+    if (Array.isArray(value)) {
+      return value.map((v) => `${prefix}${key}="${v}"`);
+    }
+    // "--*" arguments ==========
+
+    if (Array.isArray(value)) {
+      return value.map((v) => `${prefix}${key}="${v}"`);
+    }
+
+    if (typeof value === 'object') {
+      return Object.entries(value as Record<string, ArgumentValue>).flatMap(
+        // transform nested objects to the dot notation `key.subkey`
+        ([k, v]) => objectToCliArgs({ [`${key}.${k}`]: v })
+      );
+    }
+
+    if (typeof value === 'string') {
+      return [`${prefix}${key}="${value}"`];
+    }
+
+    if (typeof value === 'number') {
+      return [`${prefix}${key}=${value}`];
+    }
+
+    if (typeof value === 'boolean') {
+      return [`${prefix}${value ? '' : 'no-'}${key}`];
+    }
+
+    throw new Error(`Unsupported type ${typeof value} for key ${key}`);
+  });
 }
