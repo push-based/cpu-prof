@@ -1,5 +1,4 @@
-import fs from 'fs';
-import { reduceTrace, reduceTraceFile } from '../../../lib/reduce-trace';
+import { reduceTraceFile } from '../../../lib/reduce-trace';
 import type { ReduceTraceArgs } from './types';
 import { processArgs } from './args-processor';
 import { logVerboseOptions, getStats, logStats } from './helpers';

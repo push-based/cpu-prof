@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { executeProcess } from '../../cpu-prof/src/lib/utils/execute-process';
+import { executeProcess } from '../../cpu-prof/src/lib/execute-process';
 import { join } from 'path';
 import { cp, mkdir, rm, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -21,8 +21,6 @@ describe('cpu-merge-command', () => {
 
   it('should run without error and log results to terminal', async () => {
     const inputDir = join(tmpCpuMergeCommandDir, 'terminal-logs');
-
-    await mkdir(inputDir, { recursive: true });
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
@@ -33,7 +31,7 @@ describe('cpu-merge-command', () => {
 
     const { stdout, stderr, code } = await executeProcess({
       command: 'node',
-      args: [cliPath, 'cpu-merge', inputDir],
+      args: [cliPath, 'merge', inputDir],
     });
 
     expect(stdout).toContain('✅ CPU profiles merged successfully!');
@@ -66,7 +64,7 @@ describe('cpu-merge-command', () => {
 
     const { stdout, stderr, code } = await executeProcess({
       command: 'node',
-      args: [cliPath, 'cpu-merge', inputDir],
+      args: [cliPath, 'merge', inputDir],
     });
 
     expect(stdout).toContain('📊 Generated 10 trace events');
@@ -100,7 +98,7 @@ describe('cpu-merge-command', () => {
 
     const { stdout, stderr, code } = await executeProcess({
       command: 'node',
-      args: [cliPath, 'cpu-merge', inputDir, '--outputDir', outputDir],
+      args: [cliPath, 'merge', inputDir, '--outputDir', outputDir],
     });
 
     expect(stderr).toBe('');
@@ -126,7 +124,7 @@ describe('cpu-merge-command', () => {
 
     const { stdout, stderr, code } = await executeProcess({
       command: 'node',
-      args: [cliPath, 'cpu-merge', inputDir, '--startTracingInBrowser'],
+      args: [cliPath, 'merge', inputDir, '--startTracingInBrowser'],
     });
 
     expect(stderr).toBe('');

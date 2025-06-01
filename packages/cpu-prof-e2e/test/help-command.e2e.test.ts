@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { executeProcess } from '../../cpu-prof/src/lib/utils/execute-process';
+import { executeProcess } from '../../cpu-prof/src/lib/execute-process';
 import { CLI_PATH } from '../mocks/constants';
 import { join } from 'path';
 
@@ -13,30 +13,22 @@ describe('help-command', () => {
     });
 
     expect(stdout).toMatchInlineSnapshot(`
-      "cpu-prof cpu-merge <inputDir>
+      "Usage: cpu-prof <command> [options]
 
-      Merge multiple Chrome DevTools trace files or CPU profile files into a single file
+      PushBased Profiling - Advanced CPU profiling and trace file uti
+      lities
 
-      Positionals:
-        inputDir  Directory containing CPU profile files to merge                      [string] [required]
-
-      Basic Options:
-        -h, --help     Show help                                                                 [boolean]
-        -v, --verbose  Enable verbose logging                                   [boolean] [default: false]
+      Commands:
+        cpu-prof trace-reduce [inputFile]    Reduce Chrome DevTools trace files by filtering unwanted even
+                                             ts
+        cpu-prof merge <inputDir>            Merge multiple Chrome DevTools trace files or CPU profile fil
+                                             es into a single file
+        cpu-prof measure <commandToProfile>  Run a Node.js script with CPU profiling enabled and save the
+                                             profile to disk
 
       Options:
-            --version                Show version number                                         [boolean]
-        -o, --outputDir              Output directory for merged profiles. Defaults to inputDir if not spe
-                                     cified.                                                      [string]
-        -b, --startTracingInBrowser  Include TracingStartedInBrowser event for better DevTools visualizati
-                                     on                                          [boolean] [default: true]
-        -s, --smosh                  Merge profiles with specific ID normalization. Use --smosh all to nor
-                                     malize both PID and TID, --smosh pid to normalize only PID, or --smos
-                                     h tid to normalize only TID. Omit flag to disable normalization.
-                                                                   [string] [choices: "pid", "tid", "all"]
-
-      Examples:
-        cpu-prof cpu-merge ./path/to/profiles  Merge all profiles from a directory
+        -h, --help     Show help                                                                 [boolean]
+            --version  Show version number                                                       [boolean]
       "
     `);
     expect(stderr).toBe('');

@@ -1,8 +1,8 @@
 {
   "name": "@push-based/cpu-prof",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "type": "module",
-  "main": "./dist/index.cjs",
+ "main": "./dist/index.cjs",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -16,7 +16,7 @@
     }
   },
   "bin": {
-    "@push-based/cpu-prof": "./dist/cpu-prof.cjs"
+    "cpu-prof": "./dist/cpu-prof.esm.js"
   },
   "scripts": {},
   "files": [
@@ -65,7 +65,7 @@
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure"
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js measure"
         }
       },
       "merge": {
@@ -74,7 +74,7 @@
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js cpu-merge"
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js merge"
         }
       }
     },

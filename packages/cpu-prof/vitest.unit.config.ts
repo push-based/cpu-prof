@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import { createSharedUnitVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
+import * as path from 'path';
 
 export default defineConfig(() => {
   const baseConfig = createSharedUnitVitestConfig({
@@ -10,6 +11,14 @@ export default defineConfig(() => {
   return {
     ...baseConfig,
     plugins: [],
+    resolve: {
+      alias: {
+        '@push-based/testing-utils': path.resolve(
+          __dirname,
+          '../../testing/utils/src'
+        ),
+      },
+    },
     test: {
       ...baseConfig.test,
       setupFiles: [

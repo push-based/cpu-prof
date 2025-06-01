@@ -8,18 +8,22 @@ Run `nx e2e-test cpu-prof-e2e` to execute the unit tests via [Vitest](https://vi
 
 Manually test examples:
 
+## General
+- `cpu-prof --help`
+
+# Measure
+
+- `cpu-prof measure --help`
+- `cpu-prof measure npm -v`
+- `cpu-prof measure "node -e 'console.log(42)'"` 
+- `cpu-prof measure node ./script.js`
+
+
+`node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- /Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/cpu-prof-e2e/mocks/single.process.js`
+
+
 # Merge
 
 - `node packages/cpu-prof/dist/cpu-prof.esm.js --help`
 - `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-merge -- ./packages/cpu-prof-e2e/mocks/ng-serve-cpu`
 - `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-merge -- ./packages/cpu-prof-e2e/mocks/ng-build-cpu`
-
-# Measure
-
-## Measure a .js script
-
-`node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- /Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/packages/cpu-prof-e2e/mocks/single.process.js`
-
-- `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`
-- `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`
-- `node packages/cpu-prof/dist/cpu-prof.esm.js cpu-measure -v -- -e "console.log(1)"`

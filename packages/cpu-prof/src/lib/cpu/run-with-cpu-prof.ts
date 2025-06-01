@@ -1,10 +1,8 @@
-import { spawn } from 'node:child_process';
 import * as ansis from 'ansis';
-import { mkdir } from 'node:fs/promises';
-
-interface ProcessStdOutput {
-  code: string | number | null;
-}
+import {
+  executeProcess,
+  type ProcessResult,
+} from '../execute-process';
 
 function formatCommandLog(
   command: string,
@@ -14,7 +12,9 @@ function formatCommandLog(
   const logElements: string[] = [];
   if (nodeOptions) {
     logElements.push(
-      `${ansis.green('NODE_OPTIONS')}="${ansis.blueBright(nodeOptions)}"`
+      `${ansis.green('NODE_OPTIONS')}="${ansis.blueBright(
+        nodeOptions.replaceAll('"', "'")
+      )}"`
     );
   }
   logElements.push(ansis.cyan(command));
@@ -22,34 +22,6 @@ function formatCommandLog(
     logElements.push(ansis.white(args.join(' ')));
   }
   return logElements.join(' ');
-}
-
-async function executeChildProcess(
-  command: string,
-  args: string[],
-  env: NodeJS.ProcessEnv
-): Promise<ProcessStdOutput> {
-  return new Promise((resolve, reject) => {
-    const spawnedProcess = spawn(command, args, {
-      shell: false,
-      windowsHide: true,
-      env,
-      stdio: ['pipe', 'inherit', 'inherit'],
-    });
-
-    spawnedProcess.on('error', (err: NodeJS.ErrnoException) => {
-      reject(err);
-    });
-
-    spawnedProcess.on('close', (code) => {
-      if (code === 0) {
-        resolve({ code });
-      } else {
-        const message = `Command failed with exit code ${code}`;
-        reject(new Error(message));
-      }
-    });
-  });
 }
 
 export async function runWithCpuProf(
@@ -61,25 +33,33 @@ export async function runWithCpuProf(
     cpuProfName?: string;
   },
   logger: { log: (...args: string[]) => void } = console
-): Promise<ProcessStdOutput> {
+): Promise<Pick<ProcessResult, 'code'>> {
   const { cpuProfDir, cpuProfInterval, cpuProfName } = options;
-  const nodeOptions = objectToCliArgs({
-    ['cpu-prof']: true,
-    ...(cpuProfDir ? { ['cpu-prof-dir']: cpuProfDir } : {}),
-    ...(cpuProfInterval ? { ['cpu-prof-interval']: cpuProfInterval } : {}),
-    ...(cpuProfName ? { ['cpu-prof-name']: cpuProfName } : {}),
-  }).join(' ');
+  const nodeOptionsAsRecord = {
+    'cpu-prof': true,
+    ...(cpuProfDir ? { 'cpu-prof-dir': cpuProfDir } : {}),
+    ...(cpuProfInterval ? { 'cpu-prof-interval': cpuProfInterval } : {}),
+    ...(cpuProfName ? { 'cpu-prof-name': cpuProfName } : {}),
+  };
+  const nodeOptionsString = objectToCliArgs(nodeOptionsAsRecord).join(' ');
   const argsArray = objectToCliArgs(args);
 
-  logger.log(formatCommandLog(command, argsArray, nodeOptions));
+  logger.log(formatCommandLog(command, argsArray, nodeOptionsString));
 
   try {
-    const result = await executeChildProcess(command, argsArray, {
+    // Construct the environment variables for executeProcess
+    const env = {
       ...process.env,
-      NODE_OPTIONS: nodeOptions,
+      NODE_OPTIONS: nodeOptionsString,
+    };
+
+    const result = await executeProcess({
+      command,
+      args: argsArray,
+      env
     });
     logger.log(`Profiles generated  - ${cpuProfDir}`);
-    return result;
+    return { code: result.code };
   } catch (error) {
     logger.log(`Failed to generate profiles - ${cpuProfDir}`);
     throw error;

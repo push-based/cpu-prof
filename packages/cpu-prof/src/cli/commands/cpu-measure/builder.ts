@@ -27,14 +27,20 @@ export function builder(yargs: Argv): Argv<MeasureArgs> {
       normalize: true,
     })
     .example(
-      '$0 cpu-measure --cpu-prof-dir ./profiles node my_script.js --arg-for-script',
+      '$0 measure --cpu-prof-dir ./profiles node my_script.js --arg-for-script',
       'Profile `node my_script.js --arg-for-script` and save to ./profiles. Options can be anywhere.'
     )
     .example(
-      '$0 cpu-measure node my_app.js --cpu-prof-name build-profile --cpu-prof-interval 500',
+      '$0 measure node my_app.js --cpu-prof-name build-profile --cpu-prof-interval 500',
       'Profile `node my_app.js`, name it `build-profile` with 500ms interval. Options can be interspersed.'
     )
     .epilog(
-      `The command to profile and its arguments are explicitly parsed via the command definition.\nCPU Measure options (like --cpu-prof-dir) can be placed anywhere.\n\nExamples:\n  $0 cpu-measure node my_script.js --arg-for-script\n  $0 cpu-measure --cpu-prof-dir ./custom-profiles node my_app.js\n  $0 cpu-measure node my_app.js --cpu-prof-interval 100`
+      `The command to profile and its arguments are explicitly parsed via the command definition.
+      CPU Measure options (like --cpu-prof-dir) can be placed anywhere.
+      
+      Examples:
+      $0 measure node my_script.js --arg-for-script
+      $0 measure --cpu-prof-dir ./custom-profiles node my_app.js
+      $0 measure node my_app.js --cpu-prof-interval 100`
     );
 }

@@ -43,7 +43,7 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
     })
 
     .example(
-      '$0 cpu-merge ./path/to/profiles',
+      '$0 merge ./path/to/profiles',
       'Merge all profiles from a directory'
     )
     .epilog(``)
