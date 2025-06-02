@@ -1,4 +1,10 @@
 {
+  "metadata": {
+    "source": "DevTools",
+    "startTime": "mocked-timestamp",
+    "hardwareConcurrency": 1,
+    "dataOrigin": "TraceEvents"
+  },
   "traceEvents": [
     {
       "cat": "__metadata",
@@ -8,32 +14,40 @@
       "tid": 0,
       "ts": 0,
       "args": {
-        "name": "crRendererMain"
+        "name": "P:1, T:0"
       }
     },
     {
-      "cat": "devtools.timeline",
-      "name": "TracingStartedInBrowser",
-      "ph": "I",
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
       "pid": 1,
       "tid": 0,
-      "ts": 1,
-      "s": "t",
+      "ts": 0,
       "args": {
-        "data": {
-          "frameTreeNodeId": 1,
-          "frames": [
-            {
-              "frame": "frame-1",
-              "isInPrimaryMainFrame": true,
-              "isOutermostMainFrame": true,
-              "name": "",
-              "processId": 1,
-              "url": "file:///merged-cpu-profile"
-            }
-          ],
-          "persistentIds": true
-        }
+        "name": "P:1, T:0"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 1,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "P:1, T:0"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 1,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "P:1, T:0"
       }
     },
     {
@@ -86,74 +100,67 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [2]
+                "children": [
+                  2
+                ]
               },
               {
                 "id": 2,
                 "callFrame": {
                   "functionName": "step-1",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [3]
+                "children": [
+                  3
+                ]
               },
               {
                 "id": 3,
                 "callFrame": {
                   "functionName": "step-2",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [4]
+                "children": [
+                  4
+                ]
               },
               {
                 "id": 4,
                 "callFrame": {
                   "functionName": "step-3",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                   "lineNumber": 30,
                   "columnNumber": 0
                 },
                 "children": []
               }
             ],
-            "samples": [1, 2, 3, 4, 3, 2, 1]
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              3,
+              2,
+              1
+            ]
           },
-          "timeDeltas": [0, 10, 10, 10, 10, 10, 10]
-        }
-      }
-    },
-    {
-      "cat": "v8",
-      "name": "CpuProfiler::StartProfiling",
-      "dur": 0,
-      "ph": "I",
-      "pid": 1,
-      "tid": 0,
-      "ts": 1,
-      "args": {
-        "data": {
-          "startTime": 1
-        }
-      },
-      "s": "t"
-    },
-    {
-      "cat": "v8.cpu_profiler",
-      "id": "0x101",
-      "name": "Profile",
-      "ph": "P",
-      "pid": 1,
-      "tid": 0,
-      "ts": 1,
-      "args": {
-        "data": {
-          "startTime": 1
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
         }
       }
     },
@@ -178,62 +185,65 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [2]
+                "children": [
+                  2
+                ]
               },
               {
                 "id": 2,
                 "callFrame": {
                   "functionName": "step-1",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.js",
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [3]
+                "children": [
+                  3
+                ]
               },
               {
                 "id": 3,
                 "callFrame": {
                   "functionName": "step-2",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.js",
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [4]
+                "children": [
+                  4
+                ]
               },
               {
                 "id": 4,
                 "callFrame": {
                   "functionName": "step-3",
-                  "scriptId": "1",
-                  "url": "file:///b.js",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.js",
                   "lineNumber": 30,
                   "columnNumber": 0
                 },
                 "children": []
               }
             ],
-            "samples": [1, 2, 3, 4, 1]
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              1
+            ]
           },
-          "timeDeltas": [0, 10, 10, 10, 10]
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10
+          ]
         }
       }
-    },
-    {
-      "cat": "v8",
-      "name": "CpuProfiler::StopProfiling",
-      "dur": 0,
-      "ph": "I",
-      "pid": 1,
-      "tid": 0,
-      "ts": 50,
-      "args": {
-        "data": {
-          "endTime": 50
-        }
-      },
-      "s": "t"
     },
     {
       "cat": "v8",
@@ -250,11 +260,5 @@
       },
       "s": "t"
     }
-  ],
-  "metadata": {
-    "source": "DevTools",
-    "startTime": "mocked-timestamp",
-    "hardwareConcurrency": 1,
-    "dataOrigin": "TraceEvents"
-  }
+  ]
 }

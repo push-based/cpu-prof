@@ -3,14 +3,58 @@
     "dataOrigin": "TraceEvents",
     "hardwareConcurrency": 1,
     "source": "DevTools",
-    "startTime": "mocked-timestamp"
+    "startTime": "mocked-timestamp",
   },
   "traceEvents": [
     {
       "args": {
+        "name": "P:1234, T:1",
+      },
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 1234,
+      "tid": 1,
+      "ts": 0,
+    },
+    {
+      "args": {
+        "name": "P:1234, T:1",
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 1234,
+      "tid": 1,
+      "ts": 0,
+    },
+    {
+      "args": {
+        "name": "P:1234, T:2",
+      },
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 1234,
+      "tid": 2,
+      "ts": 0,
+    },
+    {
+      "args": {
+        "name": "P:1234, T:2",
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 1234,
+      "tid": 2,
+      "ts": 0,
+    },
+    {
+      "args": {
         "data": {
-          "startTime": 1
-        }
+          "startTime": 1,
+        },
       },
       "cat": "v8",
       "dur": 0,
@@ -19,13 +63,13 @@
       "pid": 1234,
       "s": "t",
       "tid": 1,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
         "data": {
-          "startTime": 1
-        }
+          "startTime": 1,
+        },
       },
       "cat": "v8.cpu_profiler",
       "id": "0x123410",
@@ -33,7 +77,7 @@
       "ph": "P",
       "pid": 1234,
       "tid": 1,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
@@ -46,49 +90,71 @@
                   "functionName": "(root)",
                   "lineNumber": -1,
                   "scriptId": "0",
-                  "url": ""
+                  "url": "",
                 },
-                "children": [2],
-                "id": 1
+                "children": [
+                  2,
+                ],
+                "id": 1,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "step-1",
                   "lineNumber": 10,
-                  "scriptId": "1",
-                  "url": "file:///b.js"
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                 },
-                "children": [3],
-                "id": 2
+                "children": [
+                  3,
+                ],
+                "id": 2,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "step-2",
                   "lineNumber": 20,
-                  "scriptId": "1",
-                  "url": "file:///b.js"
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                 },
-                "children": [4],
-                "id": 3
+                "children": [
+                  4,
+                ],
+                "id": 3,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "step-3",
                   "lineNumber": 30,
-                  "scriptId": "1",
-                  "url": "file:///b.js"
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
                 },
                 "children": [],
-                "id": 4
-              }
+                "id": 4,
+              },
             ],
-            "samples": [1, 2, 3, 4, 3, 2, 1]
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              3,
+              2,
+              1,
+            ],
           },
-          "timeDeltas": [0, 10, 10, 10, 10, 10, 10]
-        }
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+          ],
+        },
       },
       "cat": "v8.cpu_profiler",
       "id": "0x123410",
@@ -96,13 +162,13 @@
       "ph": "P",
       "pid": 1234,
       "tid": 1,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
         "data": {
-          "startTime": 1
-        }
+          "startTime": 1,
+        },
       },
       "cat": "v8",
       "dur": 0,
@@ -111,13 +177,13 @@
       "pid": 1234,
       "s": "t",
       "tid": 2,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
         "data": {
-          "startTime": 1
-        }
+          "startTime": 1,
+        },
       },
       "cat": "v8.cpu_profiler",
       "id": "0x123421",
@@ -125,7 +191,7 @@
       "ph": "P",
       "pid": 1234,
       "tid": 2,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
@@ -138,51 +204,71 @@
                   "functionName": "(root)",
                   "lineNumber": -1,
                   "scriptId": "0",
-                  "url": ""
+                  "url": "",
                 },
-                "children": [2],
-                "id": 1
+                "children": [
+                  2,
+                ],
+                "id": 1,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "valley_peak",
                   "lineNumber": 1,
-                  "scriptId": "1",
-                  "url": "file:///app.js"
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.js",
                 },
-                "children": [3],
+                "children": [
+                  3,
+                ],
                 "id": 2,
-                "parent": 1
+                "parent": 1,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "valley_slope",
                   "lineNumber": 2,
-                  "scriptId": "1",
-                  "url": "file:///app.js"
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.js",
                 },
-                "children": [4],
+                "children": [
+                  4,
+                ],
                 "id": 3,
-                "parent": 2
+                "parent": 2,
               },
               {
                 "callFrame": {
                   "columnNumber": 0,
                   "functionName": "valley_bottom",
                   "lineNumber": 3,
-                  "scriptId": "1",
-                  "url": "file:///app.js"
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.js",
                 },
                 "id": 4,
-                "parent": 3
-              }
+                "parent": 3,
+              },
             ],
-            "samples": [1, 2, 4, 1, 4, 2]
+            "samples": [
+              1,
+              2,
+              4,
+              1,
+              4,
+              2,
+            ],
           },
-          "timeDeltas": [0, 10, 10, 10, 10, 10]
-        }
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+          ],
+        },
       },
       "cat": "v8.cpu_profiler",
       "id": "0x123421",
@@ -190,13 +276,13 @@
       "ph": "P",
       "pid": 1234,
       "tid": 2,
-      "ts": 1
+      "ts": 1,
     },
     {
       "args": {
         "data": {
-          "endTime": 70
-        }
+          "endTime": 70,
+        },
       },
       "cat": "v8",
       "dur": 0,
@@ -205,13 +291,13 @@
       "pid": 1234,
       "s": "t",
       "tid": 1,
-      "ts": 70
+      "ts": 70,
     },
     {
       "args": {
         "data": {
-          "endTime": 70
-        }
+          "endTime": 70,
+        },
       },
       "cat": "v8",
       "dur": 0,
@@ -220,7 +306,7 @@
       "pid": 1234,
       "s": "t",
       "tid": 2,
-      "ts": 70
-    }
-  ]
+      "ts": 70,
+    },
+  ],
 }

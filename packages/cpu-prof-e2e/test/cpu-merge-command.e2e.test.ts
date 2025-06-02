@@ -67,12 +67,12 @@ describe('cpu-merge-command', () => {
       args: [cliPath, 'merge', inputDir],
     });
 
-    expect(stdout).toContain('📊 Generated 10 trace events');
+    expect(stdout).toContain('📊 Generated 9 trace events');
     expect(stderr).toBe('');
     expect(code).toBe(0);
 
     const outputFileContent = (
-      await readFile(join(inputDir, 'merged-profile.json'))
+      await readFile(join(process.cwd(), 'profiles', 'merged-profile.json'))
     ).toString();
 
     const outputJson = JSON.parse(outputFileContent);
@@ -129,9 +129,9 @@ describe('cpu-merge-command', () => {
 
     expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 6 trace events');
+    expect(stdout).toContain('📊 Generated 8 trace events');
     const outputFileContent = (
-      await readFile(join(inputDir, 'merged-profile.json'))
+      await readFile(join(process.cwd(), 'profiles', 'merged-profile.json'))
     ).toString();
 
     expect(JSON.parse(outputFileContent)).toStrictEqual({

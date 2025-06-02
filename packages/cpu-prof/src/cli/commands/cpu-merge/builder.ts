@@ -21,7 +21,6 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
         'Output directory for merged profiles. Defaults to inputDir if not specified.',
       type: 'string',
       normalize: true,
-      default: join(process.cwd(), 'profiles'),
     })
     .option('startTracingInBrowser', {
       alias: 'b',

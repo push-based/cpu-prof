@@ -143,7 +143,7 @@ export function smoshCpuProfiles(
       return {
         ...profileInfo,
         pid: mainPid,
-        tid: parseInt(profileInfo.pid + '0' + index), // Assign sequential tids based on pid
+        tid: index, // Assign sequential tids based on index
       };
     } else if (smosh === 'tid') {
       return {

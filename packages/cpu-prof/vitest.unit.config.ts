@@ -30,6 +30,7 @@ export default defineConfig(() => {
         ...baseConfig.test.coverage,
         exclude: [
           ...baseConfig.test.coverage.exclude,
+          'src/bin/**',
           'src/cli/commands/trace-reduce/**',
         ],
       },

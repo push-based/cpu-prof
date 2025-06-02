@@ -32,17 +32,18 @@ export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
     console.log(`🔧 CPU Profile Merge Mode:`);
     console.log(`  📁 Input directory: ${resolvedInputDir}`);
     console.log(`  📁 Output directory: ${resolvedOutputDir}`);
-    if (smosh) {
+    smosh &&
       console.log(
-        `  🔄 Smosh mode enabled: ${
+        `  🔄 Smosh mode: ${
           smosh === 'all'
-            ? 'All profiles will be merged into a single thread'
+            ? 'All profiles will be merged into a single thread. (EXPERIMENTAL)'
             : smosh === 'pid'
-            ? 'All profiles will share the same process ID'
-            : 'All profiles will share the same thread ID'
+            ? 'All profiles will share the same process ID.'
+            : 'All profiles will share the same thread ID. (EXPERIMENTAL)'
         }`
       );
-    }
+    startTracingInBrowser &&
+      console.log(`  🔄 Start tracing in browser: ${startTracingInBrowser}`);
   }
 
   return {

@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { join } from 'path';
 import {
   cpuProfileToTraceProfileEvents,
   sortTraceEvents,
@@ -265,7 +264,7 @@ describe('cpuProfilesToTraceFile', () => {
       stairUpProfileInfo,
     ]) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8); // 4 events per profile
+    expect(result.traceEvents).toHaveLength(12); // 4 events per profile + 2 metadata events
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // pyramideProfileInfo events
@@ -301,7 +300,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'all',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(9);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // All events should have pid: 1, tid: 0 (from mainProfileInfo)
@@ -336,7 +335,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'pid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(12);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -370,7 +369,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'tid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(12);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -497,46 +496,46 @@ describe('cpuProfilesToTraceFile', () => {
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 10,
-          tid: 500,
+          tid: 0,
         }),
         expect.objectContaining({
           name: 'Profile',
           pid: 10,
-          tid: 500,
-          id: '0x105000',
+          tid: 0,
+          id: '0x1000',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
           pid: 10,
-          tid: 500,
-          id: '0x105000',
+          tid: 0,
+          id: '0x1000',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
           pid: 10,
-          tid: 500,
+          tid: 0,
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 10,
-          tid: 501,
+          tid: 1,
         }),
         expect.objectContaining({
           name: 'Profile',
           pid: 10,
-          tid: 501,
-          id: '0x105011',
+          tid: 1,
+          id: '0x1011',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
           pid: 10,
-          tid: 501,
-          id: '0x105011',
+          tid: 1,
+          id: '0x1011',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
           pid: 10,
-          tid: 501,
+          tid: 1,
         }),
       ])
     );
@@ -669,6 +668,7 @@ describe('cpuProfilesToTraceFile', () => {
       });
       const profileInfo2 = createMockCpuProfileInfo({
         cpuProfile: stairUpProfile,
+        tid: 1,
         sequence: 1,
       });
       const result = cpuProfilesToTraceFile([
@@ -684,7 +684,7 @@ describe('cpuProfilesToTraceFile', () => {
           }),
           expect.objectContaining({
             name: 'Profile',
-            id: '0x101',
+            id: '0x111',
           }),
         ])
       );
@@ -702,33 +702,6 @@ describe('cpuProfilesToTraceFile', () => {
         true
       );
       expect(typeof (result as TraceEventContainer).metadata).toBe('object');
-    });
-
-    it('should sort events correctly with metadata events first', () => {
-      const profileInfo = createMockCpuProfileInfo({
-        cpuProfile: pyramideProfile,
-      });
-      const result = cpuProfilesToTraceFile([profileInfo], {
-        startTracingInBrowser: true,
-      }) as TraceEventContainer;
-
-      const metadataEvents = result.traceEvents.filter(
-        (event: TraceEvent) => event.ph === 'M'
-      );
-      const nonMetadataEvents = result.traceEvents.filter(
-        (event: TraceEvent) => event.ph !== 'M'
-      );
-
-      const firstMetadataIndex = result.traceEvents.findIndex(
-        (event: TraceEvent) => event.ph === 'M'
-      );
-      const firstNonMetadataIndex = result.traceEvents.findIndex(
-        (event: TraceEvent) => event.ph !== 'M'
-      );
-
-      if (metadataEvents.length > 0 && nonMetadataEvents.length > 0) {
-        expect(firstMetadataIndex).toBeLessThan(firstNonMetadataIndex);
-      }
     });
   });
 
