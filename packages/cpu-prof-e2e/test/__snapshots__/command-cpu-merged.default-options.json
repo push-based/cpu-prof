@@ -7,86 +7,41 @@
   },
   "traceEvents": [
     {
-      "cat": "__metadata",
-      "name": "process_name",
-      "ph": "M",
-      "pid": 1,
-      "tid": 0,
-      "ts": 0,
-      "args": {
-        "name": "P:1, T:0"
-      }
-    },
-    {
-      "cat": "__metadata",
-      "name": "thread_name",
-      "ph": "M",
-      "pid": 1,
-      "tid": 0,
-      "ts": 0,
-      "args": {
-        "name": "P:1, T:0"
-      }
-    },
-    {
-      "cat": "__metadata",
-      "name": "process_name",
-      "ph": "M",
-      "pid": 1,
-      "tid": 0,
-      "ts": 0,
-      "args": {
-        "name": "P:1, T:0"
-      }
-    },
-    {
-      "cat": "__metadata",
-      "name": "thread_name",
-      "ph": "M",
-      "pid": 1,
-      "tid": 0,
-      "ts": 0,
-      "args": {
-        "name": "P:1, T:0"
-      }
-    },
-    {
       "cat": "v8",
       "name": "CpuProfiler::StartProfiling",
       "dur": 0,
-      "ph": "I",
-      "pid": 1,
+      "ph": "X",
+      "pid": 10002,
       "tid": 0,
-      "ts": 1,
+      "ts": 100000000040,
       "args": {
         "data": {
-          "startTime": 1
+          "startTime": 100000000040
         }
-      },
-      "s": "t"
+      }
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x100",
+      "id": "0x1000200",
       "name": "Profile",
       "ph": "P",
-      "pid": 1,
+      "pid": 10002,
       "tid": 0,
-      "ts": 1,
+      "ts": 100000000040,
       "args": {
         "data": {
-          "startTime": 1
+          "startTime": 100000000040
         }
       }
     },
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x100",
+      "id": "0x1000200",
       "ph": "P",
-      "pid": 1,
+      "pid": 10002,
       "tid": 0,
-      "ts": 1,
+      "ts": 100000000040,
       "args": {
         "data": {
           "cpuProfile": {
@@ -107,12 +62,13 @@
               {
                 "id": 2,
                 "callFrame": {
-                  "functionName": "step-1",
-                  "scriptId": "1-pyramide",
-                  "url": "file:///pyramide.js",
-                  "lineNumber": 10,
+                  "functionName": "flatLine_L1",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.js",
+                  "lineNumber": 4,
                   "columnNumber": 0
                 },
+                "parent": 1,
                 "children": [
                   3
                 ]
@@ -120,12 +76,13 @@
               {
                 "id": 3,
                 "callFrame": {
-                  "functionName": "step-2",
-                  "scriptId": "1-pyramide",
-                  "url": "file:///pyramide.js",
-                  "lineNumber": 20,
+                  "functionName": "flatLine_L2",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.core.js",
+                  "lineNumber": 5,
                   "columnNumber": 0
                 },
+                "parent": 2,
                 "children": [
                   4
                 ]
@@ -133,104 +90,20 @@
               {
                 "id": 4,
                 "callFrame": {
-                  "functionName": "step-3",
-                  "scriptId": "1-pyramide",
-                  "url": "file:///pyramide.js",
-                  "lineNumber": 30,
+                  "functionName": "flatLine_Task",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.utils.js",
+                  "lineNumber": 6,
                   "columnNumber": 0
                 },
-                "children": []
+                "parent": 3
               }
             ],
             "samples": [
               1,
-              2,
-              3,
               4,
-              3,
-              2,
-              1
-            ]
-          },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10
-          ]
-        }
-      }
-    },
-    {
-      "cat": "v8.cpu_profiler",
-      "name": "ProfileChunk",
-      "id": "0x101",
-      "ph": "P",
-      "pid": 1,
-      "tid": 0,
-      "ts": 1,
-      "args": {
-        "data": {
-          "cpuProfile": {
-            "nodes": [
-              {
-                "id": 1,
-                "callFrame": {
-                  "functionName": "(root)",
-                  "scriptId": "0",
-                  "url": "",
-                  "lineNumber": -1,
-                  "columnNumber": -1
-                },
-                "children": [
-                  2
-                ]
-              },
-              {
-                "id": 2,
-                "callFrame": {
-                  "functionName": "step-1",
-                  "scriptId": "1-stair-up",
-                  "url": "file:///stair-up.js",
-                  "lineNumber": 10,
-                  "columnNumber": 0
-                },
-                "children": [
-                  3
-                ]
-              },
-              {
-                "id": 3,
-                "callFrame": {
-                  "functionName": "step-2",
-                  "scriptId": "1-stair-up",
-                  "url": "file:///stair-up.js",
-                  "lineNumber": 20,
-                  "columnNumber": 0
-                },
-                "children": [
-                  4
-                ]
-              },
-              {
-                "id": 4,
-                "callFrame": {
-                  "functionName": "step-3",
-                  "scriptId": "1-stair-up",
-                  "url": "file:///stair-up.js",
-                  "lineNumber": 30,
-                  "columnNumber": 0
-                },
-                "children": []
-              }
-            ],
-            "samples": [
-              1,
-              2,
-              3,
+              4,
+              4,
               4,
               1
             ]
@@ -240,7 +113,8 @@
             10,
             10,
             10,
-            10
+            10,
+            0
           ]
         }
       }
@@ -249,16 +123,144 @@
       "cat": "v8",
       "name": "CpuProfiler::StopProfiling",
       "dur": 0,
-      "ph": "I",
-      "pid": 1,
+      "ph": "X",
+      "pid": 10002,
       "tid": 0,
-      "ts": 70,
+      "ts": 100000000090,
       "args": {
         "data": {
-          "endTime": 70
+          "endTime": 100000000090
         }
-      },
-      "s": "t"
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10003,
+      "tid": 0,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "startTime": 100000000110
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x1000301",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10003,
+      "tid": 0,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "startTime": 100000000110
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1000301",
+      "ph": "P",
+      "pid": 10003,
+      "tid": 0,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "step-1",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "step-2",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.core.js",
+                  "lineNumber": 20,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "step-3",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.utils.js",
+                  "lineNumber": 30,
+                  "columnNumber": 0
+                },
+                "children": []
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              3,
+              2,
+              1,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10003,
+      "tid": 0,
+      "ts": 100000000180,
+      "args": {
+        "data": {
+          "endTime": 100000000180
+        }
+      }
     }
   ]
 }

@@ -22,11 +22,11 @@ describe('cpu-merge-command', () => {
   it('should run without error and log results to terminal', async () => {
     const inputDir = join(tmpCpuMergeCommandDir, 'terminal-logs');
     await cp(
-      join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      {
-        recursive: true,
-      }
+      join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+        {
+          recursive: true,
+        }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -35,7 +35,7 @@ describe('cpu-merge-command', () => {
     });
 
     expect(stdout).toContain('✅ CPU profiles merged successfully!');
-    expect(stdout).toContain('📊 Generated 6 trace events');
+    expect(stdout).toContain('📊 Generated 4 trace events');
     expect(stdout).toContain('📄 Output file:');
     expect(stdout).toContain('merged-profile.json');
     expect(stderr).toBe('');
@@ -48,18 +48,21 @@ describe('cpu-merge-command', () => {
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      {
-        recursive: true,
-      }
+      join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+        {
+            recursive: true,
+        }
     );
     await cp(
-      join(mocksMinimalPath, 'stair-up.20250519.000000.1.0.001.cpuprofile'),
-      join(inputDir, 'stair-up.20250519.000000.1.0.001.cpuprofile'),
-      {
-        recursive: true,
-      }
+      join(
+        mocksMinimalPath,
+        'flat-line.20250519.050090.10002.0.001.cpuprofile',
+      ),
+      join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
+        {
+            recursive: true,
+        }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -67,7 +70,7 @@ describe('cpu-merge-command', () => {
       args: [cliPath, 'merge', inputDir],
     });
 
-    expect(stdout).toContain('📊 Generated 9 trace events');
+    expect(stdout).toContain('📊 Generated 8 trace events');
     expect(stderr).toBe('');
     expect(code).toBe(0);
 
@@ -89,11 +92,18 @@ describe('cpu-merge-command', () => {
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      {
-        recursive: true,
-      }
+      join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile')
+    );
+    await cp(
+      join(
+        mocksMinimalPath,
+        'flat-line.20250519.050090.10002.0.001.cpuprofile'
+      ),
+      join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
+        {
+            recursive: true,
+        }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -103,7 +113,7 @@ describe('cpu-merge-command', () => {
 
     expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 6 trace events');
+    expect(stdout).toContain('📊 Generated 8 trace events');
 
     expect(existsSync(join(outputDir, 'merged-profile.json'))).toBe(true);
   });
@@ -111,15 +121,21 @@ describe('cpu-merge-command', () => {
   it('should merge profiles in a folder with --startTracingInBrowser option', async () => {
     const caseName = 'start-tracing-in-browser-options';
     const inputDir = join(tmpCpuMergeCommandDir, caseName);
-    const outputDir = join(inputDir, 'output');
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      join(mocksMinimalPath, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      join(inputDir, 'pyramide.20250519.000000.1.0.001.cpuprofile'),
-      {
-        recursive: true,
-      }
+      join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile')
+    );
+    await cp(
+      join(
+        mocksMinimalPath,
+        'flat-line.20250519.050090.10002.0.001.cpuprofile'
+      ),
+      join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
+        {
+            recursive: true,
+        }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -129,7 +145,7 @@ describe('cpu-merge-command', () => {
 
     expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 8 trace events');
+    expect(stdout).toContain('📊 Generated 11 trace events');
     const outputFileContent = (
       await readFile(join(process.cwd(), 'profiles', 'merged-profile.json'))
     ).toString();

@@ -24,7 +24,6 @@ describe('getCpuProfilerStartProfilingEvent', () => {
       tid: 2,
       ts: 100,
       args: { data: { startTime: 100 } },
-      s: 't',
     });
   });
 });
@@ -72,7 +71,7 @@ describe('getCpuProfilerStopProfilingEvent', () => {
       cat: 'v8',
       name: 'CpuProfiler::StopProfiling',
       dur: 0,
-      ph: 'I',
+      ph: 'X',
       pid: 1,
       tid: 2,
       ts: 200,
@@ -81,7 +80,6 @@ describe('getCpuProfilerStopProfilingEvent', () => {
           endTime: 200,
         },
       },
-      s: 't',
     });
   });
 });
@@ -143,10 +141,10 @@ describe('getStartTracing', () => {
       s: 't',
       args: {
         data: {
-          frameTreeNodeId: 1,
+          frameTreeNodeId: 102,
           frames: [
             {
-              frame: 'frame-1',
+              frame: 'FRAME0P1T2',
               isInPrimaryMainFrame: true,
               isOutermostMainFrame: true,
               name: '',
@@ -167,14 +165,14 @@ describe('getStartTracing', () => {
         url: 'http://localhost',
         frameTreeNodeId: 123,
       }).args.data?.frameTreeNodeId
-    ).toBe(123);
+    ).toBe(102);
     expect(
       getStartTracing(1, 2, {
         traceStartTs: 1000,
         url: 'http://localhost',
         frameTreeNodeId: 123,
       }).args.data?.frames[0]?.frame
-    ).toBe('frame-123');
+    ).toBe('FRAME0P1T2');
   });
 });
 

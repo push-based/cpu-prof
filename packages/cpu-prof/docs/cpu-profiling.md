@@ -4,9 +4,9 @@
 
 ---
 
-- **[What is CPU profiling and why do we need it?](#what-is-cpu-prof-and-why-do-we-need-it)**
+- **[What is CPU profiling and why do we need it?](#what-is-cpu-profiling-and-why-do-we-need-it)**
 - **[Create a CPU Profile](#create-a-cpu-profile)**
-  - [You can start CPU profiling in different ways:](#you-can-start-cpu-prof-in-different-ways)
+  - [You can start CPU profiling in different ways:](#you-can-start-cpu-profiling-in-different-ways)
   - [Troubleshooting](#troubleshooting)
     - [My profile files are appearing on different places in the file system based on the cwd of every process.](#my-profile-files-are-appearing-on-different-places-in-the-file-system-based-on-the-cwd-of-every-process)
     - [Error: `--cpu-prof is not allowed in NODE_OPTIONS`](#error---cpu-prof-is-not-allowed-in-node_options)
@@ -14,7 +14,7 @@
   - [Process and Thread IDs](#process-and-thread-ids)
     - [What Determines the Process ID (PID)?](#what-determines-the-process-id-pid)
     - [What Determines the Thread ID (TID)?](#what-determines-the-thread-id-tid)
-  - [CPU Profiling Arguments](#cpu-prof-arguments)
+  - [CPU Profiling Arguments](#cpu-profiling-arguments)
     - [`--cpu-prof`](#--cpu-prof)
     - [`--cpu-prof-dir`](#--cpu-prof-dir)
     - [`--cpu-prof-name`](#--cpu-prof-name)
@@ -34,6 +34,11 @@
     - [CallFrame](#callframe)
       - [Source Location and label](#source-location-and-label)
       - [Synthetic and Internal Frames](#synthetic-and-internal-frames)
+- **[Real life examples](#real-life-examples)**
+  - [Quickly CPU profile your script](#quickly-cpu-profile-your-script)
+  - [CPU profile multiple threads grouped in a folder](#cpu-profile-multiple-threads-grouped-in-a-folder)
+  - [CPU profile multiple processes grouped in a folder](#cpu-profile-multiple-processes-grouped-in-a-folder)
+  - [Understanding multiple CPU profiles created by a single measurement](#understanding-multiple-cpu-profiles-created-by-a-single-measurement)
 
 ## What is CPU profiling and why do we need it?
 
@@ -45,7 +50,7 @@ helps identify which parts of the code consume the most CPU resources, allowing 
 To create a CPU profile, you can use the `--cpu-prof` flag when running your Node.js application. This will generate a
 `.cpuprofile` file containing the profiling data.
 
-> **Official docs:**: [Node.js CPU Profiling](https://nodejs.org/api/inspector.html#inspector_cpu_profiling)
+> **Official docs:** [Node.js CPU Profiling](https://nodejs.org/api/inspector.html#inspector_cpu_profiling)
 
 ### You can start CPU profiling in different ways:
 
@@ -1057,14 +1062,12 @@ node --cpu-prof --cpu-prof-dir=./angular-build node_modules/.bin/ng build
 
 **Output:**
 
-````text
 ```text
-root/
- └─ ng-build/
-    ├─ CPU.<timestamp>.<pid>.0.001.cpuprofile
-    ├─ ...
-    └─ CPU.<timestamp>.<pid>.32.032.cpuprofile
-````
+/root
+   ├─ CPU.<timestamp>.<pid>.0.001.cpuprofile
+   ├─ ...
+   └─ CPU.<timestamp>.<pid>.32.032.cpuprofile
+```
 
 **32 `.cpuprofile` files** are generated, one for each worker thread. HAHA! Good luck analyzing that!
 

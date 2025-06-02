@@ -4,7 +4,6 @@ import {
   sortTraceEvents,
   cpuProfilesToTraceFile,
   smoshCpuProfiles,
-  cleanProfiningEvents,
 } from './utils';
 import { CPUProfile, CpuProfileInfo } from '../cpu/cpuprofile.types';
 import { TraceEvent, TraceEventContainer } from './traceprofile.types';
@@ -264,7 +263,7 @@ describe('cpuProfilesToTraceFile', () => {
       stairUpProfileInfo,
     ]) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(12); // 4 events per profile + 2 metadata events
+    expect(result.traceEvents).toHaveLength(8);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // pyramideProfileInfo events
@@ -300,7 +299,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'all',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(9);
+    expect(result.traceEvents).toHaveLength(8);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // All events should have pid: 1, tid: 0 (from mainProfileInfo)
@@ -335,7 +334,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'pid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(12);
+    expect(result.traceEvents).toHaveLength(8);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -369,7 +368,7 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'tid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(12);
+    expect(result.traceEvents).toHaveLength(8);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -572,8 +571,11 @@ describe('cpuProfilesToTraceFile', () => {
       expect(result.traceEvents).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            name: 'process_name',
-            args: { name: 'crRendererMain' },
+            name: 'thread_name',
+            args: { name: 'CrRendererMain' },
+          }),
+          expect.objectContaining({
+            name: 'CommitLoad',
           }),
           expect.objectContaining({
             name: 'TracingStartedInBrowser',
@@ -862,52 +864,5 @@ describe('cpuProfilesToTraceFile', () => {
         }),
       ]);
     });
-  });
-});
-
-describe('cleanProfiningEvents', () => {
-  it('should keep only the earliest and latest start and end profiling events if all are in the same tid and pid', () => {
-    const traceEvents: TraceEvent[] = [
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 2, name: 'CpuProfiler::StopProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 3, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ];
-
-    expect(cleanProfiningEvents(traceEvents)).toStrictEqual([
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ]);
-  });
-  it('should keep only the earliest and latest start and end profiling events if they are in the different tid and pid', () => {
-    const traceEvents: TraceEvent[] = [
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 2, name: 'CpuProfiler::StopProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 3, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ];
-
-    expect(cleanProfiningEvents(traceEvents)).toStrictEqual([
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 2, name: 'CpuProfiler::StopProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 3, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ]);
-  });
-
-  it('should keep only the earliest and latest start and end profiling events if they are in the different tid and pid', () => {
-    const traceEvents: TraceEvent[] = [
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 2, name: 'CpuProfiler::StopProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 3, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ];
-
-    expect(cleanProfiningEvents(traceEvents)).toStrictEqual([
-      { pid: 1, tid: 1, ph: 'P', ts: 1, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 1, ph: 'P', ts: 2, name: 'CpuProfiler::StopProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 3, name: 'CpuProfiler::StartProfiling' },
-      { pid: 1, tid: 2, ph: 'P', ts: 4, name: 'CpuProfiler::StopProfiling' },
-    ]);
   });
 });
