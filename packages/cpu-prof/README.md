@@ -4,23 +4,24 @@
 
 ## Node.js CPU Profiling and Profile Composition
 
-The `@push-based/cpu-prof` package provides tools and utilities for collecting, and merging Node.js CPU profiles and and visualize them as Chrome trace files.
+The `@push-based/cpu-prof` package provides tools and utilities for collecting, and merging Node.js CPU profiles and and
+visualize them as Chrome trace files.
 Measure, drag & drop into Chrome, voilà.
 
 ## Features
 
 - **CPU Profiling Support**:
-  - Smart defaults to reduce friction
-  - Intuitive error messages as well as actionable feedback on how to fix the issue
-  - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
-  - All profiles can be dragged and dropped into Chrome DevTools
+    - Smart defaults to reduce friction
+    - Intuitive error messages as well as actionable feedback on how to fix the issue
+    - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+    - All profiles can be dragged and dropped into Chrome DevTools
 - **CPU Profile Analysis**:
-  - Merge multiple CPU profile files into a single trace for easier analysis.
-  - Visualize CPU profiles as Chrome trace files.
-  - Merge multiple CPU profile files into a single trace for easier analysis.
+    - Merge multiple CPU profile files into a single trace for easier analysis.
+    - Visualize CPU profiles as Chrome trace files.
+    - Merge multiple CPU profile files into a single trace for easier analysis.
 - **TypeScript API**:
-  - Programmatic access to all core features.
-  - Use it in your own tools and workflows.
+    - Programmatic access to all core features.
+    - Use it in your own tools and workflows.
 
 ---
 
@@ -45,7 +46,9 @@ npx @push-based/cpu-prof measure <positionals...> [args...]
 ```
 
 **Description:**
-Collects CPU profiles from a Node.js process. It will handle the profiling arguments so you don't need to think about the order. Intuitive error messages as well as actionable feedback on how to fix the issue. All profiles end up in the same folder independent of the CWD.
+Collects CPU profiles from a Node.js process. It will handle the profiling arguments so you don't need to think about
+the order. Intuitive error messages as well as actionable feedback on how to fix the issue. All profiles end up in the
+same folder independent of the CWD.
 In addition it prints the enriched command to the terminal for to have the plain command visible.
 
 **Options:**
@@ -69,11 +72,13 @@ In addition it prints the enriched command to the terminal for to have the plain
 #### Added DX for profiling
 
 The CLI does nothing special to the existing Node tooling but makes it easier to use.
-By default it will apply ensure cpu profiling arguments are applied to all childprocesses and threads and the fildes end up in the same directory.
+By default it will apply ensure cpu profiling arguments are applied to all childprocesses and threads and the fildes end
+up in the same directory.
 
 For smart defaults visit the [Troublshooting section](./docs/cpu-profiling.md).
 
-If you use a Node version lower than 22 it will not thow a unintuitive error but explains the situatuion and suggests you to update to Node >=22.
+If you use a Node version lower than 22 it will not thow a unintuitive error but explains the situatuion and suggests
+you to update to Node >=22.
 
 Then you can run a short command to profile the script:
 
@@ -121,26 +126,50 @@ npx @push-based/cpu-prof merge <inputDir> [args...]
 ```
 
 **Description:**
-Merges multiple CPU profile files from a specified directory into a single trace file. This is useful for analyzing combined CPU usage across different processes or time periods. The merged profile can be visualized in Chrome DevTools.
+Merges multiple CPU profile files from a specified directory into a single trace file. This is useful for analyzing
+combined CPU usage across different processes or time periods. The merged profile can be visualized in Chrome DevTools.
 
 **Arguments:**
-| Argument | Type | Description |
-|------------------|-----------|----------------------------------------------|
-| **`<inputDir>`** | `string` | Directory containing CPU profile files to merge |
+
+| Argument         | Type     | Default | Description                                     |
+|------------------|----------|---------|-------------------------------------------------|
+| **`<inputDir>`** | `string` |         | Directory containing CPU profile files to merge |
 
 **Options:**
-| Option | Type | Default | Description |
-|------------------------------------|-----------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| **`--outputDir <dir>`** (`-o`) | `string` | (inputDir) | Output directory for merged profiles. Defaults to inputDir if not specified. |
-| **`--startTracingInBrowser`** (`-b`)| `boolean` | `true` | Include `TracingStartedInBrowser` event for better DevTools visualization. |
-| **`--smosh <type>`** (`-s`) | `string` | (not specified)| Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
-| **`--verbose`** (`-v`) | `boolean` | `false` | Enable verbose logging. |
+
+| Option                               | Type                             | Default      | Description                                                                                                                                                                                                      |
+|--------------------------------------|----------------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`--outputDir <dir>`** (`-o`)       | `string`                         | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified.                                                                                                                                     |
+| **`--startTracingInBrowser`** (`-b`) | `boolean`                        | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.                                                                                                                                       |
+| **`--smosh <type>`** (`-s`)          | `off` \| `pid` \| `tid` \| `all` | `off`        | Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
+| **`--verbose`** (`-v`)               | `boolean`                        | `false`      | Enable verbose logging.                                                                                                                                                                                          |
 
 **Examples:**
 
 - `cpu-prof merge ./path/to/profiles` - Merge all profiles from a directory
 - `cpu-prof merge ./profiles -o ./merged-profiles` - Merge profiles and save to a different output directory
 - `cpu-prof merge ./profiles --smosh all` - Merge profiles with PID and TID normalization
+
+#### Added DX for profiling
+
+By default, input directory is the same as the `` for the `measure` command, so you can run:
+
+```bash
+cpu-prof measure npm -v
+cpu-prof merge
+```
+
+By default, the CPU profiles will get merged as they are, no changes to the PIDs or TIDs.
+To have a better DX when navigation the DevTools performance panels lanes you can use `--smosh` to merge the profiles
+into the same `pid` / `tid`.
+
+| Option        | Original                                    | Merged                                      |
+|---------------|---------------------------------------------|---------------------------------------------|
+| `--smosh off` | <img src="./docs/imgs/cli-merge--smosh-off.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
+| `--smosh pid` | <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-pid.png"> |
+| `--smosh tid` | EXPERIMENTAL                                | EXPERIMENTAL                                |
+| `--smosh all` | EXPERIMENTAL                                | EXPERIMENTAL                                |
+
 
 ## Additional Resources
 

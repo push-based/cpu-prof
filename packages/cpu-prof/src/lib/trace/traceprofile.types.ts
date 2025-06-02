@@ -279,14 +279,20 @@ export interface TracingStartedInBrowserEvent extends TraceEventBase {
   };
 }
 
-export interface CpuProfilerStartProfilingEvent extends InstantEvent {
+export interface CpuProfilerStartProfilingEvent extends TraceEventBase {
   cat: Category<'v8'>;
+  ph: "X",
+  pid: number;
+  tid: number;
   name: 'CpuProfiler::StartProfiling';
   ts: number;
 }
 
-export interface CpuProfilerStopProfilingEvent extends InstantEvent {
+export interface CpuProfilerStopProfilingEvent extends TraceEventBase {
   cat: Category<'v8'>;
+  ph: "X",
+  pid: number;
+  tid: number;
   name: 'CpuProfiler::StopProfiling';
   ts: number;
 }

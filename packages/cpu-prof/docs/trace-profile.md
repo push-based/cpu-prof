@@ -1178,6 +1178,8 @@ export interface ThreadNameEvent extends MetadataEventBase {
 <!-- TODO: Add image showing focused CPU profile with CrRendererMain thread highlighting -->
 <!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-prof.png) -->
 
+If placed, the tread name changes to "Main -- <URL:FROM_START_TRACING_IN_BROWSER_EVENT>". Also, Lane is focus by default in the DevTools Performance tab.
+
 **Profile content:**
 
 ```json
@@ -1200,3 +1202,82 @@ export interface ThreadNameEvent extends MetadataEventBase {
 <!-- ![DevTools Performance tab showing a focused CPU profile with the main thread highlighted as 'CrRendererMain'.](imgs/minimal-event-trace-focused-cpu-prof.png) -->
 
 ---
+
+
+# TODO SNIPPETS 
+
+
+Might be responsible for coloring the main thread in the DevTools Performance tab.
+
+> **NOTE:** Order of events is the same as in real tract. (Not sure if it matters so far)
+```json
+[
+  {"args":{"name":"CrBrowserMain"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3415,"tid":17911,"ts":0},
+  {
+    "args": {
+      "data": {
+        "frameTreeNodeId": 6804,
+        "frames": [
+          {
+            "frame": "F2145804653F1B7DEB75E1AA45F3EB51",
+            "isInPrimaryMainFrame": true,
+            "isOutermostMainFrame": true,
+            "name": "",
+            "processId": 60433,
+            "url": "about:blank"
+          }
+        ],
+        "persistentIds": true
+      }
+    },
+    "cat": "disabled-by-default-devtools.timeline",
+    "name": "TracingStartedInBrowser",
+    "ph": "I",
+    "pid": 3415,
+    "s": "t",
+    "tid": 17911,
+    "ts": 522975545427,
+    "tts": 11966070239
+  },
+  {
+    "args": {
+      "data": {
+        "frame": "F2145804653F1B7DEB75E1AA45F3EB51",
+        "isMainFrame": true,
+        "isOutermostMainFrame": true,
+        "name": "",
+        "page": "F2145804653F1B7DEB75E1AA45F3EB51",
+        "url": "https://ng-de.org/"
+      }
+    },
+    "cat": "devtools.timeline",
+    "dur": 10,
+    "name": "CommitLoad",
+    "ph": "X",
+    "pid": 60433,
+    "tdur": 10,
+    "tid": 1004024184,
+    "ts": 522975567416,
+    "tts": 46904
+  }
+]
+```
+
+---
+
+This is related to group threads into the "Thread pool" lane.
+
+```json
+[
+  {"args":{"name":"ThreadPoolServiceThread"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024246,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024247,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024249,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024432,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024285,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024553,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024562,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024563,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3415,"tid":17961,"ts":0},
+  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3421,"tid":18039,"ts":0}
+]
+```

@@ -114,11 +114,10 @@ export function cpuProfilesToTraceFile(
   ];
 
   const sortedEvents = sortTraceEvents(allEvents);
-  const cleanedEvents = cleanProfiningEvents(sortedEvents);
 
   return {
     metadata: getTraceMetadata(mainProfileInfo),
-    traceEvents: cleanedEvents, // smoshing is now done on profiles
+    traceEvents: sortedEvents, // smoshing is now done on profiles
   } as TraceEventContainer;
 }
 

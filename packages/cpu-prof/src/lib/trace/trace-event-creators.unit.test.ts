@@ -19,7 +19,7 @@ describe('getCpuProfilerStartProfilingEvent', () => {
       cat: 'v8',
       name: 'CpuProfiler::StartProfiling',
       dur: 0,
-      ph: 'I',
+      ph: 'X',
       pid: 1,
       tid: 2,
       ts: 100,

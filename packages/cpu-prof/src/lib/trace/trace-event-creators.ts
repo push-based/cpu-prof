@@ -21,7 +21,7 @@ export function getCpuProfilerStartProfilingEvent(
     cat: 'v8',
     name: 'CpuProfiler::StartProfiling',
     dur: 0,
-    ph: 'I',
+    ph: 'X',
     pid,
     tid,
     ts: startTime,
@@ -30,7 +30,6 @@ export function getCpuProfilerStartProfilingEvent(
         startTime,
       },
     },
-    s: 't',
   };
 }
 
@@ -93,7 +92,7 @@ export function getCpuProfilerStopProfilingEvent(
     cat: 'v8',
     name: 'CpuProfiler::StopProfiling',
     dur: 0,
-    ph: 'I',
+    ph: 'X',
     pid,
     tid,
     ts: endTime,
@@ -101,8 +100,7 @@ export function getCpuProfilerStopProfilingEvent(
       data: {
         endTime,
       },
-    },
-    s: 't',
+    }
   };
 }
 
