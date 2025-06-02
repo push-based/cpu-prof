@@ -10,6 +10,7 @@ import {
   TraceEvent,
   TracingStartedInBrowserEvent,
   TraceMetadata,
+  CompleteEvent,
 } from './traceprofile.types';
 
 export function getCpuProfilerStartProfilingEvent(
@@ -100,7 +101,7 @@ export function getCpuProfilerStopProfilingEvent(
       data: {
         endTime,
       },
-    }
+    },
   };
 }
 
@@ -161,16 +162,24 @@ export function getRunTaskTraceEvent(
   };
 }
 
+export function getFrameTreeNodeId(pid: number, tid: number): number {
+  return parseInt(`${pid}0${tid}`);
+}
+
+export function getFrameName(pid: number, tid: number): string {
+  return `FRAME0P${pid}T${tid}`;
+}
+
 export function getStartTracing(
   pid: number,
   tid: number,
   opt: {
     traceStartTs: number;
-    frameTreeNodeId?: number;
     url: string;
   }
 ): TracingStartedInBrowserEvent {
-  const { traceStartTs, frameTreeNodeId = 1, url } = opt;
+  const { traceStartTs, url } = opt;
+  const frameTreeNodeId = getFrameTreeNodeId(pid, tid);
   return {
     cat: 'devtools.timeline',
     name: 'TracingStartedInBrowser',
@@ -184,7 +193,7 @@ export function getStartTracing(
         frameTreeNodeId,
         frames: [
           {
-            frame: `frame-${frameTreeNodeId}`,
+            frame: getFrameName(pid, tid),
             isInPrimaryMainFrame: true,
             isOutermostMainFrame: true,
             name: '',
@@ -195,6 +204,35 @@ export function getStartTracing(
         persistentIds: true,
       },
     },
+  };
+}
+
+export function getCommitLoadTraceEvent(opt: {
+  pid: number;
+  tid: number;
+  ts: number;
+  url: string;
+}): CompleteEvent {
+  const { pid, tid, ts, url } = opt;
+  const frame = getFrameName(pid, tid);
+  return {
+    args: {
+      data: {
+        frame,
+        isMainFrame: true,
+        isOutermostMainFrame: true,
+        name: '',
+        page: frame,
+        url,
+      },
+    },
+    cat: 'devtools.timeline',
+    dur: 10,
+    name: 'CommitLoad',
+    ph: 'X',
+    pid,
+    tid,
+    ts,
   };
 }
 

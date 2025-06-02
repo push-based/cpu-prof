@@ -61,6 +61,19 @@ node --cpu-prof -e "console.log('CPU')"
 NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 ```
 
+> [!Note]  
+> The **order** of CPU profiling arguments is critical!
+> Bad:
+> ```shell
+> # This will not create a CPU profile file.
+> node script.js --cpu-prof`
+> ```
+> Good:
+> ```shell
+> # This will create a CPU profile file under CWD.
+> node --cpu-prof script.js`
+> ```
+
 ### Troubleshooting
 
 #### My profile files are appearing on different places in the file system based on the cwd of every process.
@@ -964,6 +977,173 @@ What they represent:
 <img src="imgs/minimal-cpu-profile-synthetic-frames.png" alt="synthetic-frames.png" width="800">
 
 ## Real life examples
+
+
+### Quickly CPU profile your script
+
+The following example demonstrates how to quickly CPU profile a Node.js script using the `--cpu-prof` flag. This is useful for get a quick understanding of the situation.
+
+_[exmpl-script.js](./examples/exmpl-script.js)_
+
+```js
+console.log('exmpl-script.js PID', process.pid);
+let sum = 0;
+for (let i = 0; i < 10000000; i++) {
+  sum += Math.sqrt(i);
+}
+process.exit(0);
+```
+
+**Command:**
+
+```shell
+node --cpu-prof exmpl-script.js
+```
+
+This command will CPU profile the `exmpl-script.js` script and generate a profile file in the current working directory. The filename will follow the pattern `CPU.<timestamp>.<pid>.<tid>.<seq>.cpuprofile`:
+
+**Output:**
+
+```text
+/root
+   └─ CPU.<timestamp>.<pid>.0.001.cpuprofile
+```
+
+### CPU profile multiple threads grouped in a folder
+
+As a program can create multiple worker threads, you can use the `--cpu-prof` flag to profile each of them. 
+The example below shows how to group multiple processes into a folder to separate different measurements.
+
+_[exmpl-create-threads.js](./examples/exmpl-create-threads.js)_
+
+```js
+import { Worker, threadId } from 'worker_threads';
+
+const workerCodeESM = `import { threadId as t } from 'worker_threads'; console.log('Worker PID:', process.pid, 'TID:', t);`;
+const workerDataURLString = 'data:text/javascript,' + encodeURIComponent(workerCodeESM);
+
+new Worker(new URL(workerDataURLString));
+new Worker(new URL(workerDataURLString));
+console.log('Main PID:', process.pid, 'TID:', threadId);
+```
+
+**Command:**
+
+```shell
+node --cpu-prof --cpu-prof-dir=./cpu-prof-threads ./exmpl-create-threads.js
+```
+
+**Output:**
+
+```text
+root/
+ └─ cpu-prof-threads/
+    ├─ CPU.<timestamp>.<pid>.0.001.cpuprofile
+    ├─ CPU.<timestamp>.<pid>.1.002.cpuprofile
+    └─ CPU.<timestamp>.<pid>.2.003.cpuprofile
+```
+
+To pick a more real life example, we could profile the build process of the Angular framework. 
+It's build process heavily uses worker threads, to distribute the work of the different build steps.
+
+**Command:**
+
+```shell  
+node --cpu-prof --cpu-prof-dir=./angular-build node_modules/.bin/ng build
+```
+
+**Output:**
+
+```text
+```text
+root/
+ └─ ng-build/
+    ├─ CPU.<timestamp>.<pid>.0.001.cpuprofile
+    ├─ ...
+    └─ CPU.<timestamp>.<pid>.32.032.cpuprofile
+```
+
+**32 `.cpuprofile` files** are generated, one for each worker thread. HAHA! Good luck analyzing that!
+
+From the examples before, we could work with relative paths as the CWD stayed the same.
+Often this is not the case, and your files end up in different folders depending on the current working directory.
+
+### CPU profile multiple processes grouped in a folder
+
+You also can profile multiple processes and group them in a folder.
+
+_[exmpl-spawn-processes.js](./examples/exmpl-spawn-processes.js)_
+
+```js
+import { spawn } from 'node:child_process';
+import { threadId as t } from 'node:worker_threads';
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { mkdirSync } from 'node:fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+// normally this folders exist as the location of the executed script is in that folder.
+mkdirSync(join(process.cwd(), 'child-process-1'), { recursive: true });
+mkdirSync(join(process.cwd(), 'child-process-2'), { recursive: true });
+
+const childScriptPath = join(__dirname, 'exmpl-script.js');
+
+spawn(process.execPath, [childScriptPath], { stdio: 'inherit', cwd: join(process.cwd(), 'child-process-1') });
+spawn(process.execPath, [childScriptPath], { stdio: 'inherit' , cwd: join(process.cwd(), 'child-process-2') });
+
+console.log('Parent PID:' , process.pid, 'TID:', t);
+```
+
+The only thing to consider is the location of the output directory set by `--cpu-prof-dir` to an absolute path.
+
+**Command:**
+
+```shell
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/user/workspace/cpu-prof-processes" node ./exmpl-spawn-processes.js
+
+# This will not work as the --cpu-prof params are not passed
+# NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./cpu-prof-processes" node ./exmpl-spawn-processes.js
+
+# This will not work as the directory is relative to the CWD, which is not the same as the script location.
+# NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./cpu-prof-processes" node ./exmpl-spawn-processes.js
+```
+
+**Output:**
+
+```text 
+/root
+   ├─ CPU.<timestamp>.1.0.001.cpuprofile
+   ├─ CPU.<timestamp>.2.0.002.cpuprofile
+   └─ CPU.<timestamp>.3.0.002.cpuprofile
+```
+
+A good real life example is Nx for smart repositories.
+Let's build all projects in a monorepo using Nx, which will spawn multiple processes for each project (and potential threads depending on each build tool).
+
+**Command:**
+
+```shell
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/user/workspace/cpu-prof-nx-build-many" nx run-many -t build --skip-nx-cache
+```
+
+**Output:**
+
+```text
+/root
+   ├─ CPU.<timestamp>.1.0.001.cpuprofile
+   ├─ CPU.<timestamp>.2.0.002.cpuprofile
+   ...
+   ├─ CPU.<timestamp>.7.0.007.cpuprofile
+   ├─ CPU.<timestamp>.7.1.008.cpuprofile
+   ...
+   └─ CPU.<timestamp>.9.0.009.cpuprofile
+```
+
+In practice, you would not profile that many processes at once. 
+The Nx TUI, for example, gives a comprehensive overview of the build times, and most other solutions have similar rough stats.
+From there, you would focus on only the part that is slow in detail.
+
 
 UNDER CONSTRUCTION
 

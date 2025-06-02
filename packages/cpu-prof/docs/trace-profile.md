@@ -1210,8 +1210,20 @@ If placed, the tread name changes to "Main -- <URL:FROM_START_TRACING_IN_BROWSER
 Might be responsible for coloring the main thread in the DevTools Performance tab.
 
 > **NOTE:** Order of events is the same as in real tract. (Not sure if it matters so far)
-```json
+```jsonc
 [
+  // Controles the process name aas url and 
+  {
+      "args": {
+        "name": "CrRendererMain"
+      },
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 0
+    },
   {"args":{"name":"CrBrowserMain"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3415,"tid":17911,"ts":0},
   {
     "args": {

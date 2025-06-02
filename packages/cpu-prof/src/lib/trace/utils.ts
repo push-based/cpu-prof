@@ -15,8 +15,8 @@ import {
   getCpuProfilerStopProfilingEvent,
   getTraceMetadata,
   getStartTracing,
-  getProcessNameTraceEvent,
   getThreadNameTraceEvent,
+  getCommitLoadTraceEvent,
 } from './trace-event-creators';
 import { getMainProfileInfo } from '../cpu/profile-selection';
 
@@ -76,18 +76,26 @@ export function cpuProfilesToTraceFile(
   // Use custom matcher if provided, otherwise use the default selection logic
   const mainProfileInfo = getMainProfileInfo(cpuProfileInfos);
 
-  const { pid: mainPid, tid: mainTid, sequence = 0 } = mainProfileInfo;
+  const { pid: mainPid, tid: mainTid } = mainProfileInfo;
 
   let allEvents: TraceEvent[] = [];
 
   if (startTracingInBrowser) {
+    const url = 'about:blank';
+    const startTime = mainProfileInfo.cpuProfile.startTime;
     allEvents = [
-      ...allEvents,
-      getProcessNameTraceEvent(mainPid, mainTid, 'crRendererMain'),
-      getStartTracing(mainPid, mainTid, {
-        traceStartTs: 1,
-        url: 'file:///merged-cpu-profile',
+      getThreadNameTraceEvent(mainPid, mainTid, 'CrRendererMain'),
+      getCommitLoadTraceEvent({
+        pid: mainPid,
+        tid: mainTid,
+        ts: startTime - 10,
+        url,
       }),
+      getStartTracing(mainPid, mainTid, {
+        traceStartTs: startTime - 10,
+        url,
+      }),
+      ...allEvents,
     ];
   }
 
@@ -102,8 +110,8 @@ export function cpuProfilesToTraceFile(
     ...preparedProfiles.flatMap((profileInfo, index) => {
       const { cpuProfile, tid, pid, sequence } = profileInfo;
       return [
-        getProcessNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
-        getThreadNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
+        //  getProcessNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
+        //   getThreadNameTraceEvent(pid, tid, `P:${pid}, T:${tid}`),
         ...cpuProfileToTraceProfileEvents(cpuProfile, {
           pid,
           tid,
@@ -157,80 +165,4 @@ export function smoshCpuProfiles(
       tid: mainTid,
     };
   });
-}
-
-/**
- * It can happen that moltiple 'CpuProfiler::StartProfiling' and 'CpuProfiler::StopProfiling' events are present in the same profile.
- * This function will keep only the earliest and latest start and end profiling events per tid.
- *
- * @param traceEvents
- * @returns
- */
-export function cleanProfiningEvents(traceEvents: TraceEvent[]): TraceEvent[] {
-  const eventsByPidTid: Record<string, TraceEvent[]> = {};
-
-  // Group events by pid and tid
-  for (const event of traceEvents) {
-    // pid and tid can be undefined for some meta events, those should be kept as is
-    if (event.pid === undefined || event.tid === undefined) {
-      const key = 'meta';
-      if (!eventsByPidTid[key]) {
-        eventsByPidTid[key] = [];
-      }
-      eventsByPidTid[key].push(event);
-      continue;
-    }
-    const key = `${event.pid}-${event.tid}`;
-    if (!eventsByPidTid[key]) {
-      eventsByPidTid[key] = [];
-    }
-    eventsByPidTid[key].push(event);
-  }
-
-  const cleanedEvents: TraceEvent[] = [];
-
-  for (const key in eventsByPidTid) {
-    const groupEvents = eventsByPidTid[key];
-    if (key === 'meta') {
-      cleanedEvents.push(...groupEvents);
-      continue;
-    }
-
-    const startProfilingEvents = groupEvents.filter(
-      (e) => e.name === 'CpuProfiler::StartProfiling'
-    );
-    const stopProfilingEvents = groupEvents.filter(
-      (e) => e.name === 'CpuProfiler::StopProfiling'
-    );
-    const profileEvents = groupEvents.filter((e) => e.name === 'Profile');
-    const otherEvents = groupEvents.filter(
-      (e) =>
-        e.name !== 'CpuProfiler::StartProfiling' &&
-        e.name !== 'CpuProfiler::StopProfiling' &&
-        e.name !== 'Profile'
-    );
-
-    if (startProfilingEvents.length > 0) {
-      const earliestStart = startProfilingEvents.reduce((prev, curr) =>
-        prev.ts < curr.ts ? prev : curr
-      );
-      cleanedEvents.push(earliestStart);
-    }
-
-    // Keep only the first Profile event if multiple exist
-    if (profileEvents.length > 0) {
-      cleanedEvents.push(profileEvents[0]);
-    }
-
-    cleanedEvents.push(...otherEvents);
-
-    if (stopProfilingEvents.length > 0) {
-      const latestStop = stopProfilingEvents.reduce((prev, curr) =>
-        prev.ts > curr.ts ? prev : curr
-      );
-      cleanedEvents.push(latestStop);
-    }
-  }
-  // Sort events again as the order might have changed
-  return sortTraceEvents(cleanedEvents);
 }
