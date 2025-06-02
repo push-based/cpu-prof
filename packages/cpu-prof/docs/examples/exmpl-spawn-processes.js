@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { threadId as t } from 'node:worker_threads';
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { mkdirSync } from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,13 @@ mkdirSync(join(process.cwd(), 'child-process-2'), { recursive: true });
 
 const childScriptPath = join(__dirname, 'exmpl-script.js');
 
-spawn(process.execPath, [childScriptPath], { stdio: 'inherit', cwd: join(process.cwd(), 'child-process-1') });
-spawn(process.execPath, [childScriptPath], { stdio: 'inherit' , cwd: join(process.cwd(), 'child-process-2') });
+spawn(process.execPath, [childScriptPath], {
+  stdio: 'inherit',
+  cwd: join(process.cwd(), 'child-process-1'),
+});
+spawn(process.execPath, [childScriptPath], {
+  stdio: 'inherit',
+  cwd: join(process.cwd(), 'child-process-2'),
+});
 
-console.log('Parent PID:' , process.pid, 'TID:', t);
+console.log('Parent PID:', process.pid, 'TID:', t);

@@ -11,17 +11,17 @@ Measure, drag & drop into Chrome, voilà.
 ## Features
 
 - **CPU Profiling Support**:
-    - Smart defaults to reduce friction
-    - Intuitive error messages as well as actionable feedback on how to fix the issue
-    - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
-    - All profiles can be dragged and dropped into Chrome DevTools
+  - Smart defaults to reduce friction
+  - Intuitive error messages as well as actionable feedback on how to fix the issue
+  - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+  - All profiles can be dragged and dropped into Chrome DevTools
 - **CPU Profile Analysis**:
-    - Merge multiple CPU profile files into a single trace for easier analysis.
-    - Visualize CPU profiles as Chrome trace files.
-    - Merge multiple CPU profile files into a single trace for easier analysis.
+  - Merge multiple CPU profile files into a single trace for easier analysis.
+  - Visualize CPU profiles as Chrome trace files.
+  - Merge multiple CPU profile files into a single trace for easier analysis.
 - **TypeScript API**:
-    - Programmatic access to all core features.
-    - Use it in your own tools and workflows.
+  - Programmatic access to all core features.
+  - Use it in your own tools and workflows.
 
 ---
 
@@ -132,13 +132,13 @@ combined CPU usage across different processes or time periods. The merged profil
 **Arguments:**
 
 | Argument         | Type     | Default | Description                                     |
-|------------------|----------|---------|-------------------------------------------------|
+| ---------------- | -------- | ------- | ----------------------------------------------- |
 | **`<inputDir>`** | `string` |         | Directory containing CPU profile files to merge |
 
 **Options:**
 
 | Option                               | Type                             | Default      | Description                                                                                                                                                                                                      |
-|--------------------------------------|----------------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------ | -------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`--outputDir <dir>`** (`-o`)       | `string`                         | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified.                                                                                                                                     |
 | **`--startTracingInBrowser`** (`-b`) | `boolean`                        | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.                                                                                                                                       |
 | **`--smosh <type>`** (`-s`)          | `off` \| `pid` \| `tid` \| `all` | `off`        | Merge profiles with specific ID normalization. Use `--smosh all` to normalize both PID and TID, `--smosh pid` to normalize only PID, or `--smosh tid` to normalize only TID. Omit flag to disable normalization. |
@@ -152,7 +152,7 @@ combined CPU usage across different processes or time periods. The merged profil
 
 #### Added DX for profiling
 
-By default, input directory is the same as the `` for the `measure` command, so you can run:
+By default, input directory is the same as the ``for the`measure` command, so you can run:
 
 ```bash
 cpu-prof measure npm -v
@@ -163,13 +163,12 @@ By default, the CPU profiles will get merged as they are, no changes to the PIDs
 To have a better DX when navigation the DevTools performance panels lanes you can use `--smosh` to merge the profiles
 into the same `pid` / `tid`.
 
-| Option        | Original                                    | Merged                                      |
-|---------------|---------------------------------------------|---------------------------------------------|
+| Option        | Original                                         | Merged                                           |
+| ------------- | ------------------------------------------------ | ------------------------------------------------ |
 | `--smosh off` | <img src="./docs/imgs/cli-merge--smosh-off.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
 | `--smosh pid` | <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-pid.png"> |
-| `--smosh tid` | EXPERIMENTAL                                | EXPERIMENTAL                                |
-| `--smosh all` | EXPERIMENTAL                                | EXPERIMENTAL                                |
-
+| `--smosh tid` | EXPERIMENTAL                                     | EXPERIMENTAL                                     |
+| `--smosh all` | EXPERIMENTAL                                     | EXPERIMENTAL                                     |
 
 ## Additional Resources
 

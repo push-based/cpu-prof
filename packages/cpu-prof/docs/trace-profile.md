@@ -1203,28 +1203,35 @@ If placed, the tread name changes to "Main -- <URL:FROM_START_TRACING_IN_BROWSER
 
 ---
 
-
-# TODO SNIPPETS 
-
+# TODO SNIPPETS
 
 Might be responsible for coloring the main thread in the DevTools Performance tab.
 
 > **NOTE:** Order of events is the same as in real tract. (Not sure if it matters so far)
+
 ```jsonc
 [
-  // Controles the process name aas url and 
+  // Controles the process name aas url and
   {
-      "args": {
-        "name": "CrRendererMain"
-      },
-      "cat": "__metadata",
-      "name": "thread_name",
-      "ph": "M",
-      "pid": 10001,
-      "tid": 0,
-      "ts": 0
+    "args": {
+      "name": "CrRendererMain"
     },
-  {"args":{"name":"CrBrowserMain"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3415,"tid":17911,"ts":0},
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 10001,
+    "tid": 0,
+    "ts": 0
+  },
+  {
+    "args": { "name": "CrBrowserMain" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 3415,
+    "tid": 17911,
+    "ts": 0
+  },
   {
     "args": {
       "data": {
@@ -1281,15 +1288,95 @@ This is related to group threads into the "Thread pool" lane.
 
 ```json
 [
-  {"args":{"name":"ThreadPoolServiceThread"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024246,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024247,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024249,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024432,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024285,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024553,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024562,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":60433,"tid":1004024563,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3415,"tid":17961,"ts":0},
-  {"args":{"name":"ThreadPoolForegroundWorker"},"cat":"__metadata","name":"thread_name","ph":"M","pid":3421,"tid":18039,"ts":0}
+  {
+    "args": { "name": "ThreadPoolServiceThread" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024246,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024247,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024249,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024432,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024285,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024553,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024562,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 60433,
+    "tid": 1004024563,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 3415,
+    "tid": 17961,
+    "ts": 0
+  },
+  {
+    "args": { "name": "ThreadPoolForegroundWorker" },
+    "cat": "__metadata",
+    "name": "thread_name",
+    "ph": "M",
+    "pid": 3421,
+    "tid": 18039,
+    "ts": 0
+  }
 ]
 ```

@@ -64,11 +64,14 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 > [!Note]  
 > The **order** of CPU profiling arguments is critical!
 > Bad:
+>
 > ```shell
 > # This will not create a CPU profile file.
 > node script.js --cpu-prof`
 > ```
+>
 > Good:
+>
 > ```shell
 > # This will create a CPU profile file under CWD.
 > node --cpu-prof script.js`
@@ -978,7 +981,6 @@ What they represent:
 
 ## Real life examples
 
-
 ### Quickly CPU profile your script
 
 The following example demonstrates how to quickly CPU profile a Node.js script using the `--cpu-prof` flag. This is useful for get a quick understanding of the situation.
@@ -1011,7 +1013,7 @@ This command will CPU profile the `exmpl-script.js` script and generate a profil
 
 ### CPU profile multiple threads grouped in a folder
 
-As a program can create multiple worker threads, you can use the `--cpu-prof` flag to profile each of them. 
+As a program can create multiple worker threads, you can use the `--cpu-prof` flag to profile each of them.
 The example below shows how to group multiple processes into a folder to separate different measurements.
 
 _[exmpl-create-threads.js](./examples/exmpl-create-threads.js)_
@@ -1020,7 +1022,8 @@ _[exmpl-create-threads.js](./examples/exmpl-create-threads.js)_
 import { Worker, threadId } from 'worker_threads';
 
 const workerCodeESM = `import { threadId as t } from 'worker_threads'; console.log('Worker PID:', process.pid, 'TID:', t);`;
-const workerDataURLString = 'data:text/javascript,' + encodeURIComponent(workerCodeESM);
+const workerDataURLString =
+  'data:text/javascript,' + encodeURIComponent(workerCodeESM);
 
 new Worker(new URL(workerDataURLString));
 new Worker(new URL(workerDataURLString));
@@ -1043,25 +1046,25 @@ root/
     └─ CPU.<timestamp>.<pid>.2.003.cpuprofile
 ```
 
-To pick a more real life example, we could profile the build process of the Angular framework. 
+To pick a more real life example, we could profile the build process of the Angular framework.
 It's build process heavily uses worker threads, to distribute the work of the different build steps.
 
 **Command:**
 
-```shell  
+```shell
 node --cpu-prof --cpu-prof-dir=./angular-build node_modules/.bin/ng build
 ```
 
 **Output:**
 
-```text
+````text
 ```text
 root/
  └─ ng-build/
     ├─ CPU.<timestamp>.<pid>.0.001.cpuprofile
     ├─ ...
     └─ CPU.<timestamp>.<pid>.32.032.cpuprofile
-```
+````
 
 **32 `.cpuprofile` files** are generated, one for each worker thread. HAHA! Good luck analyzing that!
 
@@ -1077,8 +1080,8 @@ _[exmpl-spawn-processes.js](./examples/exmpl-spawn-processes.js)_
 ```js
 import { spawn } from 'node:child_process';
 import { threadId as t } from 'node:worker_threads';
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { mkdirSync } from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -1089,10 +1092,16 @@ mkdirSync(join(process.cwd(), 'child-process-2'), { recursive: true });
 
 const childScriptPath = join(__dirname, 'exmpl-script.js');
 
-spawn(process.execPath, [childScriptPath], { stdio: 'inherit', cwd: join(process.cwd(), 'child-process-1') });
-spawn(process.execPath, [childScriptPath], { stdio: 'inherit' , cwd: join(process.cwd(), 'child-process-2') });
+spawn(process.execPath, [childScriptPath], {
+  stdio: 'inherit',
+  cwd: join(process.cwd(), 'child-process-1'),
+});
+spawn(process.execPath, [childScriptPath], {
+  stdio: 'inherit',
+  cwd: join(process.cwd(), 'child-process-2'),
+});
 
-console.log('Parent PID:' , process.pid, 'TID:', t);
+console.log('Parent PID:', process.pid, 'TID:', t);
 ```
 
 The only thing to consider is the location of the output directory set by `--cpu-prof-dir` to an absolute path.
@@ -1109,9 +1118,14 @@ NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/user/workspace/cpu-prof-processes
 # NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./cpu-prof-processes" node ./exmpl-spawn-processes.js
 ```
 
+> **Note:**
+> The **`NODE_OPTIONS`** environment variable **is required** to set the CPU profiling options for all child processes spawned.
+> This ensures that each spawned process will generate its own `.cpuprofile` file in the specified directory.
+> Just using `--cpu-prof-dir` as argument will not work, as the `--cpu-prof` flag may not be passed to the child processes.
+
 **Output:**
 
-```text 
+```text
 /root
    ├─ CPU.<timestamp>.1.0.001.cpuprofile
    ├─ CPU.<timestamp>.2.0.002.cpuprofile
@@ -1131,34 +1145,42 @@ NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/user/workspace/cpu-prof-nx-build-
 
 ```text
 /root
-   ├─ CPU.<timestamp>.1.0.001.cpuprofile
-   ├─ CPU.<timestamp>.2.0.002.cpuprofile
+   ├─ CPU.<timestamp>.1.0.001.cpuprofile # root process
+   ├─ CPU.<timestamp>.2.0.002.cpuprofile # child_process.spawn
    ...
-   ├─ CPU.<timestamp>.7.0.007.cpuprofile
-   ├─ CPU.<timestamp>.7.1.008.cpuprofile
+   ├─ CPU.<timestamp>.7.0.007.cpuprofile # child_process.spawn
+   ├─ CPU.<timestamp>.7.1.008.cpuprofile # worker_threads.Worker
+   ├─ CPU.<timestamp>.7.2.009.cpuprofile # worker_threads.Worker
    ...
-   └─ CPU.<timestamp>.9.0.009.cpuprofile
+   └─ CPU.<timestamp>.9.0.011.cpuprofile # child_process.spawn
 ```
 
-In practice, you would not profile that many processes at once. 
+In practice, you would not profile that many processes at once.
 The Nx TUI, for example, gives a comprehensive overview of the build times, and most other solutions have similar rough stats.
-From there, you would focus on only the part that is slow in detail.
+From there, you would focus on only the part that is slow and profile that in detail.
 
+### Understanding multiple CPU profiles created by a single measurement
 
-UNDER CONSTRUCTION
+For now, there is no officially supported tool available to visualize multiple CPU profiles created by a single measurement.
+The best we can get out with the default tools is a couple of best practices and processes to follow.
 
-```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof
-```
-
-```shell
-# fire off both profilers in the background…
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof &
-
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof
-node --env-file .cpu-prof-env NODE_OPTIONS="--cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof &
-
-# …then wait for both to finish
-wait
-```
+- **Less is more**
+  Don't waste time to create 100 of profiles hard to make sense of.  
+  Instead, run a measure, open a couple of them and guess your way through the profiles. After having more clue focus on some planned measures.
+- **Rename your profiles**  
+  While gathering understanding, it helps to rename the original profile file names to something more meaningful that you can remember and get back to later.
+- **Isolate your measures**  
+  After you have detected the culprit, try to isolate the measure to only what you need.  
+  For example, if you detected a slow function try to only execute the part you need with `--eval` or a standalone micro benchmark.
+  ```bash
+  node --cpu-prof -e "
+  const { slowFunction } = require('./slow-module.js');
+  slowFunction();
+  "
+  ```
+- **Focus on quick wins document your findings**
+  Only focus on things you understand, have high impact and are easy to fix.
+  Do not waste your time on things you don't understand or with hard to guess or knowingly little impact.
+- **Use the right tools**  
+  Even if there is no officially supported tool to visualize multiple CPU profiles, you can use the following tools to analyze them: [@push-based/cpu-prof](...)
+  It is a CLI that helps in creating and merging multiple CPU profiles into one single that is understood by Chrome DevTools Performance Panel.
