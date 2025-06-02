@@ -799,7 +799,7 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
 ```
 
 **DevTools Performance Tab:**  
-<img src="imgs/parent-child-nodes.png" alt="parent-child-nodes.png" width="800">
+![parent-child-nodes.png](./imgs/parent-child-nodes.png)
 
 #### CallFrame
 

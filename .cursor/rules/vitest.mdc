@@ -499,10 +499,15 @@ Run ESLint on a specific package via `npx nx run <package>:lint`.
 fix tests after valid code changes 
 
 ```text
-nx unit-test cpu-prof
+first nvm use 23 # A fix for the current setup. IT IS VERY IMPORTANT to have a working setup before using AI. Do not fix a setup in a prompt.
+
+then
+nx integration-test cpu-prof-e2e
 
 for each test suggest a fix i can apporve.
 Do not edit files without my approval.
+
+Dont add commants. Never. 
 
 I edited the code. so the tests will fail. The code is correct. Adjust the tests..
 ```
