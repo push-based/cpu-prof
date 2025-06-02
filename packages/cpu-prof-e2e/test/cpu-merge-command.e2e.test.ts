@@ -24,9 +24,9 @@ describe('cpu-merge-command', () => {
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
-        {
-          recursive: true,
-        }
+      {
+        recursive: true,
+      }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -50,19 +50,19 @@ describe('cpu-merge-command', () => {
     await cp(
       join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
       join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
-        {
-            recursive: true,
-        }
+      {
+        recursive: true,
+      }
     );
     await cp(
       join(
         mocksMinimalPath,
-        'flat-line.20250519.050090.10002.0.001.cpuprofile',
+        'flat-line.20250519.050090.10002.0.001.cpuprofile'
       ),
       join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
-        {
-            recursive: true,
-        }
+      {
+        recursive: true,
+      }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -75,7 +75,7 @@ describe('cpu-merge-command', () => {
     expect(code).toBe(0);
 
     const outputFileContent = (
-      await readFile(join(process.cwd(), 'profiles', 'merged-profile.json'))
+      await readFile(join(inputDir, 'merged-profile.json'))
     ).toString();
 
     const outputJson = JSON.parse(outputFileContent);
@@ -101,9 +101,9 @@ describe('cpu-merge-command', () => {
         'flat-line.20250519.050090.10002.0.001.cpuprofile'
       ),
       join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
-        {
-            recursive: true,
-        }
+      {
+        recursive: true,
+      }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -133,9 +133,9 @@ describe('cpu-merge-command', () => {
         'flat-line.20250519.050090.10002.0.001.cpuprofile'
       ),
       join(inputDir, 'flat-line.20250519.050090.10002.0.001.cpuprofile'),
-        {
-            recursive: true,
-        }
+      {
+        recursive: true,
+      }
     );
 
     const { stdout, stderr, code } = await executeProcess({
@@ -147,7 +147,7 @@ describe('cpu-merge-command', () => {
     expect(code).toBe(0);
     expect(stdout).toContain('📊 Generated 11 trace events');
     const outputFileContent = (
-      await readFile(join(process.cwd(), 'profiles', 'merged-profile.json'))
+      await readFile(join(inputDir, 'merged-profile.json'))
     ).toString();
 
     expect(JSON.parse(outputFileContent)).toStrictEqual({
