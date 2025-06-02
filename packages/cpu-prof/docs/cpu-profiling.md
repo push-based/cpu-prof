@@ -498,9 +498,6 @@ CPU profiles represent execution data across two primary dimensions: time (horiz
 **Time (horizontal axis)** represents the execution timeline with `startTime` marking when profiling began, `endTime` marking the profile's visible end, and `timeDeltas` providing intervals between samples.  
 **Call-tree depth (vertical axis)** shows the function call hierarchy where the root node is at depth 0, and each level represents nested function calls. The `samples` array contains the "leaf frames" - the deepest executing functions at each time interval, with their parent chain automatically reconstructed for visualization.
 
-> **NOTE**  
-> The samples array is the list of "visible" nodes looking from the bottom of the chart. Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too. Therefore, the samples array is a list "leaf frame" in the chart.
-
 The example below shows a profile with 1 node (ID 2) centered in the middle of the chart. This is done by `timeDelta` to the node and `endTime` to the end of the profile.
 
 **Profile:** [`minimal-cpu-profile-timing-data.cpuprofile`](./examples/minimal-cpu-profile-timing-data.cpuprofile)
@@ -872,9 +869,18 @@ The `callFrame` object provides details about the source code location and helps
 
 ##### Synthetic and Internal Frames
 
-Synthetic frames are special entries that V8 inserts to represent runtime states and operations that don't correspond to user JavaScript code. These frames provide important context about the execution environment and system-level operations.
+Synthetic frames are not real lines of your code, but markers added by the V8 engine (the JavaScript engine inside Chrome/Node.js) These frames provide important context about the execution environment and system-level operations.
 
 Synthetic frames have `functionName` in parentheses representing entry points, top-level script evaluation, idle time, and GC cycles. The `scriptId` is always `"0"`, the `url` is empty `""`, and `lineNumber`/`columnNumber` are typically `-1`. These frames help distinguish between user code execution and runtime overhead in performance analysis.
+
+What they represent:
+
+| Frame Name            | What It Means                                        |
+| --------------------- | ---------------------------------------------------- |
+| `(root)`              | The very start of the profile session (entry point)  |
+| `(program)`           | Your top-level script (code not inside any function) |
+| `(idle)`              | Time when nothing is happening — app is waiting      |
+| `(garbage collector)` | Time spent cleaning memory — V8 is reclaiming RAM    |
 
 **Profile:** [`minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile)
 
@@ -962,7 +968,7 @@ Synthetic frames have `functionName` in parentheses representing entry points, t
 UNDER CONSTRUCTION
 
 ```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/vanilla" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint" node ./node_modules/.bin/eslint --config eslint.config.mjs packages/cpu-prof
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/nx" node ./node_modules/.bin/nx lint cpu-prof
 ```
 
