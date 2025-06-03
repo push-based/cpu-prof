@@ -886,7 +886,7 @@ The `callFrame` object provides details about the source code location and helps
 ```
 
 **DevTools Performance Tab:**  
-<img src="imgs/minimal-cpu-profile-source-location.png" alt="minimal-cpu-profile-source-location.png" width="800">
+![minimal-cpu-profile-source-location.png](imgs/minimal-cpu-profile-source-location.png)
 
 ##### Synthetic and Internal Frames
 
@@ -1005,6 +1005,8 @@ process.exit(0);
 
 ```shell
 node --cpu-prof exmpl-script.js
+# This will not work as the arguments may not be passed down
+# node ./exmpl-script.js --cpu-prof 
 ```
 
 This command will CPU profile the `exmpl-script.js` script and generate a profile file in the current working directory. The filename will follow the pattern `CPU.<timestamp>.<pid>.<tid>.<seq>.cpuprofile`:
@@ -1115,7 +1117,7 @@ The only thing to consider is the location of the output directory set by `--cpu
 NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/user/workspace/cpu-prof-processes" node ./exmpl-spawn-processes.js
 
 # This will not work as the --cpu-prof params are not passed
-# NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./cpu-prof-processes" node ./exmpl-spawn-processes.js
+# node --cpu-prof --cpu-prof-dir=./cpu-prof-processes ./exmpl-spawn-processes.js
 
 # This will not work as the directory is relative to the CWD, which is not the same as the script location.
 # NODE_OPTIONS="--cpu-prof --cpu-prof-dir=./cpu-prof-processes" node ./exmpl-spawn-processes.js
