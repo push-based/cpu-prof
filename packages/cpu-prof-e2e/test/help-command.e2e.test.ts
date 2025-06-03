@@ -35,7 +35,9 @@ describe('help-command', () => {
         -h, --help               Show help                                                       [boolean]
 
       Options:
-            --version  Show version number                                                       [boolean]
+            --version   Show version number                                                      [boolean]
+            --flagMain  Adds prefix and command args to the profile name of the initial process.
+                                                                                [boolean] [default: false]
 
       Examples:
         cpu-prof measure --cpu-prof-dir ./profiles node my  Profile \`node my_script.js --arg-for-script\` a

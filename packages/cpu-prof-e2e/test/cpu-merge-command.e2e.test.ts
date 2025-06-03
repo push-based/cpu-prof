@@ -35,7 +35,7 @@ describe('cpu-merge-command', () => {
     });
 
     expect(stdout).toContain('✅ CPU profiles merged successfully!');
-    expect(stdout).toContain('📊 Generated 4 trace events');
+    expect(stdout).toContain('📊 Generated 7 trace events');
     expect(stdout).toContain('📄 Output file:');
     expect(stdout).toContain('merged-profile.json');
     expect(stderr).toBe('');
@@ -70,7 +70,7 @@ describe('cpu-merge-command', () => {
       args: [cliPath, 'merge', inputDir],
     });
 
-    expect(stdout).toContain('📊 Generated 8 trace events');
+    expect(stdout).toContain('📊 Generated 11 trace events');
     expect(stderr).toBe('');
     expect(code).toBe(0);
 
@@ -113,7 +113,7 @@ describe('cpu-merge-command', () => {
 
     expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 8 trace events');
+    expect(stdout).toContain('📊 Generated 11 trace events');
 
     expect(existsSync(join(outputDir, 'merged-profile.json'))).toBe(true);
   });

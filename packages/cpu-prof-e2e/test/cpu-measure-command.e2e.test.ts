@@ -46,7 +46,7 @@ describe('cpu-measure-command', () => {
     expect(removeColorCodes(stdout)).toContain(
       `NODE_OPTIONS="--cpu-prof --cpu-prof-dir='${outputDir}'" npm -v --verbose`
     );
-    expect(stdout).toContain('Profiles generated  -');
+    expect(stdout).toContain(`Profiles generated - ${outputDir}`);
 
     await expect(readdir(outputDir)).resolves.toHaveLength(1);
   });
