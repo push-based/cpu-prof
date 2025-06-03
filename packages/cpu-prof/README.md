@@ -11,17 +11,17 @@ Measure, drag & drop into Chrome, voilà.
 ## Features
 
 - **CPU Profiling Support**:
-    - Smart defaults to reduce friction
-    - Intuitive error messages as well as actionable feedback on how to fix the issue
-    - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
-    - All profiles can be dragged and dropped into Chrome DevTools
+  - Smart defaults to reduce friction
+  - Intuitive error messages as well as actionable feedback on how to fix the issue
+  - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+  - All profiles can be dragged and dropped into Chrome DevTools
 - **CPU Profile Analysis**:
-    - Merge multiple CPU profile files into a single trace for easier analysis.
-    - Visualize CPU profiles as Chrome trace files.
-    - Merge multiple CPU profile files into a single trace for easier analysis.
+  - Merge multiple CPU profile files into a single trace for easier analysis.
+  - Visualize CPU profiles as Chrome trace files.
+  - Merge multiple CPU profile files into a single trace for easier analysis.
 - **TypeScript API**:
-    - Programmatic access to all core features.
-    - Use it in your own tools and workflows.
+  - Programmatic access to all core features.
+  - Use it in your own tools and workflows.
 
 ---
 
@@ -119,10 +119,9 @@ Now all of them are in one place:
 
 ### `merge` command
 
-| All processes on Overview                                                                         | Selected Process Details                                                                               | 
-|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| All processes on Overview                                                                         | Selected Process Details                                                                               |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | ![merge-processes-and-threads--overview.png](docs/imgs/merge-processes-and-threads--overview.png) | ![merge-processes-and-threads--overview.png](docs/imgs/merge-processes-and-threads--overview-open.png) |
-
 
 **Usage:**
 
@@ -137,17 +136,17 @@ combined CPU usage across different processes or time periods. The merged profil
 **Arguments:**
 
 | Argument         | Type     | Default | Description                                     |
-|------------------|----------|---------|-------------------------------------------------|
+| ---------------- | -------- | ------- | ----------------------------------------------- |
 | **`<inputDir>`** | `string` |         | Directory containing CPU profile files to merge |
 
 **Options:**
 
-| Option                               | Type      | Default      | Description                                                                                                                                                                                                      |
-|--------------------------------------|-----------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **`--outputDir <dir>`** (`-o`)       | `string`  | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified.                                                                                                                                     |
-| **`--startTracingInBrowser`** (`-b`) | `boolean` | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.                                                                                                                                       |
-| **`--smosh <type>`** (`-s`)          | `boolean` | `true`       | Merge profiles into one PID and indexed TIDs.
-| **`--verbose`** (`-v`)               | `boolean` | `false`      | Enable verbose logging.                                                                                                                                                                                          |
+| Option                               | Type      | Default      | Description                                                                  |
+| ------------------------------------ | --------- | ------------ | ---------------------------------------------------------------------------- |
+| **`--outputDir <dir>`** (`-o`)       | `string`  | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified. |
+| **`--startTracingInBrowser`** (`-b`) | `boolean` | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.   |
+| **`--smosh <type>`** (`-s`)          | `boolean` | `true`       | Merge profiles into one PID and indexed TIDs.                                |
+| **`--verbose`** (`-v`)               | `boolean` | `false`      | Enable verbose logging.                                                      |
 
 **Examples:**
 
@@ -168,16 +167,16 @@ By default, the CPU profiles will get merged as they are, no changes to the PIDs
 To have a better DX when navigation the DevTools performance panels lanes you can use `--smosh` to merge the profiles
 into the same `pid` / `tid`.
 
-| Option        | Original                                         | Merged                                           |
-|---------------|--------------------------------------------------|--------------------------------------------------|
-| `--smosh`     | <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-pid.png"> |
-| `--no-smosh`  | <img src="./docs/imgs/cli-merge--smosh-off.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
+| Option       | Original                                         | Merged                                           |
+| ------------ | ------------------------------------------------ | ------------------------------------------------ |
+| `--smosh`    | <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-pid.png"> |
+| `--no-smosh` | <img src="./docs/imgs/cli-merge--smosh-off.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
 
 ##### Documentation features across Lanes
 
-| Annotation Spans Across Lanes                                                                                                   | Frame Comments in Detail                                                                                                                        | Sort and Hied Tracks                                                                                                                              |
-|---------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| ![docs/imgs/merge-annotations-across-processes-and-threads.png](./docs/imgs/merge-annotations-across-processes-and-threads.png) | ![docs/imgs/merge-annotations-across-processes-and-threads--details.png](./docs/imgs/merge-annotations-across-processes-and-threads--detail.png) | ![docs/imgs/merge-sort-and-hide-processes-and-threads.png](./docs/imgs/merge-sort-and-hide-processes-and-threads.png)  |
+| Annotation Spans Across Lanes                                                                                                   | Frame Comments in Detail                                                                                                                         | Sort and Hied Tracks                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| ![docs/imgs/merge-annotations-across-processes-and-threads.png](./docs/imgs/merge-annotations-across-processes-and-threads.png) | ![docs/imgs/merge-annotations-across-processes-and-threads--details.png](./docs/imgs/merge-annotations-across-processes-and-threads--detail.png) | ![docs/imgs/merge-sort-and-hide-processes-and-threads.png](./docs/imgs/merge-sort-and-hide-processes-and-threads.png) |
 
 ## Additional Resources
 

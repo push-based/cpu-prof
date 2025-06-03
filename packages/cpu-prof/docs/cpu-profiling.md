@@ -765,9 +765,7 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2
-      ]
+      "children": [2]
     },
     {
       "id": 2,
@@ -779,10 +777,7 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
         "columnNumber": 19
       },
       "parent": 1,
-      "children": [
-        3,
-        4
-      ]
+      "children": [3, 4]
     },
     {
       "id": 3,
@@ -806,9 +801,7 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
         "columnNumber": 63
       },
       "parent": 2,
-      "children": [
-        5
-      ]
+      "children": [5]
     },
     {
       "id": 5,
@@ -839,13 +832,12 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
   "samples": [6],
   "timeDeltas": [0]
 }
-
 ```
 
 **DevTools Performance Tab:**  
 ![minimal-cpu-profile-parent-children-ids.png](./imgs/minimal-cpu-profile-parent-children-ids.png)
 
-What we see here is only a part of the existing node tree. 
+What we see here is only a part of the existing node tree.
 Under samples, we name `6` as last visible node. From there on we can reconstruct the whole tree by looking at the `parent` and `children` properties.
 The leaf nodes from `3` onwards are not visible in the chart as walking up from node `6` does not include them.
 
@@ -938,7 +930,7 @@ The `callFrame` object provides details about the source code location and helps
 
 ##### URL and coloring
 
-The `url` property in the `callFrame` object is crucial for visualizing the profile in DevTools. 
+The `url` property in the `callFrame` object is crucial for visualizing the profile in DevTools.
 It determines the color-coding of frames in the flame chart, where frames from the same URL share the same color. This helps quickly identify which parts of your code are executing and how they relate to each other.
 
 **Profile:** [minimal-cpu-profile-nodes-call-frame-url.cpuprofile](./examples/minimal-cpu-profile-nodes-call-frame-url.cpuprofile)
@@ -955,13 +947,7 @@ It determines the color-coding of frames in the flame chart, where frames from t
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [
-        2,
-        3,
-        4,
-        5,
-        6
-      ]
+      "children": [2, 3, 4, 5, 6]
     },
     {
       "id": 2,
@@ -1021,14 +1007,13 @@ It determines the color-coding of frames in the flame chart, where frames from t
   ],
   "startTime": 1,
   "endTime": 70,
-  "samples":    [1, 2, 3, 4, 5, 6],
-  "timeDeltas": [0,10,10,10,10,10]
+  "samples": [1, 2, 3, 4, 5, 6],
+  "timeDeltas": [0, 10, 10, 10, 10, 10]
 }
 ```
 
 **DevTools Performance Tab:**  
 ![minimal-cpu-profile-nodes-call-frame-url.png](./imgs/minimal-cpu-profile-nodes-call-frame-url.png)
-
 
 ##### Synthetic and Internal Frames
 
@@ -1148,7 +1133,7 @@ process.exit(0);
 ```shell
 node --cpu-prof exmpl-script.js
 # This will not work as the arguments may not be passed down
-# node ./exmpl-script.js --cpu-prof 
+# node ./exmpl-script.js --cpu-prof
 ```
 
 This command will CPU profile the `exmpl-script.js` script and generate a profile file in the current working directory. The filename will follow the pattern `CPU.<timestamp>.<pid>.<tid>.<seq>.cpuprofile`:
