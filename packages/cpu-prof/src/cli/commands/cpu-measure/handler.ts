@@ -14,12 +14,15 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     ['cpu-prof-name']: cpuProfName2,
     commandToProfile,
     ['command-to-profile']: commandToProfile2,
+    flagMain,
+    ['flag-main']: flagMain2,
     ...commandOptions
   } = options;
   const nodeOptions = {
     ...(cpuProfDir ? { cpuProfDir } : {}),
     ...(cpuProfInterval ? { cpuProfInterval } : {}),
     ...(cpuProfName ? { cpuProfName } : {}),
+    ...(flagMain ? { flagMain } : {}),
   };
 
   if (

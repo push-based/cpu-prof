@@ -39,10 +39,10 @@ export interface CpuProfileInfo {
   pid: number;
   tid: number;
   cpuProfile: CPUProfile;
-  sequence?: number;
+  file: string;
+  prefix?: string;
   startDate?: Date;
-  sourceFilePath?: string;
-  execArgs?: string[];
+  sequence?: number;
 }
 
 export interface CpuProfileArguments {

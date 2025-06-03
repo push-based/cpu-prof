@@ -1,7 +1,6 @@
 import type { Argv } from 'yargs';
 import { directoryExists } from '../../../lib/file-utils';
 import type { MergeArgs } from './types';
-import { join } from 'path';
 
 /**
  * Build the yargs command configuration for merge
@@ -45,7 +44,7 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
 
     .example(
       '$0 merge ./path/to/profiles',
-      'Merge all profiles from a directory'
+      'Merge all CPU profiles from a directory into 1 trace file'
     )
     .epilog(``)
 

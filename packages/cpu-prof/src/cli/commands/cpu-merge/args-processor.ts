@@ -28,29 +28,11 @@ export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
       : join(process.cwd(), outputDir);
   }
 
-  if (verbose) {
-    console.log(`🔧 CPU Profile Merge Mode:`);
-    console.log(`  📁 Input directory: ${resolvedInputDir}`);
-    console.log(`  📁 Output directory: ${resolvedOutputDir}`);
-    smosh &&
-      console.log(
-        `  🔄 Smosh mode: ${
-          smosh === 'all'
-            ? 'All profiles will be merged into a single thread. (EXPERIMENTAL)'
-            : smosh === 'pid'
-            ? 'All profiles will share the same process ID.'
-            : 'All profiles will share the same thread ID. (EXPERIMENTAL)'
-        }`
-      );
-    startTracingInBrowser &&
-      console.log(`  🔄 Start tracing in browser: ${startTracingInBrowser}`);
-  }
-
   return {
     inputDir: resolvedInputDir,
     outputDir: resolvedOutputDir,
     verbose: verbose || false,
-    smosh: smosh,
+    smosh: smosh ?? false,
     startTracingInBrowser: startTracingInBrowser ?? true,
   };
 }

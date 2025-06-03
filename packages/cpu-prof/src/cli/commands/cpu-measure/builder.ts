@@ -31,6 +31,11 @@ export const measureCommand: CommandModule<{}, MeasureArgs> = {
         type: 'string',
         normalize: true,
       })
+        .option('flagMain', {
+        describe: 'Adds prefix and command args to the profile name of the initial process.',
+        type: 'boolean',
+        default: false,
+      })
       .example(
         '$0 measure --cpu-prof-dir ./profiles node my_script.js --arg-for-script',
         'Profile `node my_script.js --arg-for-script` and save to ./profiles. Options can be anywhere.'
