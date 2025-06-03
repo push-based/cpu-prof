@@ -3,7 +3,7 @@ export interface MergeArgs {
   inputDir?: string;
   outputDir?: string;
   verbose?: boolean;
-  smosh?: 'pid' | 'tid' | 'all';
+  smosh?: boolean;
   startTracingInBrowser?: boolean;
 }
 
@@ -11,6 +11,6 @@ export interface ProcessedMergeArgs {
   inputDir: string;
   outputDir: string;
   verbose: boolean;
-  smosh: 'pid' | 'tid' | 'all' | undefined;
+  smosh: boolean;
   startTracingInBrowser: boolean;
 }

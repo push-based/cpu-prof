@@ -35,7 +35,7 @@ async function handleCpuProfileMerge(
     throw new Error('Input directory is required for CPU profile mode');
   }
 
-  // Create output directory if it doesn't exist
+  // Create an output directory if it doesn't exist
   mkdirSync(outputDir, { recursive: true });
 
   // Define the output file path inside the output directory
@@ -48,7 +48,7 @@ async function handleCpuProfileMerge(
 
   // Use the existing mergeCpuProfileFiles function with the full file path
   await mergeCpuProfileFiles(inputDir, outputFilePath, {
-    smosh,
+    smosh: smosh ? 'pid' : 'off',
     startTracingInBrowser,
   });
 

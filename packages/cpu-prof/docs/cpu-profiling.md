@@ -433,7 +433,7 @@ type CpuProfile = {
 
 In the example below, we see a minimal CPU profile.
 
-**Profile:** [`minimal-cpu-profile.cpuprofile`](./examples/minimal-cpu-profile.cpuprofile)
+**Profile:** [minimal-cpu-profile.cpuprofile](./examples/minimal-cpu-profile.cpuprofile)
 
 **Profile content:**
 
@@ -521,7 +521,7 @@ CPU profiles represent execution data across two primary dimensions: time (horiz
 
 The example below shows a profile with 1 node (ID 2) centered in the middle of the chart. This is done by `timeDelta` to the node and `endTime` to the end of the profile.
 
-**Profile:** [`minimal-cpu-profile-timing-data.cpuprofile`](./examples/minimal-cpu-profile-timing-data.cpuprofile)
+**Profile:** [minimal-cpu-profile-timing-data.cpuprofile](./examples/minimal-cpu-profile-timing-data.cpuprofile)
 
 ```json
 {
@@ -561,7 +561,7 @@ The example below shows a profile with 1 node (ID 2) centered in the middle of t
 
 ### Time deltas
 
-**Profile:** [`minimal-cpu-profile-timing-data-time-deltas.cpuprofile`](./examples/minimal-cpu-profile-timing-data-time-deltas.cpuprofile)
+**Profile:** [minimal-cpu-profile-timing-data-time-deltas.cpuprofile](./examples/minimal-cpu-profile-timing-data-time-deltas.cpuprofile)
 
 ```json
 {
@@ -612,7 +612,7 @@ The example below shows a profile with 1 node (ID 2) centered in the middle of t
 
 Samples are the list of "visible" nodes looking from the bottom of the chart. Listing a Node at a certain timeDelta (position on the samples array) will construct all its parents too. Therefore, the samples array is a list "leaf frame" in the chart.
 
-**Profile:** [`minimal-cpu-profile-timing-data-samples.cpuprofile`](./examples/minimal-cpu-profile-timing-data-samples.cpuprofile)
+**Profile:** [minimal-cpu-profile-timing-data-samples.cpuprofile](./examples/minimal-cpu-profile-timing-data-samples.cpuprofile)
 
 ```json
 {
@@ -751,7 +751,7 @@ export interface Node {
 
 Traversal starts at the root (no parent) and recurses through children to rebuild the full call hierarchy, useful for flame chart rendering and aggregating inclusive vs. exclusive hit counts.
 
-**Profile:** [`minimal-cpu-profile-nodes-parent-child.cpuprofile`](./examples/minimal-cpu-profile-nodes-parent-child.cpuprofile)
+**Profile:** [minimal-cpu-profile-nodes-parent-child.cpuprofile](./examples/minimal-cpu-profile-nodes-parent-child.cpuprofile)
 
 ```json
 {
@@ -765,7 +765,9 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
         "lineNumber": -1,
         "columnNumber": -1
       },
-      "children": [2]
+      "children": [
+        2
+      ]
     },
     {
       "id": 2,
@@ -777,29 +779,75 @@ Traversal starts at the root (no parent) and recurses through children to rebuil
         "columnNumber": 19
       },
       "parent": 1,
-      "children": [3]
+      "children": [
+        3,
+        4
+      ]
     },
     {
       "id": 3,
       "callFrame": {
-        "functionName": "main",
+        "functionName": "child-1",
         "scriptId": "2",
         "url": "index.js",
         "lineNumber": 3,
         "columnNumber": 63
       },
-      "parent": 2
+      "parent": 2,
+      "children": []
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "child-2",
+        "scriptId": "2",
+        "url": "index.js",
+        "lineNumber": 3,
+        "columnNumber": 63
+      },
+      "parent": 2,
+      "children": [
+        5
+      ]
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "child-2-1",
+        "scriptId": "2",
+        "url": "index.js",
+        "lineNumber": 3,
+        "columnNumber": 63
+      },
+      "parent": 4,
+      "children": [6]
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "child-2-1-1",
+        "scriptId": "2",
+        "url": "index.js",
+        "lineNumber": 3,
+        "columnNumber": 63
+      },
+      "parent": 4
     }
   ],
   "startTime": 1,
-  "endTime": 400,
-  "samples": [1, 3, 1],
-  "timeDeltas": [0, 100, 100]
+  "endTime": 10,
+  "samples": [6],
+  "timeDeltas": [0]
 }
+
 ```
 
 **DevTools Performance Tab:**  
-![parent-child-nodes.png](./imgs/parent-child-nodes.png)
+![minimal-cpu-profile-parent-children-ids.png](./imgs/minimal-cpu-profile-parent-children-ids.png)
+
+What we see here is only a part of the existing node tree. 
+Under samples, we name `6` as last visible node. From there on we can reconstruct the whole tree by looking at the `parent` and `children` properties.
+The leaf nodes from `3` onwards are not visible in the chart as walking up from node `6` does not include them.
 
 #### CallFrame
 
@@ -830,7 +878,7 @@ The `callFrame` object provides details about the source code location and helps
 - `lineNumber`: The line number within the script.
 - `columnNumber`: The column number within the script.
 
-**Profile:** [`minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile)
+**Profile:** [minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile](./examples/minimal-cpu-profile-nodes-call-frame-source-location.cpuprofile)
 
 ```json
 {
@@ -886,7 +934,101 @@ The `callFrame` object provides details about the source code location and helps
 ```
 
 **DevTools Performance Tab:**  
-![minimal-cpu-profile-source-location.png](imgs/minimal-cpu-profile-source-location.png)
+![minimal-cpu-profile-call-frame-source-location.png](./imgs/minimal-cpu-profile-call-frame-source-location.png)
+
+##### URL and coloring
+
+The `url` property in the `callFrame` object is crucial for visualizing the profile in DevTools. 
+It determines the color-coding of frames in the flame chart, where frames from the same URL share the same color. This helps quickly identify which parts of your code are executing and how they relate to each other.
+
+**Profile:** [minimal-cpu-profile-nodes-call-frame-url.cpuprofile](./examples/minimal-cpu-profile-nodes-call-frame-url.cpuprofile)
+
+```json
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///script-1.mjs",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "parent": 1
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-3.mjs",
+        "lineNumber": 11,
+        "columnNumber": 1
+      },
+      "parent": 1
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-2.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      },
+      "parent": 1
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-3.mjs",
+        "lineNumber": 12,
+        "columnNumber": 4
+      },
+      "parent": 1
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-4.mjs",
+        "lineNumber": 13,
+        "columnNumber": 6
+      },
+      "parent": 1
+    }
+  ],
+  "startTime": 1,
+  "endTime": 70,
+  "samples":    [1, 2, 3, 4, 5, 6],
+  "timeDeltas": [0,10,10,10,10,10]
+}
+```
+
+**DevTools Performance Tab:**  
+![minimal-cpu-profile-nodes-call-frame-url.png](./imgs/minimal-cpu-profile-nodes-call-frame-url.png)
+
 
 ##### Synthetic and Internal Frames
 
@@ -903,7 +1045,7 @@ What they represent:
 | `(idle)`              | Time when nothing is happening — app is waiting      |
 | `(garbage collector)` | Time spent cleaning memory — V8 is reclaiming RAM    |
 
-**Profile:** [`minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile`](./examples/minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile)
+**Profile:** [minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile](./examples/minimal-cpu-profile-nodes-call-frame-synthetic-frames.cpuprofile)
 
 ```json
 {

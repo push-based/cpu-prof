@@ -32,10 +32,9 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
     .option('smosh', {
       alias: 's',
       describe:
-        'Merge profiles with specific ID normalization. Use --smosh all to normalize both PID and TID, --smosh pid to normalize only PID, or --smosh tid to normalize only TID. Omit flag to disable normalization.',
-      type: 'string',
-      choices: ['pid', 'tid', 'all', 'off'],
-      default: 'off',
+        'Smosh the profiles together into one PID with indexed TIDs to create a single profile file',
+      type: 'boolean',
+      default: false,
     })
     .option('verbose', {
       alias: 'v',
