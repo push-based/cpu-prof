@@ -1,0 +1,44 @@
+{
+  "traceEvents": [
+    {
+      "dur": 10,
+      "name": "function-1-1",
+      "ph": "X",
+      "pid": 1,
+      "tid": 1,
+      "ts": 10
+    },
+    {
+      "dur": 10,
+      "name": "function-1-2",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 1
+    },
+    {
+      "dur": 5,
+      "name": "child-1-2",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 5
+    },
+    {
+      "dur": 10,
+      "name": "function-2-1",
+      "ph": "X",
+      "pid": 2,
+      "tid": 1,
+      "ts": 5
+    },
+    {
+      "dur": 5,
+      "name": "function-2-2",
+      "ph": "X",
+      "pid": 2,
+      "tid": 2,
+      "ts": 7
+    }
+  ]
+}

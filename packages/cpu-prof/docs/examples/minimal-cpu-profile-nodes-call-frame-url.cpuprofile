@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///script-1.mjs",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "parent": 1
+    },
+    {
+        "id": 3,
+        "callFrame": {
+            "functionName": "run",
+            "scriptId": "2",
+            "url": "file:///run-script-3.mjs",
+            "lineNumber": 11,
+            "columnNumber": 1
+        },
+        "parent": 1
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-2.mjs",
+        "lineNumber": 11,
+        "columnNumber": 2
+      },
+      "parent": 1
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-3.mjs",
+        "lineNumber": 12,
+        "columnNumber": 4
+      },
+      "parent": 1
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "run",
+        "scriptId": "2",
+        "url": "file:///run-script-4.mjs",
+        "lineNumber": 13,
+        "columnNumber": 6
+      },
+      "parent": 1
+    }
+  ],
+  "startTime": 1,
+  "endTime": 70,
+  "samples":    [1, 2, 3, 4, 5, 6],
+  "timeDeltas": [0,10,10,10,10,10]
+}

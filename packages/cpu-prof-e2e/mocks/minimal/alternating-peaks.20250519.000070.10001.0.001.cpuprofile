@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [2, 4]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "L1_A",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
+        "lineNumber": 9,
+        "columnNumber": 0
+      },
+      "parent": 1,
+      "children": [3]
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "alternating_peakA",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "parent": 2
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "L1_B",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
+        "lineNumber": 19,
+        "columnNumber": 0
+      },
+      "parent": 1,
+      "children": [5]
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "alternating_peakB",
+        "scriptId": "1-alternate",
+        "url": "file:///alternating-peaks.js",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "parent": 4,
+        "children": [6]
+    },
+    {
+       "id": 6,
+       "callFrame": {
+         "functionName": "alternating_peakC",
+         "scriptId": "1-alternate",
+         "url": "file:///alternating-peaks.core.js",
+         "lineNumber": 29,
+         "columnNumber": 0
+       },
+       "parent": 5
+     }
+  ],
+  "startTime": 100000000000,
+  "endTime":   100000000070,
+  "samples":    [1,  3,  1,  6,  1,  3,  1,  1],
+  "timeDeltas": [0, 10, 10, 10, 10, 10,  10, 0]
+}

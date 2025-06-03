@@ -1,0 +1,85 @@
+{
+  "name": "@push-based/cpu-prof",
+  "version": "0.0.9",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "bin": {
+    "cpu-prof": "./dist/cpu-prof.esm.js"
+  },
+  "scripts": {},
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "dependencies": {
+    "yargs": "^17.7.2"
+  },
+  "nx": {
+    "name": "cpu-prof",
+    "targets": {
+      "unit-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.unit.config.ts"
+        }
+      },
+      "integration-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.integration.config.ts"
+        }
+      },
+      "help": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js --help"
+        }
+      },
+      "reduce": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js trace-reduce"
+        }
+      },
+      "measure": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js measure"
+        }
+      },
+      "merge": {
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node packages/cpu-prof/dist/cpu-prof.esm.js merge"
+        }
+      }
+    },
+    "tags": [
+      "package"
+    ]
+  }
+}

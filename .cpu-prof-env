@@ -1,0 +1,11 @@
+# CPU Profiling Configurations
+
+# CI
+# Node >=22
+NODE_OPTIONS="--cpu-prof --cpu-prof-dir=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/cpu-profiles"
+
+# Node <22
+# NODE_OPTIONS="--require cpu-prof.js"
+
+# ESLINT Profile summary
+TIMING=true

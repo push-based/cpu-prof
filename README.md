@@ -1,52 +1,16 @@
-# Advanced Performance Profiling for Nx
+# Cpu Profiling - Tools, Docs, Research
 
-| Default                                                                | Advanced                                                                   |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| ![flame-charts.png](./tools/imgs/nx-default-profile.png)               | ![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png) |
-| `NX_DAEMON=false NX_PERF_LOGGING=true NX_CACHE=false nx show projects` | `node ./nx-advanced-profile.js --args=show,projects`                       |
+- [cpu-prof](./packages/cpu-prof/README.md) 🚀
+- [@push-based/nx-perf](./packages/nx-perf/README.md) 
 
-Nx is boosting performance, yet when there is a question, it is not always easy to understand where the time is spent.
-By default, Nx provides a way to profile the performance of the CLI commands using `NX_PERF_LOGGING=true` and `NX_DAEMON=false`.
-This will create a minimal text log in the terminal.
+## Project Overviews 🌟
 
-This script provides a way to profile the performance of the Nx CLI commands in high detail and in a great UI, the Chrome DevTools.
-It will create a flame graph that shows the time spent in each function and the call stack, including the ones from child processes
+### [@push-based/cpu-prof](./packages/cpu-prof/README.md) 🚀
 
-## Main Process Logging
+This package provides tools for Node.js CPU profiling. It allows users to collect and merge CPU profiles, and visualize them as Chrome trace files. Key features include smart defaults for easier profiling, intuitive error messages, the ability to merge multiple CPU profile files, and a TypeScript API for programmatic access. It offers CLI commands like `measure` to collect profiles and `merge` to combine them. It aims to simplify the usage of Node.js's built-in `--cpu-prof` capabilities and centralizes profile output.
 
-1. Copy the `tools` folder into your workspace root.
-2. Run `node ./tools/nx-advanced-profile.bin.js`.  
-   The script will create a file named `.nx-profiling/nx-show-projects.<Date.now()>.profile.json`.
-3. Open Chrome browser
-   1. Open DevTools
-   2. Go to the `Performance` tab
-   3. Drag and drop the `<process>.profile.json` file into the DevTools window.
+###  **⚠️ DEPRECATED** [@push-based/nx-perf](./packages/nx-perf/README.md)
 
-![flame-charts.png](./tools/imgs/main-process-flame-charts.png)
+This tool focuses on visualizingexisting performance marks specifically for Nx CLI commands. It aims to provide more detailed insights than the default Nx performance logging. It generates flame graphs viewable in Chrome DevTools, showing time spent in functions and call stacks, including those from child processes.
 
-## Main and Forked Process Logging
-
-1. Run `node ./tools/nx-advanced-profile.postinstall.js`. This modifies the Nx sourcecode to be patched. (Don't forget
-   to revert your changes)
-2. Run `node ./tools/nx-advanced-profile.bin.js --noPatch`. (As it is now patched inside the file directly)
-3. Open DevTools
-
-![flame-charts.png](./tools/imgs/main-and-forked-process-flame-charts.png)
-
-## Terminal Arguments
-
-| Option      | Shorthand | Description                               |
-| ----------- | --------- |-------------------------------------------|
-| `--args`    |           | comma separated process `--args=-t,build` |
-| `--verbose` | `-v`      | Show verbose output                       |
-| `--noPatch` | `-p`      | Don't patch the Nx sourcecode             |
-| `--outDir`  | `-d`      | Output directory                          |
-| `--outFile` | `-f`      | Output file                               |
-
-**Example**
-
-```sh
-node ./tools/nx-advanced-profile.bin.js --args=show,projects
-node ./tools/nx-advanced-profile.bin.js --args=show,projects --verbose
-node ./tools/nx-advanced-profile.bin.js -v -p -o./tools/demo -f=nx-show-projects.json
-```
+> **⚠️ DEPRECATION NOTICE:** `@push-based/nx-perf` is an older or more rough version to profile Nx processes. `@push-based/cpu-prof` 🚀 is the more current and general-purpose tool for CPU profiling and is **highly recommended** for Nx projects.

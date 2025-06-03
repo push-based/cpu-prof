@@ -29,6 +29,21 @@
     },
     {
       "path": "./dummy/pkg-4"
+    },
+    {
+      "path": "./testing/vitest-setup"
+    },
+    {
+      "path": "./testing/setup"
+    },
+    {
+      "path": "./testing/utils"
+    },
+    {
+      "path": "./packages/cpu-prof-e2e"
+    },
+    {
+      "path": "./packages/cpu-prof"
     }
   ]
 }

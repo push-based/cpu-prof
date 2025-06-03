@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "children": [2]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "valley_peak",
+        "scriptId": "1-valley",
+        "url": "file:///valley.js",
+        "lineNumber": 1,
+        "columnNumber": 0
+      },
+      "parent": 1,
+      "children": [3]
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "valley_slope",
+        "scriptId": "1-valley",
+        "url": "file:///valley.js",
+        "lineNumber": 2,
+        "columnNumber": 0
+      },
+      "parent": 2,
+      "children": [4]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "valley_bottom",
+        "scriptId": "1-valley",
+        "url": "file:///valley.js",
+        "lineNumber": 3,
+        "columnNumber": 0
+      },
+      "parent": 3
+    }
+  ],
+  "startTime": 1,
+  "endTime": 70,
+  "samples": [1, 2, 4, 1, 4, 2],
+  "timeDeltas": [0, 10, 10, 10, 10, 10]
+}

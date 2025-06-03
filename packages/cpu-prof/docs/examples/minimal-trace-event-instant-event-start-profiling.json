@@ -1,0 +1,74 @@
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "id": "0x1",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "args": {
+        "data": {
+          "startTime": 1
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x1",
+      "ph": "P",
+      "pid": 1,
+      "tid": 1,
+      "ts": 0,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {},
+                "children": [2]
+              },
+              {
+                "id": 2,
+                "callFrame": {}
+              }
+            ],
+            "samples": [2]
+          },
+          "timeDeltas": [10]
+        }
+      }
+    },
+    {
+      "cat": "disabled-by-default-v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "I",
+      "pid": 1,
+      "tid": 1,
+      "ts": 20,
+      "args": {
+        "data": {
+          "endTime": 20
+        }
+      }
+    }
+  ]
+}
