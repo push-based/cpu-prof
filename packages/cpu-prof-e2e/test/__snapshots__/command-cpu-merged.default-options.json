@@ -110,9 +110,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -124,9 +122,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -138,9 +134,7 @@
                   "columnNumber": 0
                 },
                 "parent": 2,
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -154,23 +148,9 @@
                 "parent": 3
               }
             ],
-            "samples": [
-              1,
-              4,
-              4,
-              4,
-              4,
-              1
-            ]
+            "samples": [1, 4, 4, 4, 4, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -237,9 +217,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -250,9 +228,7 @@
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -263,9 +239,7 @@
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -279,27 +253,9 @@
                 "children": []
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              4,
-              3,
-              2,
-              1,
-              1
-            ]
+            "samples": [1, 2, 3, 4, 3, 2, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10, 0]
         }
       }
     },

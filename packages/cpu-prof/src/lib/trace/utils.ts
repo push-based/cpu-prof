@@ -19,7 +19,7 @@ import {
   getCommitLoadTraceEvent,
 } from './trace-event-creators';
 import { getSmallestPidTidProfileInfo } from '../cpu/profile-selection';
-import {decodeCmd} from "../utils/encode-command-data";
+import { decodeCmd } from '../utils/encode-command-data';
 
 export function cpuProfileToTraceProfileEvents(
   cpuProfile: CPUProfile,
@@ -83,7 +83,11 @@ export function cpuProfilesToTraceFile(
 
   if (startTracingInBrowser) {
     // const url =  'about:blank';
-    const url = mainProfileInfo?.prefix === 'CPU' ? 'cpu:profile' : 'cpu: '+ decodeCmd((mainProfileInfo?.prefix ?? '')?.replace('MAIN-CPU--', ''));
+    const url =
+      mainProfileInfo?.prefix === 'CPU'
+        ? 'cpu:profile'
+        : 'cpu: ' +
+          decodeCmd((mainProfileInfo?.prefix ?? '')?.replace('MAIN-CPU--', ''));
     const startTime = mainProfileInfo.cpuProfile.startTime;
     allEvents = [
       getThreadNameTraceEvent(mainPid, mainTid, 'CrRendererMain'),

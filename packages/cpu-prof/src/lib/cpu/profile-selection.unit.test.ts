@@ -61,7 +61,9 @@ const createTestProfileInfo = (overrides = {}) => ({
 
 describe('getMainProfileInfo', () => {
   it('should throw error when no CPU profiles are provided', () => {
-    expect(() => getSmallestPidTidProfileInfo([])).toThrow('No CPU profiles provided');
+    expect(() => getSmallestPidTidProfileInfo([])).toThrow(
+      'No CPU profiles provided'
+    );
   });
 
   it('should select profile with lowest pid as main profile', () => {

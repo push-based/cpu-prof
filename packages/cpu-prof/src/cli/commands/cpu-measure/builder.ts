@@ -31,8 +31,9 @@ export const measureCommand: CommandModule<{}, MeasureArgs> = {
         type: 'string',
         normalize: true,
       })
-        .option('flagMain', {
-        describe: 'Adds prefix and command args to the profile name of the initial process.',
+      .option('flagMain', {
+        describe:
+          'Adds prefix and command args to the profile name of the initial process.',
         type: 'boolean',
         default: false,
       })

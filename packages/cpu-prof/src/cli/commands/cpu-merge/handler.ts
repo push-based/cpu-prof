@@ -4,7 +4,7 @@ import { join } from 'path';
 import type { MergeArgs, ProcessedMergeArgs } from './types';
 import { processArgs } from './args-processor';
 import { mergeCpuProfileFiles } from '../../../lib/merge-cpuprofile-files';
-import * as console from "node:console";
+import * as console from 'node:console';
 
 /**
  * Handle the merge command execution
@@ -46,7 +46,8 @@ async function handleCpuProfileMerge(
     console.log(`🔧 Merging CPU profile files from: ${inputDir}`);
     console.log(`📄 Output file: ${outputFilePath}`);
     smosh && console.log('✅ Smosh processes for better DX');
-    startTracingInBrowser && console.log(`✅ Highlight process ${startTracingInBrowser}`)
+    startTracingInBrowser &&
+      console.log(`✅ Highlight process ${startTracingInBrowser}`);
   }
 
   // Use the existing mergeCpuProfileFiles function with the full file path
