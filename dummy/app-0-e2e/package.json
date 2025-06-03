@@ -1,10 +1,10 @@
 {
-  "name": "@nx-advanced-perf-logging/app-0-e2e",
+  "name": "@dummy/app-0-e2e",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@nx-advanced-perf-logging/app-0"
+      "@dummy/app-0"
     ],
     "targets": {
       "e2e": {
@@ -17,7 +17,7 @@
           "passWithNoTests": true
         },
         "dependsOn": [
-          "@nx-advanced-perf-logging/app-0:build"
+          "@dummy/app-0:build"
         ]
       }
     }

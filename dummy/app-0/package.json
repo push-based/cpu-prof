@@ -1,5 +1,5 @@
 {
-  "name": "@nx-advanced-perf-logging/app-0",
+  "name": "@dummy/app-0",
   "version": "0.0.1",
   "private": true,
   "nx": {
@@ -48,15 +48,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@nx-advanced-perf-logging/app-0:build",
+          "buildTarget": "@dummy/app-0:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@nx-advanced-perf-logging/app-0:build:development"
+            "buildTarget": "@dummy/app-0:build:development"
           },
           "production": {
-            "buildTarget": "@nx-advanced-perf-logging/app-0:build:production"
+            "buildTarget": "@dummy/app-0:build:production"
           }
         }
       },

@@ -1,21 +1,27 @@
-import { CpuProfileInfo } from './cpuprofile.types';
+import {CpuProfileInfo} from './cpuprofile.types';
 
 export function getMainProfileInfo(
-  cpuProfileInfos: CpuProfileInfo[]
+    cpuProfileInfos: CpuProfileInfo[]
 ): CpuProfileInfo {
-  if (cpuProfileInfos.length === 0) {
-    throw new Error('No CPU profiles provided');
-  }
-
-  return cpuProfileInfos.reduce((best, current) => {
-    if (current.pid < best.pid) {
-      return current;
+    if (cpuProfileInfos.length === 0) {
+        throw new Error('No CPU profiles provided');
     }
 
-    if (current.pid === best.pid && current.tid < best.tid) {
-      return current;
+    const flaggedProfile = cpuProfileInfos
+        .find(({prefix}) => prefix?.startsWith('MAIN-CPU--'));
+    if (flaggedProfile) {
+        return flaggedProfile;
     }
 
-    return best;
-  });
+    return cpuProfileInfos.reduce((best, current) => {
+        if (current.pid < best.pid) {
+            return current;
+        }
+
+        if (current.pid === best.pid && current.tid < best.tid) {
+            return current;
+        }
+
+        return best;
+    });
 }

@@ -28,7 +28,7 @@ export default defineConfig(() => ({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: '@nx-advanced-perf-logging/pkg-4',
+      name: '@dummy/pkg-4',
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.

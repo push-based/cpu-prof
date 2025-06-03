@@ -6,6 +6,6 @@ export interface MeasureArgs {
   cpuProfDir?: string;
   'cpu-prof-name'?: string;
   cpuProfName?: string;
-  commandToRun?: string;
+  commandToProfile?: string;
   [key: string]: any;
 }

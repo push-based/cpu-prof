@@ -10,7 +10,7 @@ const swcJestConfig = JSON.parse(
 swcJestConfig.swcrc = false;
 
 export default {
-  displayName: '@nx-advanced-perf-logging/app-0',
+  displayName: '@dummy/app-0',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {

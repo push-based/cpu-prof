@@ -86,8 +86,10 @@ export function getCpuProfileName(
   const cleanExtension = extension.startsWith('.')
     ? extension.slice(1)
     : extension;
-
-  return `${prefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
+   const preparedPrefix = prefix
+       // Remove leading/trailing whitespace, replace spaces with dashes, and remove non-alphanumeric characters
+       .replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '-');
+  return `${preparedPrefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
 }
 
 /**
