@@ -205,8 +205,7 @@ describe('cpuProfilesToTraceFile', () => {
     pid: 1,
     tid: 0,
     startDate: new Date('2023-01-01T00:00:00Z'),
-    sourceFilePath: '/test/profile.cpuprofile',
-    execArgs: ['node', 'test.js'],
+    file: '/test/profile.cpuprofile',
     ...overrides,
   });
 
@@ -263,10 +262,16 @@ describe('cpuProfilesToTraceFile', () => {
       stairUpProfileInfo,
     ]) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(10);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // pyramideProfileInfo events
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'P:1, T:0' },
+        }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 1,
@@ -280,6 +285,12 @@ describe('cpuProfilesToTraceFile', () => {
           tid: 0,
         }),
         // stairUpProfileInfo events
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 2,
+          tid: 1,
+          args: { name: 'P:2, T:1' },
+        }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 2,
@@ -299,10 +310,16 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'all',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(10);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
         // All events should have pid: 1, tid: 0 (from mainProfileInfo)
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'P:1, T:0' },
+        }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 1,
@@ -314,6 +331,12 @@ describe('cpuProfilesToTraceFile', () => {
           name: 'CpuProfiler::StopProfiling',
           pid: 1,
           tid: 0,
+        }),
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'P:1, T:0' },
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
@@ -334,9 +357,15 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'pid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(10);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'P:1, T:0' },
+        }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 1,
@@ -348,6 +377,12 @@ describe('cpuProfilesToTraceFile', () => {
           name: 'CpuProfiler::StopProfiling',
           pid: 1,
           tid: 0,
+        }),
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 1,
+          args: { name: 'P:1, T:1' },
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
@@ -368,9 +403,15 @@ describe('cpuProfilesToTraceFile', () => {
       smosh: 'tid',
     }) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(8);
+    expect(result.traceEvents).toHaveLength(10);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'P:1, T:0' },
+        }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 1,
@@ -382,6 +423,12 @@ describe('cpuProfilesToTraceFile', () => {
           name: 'CpuProfiler::StopProfiling',
           pid: 1,
           tid: 0,
+        }),
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 2,
+          tid: 0,
+          args: { name: 'P:2, T:0' },
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
