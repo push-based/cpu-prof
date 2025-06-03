@@ -18,6 +18,20 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     ['flag-main']: flagMain2,
     ...commandOptions
   } = options;
+
+  // Determine the actual command to profile
+  const cmdToRun = // Case 1: Explicit 'measure' command is used.
+    // Example: `cpu-prof measure npm -v`
+    // Here, `commandToProfile` will be `['npm', '-v']`.
+    (
+      commandToProfile && commandToProfile.length > 0
+        ? commandToProfile
+        : // Case 2: Default command ('*') is used (i.e., 'measure' is not explicitly typed).
+          // Example: `cpu-prof npm -v`
+          // Here, `positionalArgs` (argv._) will be `['npm', '-v']`.
+          positionalArgs
+    ) as string[];
+
   const nodeOptions = {
     ...(cpuProfDir ? { cpuProfDir } : {}),
     ...(cpuProfInterval ? { cpuProfInterval } : {}),
@@ -25,18 +39,14 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     ...(flagMain ? { flagMain } : {}),
   };
 
-  if (
-    !commandToProfile ||
-    !Array.isArray(commandToProfile) ||
-    commandToProfile.length === 0
-  ) {
+  if (!cmdToRun || !Array.isArray(cmdToRun) || cmdToRun.length === 0) {
     console.error(
-      '❌ Error: No command or script provided to profile. Usage: cpu-measure <command_or_script.js> [args...]'
+      '❌ Error: No command or script provided to profile. Usage: measure <command_or_script.js> [args...]'
     );
     process.exit(1);
   }
 
-  const [actualCommand, ...actualCommandArgs] = commandToProfile;
+  const [actualCommand, ...actualCommandArgs] = cmdToRun;
 
   // Filter commandOptions to prefer kebab-case and remove duplicate camelCase keys
   const filteredCommandOptions = filterCliOptions(commandOptions);
