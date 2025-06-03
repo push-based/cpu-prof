@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getMainProfileInfo } from './profile-selection';
+import { getSmallestPidTidProfileInfo } from './profile-selection';
 import { CPUProfile } from './cpuprofile.types';
 
 // Mock CPU profile data (based on stair-up.cpuprofile.json structure)
@@ -61,7 +61,7 @@ const createTestProfileInfo = (overrides = {}) => ({
 
 describe('getMainProfileInfo', () => {
   it('should throw error when no CPU profiles are provided', () => {
-    expect(() => getMainProfileInfo([])).toThrow('No CPU profiles provided');
+    expect(() => getSmallestPidTidProfileInfo([])).toThrow('No CPU profiles provided');
   });
 
   it('should select profile with lowest pid as main profile', () => {
@@ -71,7 +71,7 @@ describe('getMainProfileInfo', () => {
       createTestProfileInfo({ pid: 10003, tid: 20003 }),
     ];
 
-    const result = getMainProfileInfo(profiles);
+    const result = getSmallestPidTidProfileInfo(profiles);
     expect(result.pid).toBe(10001);
   });
 
@@ -82,7 +82,7 @@ describe('getMainProfileInfo', () => {
       createTestProfileInfo({ pid: 10001, tid: 20003 }),
     ];
 
-    const result = getMainProfileInfo(profiles);
+    const result = getSmallestPidTidProfileInfo(profiles);
     expect(result.tid).toBe(20001);
   });
 
@@ -93,7 +93,7 @@ describe('getMainProfileInfo', () => {
       createTestProfileInfo({ pid: 10001, tid: 20001 }),
     ];
 
-    const result = getMainProfileInfo(profiles);
+    const result = getSmallestPidTidProfileInfo(profiles);
     expect(result).toBe(firstProfile);
   });
 });

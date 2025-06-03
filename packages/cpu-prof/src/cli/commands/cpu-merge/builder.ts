@@ -35,6 +35,12 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
       type: 'boolean',
       default: false,
     })
+    .option('focusMain', {
+      describe:
+        'Shorthand for --smosh and --startTracingInBrowser. Focuses on the main thread and prepares for browser DevTools.',
+      type: 'boolean',
+      default: true,
+    })
     .option('verbose', {
       alias: 'v',
       describe: 'Enable verbose logging',
@@ -57,6 +63,11 @@ export function builder(yargs: Argv): Argv<MergeArgs> {
 
       if (inputDirectory && !directoryExists(inputDirectory)) {
         throw new Error(`Input directory does not exist: ${inputDirectory}`);
+      }
+
+      if (argv.focusMain) {
+        argv.smosh = true;
+        argv.startTracingInBrowser = true;
       }
 
       return true;

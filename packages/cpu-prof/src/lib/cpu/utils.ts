@@ -10,7 +10,7 @@ export type CpuProfileNameOptions = {
 const cpuProfileSeqMap = new Map();
 
 export type CpuProfileFileName =
-  `${string}.${string}.${string}.${number}.${number}.${number}.cpuprofile}`;
+  `${string}.${string}.${string}.${number}.${number}.${number}.cpuprofile}` | string;
 
 /**
  * CPU profile filename pattern for validation and parsing

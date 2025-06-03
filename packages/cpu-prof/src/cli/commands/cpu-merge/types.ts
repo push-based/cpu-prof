@@ -5,6 +5,7 @@ export interface MergeArgs {
   verbose?: boolean;
   smosh?: boolean;
   startTracingInBrowser?: boolean;
+  focusMain?: boolean;
 }
 
 export interface ProcessedMergeArgs {

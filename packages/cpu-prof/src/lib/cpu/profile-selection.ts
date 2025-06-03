@@ -1,16 +1,10 @@
 import {CpuProfileInfo} from './cpuprofile.types';
 
-export function getMainProfileInfo(
+export function getSmallestPidTidProfileInfo(
     cpuProfileInfos: CpuProfileInfo[]
 ): CpuProfileInfo {
     if (cpuProfileInfos.length === 0) {
         throw new Error('No CPU profiles provided');
-    }
-
-    const flaggedProfile = cpuProfileInfos
-        .find(({prefix}) => prefix?.startsWith('MAIN-CPU--'));
-    if (flaggedProfile) {
-        return flaggedProfile;
     }
 
     return cpuProfileInfos.reduce((best, current) => {

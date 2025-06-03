@@ -18,7 +18,7 @@ import {
   getThreadNameTraceEvent,
   getCommitLoadTraceEvent,
 } from './trace-event-creators';
-import { getMainProfileInfo } from '../cpu/profile-selection';
+import { getSmallestPidTidProfileInfo } from '../cpu/profile-selection';
 import {decodeCmd} from "../utils/encode-command-data";
 
 export function cpuProfileToTraceProfileEvents(
@@ -75,7 +75,7 @@ export function cpuProfilesToTraceFile(
   const { smosh = 'off', startTracingInBrowser = false } = options ?? {};
 
   // Use custom matcher if provided, otherwise use the default selection logic
-  const mainProfileInfo = getMainProfileInfo(cpuProfileInfos);
+  const mainProfileInfo = getSmallestPidTidProfileInfo(cpuProfileInfos);
 
   const { pid: mainPid, tid: mainTid } = mainProfileInfo;
 

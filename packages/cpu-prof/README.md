@@ -49,7 +49,8 @@ npx @push-based/cpu-prof measure <positionals...> [args...]
 Collects CPU profiles from a Node.js process. It will handle the profiling arguments so you don't need to think about
 the order. Intuitive error messages as well as actionable feedback on how to fix the issue. All profiles end up in the
 same folder independent of the CWD.
-In addition it prints the enriched command to the terminal for to have the plain command visible.
+In addition, it prints the enriched command to the terminal for to have the plain command visible.
+
 
 **Options:**
 | Option | Type | Default | Description |
@@ -57,7 +58,9 @@ In addition it prints the enriched command to the terminal for to have the plain
 | **`--cpu-prof-dir <dir>`** | `string` | `./profiles` | Directory to save the profile |
 | **`--cpu-prof-interval <ms>`**| `number` | (not specified)| The Sampling interval in milliseconds |
 | **`--cpu-prof-name <name>`** | `string` | (auto-generated)| Name of the profile (auto-generated if not specified) |
-| **`--flagMain`** | `boolean` | `false` | Name of the profile (auto-generated if not specified) |
+| **`--flagMain`** | `boolean` | `false` | Main profile is auto-detected by smallest PID TID (**🧪 experimental**) |
+
+> **🧪Note:** Currently, the main process can't be detected automatically, sufficiently.
 
 **Examples:**
 
@@ -147,6 +150,7 @@ combined CPU usage across different processes or time periods. The merged profil
 | **`--outputDir <dir>`** (`-o`)       | `string`  | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified. |
 | **`--startTracingInBrowser`** (`-b`) | `boolean` | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.   |
 | **`--smosh <type>`** (`-s`)          | `boolean` | `true`       | Merge profiles into one PID and indexed TIDs.                                |
+| **`--focusMain`**                    | `boolean` | `false`      | Shorthand for `--smosh` and `--startTracingInBrowser`.                         |
 | **`--verbose`** (`-v`)               | `boolean` | `false`      | Enable verbose logging.                                                      |
 
 **Examples:**

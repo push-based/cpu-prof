@@ -2,11 +2,11 @@ import * as ansis from 'ansis';
 import {executeProcess, type ProcessResult} from '../execute-process';
 import * as process from "node:process";
 import {DaemonBasedTaskHasher} from "nx/src/hasher/task-hasher";
-import {getCpuProfileName} from "./utils";
+import {getCpuProfileName, parseCpuProfileName} from "./utils";
 import {encodeCmd} from "../utils/encode-command-data";
 import {loadCpuProfiles} from "./load-cpu-profiles";
-import {getMainProfileInfo} from "./profile-selection";
-import {join} from 'node:path';
+import {getSmallestPidTidProfileInfo} from "./profile-selection";
+import {basename, join} from 'node:path';
 import {rename} from 'node:fs/promises';
 
 function formatCommandLog(
@@ -67,13 +67,17 @@ export async function runWithCpuProf(
 
         logger.log(`Profiles generated - ${cpuProfDir}`);
 
+        // @TODO ATM the main profile detection is not working correctly as the creation of the profile is independent of the process that created it, (it seems)...
+        // Needs further investigation if true
         if (flagMain) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const profiles = await loadCpuProfiles(cpuProfDir)
-            const mainProfile = getMainProfileInfo(profiles);
+            const mainProfile = getSmallestPidTidProfileInfo(profiles);
             if (mainProfile) {
+                const {pid, tid, seq, date} = parseCpuProfileName(basename(mainProfile.file));
                 const profName = getCpuProfileName({
                     prefix: `MAIN-CPU--${encodeCmd(command, argsArray)}`,
-                    pid: process.pid
+                    pid, tid, seq, date
                 });
 
                 await rename(mainProfile.file, join(cpuProfDir, profName))
