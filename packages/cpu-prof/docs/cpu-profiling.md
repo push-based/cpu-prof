@@ -84,6 +84,11 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 
 ### Troubleshooting
 
+#### What, of the many profiles is the main process
+
+Based on the file naming and the nature of process id assignment, the main process has always the smallest PID and TID is 0 and is at the end of an alphabetically sorted folder.
+**The main process is the last file in the folder.**
+
 #### My profile files are appearing on different places in the file system based on the cwd of every process.
 
 This is because of the way Node.js handles the `--cpu-prof` flag. It will use the CWD of the process to determine the location of the profile file. To avoid this, you can use --cpu-prof-dir with a absolute path.
@@ -160,7 +165,11 @@ node --require ./cpu-prof.js -e "console.log('CPU')"
 
 The date and time are from when wall-clock write time (when the profile was flushed).
 
-### Process and Thread IDs
+#### Date and Time
+
+The date and time is, roughly the time of the process creation. It is not the time of writing the file to the file system.
+
+#### Process and Thread IDs
 
 The CPU profile filename includes both a Process ID (PID) and a Thread ID (TID). Understanding how these IDs are generated is crucial for interpreting profile files, especially in applications involving multiple processes or worker threads.
 
@@ -175,7 +184,7 @@ node -p "const { threadId } = require('node:worker_threads'); 'PID: ' + process.
 Output:
 `PID: 51430 TID: 0`
 
-### What Determines the Process ID (PID)?
+##### What Determines the Process ID (PID)?
 
 - Represents the **OS-level process ID**.
 - A new PID is generated each time a new process is created. Common ways to create new processes in Node.js include:
@@ -197,10 +206,12 @@ console.log('Parent PID:' , process.pid, 'TID:', t);
 "
 ```
 
-Output (order may vary slightly due to asynchronous nature):
+Output (order of spawn children may vary slightly due to asynchronous nature):
 `Parent PID: 51430 TID: 0`
 `spawn PID: 51431 TID: 0`
 `spawn PID: 51432 TID: 0`
+
+> Note: The process id `process.pid` is increments only and the initial process is always the smallest PID and TID is 0.
 
 If `--cpu-prof` is added to the command (e.g., `node --cpu-prof script.js`), CPU profiles would be generated for the parent process and each child process, distinguishable by their PIDs in the filenames:
 
@@ -208,7 +219,7 @@ If `--cpu-prof` is added to the command (e.g., `node --cpu-prof script.js`), CPU
 - `CPU.<timestamp>.51431.0.002.cpuprofile` (First child process)
 - `CPU.<timestamp>.51432.0.003.cpuprofile` (Second child process)
 
-### What Determines the Thread ID (TID)?
+##### What Determines the Thread ID (TID)?
 
 - Represents V8's internal thread identifier.
 - By default, Node.js applications run in a single main thread, which typically has a TID of `0`.
@@ -236,6 +247,11 @@ If `--cpu-prof` is used with this script, profiles are generated for the main th
 - `CPU.<timestamp>.51430.0.001.cpuprofile` (Main thread)
 - `CPU.<timestamp>.51430.1.002.cpuprofile` (Worker 1)
 - `CPU.<timestamp>.51430.2.003.cpuprofile` (Worker 2)
+
+#### Sequence number
+
+The sequence number (`.001`, `.002`, etc.) in the filename is incremented for each profile generated during the same execution, ensuring uniqueness even if multiple treads are profiled, in the same process.
+Note, this is NOT A GLOBAL UNIQUE ID. It is only unique for the current process.
 
 ### CPU Profiling Arguments
 
