@@ -11,17 +11,19 @@ Measure, drag & drop into Chrome, voilà.
 ## Features
 
 - **CPU Profiling Support**:
-  - Smart defaults to reduce friction
-  - Intuitive error messages as well as actionable feedback on how to fix the issue
-  - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
-  - All profiles can be dragged and dropped into Chrome DevTools
+    - Smart defaults to reduce friction
+    - Intuitive error messages as well as actionable feedback on how to fix the issue
+    - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+    - All profiles can be dragged and dropped into Chrome DevTools
 - **CPU Profile Analysis**:
-  - Merge multiple CPU profile files into a single trace for easier analysis.
-  - Visualize CPU profiles as Chrome trace files.
-  - Merge multiple CPU profile files into a single trace for easier analysis.
+    - Merge multiple CPU profile files into a single trace for easier analysis.
+    - Visualize CPU profiles as Chrome trace files.
+    - Merge multiple CPU profile files into a single trace for easier analysis.
 - **TypeScript API**:
-  - Programmatic access to all core features.
-  - Use it in your own tools and workflows.
+    - Programmatic access to all core features.
+    - Use it in your own tools and workflows.
+
+> **Example Profile:** [Trace-20250622T203446.json](../cpu-prof-e2e/mocks/minimal/Trace-20250622T203446.json)
 
 ---
 
@@ -51,15 +53,16 @@ the order. Intuitive error messages as well as actionable feedback on how to fix
 same folder independent of the CWD.
 In addition, it prints the enriched command to the terminal for to have the plain command visible.
 
-**Options:**
+**Options:**  
+
 | Option | Type | Default | Description |
 |-------------------------|-----------|----------------|----------------------------------------------|
 | **`--cpu-prof-dir <dir>`** | `string` | `./profiles` | Directory to save the profile |
 | **`--cpu-prof-interval <ms>`**| `number` | (not specified)| The Sampling interval in milliseconds |
 | **`--cpu-prof-name <name>`** | `string` | (auto-generated)| Name of the profile (auto-generated if not specified) |
-| **`--flagMain`** | `boolean` | `false` | Main profile is auto-detected by smallest PID TID (**🧪 experimental**) |
-
-> **🧪Note:** Currently, the main process can't be detected automatically, sufficiently.
+| **`--flagMain`** | `boolean` | `true` | Adds prefix and command args to the profile name of the initial process |
+| **`--merge`** | `boolean` | `true` | Merge the profile into a single file. You can run the command separately by
+passing false and using the merge command |
 
 **Examples:**
 
@@ -71,6 +74,7 @@ In addition, it prints the enriched command to the terminal for to have the plai
 - `cpu-prof measure npx eslint ./eslint.config.mjs` - Profile eslint getConfig + linting
 - `cpu-prof measure nx show projects` - Profile Nx ProjsetGraph
 - `cpu-prof measure nx show project cpu-prof --json` - Profile Nx TaskGraph
+- `cpu-prof measure --no-merge node ./script.js` - Profile without automatic merging
 
 #### Added DX for profiling
 
@@ -114,17 +118,17 @@ Now all of them are in one place:
 ```text
 /root
 └── profiles
-    ├── CPU.20250601.191007.42154.0.001.cpuprofile
+    ├── MAIN-CPU--<command>.20250601.191007.42154.0.001.cpuprofile
     ├── CPU.20250601.191007.42154.0.002.cpuprofile
     ├── CPU.20250601.191007.42154.0.003.cpuprofile
     └── CPU.20250601.191007.42154.0.004.cpuprofile
 ```
 
-### `merge` command
+### `merge <inputDir>` command
 
 | All processes on Overview                                                                         | Selected Process Details                                                                               |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| ![merge-processes-and-threads--overview.png](docs/imgs/merge-processes-and-threads--overview.png) | ![merge-processes-and-threads--overview.png](docs/imgs/merge-processes-and-threads--overview-open.png) |
+|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| ![merge-processes-and-threads--overview.png](docs/imgs/merge-processes-and-threads--overview.png) | ![merge-processes-and-threads--overview-open.png](docs/imgs/merge-processes-and-threads--overview-open.png) |
 
 **Usage:**
 
@@ -139,17 +143,17 @@ combined CPU usage across different processes or time periods. The merged profil
 **Arguments:**
 
 | Argument         | Type     | Default | Description                                     |
-| ---------------- | -------- | ------- | ----------------------------------------------- |
+|------------------|----------|---------|-------------------------------------------------|
 | **`<inputDir>`** | `string` |         | Directory containing CPU profile files to merge |
 
 **Options:**
 
 | Option                               | Type      | Default      | Description                                                                  |
-| ------------------------------------ | --------- | ------------ | ---------------------------------------------------------------------------- |
+|--------------------------------------|-----------|--------------|------------------------------------------------------------------------------|
 | **`--outputDir <dir>`** (`-o`)       | `string`  | `<inputDir>` | Output directory for merged profiles. Defaults to inputDir if not specified. |
-| **`--startTracingInBrowser`** (`-b`) | `boolean` | `true`       | Include `TracingStartedInBrowser` event for better DevTools visualization.   |
-| **`--smosh <type>`** (`-s`)          | `boolean` | `true`       | Merge profiles into one PID and indexed TIDs.                                |
-| **`--focusMain`**                    | `boolean` | `false`      | Shorthand for `--smosh` and `--startTracingInBrowser`.                       |
+| **`--startTracingInBrowser`** (`-b`) | `boolean` | `false`      | Include `TracingStartedInBrowser` event for better DevTools visualization.   |
+| **`--smosh <type>`** (`-s`)          | `boolean` | `false`      | Merge profiles into one PID and indexed TIDs.                                |
+| **`--focusMain`**                    | `boolean` | `true`       | Shorthand for `--smosh` and `--startTracingInBrowser`.                       |
 | **`--verbose`** (`-v`)               | `boolean` | `false`      | Enable verbose logging.                                                      |
 
 **Examples:**
@@ -157,6 +161,7 @@ combined CPU usage across different processes or time periods. The merged profil
 - `cpu-prof merge ./path/to/profiles` - Merge all profiles from a directory
 - `cpu-prof merge ./profiles -o ./merged-profiles` - Merge profiles and save to a different output directory
 - `cpu-prof merge ./profiles --smosh` - Merge profiles with PID and TID normalization
+- `cpu-prof merge ./profiles --no-focus-main` - Merge profiles without focus main behavior
 
 #### Added DX for profiling
 
@@ -168,23 +173,29 @@ cpu-prof merge
 ```
 
 By default, the CPU profiles will get merged as they are, no changes to the PIDs or TIDs.
-To have a better DX when navigation the DevTools performance panels lanes you can use `--smosh` to merge the profiles
-into the same `pid` / `tid`.
+This is done to have a better DX when navigation the DevTools performance panels lanes.
+The CLI shorthand options `--focusMain` (default `true`) is responsible for this behavior.
 
-| Option       | Original                                         | Merged                                           |
-| ------------ | ------------------------------------------------ | ------------------------------------------------ |
-| `--smosh`    | <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-pid.png"> |
-| `--no-smosh` | <img src="./docs/imgs/cli-merge--smosh-off.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
+| `--smosh`                                        | `--no-smosh`                                     |
+|--------------------------------------------------|--------------------------------------------------|
+| <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--smosh-off.png"> |
+
+If we could detect the main process we could also add the `--startTracingInBrowser` flag to add the
+`TracingStartedInBrowser` event to the profile.
+This is useful for better DevTools visualization.
+
+| `--startTracingInBrowser`                                         | `--no-startTracingInBrowser`                                      |
+|-------------------------------------------------------------------|-------------------------------------------------------------------|
+| <img src="./docs/imgs/cli-merge--smosh-pid.png"> | <img src="./docs/imgs/cli-merge--startTracingInBrowser-true.png"> |
 
 ##### Documentation features across Lanes
 
 | Annotation Spans Across Lanes                                                                                                   | Frame Comments in Detail                                                                                                                         | Sort and Hied Tracks                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+|---------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | ![docs/imgs/merge-annotations-across-processes-and-threads.png](./docs/imgs/merge-annotations-across-processes-and-threads.png) | ![docs/imgs/merge-annotations-across-processes-and-threads--details.png](./docs/imgs/merge-annotations-across-processes-and-threads--detail.png) | ![docs/imgs/merge-sort-and-hide-processes-and-threads.png](./docs/imgs/merge-sort-and-hide-processes-and-threads.png) |
 
 ## Additional Resources
 
 - [CPU Profiling](./docs/cpu-profiling.md) - How to use the CLI and the API
-- [Chrome Trace Viewer](https://ui.perfetto.dev/) - How to visualize the profiles
 - [Node.js CPU Profiling](https://nodejs.org/api/perf_hooks.html#performanceprofiling) - Node.js API for Profiling
 - [Node.js --cpu-prof](https://nodejs.org/docs/v22.16.0/api/cli.html#--cpu-prof) - Node.js API for CPU Profiling args

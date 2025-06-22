@@ -1,0 +1,988 @@
+{
+  "metadata": {
+    "source": "DevTools",
+    "startTime": "2025-06-22T20:34:46.418Z",
+    "hardwareConcurrency": 1,
+    "dataOrigin": "TraceEvents"
+  },
+  "traceEvents": [
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10001"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10001"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "CrRendererMain"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10002"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10002"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10003"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10003"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10004"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10004"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 0,
+      "args": {
+        "name": "WorkerThread: pid:10004, tid:1"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 0,
+      "args": {
+        "name": "WorkerThread: pid:10004, tid:1"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 0,
+      "args": {
+        "name": "WorkerThread: pid:10004, tid:2"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 0,
+      "args": {
+        "name": "WorkerThread: pid:10004, tid:2"
+      }
+    },
+    {
+      "args": {
+        "data": {
+          "frame": "FRAME0P10001T0",
+          "isMainFrame": true,
+          "isOutermostMainFrame": true,
+          "name": "",
+          "page": "FRAME0P10001T0",
+          "url": "cpu: node script.js --all"
+        }
+      },
+      "cat": "devtools.timeline",
+      "dur": 10,
+      "name": "CommitLoad",
+      "ph": "X",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 99999999999
+    },
+    {
+      "cat": "devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "I",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 99999999999,
+      "s": "t",
+      "args": {
+        "data": {
+          "frameTreeNodeId": 1000100,
+          "frames": [
+            {
+              "frame": "FRAME0P10001T0",
+              "isInPrimaryMainFrame": true,
+              "isOutermostMainFrame": true,
+              "name": "",
+              "processId": 10001,
+              "url": "Process: pid:10001"
+            }
+          ],
+          "persistentIds": true
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 100000000000,
+      "args": {
+        "data": {
+          "startTime": 100000000000
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100010",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 100000000000,
+      "args": {
+        "data": {
+          "startTime": 100000000000
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100010",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 100000000000,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2,
+                  4
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "L1_A",
+                  "scriptId": "1-alternate",
+                  "url": "file:///alternating-peaks.js",
+                  "lineNumber": 9,
+                  "columnNumber": 0
+                },
+                "parent": 1,
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "alternating_peakA",
+                  "scriptId": "1-alternate",
+                  "url": "file:///alternating-peaks.js",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                },
+                "parent": 2
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "L1_B",
+                  "scriptId": "1-alternate",
+                  "url": "file:///alternating-peaks.js",
+                  "lineNumber": 19,
+                  "columnNumber": 0
+                },
+                "parent": 1,
+                "children": [
+                  5
+                ]
+              },
+              {
+                "id": 5,
+                "callFrame": {
+                  "functionName": "alternating_peakB",
+                  "scriptId": "1-alternate",
+                  "url": "file:///alternating-peaks.js",
+                  "lineNumber": 20,
+                  "columnNumber": 0
+                },
+                "parent": 4,
+                "children": [
+                  6
+                ]
+              },
+              {
+                "id": 6,
+                "callFrame": {
+                  "functionName": "alternating_peakC",
+                  "scriptId": "1-alternate",
+                  "url": "file:///alternating-peaks.core.js",
+                  "lineNumber": 29,
+                  "columnNumber": 0
+                },
+                "parent": 5
+              }
+            ],
+            "samples": [
+              1,
+              3,
+              1,
+              6,
+              1,
+              3,
+              1,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 100000000040,
+      "args": {
+        "data": {
+          "startTime": 100000000040
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100012",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 100000000040,
+      "args": {
+        "data": {
+          "startTime": 100000000040
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100012",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 100000000040,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "flatLine_L1",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.js",
+                  "lineNumber": 4,
+                  "columnNumber": 0
+                },
+                "parent": 1,
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "flatLine_L2",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.core.js",
+                  "lineNumber": 5,
+                  "columnNumber": 0
+                },
+                "parent": 2,
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "flatLine_Task",
+                  "scriptId": "1-flat-line",
+                  "url": "file:///flat-line.utils.js",
+                  "lineNumber": 6,
+                  "columnNumber": 0
+                },
+                "parent": 3
+              }
+            ],
+            "samples": [
+              1,
+              4,
+              4,
+              4,
+              4,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 0,
+      "ts": 100000000070,
+      "args": {
+        "data": {
+          "endTime": 100000000070
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 2,
+      "ts": 100000000090,
+      "args": {
+        "data": {
+          "endTime": 100000000090
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "startTime": 100000000110
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100013",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "startTime": 100000000110
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100013",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 100000000110,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "step-1",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.js",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "step-2",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.core.js",
+                  "lineNumber": 20,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "step-3",
+                  "scriptId": "1-pyramide",
+                  "url": "file:///pyramide.utils.js",
+                  "lineNumber": 30,
+                  "columnNumber": 0
+                },
+                "children": []
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              3,
+              2,
+              1,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 3,
+      "ts": 100000000180,
+      "args": {
+        "data": {
+          "endTime": 100000000180
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "startTime": 100000000200
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100014",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "startTime": 100000000200
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100014",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "stairDown_S3",
+                  "scriptId": "1-stair-down",
+                  "url": "file:///stair-down.js",
+                  "lineNumber": 1,
+                  "columnNumber": 0
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "stairDown_S2",
+                  "scriptId": "1-stair-down",
+                  "url": "file:///stair-down.js",
+                  "lineNumber": 2,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "stairDown_S1",
+                  "scriptId": "1-stair-down",
+                  "url": "file:///stair-down.utils.js",
+                  "lineNumber": 3,
+                  "columnNumber": 0
+                }
+              }
+            ],
+            "samples": [
+              1,
+              4,
+              3,
+              2,
+              1,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "startTime": 100000000200
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100015",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "startTime": 100000000200
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100015",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 100000000200,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "step-1",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.js",
+                  "lineNumber": 10,
+                  "columnNumber": 0
+                },
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "step-2",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.js",
+                  "lineNumber": 20,
+                  "columnNumber": 0
+                },
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "step-3",
+                  "scriptId": "1-stair-up",
+                  "url": "file:///stair-up.utils.js",
+                  "lineNumber": 30,
+                  "columnNumber": 0
+                },
+                "children": []
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              3,
+              4,
+              1,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 4,
+      "ts": 100000000250,
+      "args": {
+        "data": {
+          "endTime": 100000000250
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 5,
+      "ts": 100000000250,
+      "args": {
+        "data": {
+          "endTime": 100000000250
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StartProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 100000000270,
+      "args": {
+        "data": {
+          "startTime": 100000000270
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "id": "0x100016",
+      "name": "Profile",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 100000000270,
+      "args": {
+        "data": {
+          "startTime": 100000000270
+        }
+      }
+    },
+    {
+      "cat": "v8.cpu_profiler",
+      "name": "ProfileChunk",
+      "id": "0x100016",
+      "ph": "P",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 100000000270,
+      "args": {
+        "data": {
+          "cpuProfile": {
+            "nodes": [
+              {
+                "id": 1,
+                "callFrame": {
+                  "functionName": "(root)",
+                  "scriptId": "0",
+                  "url": "",
+                  "lineNumber": -1,
+                  "columnNumber": -1
+                },
+                "children": [
+                  2
+                ]
+              },
+              {
+                "id": 2,
+                "callFrame": {
+                  "functionName": "valley_peak",
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.js",
+                  "lineNumber": 1,
+                  "columnNumber": 0
+                },
+                "parent": 1,
+                "children": [
+                  3
+                ]
+              },
+              {
+                "id": 3,
+                "callFrame": {
+                  "functionName": "valley_slope",
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.core.js",
+                  "lineNumber": 2,
+                  "columnNumber": 0
+                },
+                "parent": 2,
+                "children": [
+                  4
+                ]
+              },
+              {
+                "id": 4,
+                "callFrame": {
+                  "functionName": "valley_bottom",
+                  "scriptId": "1-valley",
+                  "url": "file:///valley.core.js",
+                  "lineNumber": 3,
+                  "columnNumber": 0
+                },
+                "parent": 3
+              }
+            ],
+            "samples": [
+              1,
+              2,
+              4,
+              1,
+              4,
+              2,
+              1
+            ]
+          },
+          "timeDeltas": [
+            0,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
+        }
+      }
+    },
+    {
+      "cat": "v8",
+      "name": "CpuProfiler::StopProfiling",
+      "dur": 0,
+      "ph": "X",
+      "pid": 10001,
+      "tid": 6,
+      "ts": 100000000340,
+      "args": {
+        "data": {
+          "endTime": 100000000340
+        }
+      }
+    }
+  ]
+}
