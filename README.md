@@ -1,11 +1,14 @@
 # Cpu Profiling - Tools, Docs, Research
 
 - [cpu-prof](./packages/cpu-prof/README.md) 🚀
-- [@push-based/nx-perf](./packages/nx-perf/README.md) 
+- [@push-based/nx-perf](./packages/
+- nx-perf/README.md) 
 
 ## Project Overviews 🌟
 
 ### [@push-based/cpu-prof](./packages/cpu-prof/README.md) 🚀
+
+![cli-merge-focus-main-inc-command-overview.png](packages/cpu-prof/docs/imgs/cli-merge-focus-main-inc-command-overview.png)
 
 This package provides tools for Node.js CPU profiling. It allows users to collect and merge CPU profiles, and visualize them as Chrome trace files. Key features include smart defaults for easier profiling, intuitive error messages, the ability to merge multiple CPU profile files, and a TypeScript API for programmatic access. It offers CLI commands like `measure` to collect profiles and `merge` to combine them. It aims to simplify the usage of Node.js's built-in `--cpu-prof` capabilities and centralizes profile output.
 
