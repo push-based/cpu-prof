@@ -13,9 +13,9 @@ Measure, drag & drop into Chrome, voilà.
 - **CPU Profiling Support**:
     - Smart defaults to reduce friction
     - Intuitive error messages as well as actionable feedback on how to fix the issue
-    - No extra magic, use plain Node CPU profiling over `--cpu-prof` under the hood
+    - _No extra magic_, use plain Node CPU profiling over `--cpu-prof` under the hood
     - All profiles can be dragged and dropped into Chrome DevTools
-- **CPU Profile Analysis**:
+- **🔥CPU Profile Merging🔥**:
     - Merge multiple CPU profile files into a single trace for easier analysis.
     - Visualize CPU profiles as Chrome trace files.
     - Merge multiple CPU profile files into a single trace for easier analysis.
@@ -79,7 +79,7 @@ passing false and using the merge command |
 #### Added DX for profiling
 
 The CLI does nothing special to the existing Node tooling but makes it easier to use.
-By default it will apply ensure cpu profiling arguments are applied to all childprocesses and threads and the fildes end
+By default, it will apply to ensure cpu profiling arguments are applied to all childprocesses and threads and the fildes end
 up in the same directory.
 
 For smart defaults visit the [Troublshooting section](./docs/cpu-profiling.md).
