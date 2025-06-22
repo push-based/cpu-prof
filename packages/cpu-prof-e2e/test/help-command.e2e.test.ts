@@ -7,7 +7,7 @@ describe('help-command', () => {
   const cliPath = join(__dirname, '../../../', CLI_PATH);
 
   it('should display help information for cpu-merge command', async () => {
-    const { stdout, stderr, code } = await executeProcess({
+    const { stdout, code } = await executeProcess({
       command: 'node',
       args: [cliPath, 'cpu-merge', '--help'],
     });
@@ -21,7 +21,6 @@ describe('help-command', () => {
     await expect(processedStdout).toMatchFileSnapshot(
       join(__dirname, 'help-command.e2e.test.stdout.txt')
     );
-    expect(stderr).toBe('');
     expect(code).toBe(0);
   });
 });

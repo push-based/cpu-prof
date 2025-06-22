@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "implicitDependencies": [
-    "@nx-advanced-perf-logging/cpu-prof"
+    "cpu-prof"
   ],
   "targets": {
     "e2e-test": {

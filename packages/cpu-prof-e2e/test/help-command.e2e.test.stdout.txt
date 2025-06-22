@@ -11,6 +11,9 @@ Commands:
   cpu-prof merge <inputDir>               Merge multiple Chrome DevTools trace files or CPU profile
                                           files into a single file
 
+Positionals:
+  commandToProfile  Command and arguments to profile                                        [string]
+
 CPU Measure Options:
       --cpu-prof-dir       Directory to save the profile.
   [string] [default: "[PATH_PLACEHOLDER]"]
@@ -21,7 +24,9 @@ CPU Measure Options:
 Options:
       --version   Show version number                                                      [boolean]
       --flagMain  Adds prefix and command args to the profile name of the initial process.
-                                                                          [boolean] [default: false]
+                                                                           [boolean] [default: true]
+      --merge     Merge the profile into a single file. You can run the command separatly by passing
+                   false and using the merge command.                      [boolean] [default: true]
 
 Examples:
   cpu-prof measure --cpu-prof-dir ./profiles node my  Profile `node my_script.js --arg-for-script` a

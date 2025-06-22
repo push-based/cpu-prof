@@ -9,6 +9,7 @@
       "node",
       "vitest"
     ],
+    "rootDir": "../..",
     "module": "esnext",
     "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
@@ -29,7 +30,8 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
-    "mocks/fixtures/minimal/**/*.json"
+    "mocks/fixtures/minimal/**/*.json",
+    "../../testing/utils/src/lib/string.ts"
   ],
   "references": [
     {

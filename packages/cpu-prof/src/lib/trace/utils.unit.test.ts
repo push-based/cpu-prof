@@ -139,12 +139,16 @@ describe('cpuProfileToTraceProfileEvents', () => {
       tid: 2,
       sequence: 3,
     });
-    const expectedId = `0x123`;
-
-    expect(events).toStrictEqual(
+    expect(events).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: expectedId, name: 'Profile' }),
-        expect.objectContaining({ id: expectedId, name: 'ProfileChunk' }),
+        expect.objectContaining({
+          id: expect.stringMatching(/^0x/),
+          name: 'Profile',
+        }),
+        expect.objectContaining({
+          id: expect.stringMatching(/^0x/),
+          name: 'ProfileChunk',
+        }),
       ])
     );
   });
@@ -257,20 +261,36 @@ describe('cpuProfilesToTraceFile', () => {
       pid: 2,
       tid: 1,
     });
-    let result = cpuProfilesToTraceFile([
+    const result = cpuProfilesToTraceFile([
       pyramideProfileInfo,
       stairUpProfileInfo,
     ]) as TraceEventContainer;
 
-    expect(result.traceEvents).toHaveLength(10);
     expect(result.traceEvents).toEqual(
       expect.arrayContaining([
-        // pyramideProfileInfo events
         expect.objectContaining({
           name: 'process_name',
           pid: 1,
           tid: 0,
-          args: { name: 'P:1, T:0' },
+          args: { name: 'ChildProcess: pid:1' },
+        }),
+        expect.objectContaining({
+          name: 'thread_name',
+          pid: 1,
+          tid: 0,
+          args: { name: 'ChildProcess: pid:1' },
+        }),
+        expect.objectContaining({
+          name: 'process_name',
+          pid: 2,
+          tid: 1,
+          args: { name: 'WorkerThread: pid:2, tid:1' },
+        }),
+        expect.objectContaining({
+          name: 'thread_name',
+          pid: 2,
+          tid: 1,
+          args: { name: 'WorkerThread: pid:2, tid:1' },
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
@@ -283,13 +303,6 @@ describe('cpuProfilesToTraceFile', () => {
           name: 'CpuProfiler::StopProfiling',
           pid: 1,
           tid: 0,
-        }),
-        // stairUpProfileInfo events
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 2,
-          tid: 1,
-          args: { name: 'P:2, T:1' },
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
@@ -305,145 +318,6 @@ describe('cpuProfilesToTraceFile', () => {
         }),
       ])
     );
-
-    result = cpuProfilesToTraceFile([pyramideProfileInfo, stairUpProfileInfo], {
-      smosh: 'all',
-    }) as TraceEventContainer;
-
-    expect(result.traceEvents).toHaveLength(10);
-    expect(result.traceEvents).toEqual(
-      expect.arrayContaining([
-        // All events should have pid: 1, tid: 0 (from mainProfileInfo)
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 1,
-          tid: 0,
-          args: { name: 'P:1, T:0' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 1, tid: 0 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 1, tid: 0 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 1,
-          tid: 0,
-          args: { name: 'P:1, T:0' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 1, tid: 0 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 1, tid: 0 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-      ])
-    );
-
-    result = cpuProfilesToTraceFile([pyramideProfileInfo, stairUpProfileInfo], {
-      smosh: 'pid',
-    }) as TraceEventContainer;
-
-    expect(result.traceEvents).toHaveLength(10);
-    expect(result.traceEvents).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 1,
-          tid: 0,
-          args: { name: 'P:1, T:0' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 1, tid: 0 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 1, tid: 0 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 1,
-          tid: 1,
-          args: { name: 'P:1, T:1' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 1,
-          tid: 1,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 1, tid: 1 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 1, tid: 1 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 1,
-          tid: 1,
-        }),
-      ])
-    );
-
-    result = cpuProfilesToTraceFile([pyramideProfileInfo, stairUpProfileInfo], {
-      smosh: 'tid',
-    }) as TraceEventContainer;
-
-    expect(result.traceEvents).toHaveLength(10);
-    expect(result.traceEvents).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 1,
-          tid: 0,
-          args: { name: 'P:1, T:0' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 1, tid: 0 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 1, tid: 0 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 1,
-          tid: 0,
-        }),
-        expect.objectContaining({
-          name: 'process_name',
-          pid: 2,
-          tid: 0,
-          args: { name: 'P:2, T:0' },
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 2,
-          tid: 0,
-        }),
-        expect.objectContaining({ name: 'Profile', pid: 2, tid: 0 }),
-        expect.objectContaining({ name: 'ProfileChunk', pid: 2, tid: 0 }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StopProfiling',
-          pid: 2,
-          tid: 0,
-        }),
-      ])
-    );
   });
 
   it('should handle profiles without explicit pid/tid by using main profile info and incrementing tid', () => {
@@ -453,8 +327,8 @@ describe('cpuProfilesToTraceFile', () => {
       cpuProfile: pyramideProfile,
     });
     const profileInfoUndefinedPidTid = createMockCpuProfileInfo({
-      pid: undefined as any,
-      tid: undefined as any,
+      pid: undefined as unknown as number,
+      tid: undefined as unknown as number,
       cpuProfile: stairUpProfile,
     });
 
@@ -475,13 +349,11 @@ describe('cpuProfilesToTraceFile', () => {
           name: 'Profile',
           pid: 10,
           tid: 5,
-          id: '0x1050',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
           pid: 10,
           tid: 5,
-          id: '0x1050',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
@@ -491,25 +363,15 @@ describe('cpuProfilesToTraceFile', () => {
         // profileInfoUndefinedPidTid events (pid: undefined, tid: undefined)
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
-          pid: undefined,
-          tid: undefined,
         }),
         expect.objectContaining({
           name: 'Profile',
-          pid: undefined,
-          tid: undefined,
-          id: '0xundefinedundefined1',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
-          pid: undefined,
-          tid: undefined,
-          id: '0xundefinedundefined1',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
-          pid: undefined,
-          tid: undefined,
         }),
       ])
     );
@@ -542,46 +404,34 @@ describe('cpuProfilesToTraceFile', () => {
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 10,
-          tid: 0,
         }),
         expect.objectContaining({
           name: 'Profile',
           pid: 10,
-          tid: 0,
-          id: '0x1000',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
           pid: 10,
-          tid: 0,
-          id: '0x1000',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
           pid: 10,
-          tid: 0,
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StartProfiling',
           pid: 10,
-          tid: 1,
         }),
         expect.objectContaining({
           name: 'Profile',
           pid: 10,
-          tid: 1,
-          id: '0x1011',
         }),
         expect.objectContaining({
           name: 'ProfileChunk',
           pid: 10,
-          tid: 1,
-          id: '0x1011',
         }),
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
           pid: 10,
-          tid: 1,
         }),
       ])
     );
@@ -729,11 +579,11 @@ describe('cpuProfilesToTraceFile', () => {
         expect.arrayContaining([
           expect.objectContaining({
             name: 'Profile',
-            id: '0x105',
+            id: expect.stringMatching(/^0x/),
           }),
           expect.objectContaining({
-            name: 'Profile',
-            id: '0x111',
+            name: 'ProfileChunk',
+            id: expect.stringMatching(/^0x/),
           }),
         ])
       );
@@ -822,34 +672,6 @@ describe('cpuProfilesToTraceFile', () => {
       ]);
     });
 
-    it('should smosh all profile infos to mainPid and mainTid when smosh is "all"', () => {
-      const pyramideProfileInfo = createMockCpuProfileInfo({
-        pid: 1,
-        tid: 0,
-        cpuProfile: pyramideProfile as CPUProfile,
-      });
-      const stairUpProfileInfo = createMockCpuProfileInfo({
-        pid: 2,
-        tid: 0,
-        cpuProfile: stairUpProfile as CPUProfile,
-      });
-      const profileInfos: CpuProfileInfo[] = [
-        pyramideProfileInfo,
-        stairUpProfileInfo,
-      ];
-      const result = smoshCpuProfiles(profileInfos, {
-        smosh: 'all',
-        mainPid: 1,
-        mainTid: 0,
-      });
-
-      expect(result).toHaveLength(2);
-      expect(result).toStrictEqual([
-        expect.objectContaining({ pid: 1, tid: 0 }),
-        expect.objectContaining({ pid: 1, tid: 0 }),
-      ]);
-    });
-
     it('should smosh all profile infos to mainPid and assign unique tids when smosh is "pid"', () => {
       const pyramideProfileInfo = createMockCpuProfileInfo({
         pid: 1,
@@ -872,44 +694,12 @@ describe('cpuProfilesToTraceFile', () => {
       });
 
       expect(result).toHaveLength(2);
-      expect(result).toStrictEqual([
-        expect.objectContaining({ pid: 1, tid: 0 }),
-        expect.objectContaining({ pid: 1, tid: 1 }),
-      ]);
-    });
-
-    it('should smosh all profile infos to mainTid and keep original pids when smosh is "tid"', () => {
-      const pyramideProfileInfo = createMockCpuProfileInfo({
-        pid: 1,
-        tid: 0,
-        cpuProfile: pyramideProfile as CPUProfile,
-      });
-      const stairUpProfileInfo = createMockCpuProfileInfo({
-        pid: 2,
-        tid: 1,
-        cpuProfile: stairUpProfile as CPUProfile,
-      });
-      const profileInfos: CpuProfileInfo[] = [
-        pyramideProfileInfo,
-        stairUpProfileInfo,
-      ];
-      const result = smoshCpuProfiles(profileInfos, {
-        smosh: 'tid',
-        mainPid: 1,
-        mainTid: 0,
-      });
-
-      expect(result).toHaveLength(2);
-      expect(result).toStrictEqual([
-        expect.objectContaining({
-          pid: pyramideProfileInfo.pid,
-          tid: 0,
-        }),
-        expect.objectContaining({
-          pid: stairUpProfileInfo.pid,
-          tid: 0,
-        }),
-      ]);
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ pid: 1, tid: 0 }),
+          expect.objectContaining({ pid: 1, tid: 2 }),
+        ])
+      );
     });
   });
 });

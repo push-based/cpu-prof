@@ -24,6 +24,8 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {
+    "ansis": "^3.1.2",
+    "strip-ansi": "^6.0.1",
     "yargs": "^17.7.2"
   },
   "nx": {

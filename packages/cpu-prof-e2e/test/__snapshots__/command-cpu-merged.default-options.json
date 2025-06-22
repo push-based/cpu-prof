@@ -8,6 +8,28 @@
   "traceEvents": [
     {
       "cat": "__metadata",
+      "name": "process_name",
+      "ph": "M",
+      "pid": 10002,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10002"
+      }
+    },
+    {
+      "cat": "__metadata",
+      "name": "thread_name",
+      "ph": "M",
+      "pid": 10002,
+      "tid": 0,
+      "ts": 0,
+      "args": {
+        "name": "ChildProcess: pid:10002"
+      }
+    },
+    {
+      "cat": "__metadata",
       "name": "thread_name",
       "ph": "M",
       "pid": 10002,
@@ -22,21 +44,21 @@
       "name": "process_name",
       "ph": "M",
       "pid": 10002,
-      "tid": 0,
+      "tid": 2,
       "ts": 0,
       "args": {
-        "name": "P:10002, T:0"
+        "name": "ChildProcess: pid:10003"
       }
     },
     {
       "cat": "__metadata",
-      "name": "process_name",
+      "name": "thread_name",
       "ph": "M",
       "pid": 10002,
-      "tid": 1,
+      "tid": 2,
       "ts": 0,
       "args": {
-        "name": "P:10002, T:1"
+        "name": "ChildProcess: pid:10003"
       }
     },
     {
@@ -47,7 +69,7 @@
           "isOutermostMainFrame": true,
           "name": "",
           "page": "FRAME0P10002T0",
-          "url": "cpu: ~V��X�"
+          "url": "Process: pid:10002"
         }
       },
       "cat": "devtools.timeline",
@@ -56,7 +78,7 @@
       "ph": "X",
       "pid": 10002,
       "tid": 0,
-      "ts": 100000000030
+      "ts": 100000000039
     },
     {
       "cat": "devtools.timeline",
@@ -64,7 +86,7 @@
       "ph": "I",
       "pid": 10002,
       "tid": 0,
-      "ts": 100000000030,
+      "ts": 100000000039,
       "s": "t",
       "args": {
         "data": {
@@ -76,7 +98,7 @@
               "isOutermostMainFrame": true,
               "name": "",
               "processId": 10002,
-              "url": "cpu: ~V��X�"
+              "url": "Process: pid:10002"
             }
           ],
           "persistentIds": true
@@ -99,7 +121,7 @@
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x1000200",
+      "id": "0x100020",
       "name": "Profile",
       "ph": "P",
       "pid": 10002,
@@ -114,7 +136,7 @@
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x1000200",
+      "id": "0x100020",
       "ph": "P",
       "pid": 10002,
       "tid": 0,
@@ -132,9 +154,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -146,9 +166,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -160,9 +178,7 @@
                   "columnNumber": 0
                 },
                 "parent": 2,
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -176,23 +192,9 @@
                 "parent": 3
               }
             ],
-            "samples": [
-              1,
-              4,
-              4,
-              4,
-              4,
-              1
-            ]
+            "samples": [1, 4, 4, 4, 4, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -216,7 +218,7 @@
       "dur": 0,
       "ph": "X",
       "pid": 10002,
-      "tid": 1,
+      "tid": 2,
       "ts": 100000000110,
       "args": {
         "data": {
@@ -226,11 +228,11 @@
     },
     {
       "cat": "v8.cpu_profiler",
-      "id": "0x1000211",
+      "id": "0x100022",
       "name": "Profile",
       "ph": "P",
       "pid": 10002,
-      "tid": 1,
+      "tid": 2,
       "ts": 100000000110,
       "args": {
         "data": {
@@ -241,10 +243,10 @@
     {
       "cat": "v8.cpu_profiler",
       "name": "ProfileChunk",
-      "id": "0x1000211",
+      "id": "0x100022",
       "ph": "P",
       "pid": 10002,
-      "tid": 1,
+      "tid": 2,
       "ts": 100000000110,
       "args": {
         "data": {
@@ -259,9 +261,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -272,9 +272,7 @@
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -285,9 +283,7 @@
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -301,27 +297,9 @@
                 "children": []
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              4,
-              3,
-              2,
-              1,
-              1
-            ]
+            "samples": [1, 2, 3, 4, 3, 2, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -331,7 +309,7 @@
       "dur": 0,
       "ph": "X",
       "pid": 10002,
-      "tid": 1,
+      "tid": 2,
       "ts": 100000000180,
       "args": {
         "data": {

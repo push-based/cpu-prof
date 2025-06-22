@@ -86,7 +86,7 @@ One for the `nx` command and one for the `eslint` command. The reason for this i
 ### Adding timing arguments to the command
 
 ```shell
-TIMING=1 nx run cpu-prof:lint --output-file=profiles/all/lint-stats.json --format=json --stats
+TIMING=1 nx run cpu-prof:lint --output-file=lint-stats.json --format=json --stats
 
 TIMING=1 nx run cpu-prof:lint --output-file=/Users/michael_hladky/WebstormProjects/nx-advanced-perf-logging/profiles/eslint/lint-stats.json --format=json --stats
 
@@ -111,4 +111,27 @@ TIMING=1 nx run cpu-prof:lint --output-file=/Users/michael_hladky/WebstormProjec
 - selint-parser long CPU
 - nx rule biggest time %
 - nx rule in addition to other rules
--
+- ***
+
+Ideas to get process args:
+
+```ts
+// Dynamically create a function whose name is “workFn_<pid>”.
+// In V8, using a computed property key in an object literal will
+// infer that name onto the function.
+const key = `___processArgsFn_${process.pid}`;
+const container = {
+  [key]: function (n) {
+    console.log('!!!!!!#############: ', key);
+    // Some CPU‐intensive work, e.g. a tight loop of math ops:
+    let s = 0;
+    for (let i = 0; i < n; i++) {
+      s += Math.sqrt(i) * Math.random();
+    }
+    return s;
+  },
+};
+// Extract the newly‐named function:
+const processArgsFn = container[key];
+processArgsFn();
+```

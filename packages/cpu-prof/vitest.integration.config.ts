@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import { searchForWorkspaceRoot } from 'vite';
 import { createSharedIntegrationVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
 
 export default defineConfig(() => {
@@ -7,6 +8,8 @@ export default defineConfig(() => {
     workspaceRoot: '../..',
   });
 
+  const workspaceRoot = searchForWorkspaceRoot(process.cwd());
+
   return {
     ...baseConfig,
     plugins: [],
@@ -14,6 +17,16 @@ export default defineConfig(() => {
     // worker: {
     //  plugins: [ nxViteTsPaths() ],
     // },
+    server: {
+      fs: {
+        allow: [
+          workspaceRoot,
+          // If your @push-based/testing-utils is outside the detected workspace root for some reason,
+          // you might need to add its path explicitly, e.g., join(workspaceRoot, 'testing')
+          // For now, relying on searchForWorkspaceRoot which should cover it.
+        ],
+      },
+    },
     test: {
       ...baseConfig.test,
       setupFiles: ['../../testing/setup/src/reset.setup-file.ts'],
