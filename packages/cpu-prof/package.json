@@ -1,6 +1,6 @@
 {
   "name": "@push-based/cpu-prof",
-  "version": "0.0.9",
+  "version": "1.0.4",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.esm.js",
