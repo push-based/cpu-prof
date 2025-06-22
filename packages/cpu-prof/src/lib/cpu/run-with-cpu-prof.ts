@@ -1,7 +1,6 @@
 import * as ansis from 'ansis';
 import { executeProcess, type ProcessResult } from '../execute-process';
 import * as process from 'node:process';
-import { DaemonBasedTaskHasher } from 'nx/src/hasher/task-hasher';
 import { getCpuProfileName, parseCpuProfileName } from './utils';
 import { encodeCmd } from '../utils/encode-command-data';
 import { loadCpuProfiles } from './load-cpu-profiles';
@@ -18,7 +17,7 @@ function formatCommandLog(
   if (nodeOptions) {
     logElements.push(
       `${ansis.green('NODE_OPTIONS')}="${ansis.blueBright(
-        nodeOptions.replaceAll('"', "'")
+        nodeOptions.replaceAll('"', '')
       )}"`
     );
   }
@@ -38,7 +37,8 @@ export async function runWithCpuProf(
     cpuProfName?: string;
     flagMain?: boolean;
   },
-  logger: { log: (...args: string[]) => void } = console
+  logger: { log: (...args: string[]) => void } = console,
+  env: Record<string, string | undefined> = process.env
 ): Promise<Pick<ProcessResult, 'code'>> {
   const {
     cpuProfDir = join(process.cwd(), 'profiles'),
@@ -59,22 +59,27 @@ export async function runWithCpuProf(
 
   try {
     // Construct the environment variables for executeProcess
-    const env = {
-      ...process.env,
+    const envWithNodeOptions = {
+      ...env,
       NODE_OPTIONS: nodeOptionsString,
     };
     const result = await executeProcess({
       command,
       args: argsArray,
-      env,
+      env: envWithNodeOptions,
+      observer: {
+        onStdout: (stdout) => {
+          logger.log(stdout);
+        },
+        onStderr: (stderr) => {
+          logger.log(stderr);
+        },
+      },
     });
 
     logger.log(`Profiles generated - ${cpuProfDir}`);
 
-    // @TODO ATM the main profile detection is not working correctly as the creation of the profile is independent of the process that created it, (it seems)...
-    // Needs further investigation if true
     if (flagMain) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const profiles = await loadCpuProfiles(cpuProfDir);
       const mainProfile = getSmallestPidTidProfileInfo(profiles);
       if (mainProfile) {
@@ -91,7 +96,7 @@ export async function runWithCpuProf(
 
         await rename(mainProfile.file, join(cpuProfDir, profName));
 
-        logger.log(`Main Profile inc base64 encoded command: ${profName}`);
+        logger.log(`Main profile inc base64 encoded command: ${profName}`);
       }
     }
 

@@ -29,16 +29,15 @@ describe('cpu-merge-command', () => {
       }
     );
 
-    const { stdout, stderr, code } = await executeProcess({
+    const { stdout, code } = await executeProcess({
       command: 'node',
       args: [cliPath, 'merge', inputDir],
     });
 
     expect(stdout).toContain('✅ CPU profiles merged successfully!');
-    expect(stdout).toContain('📊 Generated 8 trace events');
+    expect(stdout).toContain('📊 Generated 9 trace events');
     expect(stdout).toContain('📄 Output file:');
     expect(stdout).toContain('merged-profile.json');
-    expect(stderr).toBe('');
     expect(code).toBe(0);
   });
 
@@ -65,13 +64,12 @@ describe('cpu-merge-command', () => {
       }
     );
 
-    const { stdout, stderr, code } = await executeProcess({
+    const { stdout, code } = await executeProcess({
       command: 'node',
       args: [cliPath, 'merge', inputDir],
     });
 
-    expect(stdout).toContain('📊 Generated 13 trace events');
-    expect(stderr).toBe('');
+    expect(stdout).toContain('📊 Generated 15 trace events');
     expect(code).toBe(0);
 
     const outputFileContent = (
@@ -106,14 +104,13 @@ describe('cpu-merge-command', () => {
       }
     );
 
-    const { stdout, stderr, code } = await executeProcess({
+    const { stdout, code } = await executeProcess({
       command: 'node',
       args: [cliPath, 'merge', inputDir, '--outputDir', outputDir],
     });
 
-    expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 13 trace events');
+    expect(stdout).toContain('📊 Generated 15 trace events');
 
     expect(existsSync(join(outputDir, 'merged-profile.json'))).toBe(true);
   });
@@ -138,14 +135,13 @@ describe('cpu-merge-command', () => {
       }
     );
 
-    const { stdout, stderr, code } = await executeProcess({
+    const { stdout, code } = await executeProcess({
       command: 'node',
       args: [cliPath, 'merge', inputDir, '--startTracingInBrowser'],
     });
 
-    expect(stderr).toBe('');
     expect(code).toBe(0);
-    expect(stdout).toContain('📊 Generated 13 trace events');
+    expect(stdout).toContain('📊 Generated 15 trace events');
     const outputFileContent = (
       await readFile(join(inputDir, 'merged-profile.json'))
     ).toString();

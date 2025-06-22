@@ -1,13 +1,13 @@
 import type { CommandModule } from 'yargs';
 // @TODO: add back in when we it is cleaned up and considered useful after research is trace event done.
 // import { reduceTraceCommand } from '../commands/trace-reduce/index';
-import { mergeCommand } from '../commands/cpu-merge/index';
-import { measureCommand } from '../commands/cpu-measure/builder';
+import { mergeCommand } from '../commands/merge/index';
+import measureCommand from '../commands/measure/index';
 
 /**
  * Registry of all available CLI commands
  */
-export const commands: CommandModule<{}, any>[] = [
+export const commands: CommandModule<Record<string, unknown>, any>[] = [
   {
     ...measureCommand,
     command: '*',
@@ -19,5 +19,5 @@ export const commands: CommandModule<{}, any>[] = [
 ];
 
 export { reduceTraceCommand } from '../commands/trace-reduce/index';
-export { mergeCommand } from '../commands/cpu-merge/index';
-export { measureCommand } from '../commands/cpu-measure/builder';
+export { mergeCommand } from '../commands/merge/index';
+export { default as measureCommand } from '../commands/measure/index';
