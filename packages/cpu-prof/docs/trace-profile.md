@@ -623,7 +623,7 @@ export interface FlowEndEvent extends TraceEventBase {
 
 If you ever wondered what is the best way to get a CPU profile into DevTools, this is your place. The Profile and ProfileChunk events are here to visualize CPU profile chunks into DevTools process threads.
 
-````
+```ts
 /** Sample Event (ph='P') – a sampling profiler event (e.g. CPU sample) */
 export interface SampleEvent extends TraceEventBase {
   ph: 'P';
@@ -647,6 +647,7 @@ export interface ProfileChunkEvent extends SampleEvent {
     data: { cpuProfile: any, timeDeltas?: number[], [key: string]: any }
   };
 }
+```
 
 #### ProfileEvent and ProfileChunkEvent
 
