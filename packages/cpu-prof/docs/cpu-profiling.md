@@ -67,15 +67,16 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 ```
 
 > [!Note]  
-> The **order** of CPU profiling arguments is critical!  
-> Bad:
+> The **order** of CPU profiling arguments is critical!
+> 
+> ❌ Bad:
 >
 > ```shell
 > # This will not create a CPU profile file.
 > node script.js --cpu-prof`
 > ```
 >
-> Good:
+> ✅ Good:
 >
 > ```shell
 > # This will create a CPU profile file under CWD.
