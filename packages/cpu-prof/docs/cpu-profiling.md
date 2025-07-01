@@ -72,7 +72,7 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 > ❌ Bad:
 >
 > ```shell
-> # This will not create a CPU profile file.
+> # This will NOT create a CPU profile file.
 > node script.js --cpu-prof`
 > ```
 >
