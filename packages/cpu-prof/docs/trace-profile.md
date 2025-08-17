@@ -6,6 +6,21 @@ This document provides a comprehensive guide to the Chrome DevTools Trace Event 
 
 ---
 
+- **[What are Node.js trace events and why do we need them?](#what-are-nodejs-trace-events-and-why-do-we-need-them)**
+- **[Create a trace event log](#create-a-trace-event-log)**
+  - [Ways to enable trace events](#ways-to-enable-trace-events)
+  - [Troubleshooting](#troubleshooting)
+  - [Trace log filename and pattern](#trace-log-filename-and-pattern)
+  - [Process and Thread IDs](#process-and-thread-ids)
+    - [What Determines the Process ID (PID)?](#what-determines-the-process-id-pid)
+    - [What Determines the Thread ID (TID)?](#what-determines-the-thread-id-tid)
+  - [Trace events arguments](#trace-events-arguments)
+    - [`--trace-event-categories`](#--trace-event-categories)
+    - [`--trace-event-file-pattern`](#--trace-event-file-pattern)
+    - [`--trace-events-enabled` (legacy)](#--trace-events-enabled-legacy)
+    - [Using the node:trace_events module](#using-the-node-trace_events-module)
+  - [Examples of combining trace flags](#examples-of-combining-trace-flags)
+- **[Data Structure](#data-structure)**
 - **[Loading a profile](#loading-a-profile)**
 - **[Top-Level Minimal Trace File Structure](#top-level-minimal-trace-file-structure)**
 - **[Base Event Interface and Common Fields](#base-event-interface-and-common-fields)**
@@ -29,7 +44,117 @@ This document provides a comprehensive guide to the Chrome DevTools Trace Event 
 
 ---
 
-## Loading a profile in DevTools
+## What are Node.js trace events and why do we need them?
+
+## Create a trace event log
+
+### Ways to enable trace events
+
+#### Terminal arguments
+
+```bash
+node --trace-events-enabled
+
+# is equivalent to
+
+node --trace-event-categories v8,node,node.async_hooks -e "console.log(42)"
+
+# with filename
+
+// @TODO this is not working
+node --trace-event-categories v8 --trace-event-file-pattern "TRACE-EVENTS-${pid}-${rotation}.log" -e "console.log(42)"
+```
+
+##### example code for a N iteratinos timer process 
+
+```bash
+NODE_OPTIONS="--trace-event-categories v8,node,node.async_hooks" node -e "
+const N = 10;
+let i = 0;
+function loop() {
+  i++;
+  if (i < N) setTimeout(loop, 2000); // longer timeout per iteration
+}
+setTimeout(loop, 2000);
+setTimeout(() => {}, 2000 * (N + 2)); // keep process alive a bit longer
+"
+```
+
+### Troubleshooting
+
+### Trace log filename and pattern
+
+```bash
+# with filename 
+node --trace-events-enabled --trace-event-categories v8 --trace-event-file-pattern "TRACE-EVENTS-${pid}-${rotation}.log" -e "console.log(42)"
+```
+### Process and Thread IDs
+
+#### What Determines the Process ID (PID)?
+
+#### What Determines the Thread ID (TID)?
+
+### Trace events arguments
+
+#### `--trace-event-categories`
+
+The available categories are:
+
+#### `--trace-event-categories`
+
+Here a command using all categories:
+
+```bash
+ node --trace-event-categories v8,node,node.async_hooks,node.bootstrap,node.console,node.threadpoolwork.sync,node.threadpoolwork.async,node.dns.native,node.net.native,node.environment,node.fs.sync,node.fs_dir.sync,node.fs.async,node.fs_dir.async,node.perf,node.perf.usertiming,node.perf.timerify,node.promises.rejections,node.vm.script,node.http,node.module_timer -e "
+const N = 10;
+const interval = 100;
+let i = 0;
+function loop() {
+  i++;
+  if (i < N) setTimeout(loop, interval);
+}
+setTimeout(loop, interval);
+setTimeout(() => {}, interval * (N + 2));
+"
+```
+
+#### User Timing marks example
+
+To add visible timing markers and a duration slice into the trace, use `node:perf_hooks` marks/measures. Ensure `node.perf` and `node.perf.usertiming` categories are enabled (they are included below):
+
+```bash
+node --trace-event-categories v8,node,node.async_hooks,node.bootstrap,node.console,node.threadpoolwork.sync,node.threadpoolwork.async,node.dns.native,node.net.native,node.environment,node.fs.sync,node.fs_dir.sync,node.fs.async,node.fs_dir.async,node.perf,node.perf.usertiming,node.perf.timerify,node.promises.rejections,node.vm.script,node.http,node.module_timer -e "
+const { performance } = require('node:perf_hooks');
+const N = 10;
+const interval = 100;
+let i = 0;
+
+performance.mark('demo:start');
+
+function loop() {
+  i++;
+  if (i < N) setTimeout(loop, interval);
+}
+
+setTimeout(loop, interval);
+
+setTimeout(() => {
+  performance.mark('demo:end');
+  performance.measure('demo:run', 'demo:start', 'demo:end');
+}, interval * (N + 2));
+"
+```
+
+- **Marks**: `demo:start`, `demo:end` appear as instant markers.
+- **Measure**: `demo:run` appears as a duration event between the marks in DevTools.
+
+#### `--trace-event-file-pattern`
+
+#### Using the node:trace_events module
+
+### Examples of combining trace flags
+
+### Loading a profile in DevTools
 
 **In practice, when DevTools loads your JSON it:**
 
@@ -38,7 +163,7 @@ This document provides a comprehensive guide to the Chrome DevTools Trace Event 
 3. Groups events into tracks by their cat value.
 4. Renders slices for all X events, vertical lines for all R marks, and counter graphs for C events.
 
-## Top-Level Minimal Trace File Structure
+## Data Structure
 
 A trace file can be either a JSON array of events or an object containing a traceEvents array and additional metadata.
 We define a union type `TraceFile` to accept both:

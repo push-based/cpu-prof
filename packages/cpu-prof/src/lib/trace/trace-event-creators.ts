@@ -175,7 +175,7 @@ export function getStartTracing(
   tid: number,
   opt: {
     traceStartTs: number;
-    url: string;
+    url?: string;
   }
 ): TracingStartedInBrowserEvent {
   const { traceStartTs, url } = opt;
@@ -198,7 +198,8 @@ export function getStartTracing(
             isOutermostMainFrame: true,
             name: '',
             processId: pid,
-            url,
+            // Heuristic URL for Node traces so DevTools treats it as first-class
+            url: url ?? 'file://trace',
           },
         ],
         persistentIds: true,
