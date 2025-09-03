@@ -3,7 +3,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const numProcesses = parseInt(process.argv[2], 10) || 2;
+const numProcesses = parseInt(process.argv[2], 10) || 4;
 const childScript = join(__dirname, 'child-process.mjs');
 
 // Get CPU profile directory from parent process
