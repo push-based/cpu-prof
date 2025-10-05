@@ -31,34 +31,7 @@
       },
       "exclude": ["cpu-profiling-e2e/*"]
     },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "testTargetName": "unit-test",
-        "serveTargetName": "serve",
-        "devTargetName": "dev",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "testTargetName": "integration-test"
-      },
-      "exclude": []
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "testTargetName": "e2e-test"
-      },
-      "exclude": []
-    },
+    
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -105,6 +78,11 @@
       "dependsOn": ["^build"],
       "executor": "@nx/vitest:vitest",
       "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
+      "inputs": [
+        "default",
+        "^default",
+        "testFixtures"
+      ],
       "options": {
         "config": "packages/{projectName}/vitest.unit.config.ts"
       }
@@ -112,12 +90,22 @@
     "integration-test": {
       "dependsOn": ["^build"],
       "outputs": ["{workspaceRoot}/coverage/integration/{projectName}"],
-      "executor": "@nx/vitest:vitest"
+      "executor": "@nx/vitest:vitest",
+      "inputs": [
+        "default",
+        "^default",
+        "testFixtures"
+      ]
     },
     "e2e-test": {
       "dependsOn": ["^build"],
       "executor": "@nx/vitest:vitest",
-      "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"]
+      "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
+      "inputs": [
+        "default",
+        "^default",
+        "testFixtures"
+      ]
     },
     "lint": {
       "cache": true,
