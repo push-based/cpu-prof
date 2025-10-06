@@ -6,6 +6,12 @@ Use native Node.js CPU profiling to analyze where time is spent when calculating
 
 ### Project Graph
 
+Save setup specification:
+
+```bash
+nx report > ./profiles/nx-show-projects/nx-report.md
+```
+
 Measure the project graph creation:
 
 ```bash
@@ -17,6 +23,12 @@ node ./node_modules/nx/bin/nx.js show projects --json
 ```
 
 ### Task Graph
+
+Save setup specification:
+
+```bash
+nx report > ./profiles/nx-show-project/nx-report.md
+```
 
 Measure the task graph creation:
 
