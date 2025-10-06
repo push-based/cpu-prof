@@ -1,5 +1,4 @@
-# Case Study — Nx graph time
-
+# Perf Audit Base — Nx graph time
 
 ## Tools and Setup
 
@@ -28,10 +27,9 @@ Use native Node.js CPU profiling to analyze where time is spent when calculating
 
 The following commands are executed from the root of a Nx workspace:
 - `npx nx graph --file=nx-project-graph.json` - project graph generation
-  - `npx nx graph --groupByFolder --file=nx-project-graph-grouped.json` - project graph with grouped folders
+  - (TO EVALUATE) `npx nx graph --groupByFolder --file=nx-project-graph-grouped.json` - project graph with grouped folders
   - Remove plugins form nx.json, then run `npx nx graph --file=nx-project-graph-no-plugins.json` - project graph without plugins
 - `npx nx graph --view=tasks --targets=<targets> --file=nx-task-graph-build.json` - task graph for specific target
-- `npx nx graph --affected --base=main --file=/tmp/nx-affected-graph-main.json` - affected graph calculation for specified base
 
 ### Project Graph (nx graph)
 
@@ -111,26 +109,6 @@ NX_DAEMON=false NX_CACHE=false \
 npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-task-graph-build \
 node ./node_modules/nx/bin/nx.js graph --view=tasks --targets=<targets> --file=nx-task-graph-build.json
-```
-
-
-### Affected Graph (base=main)
-
-1. Save setup specification:
-
-```bash
-mkdir -p ./profiles/nx-affected-graph-main && \
-nx reset && nx report > ./profiles/nx-affected-graph-main/nx-report.md
-```
-
-2. Measure the affected graph calculation for the specified base:
-
-```bash
-# Prerequisite (once): install local deps so ./node_modules/.bin/nx exists
-NX_DAEMON=false NX_CACHE=false \
-npx -y @push-based/cpu-prof \
---cpu-prof-dir ./profiles/nx-affected-graph-main \
-node ./node_modules/nx/bin/nx.js graph --affected --base=main --file=/tmp/nx-affected-graph-main.json
 ```
 
 --- 
