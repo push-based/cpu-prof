@@ -1,4 +1,4 @@
-# Case Study - Nx graph time
+# Case Study — Nx graph time
 
 ## Measured graphs
 
