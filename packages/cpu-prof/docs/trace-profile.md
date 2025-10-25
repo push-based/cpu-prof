@@ -562,7 +562,9 @@ export interface CounterEvent extends TraceEventBase {
 
 ### Async (Nestable) Events
 
-```
+To visualize all trace events you need a startTracing event to mark the main thread and an event to mark the end of the tracing.
+
+```ts
 /** Async Nestable Begin (ph='b') – start of an async operation */
 export interface AsyncBeginEvent extends TraceEventBase {
   ph: 'b';
@@ -588,6 +590,110 @@ export interface AsyncEndEvent extends TraceEventBase {
   id?: EventID; // Represents a unique identifier for the async operation. Can be a string or number.
   id2?: EventID2; // Represents a secondary identifier, often for distinguishing local vs. global scope. Can be a string or number.
   scope?: string;
+}
+```
+
+
+In the example, we include:
+- `TracingStartedInBrowser` - Start the tracing.
+- `RunTask` - for each async operation, we include a `AsyncBeginEvent` and `AsyncEndEvent`.
+- `RunTask` - End the tracing.
+
+**Profile content:**
+
+```json
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "i",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frames": [
+            {
+              "processId": 1,
+              "url": "file://has-to-be-a-valid-URL-pattern"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-1",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 10
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-2",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 20
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-3",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 30
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-3",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 40
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-2",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 50
+    },
+    {
+      "args": {},
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "step-1",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 60
+    },
+    {
+      "args": {},
+      "cat": "devtools.timeline",
+      "dur": 10,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 60
+    }
+  ]
 }
 ```
 

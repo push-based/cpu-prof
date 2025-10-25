@@ -26,10 +26,9 @@ The tool [@push-based/cpu-prof](https://www.npmjs.com/package/@push-based/cpu-pr
 Use native Node.js CPU profiling to analyze where time is spent when calculating Nx graphs.
 
 The following commands are executed from the root of a Nx workspace:
-- `npx nx graph --file=nx-project-graph.json` - project graph generation
-  - (TO EVALUATE) `npx nx graph --groupByFolder --file=nx-project-graph-grouped.json` - project graph with grouped folders
-  - Remove plugins form nx.json, then run `npx nx graph --file=nx-project-graph-no-plugins.json` - project graph without plugins
-- `npx nx graph --view=tasks --targets=<targets> --file=nx-task-graph-build.json` - task graph for specific target
+- Project graph generation
+- Project graph without plugins
+- Task graph for specific target
 
 ### Project Graph (nx graph)
 
@@ -43,44 +42,28 @@ nx reset && nx report > ./profiles/nx-project-graph/nx-report.md
 2. Measure the project graph creation:
 
 ```bash
-# Prerequisite (once): install local deps so ./node_modules/.bin/nx exists
 NX_DAEMON=false NX_CACHE=false \
 npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-project-graph \
-node ./node_modules/nx/bin/nx.js graph --file=nx-project-graph.json
+node ./node_modules/nx/bin/nx.js graph --file=./profiles/nx-project-graph/nx-project-graph.json
 ```
-
-
-### Project Graph (grouped by folder)
-
-1. Save setup specification:
-
-```bash
-mkdir -p ./profiles/nx-project-graph-grouped && \
-nx reset && nx report > ./profiles/nx-project-graph-grouped/nx-report.md
-```
-
-2. Measure the project graph creation with grouped folders:
-
-```bash
-# Prerequisite (once): install local deps so ./node_modules/.bin/nx exists
-NX_DAEMON=false NX_CACHE=false \
-npx -y @push-based/cpu-prof \
---cpu-prof-dir ./profiles/nx-project-graph-grouped \
-node ./node_modules/nx/bin/nx.js graph --groupByFolder --file=nx-project-graph-grouped.json
-```
-
 
 ### Project Graph (no plugins)
 
-1. Save setup specification:
+1. Remove plugins from nx.json
+
+```bash
+node -e "const f='nx.json',fs=require('fs');fs.copyFileSync(f,f+'.bak');const j=JSON.parse(fs.readFileSync(f,'utf8'));delete j.plugins;fs.writeFileSync(f,JSON.stringify(j, null, 2))"
+```
+
+2. Save setup specification:
 
 ```bash
 mkdir -p ./profiles/nx-project-graph-no-plugins && \
 nx reset && nx report > ./profiles/nx-project-graph-no-plugins/nx-report.md
 ```
 
-2. Measure the project graph creation without plugins:
+3. Measure the project graph creation without plugins:
 
 ```bash
 # Prerequisite (once): install local deps so ./node_modules/.bin/nx exists
@@ -88,9 +71,13 @@ nx reset && nx report > ./profiles/nx-project-graph-no-plugins/nx-report.md
 NX_DAEMON=false NX_CACHE=false \
 npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-project-graph-no-plugins \
-node ./node_modules/nx/bin/nx.js graph --file=nx-project-graph-no-plugins.json
+node ./node_modules/nx/bin/nx.js graph --file=./profiles/nx-project-graph-no-plugins/nx-project-graph-no-plugins.json
 ```
+4. Restore nx.json
 
+```bash
+node -e "require('fs').copyFileSync('nx.json.bak','nx.json')"
+```
 
 ### Task Graph for specific target(s)
 
@@ -108,26 +95,9 @@ nx reset && nx report > ./profiles/nx-task-graph-build/nx-report.md
 NX_DAEMON=false NX_CACHE=false \
 npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-task-graph-build \
-node ./node_modules/nx/bin/nx.js graph --view=tasks --targets=<targets> --file=nx-task-graph-build.json
+node ./node_modules/nx/bin/nx.js graph --view=tasks --targets=<targets> --file=./profiles/nx-task-graph-build/nx-task-graph-build.json
 ```
 
---- 
 
-### Project Graph
 
-1. Save setup specification:
 
-```bash
-mkdir -p ./profiles/nx-show-projects && \
-nx reset && nx report > ./profiles/nx-show-projects/nx-report.md
-```
-
-2. Measure the project graph creation:
-
-```bash
-# Prerequisite (once): install local deps so ./node_modules/.bin/nx exists
-NX_DAEMON=false NX_CACHE=false \
-npx -y @push-based/cpu-prof \
---cpu-prof-dir ./profiles/nx-show-projects \
-node ./node_modules/nx/bin/nx.js show projects --json
-```
