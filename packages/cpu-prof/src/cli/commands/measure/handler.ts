@@ -1,5 +1,5 @@
 import type { MeasureArgs } from './types';
-import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
+import { runWithCpuProf } from '@push-based/prof-dev-kit';
 import { filterKebabCase } from './utils';
 import { handleCpuProfileMerge } from '../merge/handler';
 import { join } from 'node:path';

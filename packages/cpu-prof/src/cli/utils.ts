@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import type { FileInfo } from '../lib/file-utils';
+import type { FileInfo } from '@push-based/prof-dev-kit';
 
 /**
  * Find the newest trace file in a directory (CLI-specific logic)

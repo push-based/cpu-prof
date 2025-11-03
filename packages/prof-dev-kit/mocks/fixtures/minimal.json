@@ -1,0 +1,40 @@
+{
+  "traceEvents": [
+    [
+      {
+        "args": {
+          "callTime": 27605129877,
+          "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary-light\",\"trackGroup\":\"Corgi app timings\",\"track\":\"Corgi rendering\",\"properties\":[[\"Description\",\"Quote fetch\"],[\"Duration (ms)\",\"1152.00\"]],\"tooltipText\":\"Quote fetch took 1152.00ms\"}}",
+          "startTime": 42616.699999999255,
+          "traceId": 110325579
+        },
+        "cat": "blink.user_timing",
+        "id2": {
+          "local": "0x11a"
+        },
+        "name": "Quote fetch",
+        "ph": "b",
+        "pid": 12952,
+        "tid": 318512,
+        "ts": 27603977872
+      },
+      {
+        "args": {
+          "callTime": 27605130183,
+          "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Corgi app timings\",\"track\":\"Corgi rendering\",\"properties\":[[\"Description\",\"Fetching Quote\"],[\"Duration (ms)\",\"1152.20\"]],\"tooltipText\":\"Fetching Quote took 1152.20ms\"}}",
+          "startTime": 42616.699999999255,
+          "traceId": 1010628778
+        },
+        "cat": "blink.user_timing",
+        "id2": {
+          "local": "0x11b"
+        },
+        "name": "Fetching Quote",
+        "ph": "b",
+        "pid": 12952,
+        "tid": 318512,
+        "ts": 27603977872
+      }
+    ]
+  ]
+}

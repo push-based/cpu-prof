@@ -1,0 +1,181 @@
+{
+  "traceEvents": [
+    {
+      "cat": "disabled-by-default-devtools.timeline",
+      "name": "TracingStartedInBrowser",
+      "ph": "i",
+      "pid": 1,
+      "tid": 1,
+      "ts": 1,
+      "s": "t",
+      "args": {
+        "data": {
+          "frames": [
+            {
+              "processId": 1,
+              "url": "file://has-to-be-a-valid-URL-pattern"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"CLI\",\"properties\":[[\"Description\",\"CLI lifetime\"],[\"Duration (ms)\",\"120.00\"]],\"tooltipText\":\"CLI took 120.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x1"},
+      "name": "CLI",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 5
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"CLI\",\"properties\":[[\"Description\",\"CLI lifetime\"],[\"Duration (ms)\",\"120.00\"]],\"tooltipText\":\"CLI took 120.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x1"},
+      "name": "CLI",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 125
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Daemon connect\",\"properties\":[[\"Description\",\"Daemon connect / warmup\"],[\"Duration (ms)\",\"20.00\"]],\"tooltipText\":\"Daemon connect took 20.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "Daemon connect",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 15
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Daemon connect\",\"properties\":[[\"Description\",\"Daemon connect / warmup\"],[\"Duration (ms)\",\"20.00\"]],\"tooltipText\":\"Daemon connect took 20.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x2"},
+      "name": "Daemon connect",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 35
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor lib:build\",\"properties\":[[\"Description\",\"Executor for lib:build\"],[\"Duration (ms)\",\"60.00\"]],\"tooltipText\":\"Executor lib:build took 60.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x3"},
+      "name": "Executor lib:build",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 40
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor lib:build\",\"properties\":[[\"Description\",\"Executor for lib:build\"],[\"Duration (ms)\",\"60.00\"]],\"tooltipText\":\"Executor lib:build took 60.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x3"},
+      "name": "Executor lib:build",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 100
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool tsc\",\"properties\":[[\"Description\",\"TypeScript compiler\"],[\"Duration (ms)\",\"35.00\"]],\"tooltipText\":\"tsc took 35.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x4"},
+      "name": "Tool tsc",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 50
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool tsc\",\"properties\":[[\"Description\",\"TypeScript compiler\"],[\"Duration (ms)\",\"35.00\"]],\"tooltipText\":\"tsc took 35.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x4"},
+      "name": "Tool tsc",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 85
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor app:test\",\"properties\":[[\"Description\",\"Executor for app:test\"],[\"Duration (ms)\",\"90.00\"]],\"tooltipText\":\"Executor app:test took 90.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x5"},
+      "name": "Executor app:test",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 30
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor app:test\",\"properties\":[[\"Description\",\"Executor for app:test\"],[\"Duration (ms)\",\"90.00\"]],\"tooltipText\":\"Executor app:test took 90.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x5"},
+      "name": "Executor app:test",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 120
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool jest\",\"properties\":[[\"Description\",\"Jest runner\"],[\"Duration (ms)\",\"65.00\"]],\"tooltipText\":\"jest took 65.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x6"},
+      "name": "Tool jest",
+      "ph": "b",
+      "pid": 1,
+      "tid": 1,
+      "ts": 45
+    },
+    {
+      "args": {
+        "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool jest\",\"properties\":[[\"Description\",\"Jest runner\"],[\"Duration (ms)\",\"65.00\"]],\"tooltipText\":\"jest took 65.00ms\"}}"
+      },
+      "cat": "blink.user_timing",
+      "id2": {"local": "0x6"},
+      "name": "Tool jest",
+      "ph": "e",
+      "pid": 1,
+      "tid": 1,
+      "ts": 110
+    },
+    {
+      "args": {
+        "description": "Artificial RunTask event to mark end of the trace"
+      },
+      "cat": "devtools.timeline",
+      "dur": 5,
+      "name": "RunTask",
+      "ph": "X",
+      "pid": 1,
+      "tid": 2,
+      "ts": 125
+    }
+  ]
+}
+
+

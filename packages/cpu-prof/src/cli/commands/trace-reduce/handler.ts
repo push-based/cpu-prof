@@ -1,4 +1,4 @@
-import { reduceTraceFile } from '../../../lib/reduce-trace';
+import { reduceTraceFile } from '@push-based/prof-dev-kit';
 import type { ReduceTraceArgs } from './types';
 import { processArgs } from './args-processor';
 import { logVerboseOptions, getStats, logStats } from './helpers';

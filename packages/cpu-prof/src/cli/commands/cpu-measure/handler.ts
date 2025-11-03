@@ -1,5 +1,5 @@
 import type { MeasureArgs } from './types';
-import { runWithCpuProf } from '../../../lib/cpu/run-with-cpu-prof';
+import { runWithCpuProf } from '@push-based/prof-dev-kit';
 import { filterCliOptions } from './utils';
 
 export async function handler(argv: MeasureArgs): Promise<void> {

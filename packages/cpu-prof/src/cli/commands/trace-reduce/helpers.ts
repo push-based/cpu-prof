@@ -1,11 +1,11 @@
 import type { ProcessedArgs } from './types';
-import type { TraceReductionStats } from '../../../lib/reduce-trace';
+import type { TraceReductionStats } from '@push-based/prof-dev-kit';
 import path from 'path';
 import {
   fileExists,
   isJsonFile,
   directoryExists,
-} from '../../../lib/file-utils';
+} from '@push-based/prof-dev-kit';
 
 /**
  * Log verbose options when verbose mode is enabled

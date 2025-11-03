@@ -1,5 +1,5 @@
 import type { Argv } from 'yargs';
-import { directoryExists } from '../../../lib/file-utils';
+import { directoryExists } from '@push-based/prof-dev-kit';
 import type { MergeArgs } from './types';
 
 /**

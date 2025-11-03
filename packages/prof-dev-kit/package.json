@@ -1,0 +1,49 @@
+{
+  "name": "@push-based/prof-dev-kit",
+  "version": "1.0.4",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "scripts": {},
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "dependencies": {
+    "ansis": "^4.1.0",
+    "vitest": "^3.0.0",
+    "vite": "^6.0.0",
+    "@push-based/testing-vitest-setup": "0.0.1"
+  },
+  "nx": {
+    "name": "prof-dev-kit",
+    "targets": {
+      "unit-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.unit.config.ts"
+        }
+      },
+      "integration-test": {
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "packages/{projectName}/vitest.integration.config.ts"
+        }
+      }
+    },
+    "tags": [
+      "package"
+    ]
+  }
+}

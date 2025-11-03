@@ -542,48 +542,9 @@ In the example, we include:
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-event-trace-instant-event-complex-profile-chunks.png" alt="DevTools Performance tab displaying a complex flame chart generated from multiple streamed ProfileChunk events, with a correct bottom-up chart." width="800">
 
-In the image we see that the bottom up chart is available and correctly calculated across chunks.
+In the image, we see that the bottom-up chart is available and correctly calculated across chunks.
 
 ### Limitations
  - No true cross-lane stack merge; lanes remain independent
  - Clock skew may misalign very short spans
  - Very large traces are heavy to render
-
-## Examples
-
-### Stitch worker threads
- - Same PID; TIDs `0..N` → N+1 lanes
- - Command:
-
-```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=$PWD/profiles" node ./exmpl-create-threads.js
-cpu-prof merge ./profiles -o ./out
-```
-
-### Stitch child processes (Nx build)
- - Multiple PIDs; name lanes by target/project
- - Command:
-
-```shell
-NODE_OPTIONS="--cpu-prof --cpu-prof-dir=$PWD/profiles" nx run-many -t build --skip-nx-cache
-cpu-prof merge ./profiles -o ./out
-```
-
-### Validate in DevTools
- - Lanes count matches threads/processes
- - Gaps filled with idle; durations match window
- - Colors grouped by URL (source/module)
-
-## Troubleshooting
-
-### Profiles saved in different folders (CWD differences)
- - Use absolute `--cpu-prof-dir`; avoid relative paths per process
-
-### Clock drift and time alignment issues
- - Prefer filename timestamps; else manual offsets
- - Clip to shared window for comparisons
-
-### Duplicate node IDs or collisions
- - Always remap per file; dedupe by callFrame key
- - Validate `samples` reference existing nodes
-

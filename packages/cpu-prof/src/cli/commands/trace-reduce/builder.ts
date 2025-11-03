@@ -1,5 +1,5 @@
 import type { Argv } from 'yargs';
-import { DEFAULT_FILTER_OPTIONS } from '../../../lib/reduce-trace';
+import { DEFAULT_FILTER_OPTIONS } from '@push-based/prof-dev-kit';
 import type { ReduceTraceArgs } from './types';
 import {
   coerceStringArray,

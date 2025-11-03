@@ -7,6 +7,9 @@
       "path": "../../testing/vitest-setup"
     },
     {
+      "path": "../prof-dev-kit"
+    },
+    {
       "path": "./tsconfig.lib.json"
     },
     {

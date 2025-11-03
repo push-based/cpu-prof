@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'path';
 import type { MergeArgs, ProcessedMergeArgs } from './types';
 import { processArgs } from './args-processor';
-import { mergeCpuProfileFiles } from '../../../lib/merge-cpuprofile-files';
+import { mergeCpuProfileFiles } from '@push-based/prof-dev-kit';
 import { generateTraceFilename } from './utils';
 
 /**
