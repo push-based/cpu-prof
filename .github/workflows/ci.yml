@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Check formatting of affected files
-        run: npx nx format:check
+        run: npx nx format:check --verbose
 
   unit-test:
     strategy:
