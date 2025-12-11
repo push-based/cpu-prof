@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Check formatting of affected files
-        run: npx nx show projects --json
+        run: npx nx format:check
 
   unit-test:
     strategy:
@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Unit test affected projects
-        run: npx nx affected -t unit-test --parallel=3 --verbose
+        run: npx nx affected -t unit-test --parallel=3
 
   integration-test:
     strategy:
