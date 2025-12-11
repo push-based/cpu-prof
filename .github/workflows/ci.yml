@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Unit test affected projects
-        run: npx nx affected -t unit-test --parallel=3
+        run: npx nx affected -t unit-test --parallel=3 --verbose
 
   integration-test:
     strategy:
