@@ -6,8 +6,11 @@
   },
   "include": [
     "vite.config.ts",
-    "vitest.integration.config.mts",
+    "vitest.int.config.ts",
+    "vitest.unit.config.ts",
     "src/**/*.ts",
-    "src/**/*.unit.test.ts"
+    "src/**/*.int.test.ts",
+    "src/**/*.unit.test.ts",
+    "src/vitest.d.ts"
   ]
 }

@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import { join, resolve, isAbsolute, relative } from 'node:path';
+import { resolve, isAbsolute, relative } from 'node:path';
 
 export interface CustomPathMatchers {
   toBeAbsolutePath(): void;

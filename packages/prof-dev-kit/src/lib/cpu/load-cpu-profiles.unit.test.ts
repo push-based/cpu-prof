@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { vol } from 'memfs';
+import { normalize } from 'node:path';
 import {
   loadCpuProfiles,
   type CpuProfileFilePath,
@@ -21,10 +22,12 @@ describe('loadCpuProfiles', () => {
       testDir
     );
 
-    const expectedProfile1Path =
-      `${testDir}/${profile1Name}` as CpuProfileFilePath;
-    const expectedProfile2Path =
-      `${testDir}/${profile2Name}` as CpuProfileFilePath;
+    const expectedProfile1Path = normalize(
+      `${testDir}/${profile1Name}`
+    ) as CpuProfileFilePath;
+    const expectedProfile2Path = normalize(
+      `${testDir}/${profile2Name}`
+    ) as CpuProfileFilePath;
 
     await expect(loadCpuProfiles(testDir)).resolves.toStrictEqual([
       expect.objectContaining({

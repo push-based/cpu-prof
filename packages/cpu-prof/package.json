@@ -2,25 +2,25 @@
   "name": "@push-based/cpu-prof",
   "version": "1.0.4",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.esm.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.cjs",
+  "module": "./src/index.esm.js",
+  "types": "./src/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "development": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.cjs"
+      "types": "./src/index.d.ts",
+      "import": "./src/index.esm.js",
+      "require": "./src/index.cjs",
+      "default": "./src/index.cjs"
     }
   },
   "bin": {
-    "cpu-prof": "./dist/cpu-prof.esm.js"
+    "cpu-prof": "./src/bin/cpu-prof.esm.js"
   },
   "scripts": {},
   "files": [
-    "dist",
+    "src",
     "!**/*.tsbuildinfo"
   ],
   "publishConfig": {

@@ -3,7 +3,6 @@ const { withNx } = require('@nx/rollup/with-nx');
 module.exports = withNx(
   {
     main: './src/index.ts',
-    additionalEntryPoints: ['./src/bin/prof-dev-kit.ts'],
     outputPath: './dist',
     tsConfig: './tsconfig.lib.json',
     compiler: 'swc',

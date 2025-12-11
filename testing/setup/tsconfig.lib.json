@@ -24,5 +24,12 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../vitest-setup-config/tsconfig.lib.json"
+    },
+    {
+      "path": "../utils/tsconfig.lib.json"
+    }
+  ]
 }

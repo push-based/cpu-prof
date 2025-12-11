@@ -30,6 +30,9 @@
           "config": "{projectRoot}/vitest.e2e.config.ts"
         }
       }
-    }
+    },
+    "implicitDependencies": [
+      "cpu-prof"
+    ]
   }
 }
