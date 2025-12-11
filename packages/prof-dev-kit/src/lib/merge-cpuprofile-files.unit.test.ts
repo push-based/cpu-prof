@@ -43,7 +43,9 @@ describe('mergeCpuProfileFiles', () => {
   });
 
   it('should skip files when isCpuProfileFileName returns false', async () => {
-    isCpuProfileFileNameSpy.mockImplementation((fileName: string) => fileName.includes('CPU.20250519.120000.12.0.001.cpuprofile'));
+    isCpuProfileFileNameSpy.mockImplementation((fileName: string) =>
+      fileName.includes('CPU.20250519.120000.12.0.001.cpuprofile')
+    );
 
     const profilesDir = 'profiles';
     vol.fromJSON({
@@ -71,8 +73,8 @@ describe('mergeCpuProfileFiles', () => {
 
     const outputFile = join(profilesDir, 'merged-profile.json');
 
-    await expect(mergeCpuProfileFiles(profilesDir, outputFile)).rejects.toThrowError(
-      'No valid CPU profiles found in profiles to merge'
-    );
+    await expect(
+      mergeCpuProfileFiles(profilesDir, outputFile)
+    ).rejects.toThrowError('No valid CPU profiles found in profiles to merge');
   });
 });

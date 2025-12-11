@@ -65,7 +65,7 @@ export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
 function getTracingEvents(mainProfileInfo: CpuProfileInfo): TraceEvent[] {
   const { pid, tid, prefix } = mainProfileInfo;
   const url = prefix?.startsWith('MAIN-CPU--')
-    ? `cpu: ${  decodeCmd((prefix ?? '')?.replace('MAIN-CPU--', ''))}`
+    ? `cpu: ${decodeCmd((prefix ?? '')?.replace('MAIN-CPU--', ''))}`
     : `Process: pid:${pid}`;
   const startTime = mainProfileInfo.cpuProfile.startTime;
   return [
@@ -157,7 +157,7 @@ export type SmoshCpuProfilesOptions = {
   smosh: SmoshType;
   mainPid: number;
   mainTid: number;
-}
+};
 export function smoshCpuProfiles(
   profileInfos: CpuProfileInfo[],
   options: SmoshCpuProfilesOptions

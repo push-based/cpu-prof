@@ -9,9 +9,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "^typecheck"
-              ],
+              "dependsOn": ["^typecheck"],
               "options": {
                 "cwd": "packages/cpu-prof-e2e",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -44,9 +42,7 @@
                   "dependentTasksOutputFiles": "**/*.d.ts"
                 },
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -60,20 +56,14 @@
                 "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/vitest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -92,13 +82,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -115,9 +101,7 @@
             }
           },
           "name": "@e2e/cpu-prof-e2e",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {},
             "js": {
@@ -145,10 +129,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "testing/vitest-setup",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -167,9 +148,7 @@
                   "dependentTasksOutputFiles": "**/*.d.ts"
                 },
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -177,20 +156,14 @@
                 "{workspaceRoot}/dist/out-tsc/**/*.d.ts.map",
                 "{workspaceRoot}/dist/out-tsc/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -199,9 +172,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "testing/vitest-setup",
                 "command": "tsc --build tsconfig.lib.json"
@@ -226,28 +197,18 @@
                 "!{projectRoot}/src/**/*.spec.jsx",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
-              "outputs": [
-                "{projectRoot}/dist"
-              ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "outputs": ["{projectRoot}/dist"],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -256,9 +217,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -266,9 +225,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects testing-vitest-setup --includeDependentProjects -- npx nx build-deps testing-vitest-setup"
@@ -287,13 +244,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -322,10 +275,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "packages/cpu-prof",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -358,9 +308,7 @@
                   "dependentTasksOutputFiles": "**/*.d.ts"
                 },
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -371,20 +319,14 @@
                 "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/vitest/packages/cpu-prof/*.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -398,26 +340,17 @@
                 "command": "rollup -c rollup.config.cjs"
               },
               "cache": true,
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "inputs": [
                 "production",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "rollup"
-                  ]
+                  "externalDependencies": ["rollup"]
                 }
               ],
-              "outputs": [
-                "{workspaceRoot}/packages/cpu-prof/dist"
-              ],
+              "outputs": ["{workspaceRoot}/packages/cpu-prof/dist"],
               "metadata": {
-                "technologies": [
-                  "typescript",
-                  "rollup"
-                ],
+                "technologies": ["typescript", "rollup"],
                 "description": "Run Rollup",
                 "help": {
                   "command": "npx rollup --help",
@@ -429,17 +362,13 @@
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -447,9 +376,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects cpu-prof --includeDependentProjects -- npx nx build-deps cpu-prof"
@@ -468,13 +395,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -506,9 +429,7 @@
               "parallelism": true
             },
             "help": {
-              "dependsOn": [
-                "build"
-              ],
+              "dependsOn": ["build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node packages/cpu-prof/dist/cpu-prof.esm.js --help"
@@ -517,9 +438,7 @@
               "parallelism": true
             },
             "reduce": {
-              "dependsOn": [
-                "build"
-              ],
+              "dependsOn": ["build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node packages/cpu-prof/dist/cpu-prof.esm.js trace-reduce"
@@ -528,9 +447,7 @@
               "parallelism": true
             },
             "measure": {
-              "dependsOn": [
-                "build"
-              ],
+              "dependsOn": ["build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node packages/cpu-prof/dist/cpu-prof.esm.js measure"
@@ -539,9 +456,7 @@
               "parallelism": true
             },
             "merge": {
-              "dependsOn": [
-                "build"
-              ],
+              "dependsOn": ["build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node packages/cpu-prof/dist/cpu-prof.esm.js merge"
@@ -551,19 +466,14 @@
             },
             "nx-release-publish": {
               "executor": "@nx/js:release-publish",
-              "dependsOn": [
-                "^nx-release-publish"
-              ],
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
               "configurations": {},
               "parallelism": true
             }
           },
           "name": "cpu-prof",
-          "tags": [
-            "npm:public",
-            "package"
-          ],
+          "tags": ["npm:public", "package"],
           "metadata": {
             "targetGroups": {},
             "js": {
@@ -593,10 +503,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "packages/nx-perf",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -624,9 +531,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -637,20 +542,14 @@
                 "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/vitest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -664,26 +563,17 @@
                 "command": "rollup -c rollup.config.cjs"
               },
               "cache": true,
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "inputs": [
                 "production",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "rollup"
-                  ]
+                  "externalDependencies": ["rollup"]
                 }
               ],
-              "outputs": [
-                "{workspaceRoot}/packages/nx-perf/dist"
-              ],
+              "outputs": ["{workspaceRoot}/packages/nx-perf/dist"],
               "metadata": {
-                "technologies": [
-                  "typescript",
-                  "rollup"
-                ],
+                "technologies": ["typescript", "rollup"],
                 "description": "Run Rollup",
                 "help": {
                   "command": "npx rollup --help",
@@ -695,17 +585,13 @@
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -713,9 +599,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @push-based/nx-perf --includeDependentProjects -- npx nx build-deps @push-based/nx-perf"
@@ -734,13 +618,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -757,18 +637,14 @@
             },
             "nx-release-publish": {
               "executor": "@nx/js:release-publish",
-              "dependsOn": [
-                "^nx-release-publish"
-              ],
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
               "configurations": {},
               "parallelism": true
             }
           },
           "name": "@push-based/nx-perf",
-          "tags": [
-            "npm:public"
-          ],
+          "tags": ["npm:public"],
           "metadata": {
             "targetGroups": {},
             "js": {
@@ -797,9 +673,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "^typecheck"
-              ],
+              "dependsOn": ["^typecheck"],
               "options": {
                 "cwd": "dummy/app-0-e2e",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -813,9 +687,7 @@
                 "{projectRoot}/src/**/*.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -823,20 +695,14 @@
                 "{projectRoot}/out-tsc/@dummy/app-0-e2e/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/@dummy/app-0-e2e/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -855,13 +721,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -890,9 +752,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "^typecheck"
-              ],
+              "dependsOn": ["^typecheck"],
               "options": {
                 "cwd": "testing/setup",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -919,9 +779,7 @@
                 "!{projectRoot}/src/**/*.spec.jsx",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -932,20 +790,14 @@
                 "{workspaceRoot}/dist/out-tsc/**/*.d.ts.map",
                 "{workspaceRoot}/dist/out-tsc/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -964,13 +816,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -999,10 +847,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "testing/utils",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1030,9 +875,7 @@
                   "dependentTasksOutputFiles": "**/*.d.ts"
                 },
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1043,20 +886,14 @@
                 "{workspaceRoot}/dist/out-tsc/**/*.d.ts.map",
                 "{workspaceRoot}/dist/out-tsc/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1065,9 +902,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "testing/utils",
                 "command": "tsc --build tsconfig.lib.json"
@@ -1094,28 +929,18 @@
                   "dependentTasksOutputFiles": "**/*.d.ts"
                 },
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
-              "outputs": [
-                "{projectRoot}/dist"
-              ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "outputs": ["{projectRoot}/dist"],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1124,9 +949,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -1134,9 +957,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects testing-utils --includeDependentProjects -- npx nx build-deps testing-utils"
@@ -1155,13 +976,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -1190,9 +1007,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "^typecheck"
-              ],
+              "dependsOn": ["^typecheck"],
               "options": {
                 "cwd": "dummy/app-0",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1216,9 +1031,7 @@
                 "!{projectRoot}/eslint.config.mjs",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1229,20 +1042,14 @@
                 "{projectRoot}/out-tsc/jest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/jest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1261,13 +1068,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -1296,9 +1099,7 @@
           "projectType": "application",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "^typecheck"
-              ],
+              "dependsOn": ["^typecheck"],
               "options": {
                 "cwd": "dummy/app-1",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1312,9 +1113,7 @@
                 "{projectRoot}/src/**/*.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1322,20 +1121,14 @@
                 "{projectRoot}/dist/**/*.d.ts.map",
                 "{projectRoot}/dist/tsconfig.app.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1354,13 +1147,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -1378,31 +1167,21 @@
             "build": {
               "options": {
                 "cwd": "dummy/app-1",
-                "args": [
-                  "--node-env=production"
-                ],
+                "args": ["--node-env=production"],
                 "command": "webpack-cli build"
               },
               "cache": true,
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "inputs": [
                 "production",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "webpack-cli"
-                  ]
+                  "externalDependencies": ["webpack-cli"]
                 }
               ],
-              "outputs": [
-                "{workspaceRoot}/dummy/app-1/dist"
-              ],
+              "outputs": ["{workspaceRoot}/dummy/app-1/dist"],
               "metadata": {
-                "technologies": [
-                  "webpack"
-                ],
+                "technologies": ["webpack"],
                 "description": "Runs Webpack build",
                 "help": {
                   "command": "npx webpack-cli build --help",
@@ -1410,15 +1189,11 @@
                     "options": {
                       "json": "stats.json"
                     },
-                    "args": [
-                      "--profile"
-                    ]
+                    "args": ["--profile"]
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
@@ -1427,31 +1202,22 @@
               "continuous": true,
               "options": {
                 "cwd": "dummy/app-1",
-                "args": [
-                  "--node-env=development"
-                ],
+                "args": ["--node-env=development"],
                 "command": "webpack-cli serve"
               },
               "metadata": {
-                "technologies": [
-                  "webpack"
-                ],
+                "technologies": ["webpack"],
                 "description": "Starts Webpack dev server",
                 "help": {
                   "command": "npx webpack-cli serve --help",
                   "example": {
                     "options": {
-                      "args": [
-                        "--client-progress",
-                        "--history-api-fallback "
-                      ]
+                      "args": ["--client-progress", "--history-api-fallback "]
                     }
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
@@ -1460,55 +1226,40 @@
               "continuous": true,
               "options": {
                 "cwd": "dummy/app-1",
-                "args": [
-                  "--node-env=production"
-                ],
+                "args": ["--node-env=production"],
                 "command": "webpack-cli serve"
               },
               "metadata": {
-                "technologies": [
-                  "webpack"
-                ],
+                "technologies": ["webpack"],
                 "description": "Starts Webpack dev server in production mode",
                 "help": {
                   "command": "npx webpack-cli serve --help",
                   "example": {
                     "options": {
-                      "args": [
-                        "--client-progress",
-                        "--history-api-fallback "
-                      ]
+                      "args": ["--client-progress", "--history-api-fallback "]
                     }
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
             },
             "serve-static": {
               "continuous": true,
-              "dependsOn": [
-                "build"
-              ],
+              "dependsOn": ["build"],
               "executor": "@nx/web:file-server",
               "options": {
                 "buildTarget": "build",
                 "spa": true
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "configurations": {},
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -1516,9 +1267,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/app-1 --includeDependentProjects -- npx nx build-deps @dummy/app-1"
@@ -1541,10 +1290,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "dummy/pkg-0",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1563,9 +1309,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1576,20 +1320,14 @@
                 "{projectRoot}/out-tsc/jest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/jest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1598,9 +1336,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "dummy/pkg-0",
                 "command": "tsc --build tsconfig.lib.json"
@@ -1616,9 +1352,7 @@
                 "!{projectRoot}/src/**/*.test.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1626,20 +1360,14 @@
                 "{projectRoot}/dist/**/*.d.ts.map",
                 "{projectRoot}/dist/tsconfig.lib.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1648,9 +1376,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -1658,9 +1384,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/pkg-0 --includeDependentProjects -- npx nx build-deps @dummy/pkg-0"
@@ -1679,13 +1403,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -1714,10 +1434,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "dummy/pkg-1",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1745,9 +1462,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1758,20 +1473,14 @@
                 "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/vitest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1785,26 +1494,17 @@
                 "command": "rollup -c rollup.config.cjs"
               },
               "cache": true,
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "inputs": [
                 "production",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "rollup"
-                  ]
+                  "externalDependencies": ["rollup"]
                 }
               ],
-              "outputs": [
-                "{workspaceRoot}/dummy/pkg-1/dist"
-              ],
+              "outputs": ["{workspaceRoot}/dummy/pkg-1/dist"],
               "metadata": {
-                "technologies": [
-                  "typescript",
-                  "rollup"
-                ],
+                "technologies": ["typescript", "rollup"],
                 "description": "Run Rollup",
                 "help": {
                   "command": "npx rollup --help",
@@ -1816,17 +1516,13 @@
                   }
                 }
               },
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -1834,9 +1530,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/pkg-1 --includeDependentProjects -- npx nx build-deps @dummy/pkg-1"
@@ -1855,13 +1549,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -1890,10 +1580,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "dummy/pkg-2",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -1912,9 +1599,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1925,20 +1610,14 @@
                 "{projectRoot}/out-tsc/jest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/jest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1947,9 +1626,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "dummy/pkg-2",
                 "command": "tsc --build tsconfig.lib.json"
@@ -1965,9 +1642,7 @@
                 "!{projectRoot}/src/**/*.test.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -1975,20 +1650,14 @@
                 "{projectRoot}/dist/**/*.d.ts.map",
                 "{projectRoot}/dist/tsconfig.lib.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -1997,9 +1666,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -2007,9 +1674,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/pkg-2 --includeDependentProjects -- npx nx build-deps @dummy/pkg-2"
@@ -2028,13 +1693,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -2063,10 +1724,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "dummy/pkg-3",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -2085,9 +1743,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -2098,20 +1754,14 @@
                 "{projectRoot}/out-tsc/jest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/jest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -2120,9 +1770,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "dummy/pkg-3",
                 "command": "tsc --build tsconfig.lib.json"
@@ -2138,9 +1786,7 @@
                 "!{projectRoot}/src/**/*.test.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -2148,20 +1794,14 @@
                 "{projectRoot}/dist/**/*.d.ts.map",
                 "{projectRoot}/dist/tsconfig.lib.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -2170,9 +1810,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -2180,9 +1818,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/pkg-3 --includeDependentProjects -- npx nx build-deps @dummy/pkg-3"
@@ -2201,13 +1837,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -2236,10 +1868,7 @@
           "projectType": "library",
           "targets": {
             "typecheck": {
-              "dependsOn": [
-                "build",
-                "^typecheck"
-              ],
+              "dependsOn": ["build", "^typecheck"],
               "options": {
                 "cwd": "dummy/pkg-4",
                 "command": "tsc --build --emitDeclarationOnly"
@@ -2267,9 +1896,7 @@
                 "{projectRoot}/src/**/*.d.ts",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -2280,20 +1907,14 @@
                 "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
                 "{projectRoot}/out-tsc/vitest/tsconfig.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Runs type-checking for the project.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -2302,9 +1923,7 @@
               "parallelism": true
             },
             "build": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "options": {
                 "cwd": "dummy/pkg-4",
                 "command": "tsc --build tsconfig.lib.json"
@@ -2329,9 +1948,7 @@
                 "!{projectRoot}/src/**/*.spec.jsx",
                 "^production",
                 {
-                  "externalDependencies": [
-                    "typescript"
-                  ]
+                  "externalDependencies": ["typescript"]
                 }
               ],
               "outputs": [
@@ -2339,20 +1956,14 @@
                 "{projectRoot}/dist/**/*.d.ts.map",
                 "{projectRoot}/dist/tsconfig.lib.tsbuildinfo"
               ],
-              "syncGenerators": [
-                "@nx/js:typescript-sync"
-              ],
+              "syncGenerators": ["@nx/js:typescript-sync"],
               "metadata": {
-                "technologies": [
-                  "typescript"
-                ],
+                "technologies": ["typescript"],
                 "description": "Builds the project with `tsc`.",
                 "help": {
                   "command": "npx tsc --build --help",
                   "example": {
-                    "args": [
-                      "--force"
-                    ]
+                    "args": ["--force"]
                   }
                 }
               },
@@ -2361,9 +1972,7 @@
               "parallelism": true
             },
             "build-deps": {
-              "dependsOn": [
-                "^build"
-              ],
+              "dependsOn": ["^build"],
               "configurations": {},
               "options": {},
               "parallelism": true,
@@ -2371,9 +1980,7 @@
             },
             "watch-deps": {
               "continuous": true,
-              "dependsOn": [
-                "build-deps"
-              ],
+              "dependsOn": ["build-deps"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx nx watch --projects @dummy/pkg-4 --includeDependentProjects -- npx nx build-deps @dummy/pkg-4"
@@ -2392,13 +1999,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/eslint.config.mjs"
               ],
-              "outputs": [
-                "{options.output-file}"
-              ],
+              "outputs": ["{options.output-file}"],
               "metadata": {
-                "technologies": [
-                  "eslint"
-                ],
+                "technologies": ["eslint"],
                 "description": "Runs ESLint on project",
                 "help": {
                   "command": "npx eslint --help",
@@ -2426,9 +2029,7 @@
           "root": ".",
           "name": "@push-based/source",
           "includedScripts": [],
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {},
             "js": {

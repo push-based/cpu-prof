@@ -8,7 +8,6 @@ import { PerfFileLogger } from './perf-file-logger.js';
 export { PerfFileLogger } from './perf-file-logger.js';
 
 declare global {
-   
   var nxPerfLogger: PerfFileLogger | undefined;
 }
 
@@ -23,5 +22,3 @@ if (process.env.NX_PERF_LOGGING === 'true') {
   obs.observe({ entryTypes: ['measure'] });
   globalThis.nxPerfLogger = logger;
 }
-
-

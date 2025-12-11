@@ -21,15 +21,24 @@ const numProcesses = Number(getFlag('procs', 2));
 const numWorkers = Number(getFlag('workers', 2));
 const cycles = Number(getFlag('cycles', 1));
 const delayMs = Number(getFlag('delay', 100));
-const childScript = join(__dirname, String(getFlag('child', 'child-process.mjs')));
+const childScript = join(
+  __dirname,
+  String(getFlag('child', 'child-process.mjs'))
+);
 
 // V8 profiling forwarding (can also be overridden via flags)
 const cpuProfDir =
   getFlag('dir', undefined) ??
-  (process.execArgv.find((arg) => arg.startsWith('--cpu-prof-dir='))?.split('=')[1] ?? undefined);
+  process.execArgv
+    .find((arg) => arg.startsWith('--cpu-prof-dir='))
+    ?.split('=')[1] ??
+  undefined;
 const cpuProfInterval =
   getFlag('interval', undefined) ??
-  (process.execArgv.find((arg) => arg.startsWith('--cpu-prof-interval='))?.split('=')[1] ?? undefined);
+  process.execArgv
+    .find((arg) => arg.startsWith('--cpu-prof-interval='))
+    ?.split('=')[1] ??
+  undefined;
 
 function buildExecArgv() {
   const execArgv = ['--cpu-prof'];
@@ -94,13 +103,17 @@ function sleep(ms) {
 
 (async function run() {
   console.log(
-    `PID ${process.pid}; cycles=${cycles}, procs/cycle=${numProcesses}, workers/cycle=${numWorkers}, delay=${delayMs}ms, child=${basename(
+    `PID ${
+      process.pid
+    }; cycles=${cycles}, procs/cycle=${numProcesses}, workers/cycle=${numWorkers}, delay=${delayMs}ms, child=${basename(
       childScript
     )}`
   );
   if (cpuProfDir || cpuProfInterval) {
     console.log(
-      `Profiling flags forwarded: dir=${cpuProfDir ?? 'default'}, interval=${cpuProfInterval ?? 'default'}`
+      `Profiling flags forwarded: dir=${cpuProfDir ?? 'default'}, interval=${
+        cpuProfInterval ?? 'default'
+      }`
     );
   }
 
@@ -122,5 +135,3 @@ function sleep(ms) {
     }
   }
 })();
-
-

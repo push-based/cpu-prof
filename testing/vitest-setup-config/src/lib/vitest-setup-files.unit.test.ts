@@ -9,9 +9,9 @@ describe('getSetupFiles', () => {
       (kind) => {
         const setupFiles = getSetupFiles(kind);
         expect(setupFiles).toSatisfyAll<string>((path) =>
-          /^\.\.\/\.\.\//.test(path),
+          /^\.\.\/\.\.\//.test(path)
         );
-      },
+      }
     );
   });
 
@@ -21,7 +21,7 @@ describe('getSetupFiles', () => {
 
       expect(Array.isArray(setupFiles)).toBe(true);
       expect(setupFiles).toSatisfyAll<unknown>(
-        (item) => typeof item === 'string',
+        (item) => typeof item === 'string'
       );
     });
   });

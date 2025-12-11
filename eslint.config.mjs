@@ -15,17 +15,21 @@ export default tseslint.config(
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
-        project: ['tsconfig.base.json', 'packages/*/tsconfig.lib.json', 'packages/*/tsconfig.spec.json'],
+        project: [
+          'tsconfig.base.json',
+          'packages/*/tsconfig.lib.json',
+          'packages/*/tsconfig.spec.json',
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   {
     settings: {
-      'import/resolver': { 
+      'import/resolver': {
         node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']
-        }
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs'],
+        },
       },
     },
   },
@@ -148,7 +152,8 @@ export default tseslint.config(
         version: (() => {
           try {
             // Use path.join to create absolute path to .node-version in workspace root
-            const nodeVersionPath = new URL('.node-version', import.meta.url).pathname;
+            const nodeVersionPath = new URL('.node-version', import.meta.url)
+              .pathname;
             return fs.readFileSync(nodeVersionPath, 'utf8').trim();
           } catch {
             return process.version.slice(1); // Remove 'v' prefix from process.version
@@ -173,5 +178,5 @@ export default tseslint.config(
       '**/dist',
       '**/*.md',
     ],
-  },
+  }
 );

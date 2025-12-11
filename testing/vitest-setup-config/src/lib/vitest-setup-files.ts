@@ -9,7 +9,7 @@ import type { TestKind } from './vitest-config-factory.js';
  */
 const CUSTOM_MATCHERS = [
   '../../testing/setup/src/lib/extend/jest-extended.matcher.ts',
-  '../../testing/setup/src/lib/extend/path.matcher.ts'
+  '../../testing/setup/src/lib/extend/path.matcher.ts',
 ] as const;
 
 /**
@@ -42,9 +42,7 @@ const INT_TEST_SETUP_FILES = [
  * These paths are relative to the config file location (typically `e2e/<project-e2e>/vitest.e2e.config.ts`),
  * which is why they use `../../` to navigate to the workspace root first.
  */
-const E2E_TEST_SETUP_FILES = [
-  ...CUSTOM_MATCHERS,
-] as const;
+const E2E_TEST_SETUP_FILES = [...CUSTOM_MATCHERS] as const;
 
 /**
  * Returns the appropriate setup files for the given test kind.

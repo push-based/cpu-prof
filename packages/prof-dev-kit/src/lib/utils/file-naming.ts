@@ -5,7 +5,7 @@ export type FileInfo = {
   name: string;
   path: string;
   mtime: Date;
-}
+};
 
 /**
  * Generate output filename with suffix
@@ -27,10 +27,7 @@ export function generateOutputFilename(
  * @returns Path to the newest file
  * @throws Error if no files found or directory cannot be read
  */
-export function findNewestFile(
-  directory: string,
-  extension: string
-): string {
+export function findNewestFile(directory: string, extension: string): string {
   try {
     const files: FileInfo[] = fs
       .readdirSync(directory)

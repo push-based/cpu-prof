@@ -3,7 +3,8 @@ import {
   cpuProfileToTraceProfileEvents,
   sortTraceEvents,
   cpuProfilesToTraceFile,
-  smoshCpuProfiles, SmoshCpuProfilesOptions
+  smoshCpuProfiles,
+  SmoshCpuProfilesOptions,
 } from './utils.js';
 import { CPUProfile, CpuProfileInfo } from '../cpu/cpuprofile.types';
 import { TraceEvent, TraceEventContainer } from './traceprofile.types';

@@ -1,4 +1,3 @@
- 
 import axios from 'axios';
 
 module.exports = async function () {

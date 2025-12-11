@@ -24,7 +24,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"CLI\",\"properties\":[[\"Description\",\"CLI lifetime\"],[\"Duration (ms)\",\"120.00\"]],\"tooltipText\":\"CLI took 120.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x1"},
+      "id2": { "local": "0x1" },
       "name": "CLI",
       "ph": "b",
       "pid": 1,
@@ -36,7 +36,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"CLI\",\"properties\":[[\"Description\",\"CLI lifetime\"],[\"Duration (ms)\",\"120.00\"]],\"tooltipText\":\"CLI took 120.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x1"},
+      "id2": { "local": "0x1" },
       "name": "CLI",
       "ph": "e",
       "pid": 1,
@@ -48,7 +48,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Daemon connect\",\"properties\":[[\"Description\",\"Daemon connect / warmup\"],[\"Duration (ms)\",\"20.00\"]],\"tooltipText\":\"Daemon connect took 20.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "Daemon connect",
       "ph": "b",
       "pid": 1,
@@ -60,7 +60,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"primary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Daemon connect\",\"properties\":[[\"Description\",\"Daemon connect / warmup\"],[\"Duration (ms)\",\"20.00\"]],\"tooltipText\":\"Daemon connect took 20.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "Daemon connect",
       "ph": "e",
       "pid": 1,
@@ -72,7 +72,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor lib:build\",\"properties\":[[\"Description\",\"Executor for lib:build\"],[\"Duration (ms)\",\"60.00\"]],\"tooltipText\":\"Executor lib:build took 60.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x3"},
+      "id2": { "local": "0x3" },
       "name": "Executor lib:build",
       "ph": "b",
       "pid": 1,
@@ -84,7 +84,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor lib:build\",\"properties\":[[\"Description\",\"Executor for lib:build\"],[\"Duration (ms)\",\"60.00\"]],\"tooltipText\":\"Executor lib:build took 60.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x3"},
+      "id2": { "local": "0x3" },
       "name": "Executor lib:build",
       "ph": "e",
       "pid": 1,
@@ -96,7 +96,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool tsc\",\"properties\":[[\"Description\",\"TypeScript compiler\"],[\"Duration (ms)\",\"35.00\"]],\"tooltipText\":\"tsc took 35.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x4"},
+      "id2": { "local": "0x4" },
       "name": "Tool tsc",
       "ph": "b",
       "pid": 1,
@@ -108,7 +108,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool tsc\",\"properties\":[[\"Description\",\"TypeScript compiler\"],[\"Duration (ms)\",\"35.00\"]],\"tooltipText\":\"tsc took 35.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x4"},
+      "id2": { "local": "0x4" },
       "name": "Tool tsc",
       "ph": "e",
       "pid": 1,
@@ -120,7 +120,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor app:test\",\"properties\":[[\"Description\",\"Executor for app:test\"],[\"Duration (ms)\",\"90.00\"]],\"tooltipText\":\"Executor app:test took 90.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x5"},
+      "id2": { "local": "0x5" },
       "name": "Executor app:test",
       "ph": "b",
       "pid": 1,
@@ -132,7 +132,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Executor app:test\",\"properties\":[[\"Description\",\"Executor for app:test\"],[\"Duration (ms)\",\"90.00\"]],\"tooltipText\":\"Executor app:test took 90.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x5"},
+      "id2": { "local": "0x5" },
       "name": "Executor app:test",
       "ph": "e",
       "pid": 1,
@@ -144,7 +144,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool jest\",\"properties\":[[\"Description\",\"Jest runner\"],[\"Duration (ms)\",\"65.00\"]],\"tooltipText\":\"jest took 65.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x6"},
+      "id2": { "local": "0x6" },
       "name": "Tool jest",
       "ph": "b",
       "pid": 1,
@@ -156,7 +156,7 @@
         "detail": "{\"devtools\":{\"dataType\":\"track-entry\",\"color\":\"secondary\",\"trackGroup\":\"Nx process tracks\",\"track\":\"Tool jest\",\"properties\":[[\"Description\",\"Jest runner\"],[\"Duration (ms)\",\"65.00\"]],\"tooltipText\":\"jest took 65.00ms\"}}"
       },
       "cat": "blink.user_timing",
-      "id2": {"local": "0x6"},
+      "id2": { "local": "0x6" },
       "name": "Tool jest",
       "ph": "e",
       "pid": 1,
@@ -177,5 +177,3 @@
     }
   ]
 }
-
-

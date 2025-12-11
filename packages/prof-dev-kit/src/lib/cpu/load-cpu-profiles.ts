@@ -1,5 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { basename , join } from 'node:path';
+import { basename, join } from 'node:path';
 import { CPUProfile, CpuProfileInfo } from './cpuprofile.types';
 import {
   parseCpuProfileName,

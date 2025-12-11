@@ -21,7 +21,10 @@ describe('cpu-merge-command', () => {
   it('should run without error and log results to terminal', async () => {
     const inputDir = path.join(tmpCpuMergeCommandDir, 'terminal-logs');
     await cp(
-      path.join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      path.join(
+        mocksMinimalPath,
+        'pyramide.20250519.110180.10003.0.001.cpuprofile'
+      ),
       path.join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
       {
         recursive: true,
@@ -46,7 +49,10 @@ describe('cpu-merge-command', () => {
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      path.join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      path.join(
+        mocksMinimalPath,
+        'pyramide.20250519.110180.10003.0.001.cpuprofile'
+      ),
       path.join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
       {
         recursive: true,
@@ -73,7 +79,9 @@ describe('cpu-merge-command', () => {
 
     // Find the generated Trace file
     const files = await readdir(inputDir);
-    const traceFile = files.find((f) => f.startsWith('Trace-') && f.endsWith('.json'));
+    const traceFile = files.find(
+      (f) => f.startsWith('Trace-') && f.endsWith('.json')
+    );
     expect(traceFile).toBeDefined();
 
     const outputFileContent = (
@@ -83,7 +91,11 @@ describe('cpu-merge-command', () => {
     const outputJson = JSON.parse(outputFileContent);
     outputJson.metadata.startTime = 'mocked-timestamp';
     await expect(JSON.stringify(outputJson, null, 2)).toMatchFileSnapshot(
-      path.join(__dirname, '__snapshots__', `command-cpu-merged.${caseName}.json`)
+      path.join(
+        __dirname,
+        '__snapshots__',
+        `command-cpu-merged.${caseName}.json`
+      )
     );
   });
 
@@ -94,7 +106,10 @@ describe('cpu-merge-command', () => {
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      path.join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      path.join(
+        mocksMinimalPath,
+        'pyramide.20250519.110180.10003.0.001.cpuprofile'
+      ),
       path.join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile')
     );
     await cp(
@@ -118,7 +133,9 @@ describe('cpu-merge-command', () => {
 
     // Check that a Trace file was created in the output directory
     const files = await readdir(outputDir);
-    const traceFile = files.find((f) => f.startsWith('Trace-') && f.endsWith('.json'));
+    const traceFile = files.find(
+      (f) => f.startsWith('Trace-') && f.endsWith('.json')
+    );
     expect(traceFile).toBeDefined();
   });
 
@@ -128,7 +145,10 @@ describe('cpu-merge-command', () => {
 
     await mkdir(inputDir, { recursive: true });
     await cp(
-      path.join(mocksMinimalPath, 'pyramide.20250519.110180.10003.0.001.cpuprofile'),
+      path.join(
+        mocksMinimalPath,
+        'pyramide.20250519.110180.10003.0.001.cpuprofile'
+      ),
       path.join(inputDir, 'pyramide.20250519.110180.10003.0.001.cpuprofile')
     );
     await cp(
@@ -152,7 +172,9 @@ describe('cpu-merge-command', () => {
 
     // Find the generated Trace file
     const files = await readdir(inputDir);
-    const traceFile = files.find((f) => f.startsWith('Trace-') && f.endsWith('.json'));
+    const traceFile = files.find(
+      (f) => f.startsWith('Trace-') && f.endsWith('.json')
+    );
     expect(traceFile).toBeDefined();
 
     const outputFileContent = (

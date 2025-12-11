@@ -110,7 +110,9 @@ export class PerfFileLogger {
       console.warn('Failed to create perf log directory:', error);
     }
 
-    if (this.entries.length === 0) {return;}
+    if (this.entries.length === 0) {
+      return;
+    }
 
     const filename = getPerfLogName({
       prefix: 'NX-TRACE',

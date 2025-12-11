@@ -43,9 +43,7 @@ export function getPerfLogName({
   const cleanExtension = extension.startsWith('.')
     ? extension.slice(1)
     : extension;
-  const preparedPrefix = prefix
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]/g, '-');
+  const preparedPrefix = prefix.replace(/\s+/g, '-').replace(/[^\w-]/g, '-');
 
   return `${preparedPrefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
 }

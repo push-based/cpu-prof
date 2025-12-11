@@ -23,7 +23,7 @@ describe('vitest-setup-presets', () => {
 
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         MOCK_PROJECT_KEY,
-        'unit',
+        'unit'
       );
       expect(result).toBe('mocked-config');
     });
@@ -33,7 +33,7 @@ describe('vitest-setup-presets', () => {
 
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         'my-custom-package',
-        'unit',
+        'unit'
       );
     });
 
@@ -50,7 +50,7 @@ describe('vitest-setup-presets', () => {
 
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         MOCK_PROJECT_KEY,
-        'int',
+        'int'
       );
       expect(result).toBe('mocked-config');
     });
@@ -60,7 +60,7 @@ describe('vitest-setup-presets', () => {
 
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         'integration-package',
-        'int',
+        'int'
       );
     });
   });
@@ -72,7 +72,7 @@ describe('vitest-setup-presets', () => {
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         MOCK_PROJECT_KEY,
         'e2e',
-        undefined,
+        undefined
       );
       expect(result).toBe('mocked-config');
     });
@@ -87,7 +87,7 @@ describe('vitest-setup-presets', () => {
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         MOCK_PROJECT_KEY,
         'e2e',
-        options,
+        options
       );
     });
 
@@ -97,7 +97,7 @@ describe('vitest-setup-presets', () => {
       expect(configFactory.createVitestConfig).toHaveBeenCalledWith(
         MOCK_PROJECT_KEY,
         'e2e',
-        { testTimeout: 30_000 },
+        { testTimeout: 30_000 }
       );
     });
   });
@@ -119,18 +119,18 @@ describe('vitest-setup-presets', () => {
       expect(configFactory.createVitestConfig).toHaveBeenNthCalledWith(
         1,
         'pkg1',
-        'unit',
+        'unit'
       );
       expect(configFactory.createVitestConfig).toHaveBeenNthCalledWith(
         2,
         'pkg2',
-        'int',
+        'int'
       );
       expect(configFactory.createVitestConfig).toHaveBeenNthCalledWith(
         3,
         'pkg3',
         'e2e',
-        undefined,
+        undefined
       );
     });
 

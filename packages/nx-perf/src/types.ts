@@ -2,7 +2,7 @@ import { Performance as NodePerformance } from 'node:perf_hooks';
 
 export type PerformanceEntryOptions = {
   detail?: Record<string, unknown>;
-}
+};
 
 export type TraceEvent = {
   name: string;
@@ -13,7 +13,7 @@ export type TraceEvent = {
   args?: Record<string, unknown>;
   dur?: number;
   cat?: string;
-}
+};
 
 export type PerfProfileEvent = {
   name: string;
@@ -24,12 +24,12 @@ export type PerfProfileEvent = {
   args?: Record<string, unknown>;
   dur?: number;
   cat?: string;
-}
+};
 
 export type Profile = {
   metadata: Record<string, unknown>;
   traceEvents: PerfProfileEvent[];
-}
+};
 
 export type NxPerfOptions = {
   verbose?: boolean;
@@ -38,7 +38,7 @@ export type NxPerfOptions = {
   onTraceEvent?: (event: PerfProfileEvent) => void;
   onMetadata?: (metadata: Record<string, unknown>) => void;
   beforeExit?: (profile: Profile) => void;
-}
+};
 
 export type CallFrame = {
   functionName: string | null;
@@ -46,14 +46,14 @@ export type CallFrame = {
   line: number;
   column: number;
   raw?: string;
-}
+};
 
 export type PerformanceMarkOptions = {
   detail?: {
     callStack?: CallFrame[];
     [key: string]: unknown;
   };
-} & PerformanceEntryOptions
+} & PerformanceEntryOptions;
 
 declare global {
   interface Performance extends NodePerformance {

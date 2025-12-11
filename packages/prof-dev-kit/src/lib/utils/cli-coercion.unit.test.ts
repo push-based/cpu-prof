@@ -88,9 +88,9 @@ describe('CLI Coercion Utils', () => {
     });
 
     it('should return empty array for undefined', () => {
-      expect(coerceStringArrayWithDefaults(undefined as unknown, defaults)).toEqual(
-        []
-      );
+      expect(
+        coerceStringArrayWithDefaults(undefined as unknown, defaults)
+      ).toEqual([]);
     });
 
     it('should merge string input with defaults', () => {

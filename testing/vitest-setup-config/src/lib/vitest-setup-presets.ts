@@ -53,7 +53,7 @@ export function createIntTestConfig(projectKey: string): ViteUserConfig {
  */
 export function createE2ETestConfig(
   projectKey: string,
-  options?: E2ETestOptions,
+  options?: E2ETestOptions
 ): ViteUserConfig {
   return createVitestConfig(projectKey, 'e2e', options);
 }

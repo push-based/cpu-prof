@@ -5,9 +5,7 @@ import type {
 } from './lib/extend/path.matcher.js';
 
 declare module 'vitest' {
-  interface Assertion
-    extends CustomPathMatchers,
-      JestExtendedMatchers {}
+  interface Assertion extends CustomPathMatchers, JestExtendedMatchers {}
 
   interface AsymmetricMatchersContaining
     extends CustomAsymmetricPathMatchers,

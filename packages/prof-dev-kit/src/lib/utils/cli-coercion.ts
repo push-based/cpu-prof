@@ -32,8 +32,8 @@ export function coerceNumberArray(
     typeof arg === 'string'
       ? arg.split(',')
       : Array.isArray(arg)
-        ? arg.flatMap((item: string) => item.split(','))
-        : [];
+      ? arg.flatMap((item: string) => item.split(','))
+      : [];
   return values.map((id: string) => {
     const numId = Number.parseInt(id.trim(), 10);
     if (isNaN(numId)) {

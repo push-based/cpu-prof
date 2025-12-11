@@ -1,9 +1,4 @@
-import {
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock fs module at the top level
 vi.mock('fs', async () => {
@@ -526,9 +521,9 @@ describe('reduce-trace', () => {
     });
 
     it('should throw error for invalid trace data structure', () => {
-      expect(() => reduceTrace(JSON.stringify({ invalidField: [] }))).toThrowError(
-        'traceEvents array not found in the trace file'
-      );
+      expect(() =>
+        reduceTrace(JSON.stringify({ invalidField: [] }))
+      ).toThrowError('traceEvents array not found in the trace file');
     });
 
     it('should apply default filter options when none provided', () => {

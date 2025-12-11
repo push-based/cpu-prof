@@ -49,16 +49,16 @@ describe('createVitestConfig', () => {
 
       const setupFiles = config.test!.setupFiles;
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts',
+        '../../testing/setup/src/lib/reset.setup-file.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts',
+        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/jest-extended.matcher.ts',
+        '../../testing/setup/src/lib/extend/jest-extended.matcher.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts',
+        '../../testing/setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -66,7 +66,7 @@ describe('createVitestConfig', () => {
       const config = createVitestConfig('test-package', 'unit');
 
       expect(config.test!.include).toContain(
-        'src/**/*.type.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        'src/**/*.type.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
       );
     });
 
@@ -108,13 +108,13 @@ describe('createVitestConfig', () => {
 
       const setupFiles = config.test!.setupFiles;
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts',
+        '../../testing/setup/src/lib/reset.setup-file.ts'
       );
       expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts',
+        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts',
+        '../../testing/setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -147,14 +147,14 @@ describe('createVitestConfig', () => {
       const setupFiles = config.test!.setupFiles;
       // Should not include reset mocks for e2e
       expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts',
+        '../../testing/setup/src/lib/reset.setup-file.ts'
       );
       expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts',
+        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
       );
       // Should include matchers
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts',
+        '../../testing/setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -187,7 +187,7 @@ describe('createVitestConfig', () => {
       const config = createVitestConfig('my-package', 'unit');
 
       expect(config.test!.coverage!.reportsDirectory).toBe(
-        '../../coverage/my-package/unit-tests',
+        '../../coverage/my-package/unit-tests'
       );
     });
   });
@@ -217,7 +217,7 @@ describe('createVitestConfig', () => {
         };
 
         expect(config.test!.globalSetup).toStrictEqual(
-          expectedGlobalSetup[kind],
+          expectedGlobalSetup[kind]
         );
       });
     });
@@ -280,7 +280,7 @@ describe('createVitestConfig', () => {
 
       expect(config.cacheDir).toBe('../../node_modules/.vite/');
       expect(config.test!.coverage!.reportsDirectory).toBe(
-        '../../coverage//unit-tests',
+        '../../coverage//unit-tests'
       );
     });
 
@@ -288,7 +288,7 @@ describe('createVitestConfig', () => {
       const config = createVitestConfig('my-special_package.v2', 'unit');
 
       expect(config.cacheDir).toBe(
-        '../../node_modules/.vite/my-special_package.v2',
+        '../../node_modules/.vite/my-special_package.v2'
       );
     });
 

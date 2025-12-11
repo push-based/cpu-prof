@@ -12,7 +12,7 @@ export function tsconfigPathAliases(): AliasOptions {
 
   if (result.resultType === 'failed') {
     throw new Error(
-      `Failed to load path aliases from tsconfig for Vitest: ${result.message}`,
+      `Failed to load path aliases from tsconfig for Vitest: ${result.message}`
     );
   }
 
@@ -24,6 +24,6 @@ export function tsconfigPathAliases(): AliasOptions {
         find: importPath,
         // Make paths relative to workspace root (../../ from config file)
         replacement: path.resolve(process.cwd(), relativePath),
-      }),
+      })
     );
 }

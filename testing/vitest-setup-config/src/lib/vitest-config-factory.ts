@@ -25,7 +25,7 @@ function getIncludePatterns(kind: TestKind): string[] {
 
 function buildCoverageConfig(
   projectKey: string,
-  kind: TestKind,
+  kind: TestKind
 ): CoverageOptions | undefined {
   if (kind === 'e2e') {
     return undefined;
@@ -44,7 +44,7 @@ function buildCoverageConfig(
 export function createVitestConfig(
   projectKey: string,
   kind: TestKind,
-  options?: E2ETestOptions,
+  options?: E2ETestOptions
 ): ViteUserConfig {
   const coverage = buildCoverageConfig(projectKey, kind);
 

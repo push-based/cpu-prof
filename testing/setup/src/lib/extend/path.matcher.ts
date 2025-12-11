@@ -39,7 +39,9 @@ expect.extend({
   },
 
   toHaveExtension(received: string, extension: string) {
-    const normalizedExtension = extension.startsWith('.') ? extension : `.${extension}`;
+    const normalizedExtension = extension.startsWith('.')
+      ? extension
+      : `.${extension}`;
     const pass = received.endsWith(normalizedExtension);
     return {
       pass,
@@ -55,7 +57,7 @@ expect.extend({
     const resolvedParent = resolve(parentPath);
     const relativePath = relative(resolvedParent, resolvedReceived);
     const pass = !relativePath.startsWith('..') && !isAbsolute(relativePath);
-    
+
     return {
       pass,
       message: () =>

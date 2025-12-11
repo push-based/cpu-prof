@@ -38,7 +38,7 @@ export type FilterOptions = {
   durMax?: number; // Maximum duration in microseconds
   tsMin?: number; // Minimum timestamp in microseconds
   tsMax?: number; // Maximum timestamp in microseconds
-}
+};
 
 /**
  * Statistics returned by reduceTraceFile
@@ -51,7 +51,7 @@ export type TraceReductionStats = {
   cleanedSize: number;
   inputFile: string;
   outputFile: string;
-}
+};
 
 /**
  * Pure function to determine if an event is network-related
@@ -333,11 +333,15 @@ export function shouldFilterByTimestamp(
  * @returns True if the event is related to streaming compilation, false otherwise.
  */
 export function isStreamingCompileEvent(event: TraceEvent): boolean {
-  if (event.name?.includes('Stream') && event.name?.includes('Compile'))
-    {return true;}
-  if (event.name?.includes('CompileTask')) {return true;}
-  if (event.cat?.includes('v8.wasm') && event.name?.includes('Streaming'))
-    {return true;}
+  if (event.name?.includes('Stream') && event.name?.includes('Compile')) {
+    return true;
+  }
+  if (event.name?.includes('CompileTask')) {
+    return true;
+  }
+  if (event.cat?.includes('v8.wasm') && event.name?.includes('Streaming')) {
+    return true;
+  }
   // Add more specific checks if needed based on typical event names/categories for these tasks
   return false;
 }
@@ -358,94 +362,115 @@ export function filterTraceEvents(
     : () => false;
 
   return traceEvents.filter((event) => {
-    if (options.filterNetwork && isNetworkEvent(event)) {return false;}
-    if (options.filterAnimation && isAnimationEvent(event)) {return false;}
-    if (options.filterGPU && isGPUEvent(event)) {return false;}
+    if (options.filterNetwork && isNetworkEvent(event)) {
+      return false;
+    }
+    if (options.filterAnimation && isAnimationEvent(event)) {
+      return false;
+    }
+    if (options.filterGPU && isGPUEvent(event)) {
+      return false;
+    }
 
     // Use metadata-based thread pool filtering
-    if (options.filterThreadPool && isThreadPoolEventFn(event)) {return false;}
+    if (options.filterThreadPool && isThreadPoolEventFn(event)) {
+      return false;
+    }
 
-    if (options.filterStreamingCompile && isStreamingCompileEvent(event))
-      {return false;}
+    if (options.filterStreamingCompile && isStreamingCompileEvent(event)) {
+      return false;
+    }
 
     // Duration filtering
-    if (shouldFilterByDuration(event, options.durMin, options.durMax))
-      {return false;}
+    if (shouldFilterByDuration(event, options.durMin, options.durMax)) {
+      return false;
+    }
 
     // Timestamp filtering
-    if (shouldFilterByTimestamp(event, options.tsMin, options.tsMax))
-      {return false;}
+    if (shouldFilterByTimestamp(event, options.tsMin, options.tsMax)) {
+      return false;
+    }
 
     if (
       options.includePhases &&
       options.includePhases.length > 0 &&
       !options.includePhases.includes(event.ph)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
     if (
       options.excludePhases &&
       options.excludePhases.length > 0 &&
       options.excludePhases.includes(event.ph)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.includePids &&
       options.includePids.length > 0 &&
       (event.pid === undefined || !options.includePids.includes(event.pid))
-    )
-      {return false;}
+    ) {
+      return false;
+    }
     if (
       options.excludePids &&
       options.excludePids.length > 0 &&
       event.pid !== undefined &&
       options.excludePids.includes(event.pid)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.includeTids &&
       options.includeTids.length > 0 &&
       (event.tid === undefined || !options.includeTids.includes(event.tid))
-    )
-      {return false;}
+    ) {
+      return false;
+    }
     if (
       options.excludeTids &&
       options.excludeTids.length > 0 &&
       event.tid !== undefined &&
       options.excludeTids.includes(event.tid)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.includeNames &&
       options.includeNames.length > 0 &&
       (!event.name || !options.includeNames.includes(event.name))
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.excludeNames &&
       options.excludeNames.length > 0 &&
       event.name &&
       options.excludeNames.includes(event.name)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.includeCats &&
       options.includeCats.length > 0 &&
       (!event.cat || !options.includeCats.includes(event.cat))
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     if (
       options.excludeCats &&
       options.excludeCats.length > 0 &&
       event.cat &&
       options.excludeCats.includes(event.cat)
-    )
-      {return false;}
+    ) {
+      return false;
+    }
 
     return true;
   });

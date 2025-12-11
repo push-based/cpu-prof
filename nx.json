@@ -32,7 +32,7 @@
       },
       "exclude": ["cpu-profiling-e2e/*"]
     },
-    
+
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -79,11 +79,7 @@
       "dependsOn": ["^build"],
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ],
+      "inputs": ["default", "^default", "testFixtures"],
       "options": {
         "config": "packages/{projectName}/vitest.unit.config.ts",
         "passWithNoTests": true
@@ -93,21 +89,13 @@
       "dependsOn": ["^build"],
       "outputs": ["{workspaceRoot}/coverage/int/{projectName}"],
       "executor": "@nx/vite:test",
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ]
+      "inputs": ["default", "^default", "testFixtures"]
     },
     "e2e-test": {
       "dependsOn": ["^build"],
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ]
+      "inputs": ["default", "^default", "testFixtures"]
     },
     "lint": {
       "cache": true,

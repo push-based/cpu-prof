@@ -7,7 +7,7 @@ export type FileInfo = {
   name: string;
   path: string;
   mtime: Date;
-}
+};
 
 /**
  * Check if a file exists

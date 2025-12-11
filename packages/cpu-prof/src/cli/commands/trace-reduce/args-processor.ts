@@ -11,7 +11,7 @@ export function processArgs(
   // Input and output files are now handled by middleware
   const inputFile = argv.inputFile ?? '';
   const outputFile = argv.output ?? '';
-  
+
   if (!inputFile) {
     throw new Error('Input file is required');
   }

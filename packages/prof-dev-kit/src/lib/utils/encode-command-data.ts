@@ -6,6 +6,8 @@ export function encodeCmd(cmd: string, args: string[]) {
 
 export function decodeCmd(slug: string) {
   let b64 = slug.replace(/-/g, '+').replace(/_/g, '/');
-  while (b64.length % 4 !== 0) {b64 += '=';}
+  while (b64.length % 4 !== 0) {
+    b64 += '=';
+  }
   return Buffer.from(b64, 'base64').toString('utf8');
 }

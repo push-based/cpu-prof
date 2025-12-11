@@ -1,4 +1,8 @@
-import { generateOutputFilename, findNewestFile, findNewestTraceFile } from './file-naming.js';
+import {
+  generateOutputFilename,
+  findNewestFile,
+  findNewestTraceFile,
+} from './file-naming.js';
 
 describe('File Naming Utils', () => {
   describe('generateOutputFilename', () => {
