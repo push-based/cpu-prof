@@ -1,12 +1,12 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
-import { mergeCpuProfileFiles } from './merge-cpuprofile-files';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { mergeCpuProfileFiles } from './merge-cpuprofile-files.js';
 import { vol } from 'memfs';
-import * as fileUtils from './file-utils';
-import * as cpuUtils from './cpu/utils';
-import * as loadCpuProfilesModule from './cpu/load-cpu-profiles';
-import * as traceUtils from './trace/utils';
+import * as fileUtils from './file-utils.js';
+import * as cpuUtils from './cpu/utils.js';
+import * as loadCpuProfilesModule from './cpu/load-cpu-profiles.js';
+import * as traceUtils from './trace/utils.js';
 
 describe('mergeCpuProfileFiles', () => {
   const ensureDirectoryExistsSpy = vi.spyOn(fileUtils, 'ensureDirectoryExists');
@@ -18,7 +18,7 @@ describe('mergeCpuProfileFiles', () => {
   );
 
   beforeEach(() => {
-    ensureDirectoryExistsSpy.mockImplementation(() => {});
+    ensureDirectoryExistsSpy.mockImplementation(vi.fn());
   });
 
   it('should merge files in a folder', async () => {
@@ -31,7 +31,7 @@ describe('mergeCpuProfileFiles', () => {
       [profilePath1]: '{"mock": "profile1"}',
     });
 
-    cpuProfilesToTraceFileSpy.mockReturnValue({ mock: 'profile1' } as any);
+    cpuProfilesToTraceFileSpy.mockReturnValue({ mock: 'profile1' });
     const outputFile = join(profilesDir, 'merged-profile.json');
     await mergeCpuProfileFiles(profilesDir, outputFile);
 
@@ -43,9 +43,7 @@ describe('mergeCpuProfileFiles', () => {
   });
 
   it('should skip files when isCpuProfileFileName returns false', async () => {
-    isCpuProfileFileNameSpy.mockImplementation((fileName: string) => {
-      return fileName.includes('CPU.20250519.120000.12.0.001.cpuprofile');
-    });
+    isCpuProfileFileNameSpy.mockImplementation((fileName: string) => fileName.includes('CPU.20250519.120000.12.0.001.cpuprofile'));
 
     const profilesDir = 'profiles';
     vol.fromJSON({
@@ -73,7 +71,7 @@ describe('mergeCpuProfileFiles', () => {
 
     const outputFile = join(profilesDir, 'merged-profile.json');
 
-    await expect(mergeCpuProfileFiles(profilesDir, outputFile)).rejects.toThrow(
+    await expect(mergeCpuProfileFiles(profilesDir, outputFile)).rejects.toThrowError(
       'No valid CPU profiles found in profiles to merge'
     );
   });

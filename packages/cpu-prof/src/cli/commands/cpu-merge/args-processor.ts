@@ -5,7 +5,7 @@ import type { MergeArgs, ProcessedMergeArgs } from './types';
  * Process and validate CLI arguments for the merge command
  */
 export function processArgs(argv: MergeArgs): ProcessedMergeArgs {
-  let { inputDir, outputDir, verbose, smosh, startTracingInBrowser } = argv;
+  const { inputDir, outputDir, verbose, smosh, startTracingInBrowser } = argv;
 
   if (!inputDir) {
     // Should be caught by yargs due to <inputDir> being required (demandOption)

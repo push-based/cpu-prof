@@ -1,9 +1,9 @@
-import { Worker } from 'worker_threads';
-import { join, dirname, basename } from 'path';
-import { fileURLToPath } from 'url';
+import { Worker } from 'node:worker_threads';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const numWorkers = parseInt(process.argv[2], 10) || 2;
+const numWorkers = Number.parseInt(process.argv[2], 10) || 2;
 const workerScript = join(__dirname, 'child-process.mjs');
 
 // Get CPU profile directory from parent process

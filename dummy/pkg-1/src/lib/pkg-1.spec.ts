@@ -1,7 +1,7 @@
-import { pkg1 } from './pkg-1';
+import { pkg1 } from './pkg-1.js';
 
 describe('pkg1', () => {
   it('should work', () => {
-    expect(pkg1()).toEqual('pkg-1');
+    expect(pkg1()).toBe('pkg-1');
   });
 });

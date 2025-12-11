@@ -5,7 +5,7 @@ import {
 } from 'node:perf_hooks';
 import { basename } from 'node:path';
 import { cpus } from 'node:os';
-import { TraceEvent, CallFrame, PerformanceMarkOptions } from './types';
+import { TraceEvent, CallFrame, PerformanceMarkOptions } from './types.js';
 
 // Global array to store complete events.
 const traceEvents: TraceEvent[] = [];
@@ -108,7 +108,7 @@ const observer = new PerformanceObserver((list) => {
     const callFrame = (startEntry?.detail?.callStack || [])[0] || {};
     const file = (callFrame.file || 'unknown').replace(process.cwd(), '.');
     const functionName =
-      callFrame.functionName != null ? callFrame.functionName : 'anonymous';
+      callFrame.functionName == null ? 'anonymous' : callFrame.functionName;
     const line = callFrame.line || null;
 
     const ts = entry.startTime * 1000;
@@ -135,7 +135,7 @@ const observer = new PerformanceObserver((list) => {
       },
     };
 
-    if (traceEvents.length < 1) {
+    if (traceEvents.length === 0) {
       traceEvents.push(threadMetadata);
       console.log(`traceEvent:JSON:${JSON.stringify(threadMetadata)}`);
       traceEvents.push(processMetadata);
@@ -163,9 +163,9 @@ observer.observe({ entryTypes: ['measure'], buffered: true });
         },
         initialBreadcrumb: {
           window: {
-            min: 269106047711,
-            max: 269107913714,
-            range: 1866003,
+            min: 269_106_047_711,
+            max: 269_107_913_714,
+            range: 1_866_003,
           },
           child: null,
         },

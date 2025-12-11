@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import { basename } from 'node:path';
 import { CPUProfile, CpuProfileInfo } from '../cpu/cpuprofile.types';
 import {
   CpuProfilerStartProfilingEvent,
@@ -163,7 +163,7 @@ export function getRunTaskTraceEvent(
 }
 
 export function getFrameTreeNodeId(pid: number, tid: number): number {
-  return parseInt(`${pid}0${tid}`);
+  return Number.parseInt(`${pid}0${tid}`);
 }
 
 export function getFrameName(pid: number, tid: number): string {

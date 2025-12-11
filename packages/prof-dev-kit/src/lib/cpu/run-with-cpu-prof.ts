@@ -1,10 +1,10 @@
 import * as ansis from 'ansis';
-import { executeProcess, type ProcessResult } from '../execute-process';
+import { executeProcess, type ProcessResult } from '../execute-process.js';
 import * as process from 'node:process';
-import { getCpuProfileName, parseCpuProfileName } from './utils';
-import { encodeCmd } from '../utils/encode-command-data';
-import { loadCpuProfiles } from './load-cpu-profiles';
-import { getSmallestPidTidProfileInfo } from './profile-selection';
+import { getCpuProfileName, parseCpuProfileName } from './utils.js';
+import { encodeCmd } from '../utils/encode-command-data.js';
+import { loadCpuProfiles } from './load-cpu-profiles.js';
+import { getSmallestPidTidProfileInfo } from './profile-selection.js';
 import { basename, join } from 'node:path';
 import { rename } from 'node:fs/promises';
 

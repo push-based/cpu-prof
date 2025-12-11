@@ -1,9 +1,9 @@
-import { writeFile } from 'fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { CpuProfileInfo } from './cpu/cpuprofile.types';
-import { cpuProfilesToTraceFile } from './trace/utils';
+import { cpuProfilesToTraceFile } from './trace/utils.js';
 import { dirname } from 'node:path';
-import { ensureDirectoryExists } from './file-utils';
-import { loadCpuProfiles } from './cpu/load-cpu-profiles';
+import { ensureDirectoryExists } from './file-utils.js';
+import { loadCpuProfiles } from './cpu/load-cpu-profiles.js';
 
 export async function mergeCpuProfileFiles(
   sourceDir: string,

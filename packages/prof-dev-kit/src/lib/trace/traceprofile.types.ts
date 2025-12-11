@@ -4,7 +4,7 @@ import { CPUProfile } from '../cpu/cpuprofile.types';
 
 export type TraceFile = TraceEvent[] | TraceEventContainer;
 
-export interface TraceEventContainer {
+export type TraceEventContainer = {
   traceEvents: TraceEvent[];
   displayTimeUnit?: 'ms' | 'ns';
   systemTraceEvents?: string;
@@ -18,38 +18,38 @@ export interface TraceEventContainer {
 /**
  * Top-level metadata for a trace, as found in `.cpuprofile` and DevTools exports.
  */
-export interface TraceMetadata {
+export type TraceMetadata = {
   source: string; // e.g. "DevTools"
   startTime: string; // ISO timestamp when trace recorded
   hardwareConcurrency?: number; // Number of logical processors
   dataOrigin?: string; // Origin of trace events, e.g. "TraceEvents"
-  modifications?: Modifications; // Details of any UI or data modifications
-  [key: string]: any; // Allow additional custom metadata
+  modifications?: Modifications; // Details of unknown UI or data modifications
+  [key: string]: unknown; // Allow additional custom metadata
 }
 
 /**
  * Modifications made to trace data or UI in DevTools export
  */
-export interface Modifications {
+export type Modifications = {
   entriesModifications: EntriesModifications;
   initialBreadcrumb: InitialBreadcrumb;
   annotations: Annotations;
 }
 
 /** Hidden or expandable entries information */
-export interface EntriesModifications {
-  hiddenEntries: any[]; // IDs or indexes of hidden entries
-  expandableEntries: any[]; // IDs or indexes of expandable entries
+export type EntriesModifications = {
+  hiddenEntries: unknown[]; // IDs or indexes of hidden entries
+  expandableEntries: unknown[]; // IDs or indexes of expandable entries
 }
 
 /** Initial breadcrumb information for time ranges and window */
-export interface InitialBreadcrumb {
+export type InitialBreadcrumb = {
   window: BreadcrumbWindow;
-  child: any | null;
+  child: unknown | null;
 }
 
 /** Time window bounds (min, max) in trace time units (e.g. microseconds) */
-export interface BreadcrumbWindow {
+export type BreadcrumbWindow = {
   min: number;
   max: number;
   range: number;
@@ -58,7 +58,7 @@ export interface BreadcrumbWindow {
 /**
  * Custom label for a specific trace entry
  */
-export interface EntryLabel {
+export type EntryLabel = {
   entryId: number | string; // ID or index of the trace entry
   label: string; // Label text for the entry
   color?: string; // Optional display color for the label
@@ -67,7 +67,7 @@ export interface EntryLabel {
 /**
  * A time range annotated with a label
  */
-export interface LabelledTimeRange {
+export type LabelledTimeRange = {
   startTime: number; // Start timestamp of the range (microseconds)
   endTime: number; // End timestamp of the range (microseconds)
   label: string; // Annotation label for the time range
@@ -77,14 +77,14 @@ export interface LabelledTimeRange {
 /**
  * Link or relation between two trace entries
  */
-export interface EntryLink {
+export type EntryLink = {
   fromEntryId: number | string; // Source entry ID for the link
   toEntryId: number | string; // Target entry ID for the link
   linkType?: string; // Optional type or description of the link
 }
 
 /** Annotations such as labels and links between entries */
-export interface Annotations {
+export type Annotations = {
   entryLabels: EntryLabel[]; // Custom labels for entries
   labelledTimeRanges: LabelledTimeRange[]; // Time ranges annotated with labels
   linksBetweenEntries: EntryLink[]; // Links or relations between entries
@@ -136,7 +136,7 @@ export type Category<T extends string = string> = `${
   | 'disabled-by-default-'
   | ''}${T}`;
 
-export interface TraceEventBase {
+export type TraceEventBase = {
   ph: Phase;
   name?: string;
   cat?: Category;
@@ -144,113 +144,113 @@ export interface TraceEventBase {
   tid?: number;
   ts: number;
   tts?: number;
-  args?: Record<string, any>;
+  args?: Record<string, unknown>;
   dur?: number;
   tdur?: number;
   sf?: string | number;
-  stack?: Array<string | number>;
+  stack?: (string | number)[];
   cname?: string;
 }
 
 /** Event identifier (for async, object, flow events, etc.) */
 export type EventID = string | number;
 
-export interface EventID2 {
+export type EventID2 = {
   local?: string;
   global?: string;
 }
 
-export interface DurationBeginEvent extends TraceEventBase {
+export type DurationBeginEvent = {
   ph: 'B';
   pid: number;
   tid: number;
-}
+} & TraceEventBase
 
-export interface DurationEndEvent extends TraceEventBase {
+export type DurationEndEvent = {
   ph: 'E';
   pid: number;
   tid: number;
-}
+} & TraceEventBase
 
-export interface CompleteEvent extends TraceEventBase {
+export type CompleteEvent = {
   ph: 'X';
   pid: number;
   tid: number;
   name: string;
   dur: number;
   tdur?: number;
-}
+} & TraceEventBase
 
-export interface InstantEvent extends TraceEventBase {
+export type InstantEvent = {
   ph: 'I';
   dur: 0;
   pid: number;
   tid: number;
   name: string;
   s?: InstantScope;
-}
+} & TraceEventBase
 
-export interface CounterEvent extends TraceEventBase {
+export type CounterEvent = {
   ph: 'C';
   name: string;
   id?: EventID;
   args: Record<string, number>;
-}
+} & TraceEventBase
 
-export interface AsyncBeginEvent extends TraceEventBase {
+export type AsyncBeginEvent = {
   ph: 'b';
   name: string;
   id?: EventID;
   id2?: EventID2;
   scope?: string;
-}
+} & TraceEventBase
 
-export interface AsyncInstantEvent extends TraceEventBase {
+export type AsyncInstantEvent = {
   ph: 'n';
   name: string;
   id?: EventID;
   id2?: EventID2;
   scope?: string;
-}
+} & TraceEventBase
 
-export interface AsyncEndEvent extends TraceEventBase {
+export type AsyncEndEvent = {
   ph: 'e';
   name?: string;
   id?: EventID;
   id2?: EventID2;
   scope?: string;
-}
+} & TraceEventBase
 
-export interface FlowStartEvent extends TraceEventBase {
+export type FlowStartEvent = {
   ph: 's';
   name: string;
   id?: EventID;
   id2?: EventID2;
-}
+} & TraceEventBase
 
-export interface FlowStepEvent extends TraceEventBase {
+export type FlowStepEvent = {
   ph: 't';
   name: string;
   id?: EventID;
   id2?: EventID2;
-}
+} & TraceEventBase
 
-export interface FlowEndEvent extends TraceEventBase {
+export type FlowEndEvent = {
   ph: 'f';
   name: string;
   id?: EventID;
-}
+} & TraceEventBase
 
-export interface SampleEvent extends TraceEventBase {
+export type SampleEvent = {
   ph: 'P';
   name: string;
   id?: EventID;
-}
+} & TraceEventBase
 
 /**
  * Frame information for TracingStartedInBrowserEvent
  */
-export interface Frame {
+export type Frame = {
   frame: string;
   isInPrimaryMainFrame: boolean;
   isOutermostMainFrame: boolean;
@@ -262,7 +262,7 @@ export interface Frame {
 /**
  * Event marking that tracing has started in the browser.
  */
-export interface TracingStartedInBrowserEvent extends TraceEventBase {
+export type TracingStartedInBrowserEvent = {
   ph: 'I';
   cat: Category<'devtools.timeline'>;
   name: 'TracingStartedInBrowser';
@@ -277,137 +277,137 @@ export interface TracingStartedInBrowserEvent extends TraceEventBase {
       persistentIds: true;
     };
   };
-}
+} & TraceEventBase
 
-export interface CpuProfilerStartProfilingEvent extends TraceEventBase {
+export type CpuProfilerStartProfilingEvent = {
   cat: Category<'v8'>;
   ph: 'X';
   pid: number;
   tid: number;
   name: 'CpuProfiler::StartProfiling';
   ts: number;
-}
+} & TraceEventBase
 
-export interface CpuProfilerStopProfilingEvent extends TraceEventBase {
+export type CpuProfilerStopProfilingEvent = {
   cat: Category<'v8'>;
   ph: 'X';
   pid: number;
   tid: number;
   name: 'CpuProfiler::StopProfiling';
   ts: number;
-}
+} & TraceEventBase
 
-export interface ProfileEvent extends SampleEvent {
+export type ProfileEvent = {
   cat: Category<'v8.cpu_profiler'>;
   name: 'Profile';
-  args: { data: { startTime: number; [key: string]: any } };
-}
+  args: { data: { startTime: number; [key: string]: unknown } };
+} & SampleEvent
 
-export interface ProfileChunkEvent extends SampleEvent {
+export type ProfileChunkEvent = {
   cat: Category<'v8.cpu_profiler'>;
   name: 'ProfileChunk';
   args: {
     data: {
       cpuProfile: Omit<CPUProfile, 'timeDeltas' | 'startTime' | 'endTime'>;
       timeDeltas?: number[];
-      [key: string]: any;
+      [key: string]: unknown;
     };
   };
-}
+} & SampleEvent
 
-export interface ObjectCreatedEvent extends TraceEventBase {
+export type ObjectCreatedEvent = {
   ph: 'N';
   name: string;
   id: EventID;
-}
+} & TraceEventBase
 
-export interface ObjectSnapshotEvent extends TraceEventBase {
+export type ObjectSnapshotEvent = {
   ph: 'O';
   name: string;
   id: EventID;
-  args: { snapshot: any };
-}
+  args: { snapshot: unknown };
+} & TraceEventBase
 
-export interface ObjectDestroyedEvent extends TraceEventBase {
+export type ObjectDestroyedEvent = {
   ph: 'D';
   name: string;
   id: EventID;
-}
+} & TraceEventBase
 
-interface MetadataEventBase extends TraceEventBase {
+type MetadataEventBase = {
   ph: 'M';
   cat: '__metadata';
   pid: number;
   tid: number;
-}
+} & TraceEventBase
 
-export interface ProcessNameEvent extends MetadataEventBase {
+export type ProcessNameEvent = {
   name: 'process_name';
   args: { name: string };
-}
+} & MetadataEventBase
 
-export interface ThreadNameEvent extends MetadataEventBase {
+export type ThreadNameEvent = {
   name: 'thread_name';
   args: { name: string };
-}
+} & MetadataEventBase
 
-export interface GlobalMemoryDumpEvent extends TraceEventBase {
+export type GlobalMemoryDumpEvent = {
   ph: 'V';
   id: EventID;
-  args: Record<string, any>;
-}
+  args: Record<string, unknown>;
+} & TraceEventBase
 
-export interface ProcessMemoryDumpEvent extends TraceEventBase {
+export type ProcessMemoryDumpEvent = {
   ph: 'v';
   pid: number;
   id: EventID;
-  args: Record<string, any>;
-}
+  args: Record<string, unknown>;
+} & TraceEventBase
 
-export interface MarkEvent extends TraceEventBase {
+export type MarkEvent = {
   ph: 'R';
   name: string;
-}
+} & TraceEventBase
 
-export interface ClockSyncEvent extends TraceEventBase {
+export type ClockSyncEvent = {
   ph: 'c';
   name: 'clock_sync';
   args: { sync_id: string; issue_ts?: number };
-}
+} & TraceEventBase
 
-export interface ContextEnterEvent extends TraceEventBase {
+export type ContextEnterEvent = {
   ph: '(';
   name: string;
   id: EventID;
-}
+} & TraceEventBase
 
-export interface ContextLeaveEvent extends TraceEventBase {
+export type ContextLeaveEvent = {
   ph: ')';
   name: string;
   id: EventID;
-}
+} & TraceEventBase
 
-export interface IDLinkEvent extends TraceEventBase {
+export type IDLinkEvent = {
   ph: '=';
   name?: string;
   id: EventID;
   args: { linked_id: EventID };
-}
+} & TraceEventBase
 
-export interface ProcessLabelsEvent extends MetadataEventBase {
+export type ProcessLabelsEvent = {
   name: 'process_labels';
   args: { labels: string };
-}
+} & MetadataEventBase
 
-export interface ProcessSortIndexEvent extends MetadataEventBase {
+export type ProcessSortIndexEvent = {
   name: 'process_sort_index';
   args: { sort_index: number };
-}
+} & MetadataEventBase
 
-export interface ThreadSortIndexEvent extends MetadataEventBase {
+export type ThreadSortIndexEvent = {
   name: 'thread_sort_index';
   args: { sort_index: number };
-}
+} & MetadataEventBase
 
 /**
  * Copy of: https://developer.chrome.com/docs/devtools/performance/extension?hl=de
@@ -425,7 +425,7 @@ export type DevToolsColor =
   | 'tertiary-dark'
   | 'error';
 
-export interface ExtensionTrackEntryPayload {
+export type ExtensionTrackEntryPayload = {
   dataType?: 'track-entry'; // Defaults to "track-entry"
   color?: DevToolsColor; // Defaults to "primary"
   track: string; // Required: Name of the custom track
@@ -434,7 +434,7 @@ export interface ExtensionTrackEntryPayload {
   tooltipText?: string; // Short description for tooltip
 }
 
-export interface ExtensionMarkerPayload {
+export type ExtensionMarkerPayload = {
   dataType: 'marker'; // Required: Identifies as a marker
   color?: DevToolsColor; // Defaults to "primary"
   properties?: [string, string][]; // Key-value pairs for detailed view
@@ -475,7 +475,7 @@ export type TraceEvent =
   | ContextLeaveEvent
   | IDLinkEvent;
 
-export interface StackFrame {
+export type StackFrame = {
   name?: string;
   category?: string;
   file?: string;
@@ -484,7 +484,7 @@ export interface StackFrame {
   parent?: string;
 }
 
-export interface Sample {
+export type Sample = {
   cpu?: number;
   name: string;
   ts: number;

@@ -7,7 +7,7 @@ import measureCommand from '../commands/measure/index';
 /**
  * Registry of all available CLI commands
  */
-export const commands: CommandModule<Record<string, unknown>, any>[] = [
+export const commands: CommandModule<Record<string, unknown>, unknown>[] = [
   {
     ...measureCommand,
     command: '*',

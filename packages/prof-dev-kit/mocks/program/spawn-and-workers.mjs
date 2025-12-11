@@ -1,7 +1,7 @@
-import { spawn } from 'child_process';
-import { Worker } from 'worker_threads';
-import { join, dirname, basename } from 'path';
-import { fileURLToPath } from 'url';
+import { spawn } from 'node:child_process';
+import { Worker } from 'node:worker_threads';
+import { join, dirname, basename } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

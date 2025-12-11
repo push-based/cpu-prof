@@ -1,9 +1,9 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 /**
  * File information interface
  */
-export interface FileInfo {
+export type FileInfo = {
   name: string;
   path: string;
   mtime: Date;

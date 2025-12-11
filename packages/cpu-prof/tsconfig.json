@@ -4,7 +4,7 @@
   "include": [],
   "references": [
     {
-      "path": "../../testing/vitest-setup"
+      "path": "../../testing/vitest-setup-config"
     },
     {
       "path": "../prof-dev-kit"

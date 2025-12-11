@@ -45,7 +45,7 @@ export function getPerfLogName({
     : extension;
   const preparedPrefix = prefix
     .replace(/\s+/g, '-')
-    .replace(/[^a-zA-Z0-9-_]/g, '-');
+    .replace(/[^\w-]/g, '-');
 
   return `${preparedPrefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
 }
@@ -127,7 +127,7 @@ export function createNxErrorInstantEvent(options: {
 }
 
 export function createTraceContainer(entries: TraceEvent[]): TraceFile {
-  const traceContainer = {
+  return {
     traceEvents: entries,
     metadata: {
       source: 'nx-perf',
@@ -135,5 +135,4 @@ export function createTraceContainer(entries: TraceEvent[]): TraceFile {
       version: '1.0.0',
     },
   };
-  return traceContainer;
 }

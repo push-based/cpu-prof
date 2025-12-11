@@ -1,5 +1,5 @@
 // Export main functionality
-export { nxRunWithPerfLogging } from './utils';
+export { nxRunWithPerfLogging } from './utils.js';
 
 // Export types
 export type {
@@ -9,4 +9,4 @@ export type {
   CallFrame,
   PerformanceMarkOptions,
   TraceEvent,
-} from './types';
+} from './types.js';

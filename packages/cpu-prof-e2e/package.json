@@ -17,14 +17,18 @@
   "implicitDependencies": [
     "cpu-prof"
   ],
-  "targets": {
-    "e2e-test": {
-      "dependsOn": [
-        "^build"
-      ],
-      "executor": "@nx/vitest:vitest",
-      "options": {
-        "config": "vitest.e2e.config.ts"
+  "nx": {
+    "projectRoot": "packages/cpu-prof-e2e",
+    "name": "cpu-prof-e2e",
+    "targets": {
+      "e2e-test": {
+        "dependsOn": [
+          "^build"
+        ],
+        "executor": "@nx/vite:test",
+        "options": {
+          "config": "{projectRoot}/vitest.e2e.config.ts"
+        }
       }
     }
   }

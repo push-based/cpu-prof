@@ -12,10 +12,10 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../testing/vitest-setup/tsconfig.lib.json"
+      "path": "../../testing/vitest-setup-config/tsconfig.lib.json"
     },
     {
-      "path": "../cpu-prof/tsconfig.lib.json"
+      "path": "../prof-dev-kit/tsconfig.lib.json"
     }
   ],
   "exclude": [

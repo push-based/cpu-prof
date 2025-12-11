@@ -1,5 +1,5 @@
 import { TraceEvent, TraceFile } from './traceprofile.types';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 /**
  * Default filter options used throughout the application
@@ -12,13 +12,13 @@ export const DEFAULT_FILTER_OPTIONS: Partial<FilterOptions> = {
   filterStreamingCompile: true,
   excludeNames: ['ResourceReceivedData', 'UpdateCounters', 'v8.evaluateModule'],
   excludeCats: ['v8.compile'],
-  durMin: 10000, // 10μs minimum duration
+  durMin: 10_000, // 10μs minimum duration
 };
 
 /**
  * Options for filtering trace events
  */
-export interface FilterOptions {
+export type FilterOptions = {
   filterNetwork?: boolean;
   filterAnimation?: boolean;
   filterGPU?: boolean;
@@ -43,7 +43,7 @@ export interface FilterOptions {
 /**
  * Statistics returned by reduceTraceFile
  */
-export interface TraceReductionStats {
+export type TraceReductionStats = {
   originalEventCount: number;
   filteredEventCount: number;
   removedEventCount: number;
@@ -334,10 +334,10 @@ export function shouldFilterByTimestamp(
  */
 export function isStreamingCompileEvent(event: TraceEvent): boolean {
   if (event.name?.includes('Stream') && event.name?.includes('Compile'))
-    return true;
-  if (event.name?.includes('CompileTask')) return true;
+    {return true;}
+  if (event.name?.includes('CompileTask')) {return true;}
   if (event.cat?.includes('v8.wasm') && event.name?.includes('Streaming'))
-    return true;
+    {return true;}
   // Add more specific checks if needed based on typical event names/categories for these tasks
   return false;
 }
@@ -358,71 +358,71 @@ export function filterTraceEvents(
     : () => false;
 
   return traceEvents.filter((event) => {
-    if (options.filterNetwork && isNetworkEvent(event)) return false;
-    if (options.filterAnimation && isAnimationEvent(event)) return false;
-    if (options.filterGPU && isGPUEvent(event)) return false;
+    if (options.filterNetwork && isNetworkEvent(event)) {return false;}
+    if (options.filterAnimation && isAnimationEvent(event)) {return false;}
+    if (options.filterGPU && isGPUEvent(event)) {return false;}
 
     // Use metadata-based thread pool filtering
-    if (options.filterThreadPool && isThreadPoolEventFn(event)) return false;
+    if (options.filterThreadPool && isThreadPoolEventFn(event)) {return false;}
 
     if (options.filterStreamingCompile && isStreamingCompileEvent(event))
-      return false;
+      {return false;}
 
     // Duration filtering
     if (shouldFilterByDuration(event, options.durMin, options.durMax))
-      return false;
+      {return false;}
 
     // Timestamp filtering
     if (shouldFilterByTimestamp(event, options.tsMin, options.tsMax))
-      return false;
+      {return false;}
 
     if (
       options.includePhases &&
       options.includePhases.length > 0 &&
       !options.includePhases.includes(event.ph)
     )
-      return false;
+      {return false;}
     if (
       options.excludePhases &&
       options.excludePhases.length > 0 &&
       options.excludePhases.includes(event.ph)
     )
-      return false;
+      {return false;}
 
     if (
       options.includePids &&
       options.includePids.length > 0 &&
       (event.pid === undefined || !options.includePids.includes(event.pid))
     )
-      return false;
+      {return false;}
     if (
       options.excludePids &&
       options.excludePids.length > 0 &&
       event.pid !== undefined &&
       options.excludePids.includes(event.pid)
     )
-      return false;
+      {return false;}
 
     if (
       options.includeTids &&
       options.includeTids.length > 0 &&
       (event.tid === undefined || !options.includeTids.includes(event.tid))
     )
-      return false;
+      {return false;}
     if (
       options.excludeTids &&
       options.excludeTids.length > 0 &&
       event.tid !== undefined &&
       options.excludeTids.includes(event.tid)
     )
-      return false;
+      {return false;}
 
     if (
       options.includeNames &&
       options.includeNames.length > 0 &&
       (!event.name || !options.includeNames.includes(event.name))
     )
-      return false;
+      {return false;}
 
     if (
       options.excludeNames &&
@@ -430,14 +430,14 @@ export function filterTraceEvents(
       event.name &&
       options.excludeNames.includes(event.name)
     )
-      return false;
+      {return false;}
 
     if (
       options.includeCats &&
       options.includeCats.length > 0 &&
       (!event.cat || !options.includeCats.includes(event.cat))
     )
-      return false;
+      {return false;}
 
     if (
       options.excludeCats &&
@@ -445,7 +445,7 @@ export function filterTraceEvents(
       event.cat &&
       options.excludeCats.includes(event.cat)
     )
-      return false;
+      {return false;}
 
     return true;
   });

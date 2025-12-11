@@ -17,21 +17,11 @@
     "esModuleInterop": true
   },
   "include": [
-    "vite.config.ts",
-    "vite.config.mts",
-    "vitest.config.ts",
-    "vitest.config.mts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.tsx",
-    "src/**/*.spec.tsx",
-    "src/**/*.test.js",
-    "src/**/*.spec.js",
-    "src/**/*.test.jsx",
-    "src/**/*.spec.jsx",
-    "src/**/*.d.ts",
+    "vitest*.config.ts",
+    "src/**/*.unit.test.ts",
+    "src/**/*.int.test.ts",
     "mocks/fixtures/minimal/**/*.json",
-    "../../testing/utils/src/lib/string.ts"
+    "../../testing/setup/src/vitest.d.ts"
   ],
   "references": [
     {

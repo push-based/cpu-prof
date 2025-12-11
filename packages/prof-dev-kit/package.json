@@ -20,11 +20,11 @@
     "dist",
     "!**/*.tsbuildinfo"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "ansis": "^4.1.0",
-    "vitest": "^3.0.0",
-    "vite": "^6.0.0",
-    "@push-based/testing-vitest-setup": "0.0.1"
+    "ansis": "^4.1.0"
   },
   "nx": {
     "name": "prof-dev-kit",
@@ -35,10 +35,10 @@
           "config": "packages/{projectName}/vitest.unit.config.ts"
         }
       },
-      "integration-test": {
+      "int-test": {
         "executor": "@nx/vite:test",
         "options": {
-          "config": "packages/{projectName}/vitest.integration.config.ts"
+          "config": "packages/{projectName}/vitest.int.config.ts"
         }
       }
     },

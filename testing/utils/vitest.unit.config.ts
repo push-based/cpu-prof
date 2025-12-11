@@ -1,14 +1,3 @@
-import { defineConfig } from 'vitest/config';
-import { createSharedUnitVitestConfig } from '../vitest-setup/src/lib/configuration';
+import { createUnitTestConfig } from '../vitest-setup-config/src/index.js';
 
-export default defineConfig(() => {
-  const baseConfig = createSharedUnitVitestConfig({
-    projectRoot: __dirname,
-    workspaceRoot: '../..',
-  });
-
-  return {
-    ...baseConfig,
-    plugins: [],
-  };
-});
+export default createUnitTestConfig('utils');

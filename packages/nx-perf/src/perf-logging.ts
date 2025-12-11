@@ -2,13 +2,13 @@ import {
   PerformanceObserver,
   type PerformanceObserverEntryList,
 } from 'node:perf_hooks';
-import { PerfFileLogger } from './perf-file-logger';
+import { PerfFileLogger } from './perf-file-logger.js';
 
 // Re-export PerfFileLogger for backward compatibility
-export { PerfFileLogger } from './perf-file-logger';
+export { PerfFileLogger } from './perf-file-logger.js';
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var nxPerfLogger: PerfFileLogger | undefined;
 }
 
@@ -24,4 +24,4 @@ if (process.env.NX_PERF_LOGGING === 'true') {
   globalThis.nxPerfLogger = logger;
 }
 
-export {};
+

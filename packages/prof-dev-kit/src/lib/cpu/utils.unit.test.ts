@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getCpuProfileName, parseCpuProfileName } from './utils';
+import { getCpuProfileName, parseCpuProfileName } from './utils.js';
+
 describe('getCpuProfileName', () => {
   const sequenceMap = new Map();
   const testDate = new Date(2025, 4, 10, 13, 46, 25); // May 10, 2025, 13:46:25
@@ -13,7 +14,7 @@ describe('getCpuProfileName', () => {
       getCpuProfileName(
         {
           prefix: 'CPU',
-          pid: 51430,
+          pid: 51_430,
           tid: 0,
           date: testDate,
         },
@@ -24,44 +25,44 @@ describe('getCpuProfileName', () => {
 
   it('should increment sequence number for same PID-TID combination', () => {
     expect(
-      getCpuProfileName({ pid: 12345, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.0.001.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12345, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.0.002.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12345, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.0.003.cpuprofile');
   });
 
   it('should not increment sequence number for different PID combination', () => {
     expect(
-      getCpuProfileName({ pid: 12345, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.0.001.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12346, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_346, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12346.0.001.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12347, tid: 0, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_347, tid: 0, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12347.0.001.cpuprofile');
   });
 
   it('should not increment sequence number for different TID combination', () => {
     expect(
-      getCpuProfileName({ pid: 12345, tid: 1, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 1, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.1.001.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12345, tid: 2, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 2, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.2.001.cpuprofile');
     expect(
-      getCpuProfileName({ pid: 12345, tid: 3, date: testDate }, sequenceMap)
+      getCpuProfileName({ pid: 12_345, tid: 3, date: testDate }, sequenceMap)
     ).toBe('CPU.20250510.134625.12345.3.001.cpuprofile');
   });
 
   it('should support custom file extensions', () => {
     const customExt = getCpuProfileName(
       {
-        pid: 12345,
+        pid: 12_345,
         date: testDate,
         extension: 'profile',
       },
@@ -73,7 +74,7 @@ describe('getCpuProfileName', () => {
   it('should support custom prefix extensions', () => {
     const customExt = getCpuProfileName(
       {
-        pid: 12345,
+        pid: 12_345,
         date: testDate,
         prefix: 'PROF',
       },
@@ -101,7 +102,7 @@ describe('parseCpuProfileName', () => {
 
   it('should parse PID of standard CPU profile name', () => {
     expect(parseCpuProfileName(VALID_PROFILE_NAME)).toStrictEqual(
-      expect.objectContaining({ pid: 12345 })
+      expect.objectContaining({ pid: 12_345 })
     );
   });
 
@@ -124,6 +125,6 @@ describe('parseCpuProfileName', () => {
   });
 
   it('should throw error for malformed profile name', () => {
-    expect(() => parseCpuProfileName('invalid.profile.name')).toThrow();
+    expect(() => parseCpuProfileName('invalid.profile.name')).toThrowError();
   });
 });

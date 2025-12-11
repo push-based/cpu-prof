@@ -1,9 +1,9 @@
-import { spawn } from 'child_process';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { spawn } from 'node:child_process';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const numProcesses = parseInt(process.argv[2], 10) || 2;
+const numProcesses = Number.parseInt(process.argv[2], 10) || 2;
 const childScript = join(__dirname, 'child-process.mjs');
 
 // Get CPU profile directory from parent process

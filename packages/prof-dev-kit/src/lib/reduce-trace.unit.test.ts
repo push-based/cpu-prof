@@ -2,15 +2,8 @@ import {
   describe,
   expect,
   it,
-  vi,
-  beforeEach,
-  afterEach,
-  beforeAll,
-  afterAll,
+  vi
 } from 'vitest';
-import { mkdir, rm } from 'fs/promises';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
 
 // Mock fs module at the top level
 vi.mock('fs', async () => {
@@ -24,8 +17,6 @@ vi.mock('fs', async () => {
 
 import {
   DEFAULT_FILTER_OPTIONS,
-  FilterOptions,
-  TraceReductionStats,
   isNetworkEvent,
   isAnimationEvent,
   isGPUEvent,
@@ -38,14 +29,12 @@ import {
   shouldFilterByTimestamp,
   filterTraceEvents,
   reduceTrace,
-  reduceTraceFile,
-} from './reduce-trace';
+} from './reduce-trace.js';
 import {
   TraceEvent,
   CompleteEvent,
   ThreadNameEvent,
-} from './traceprofile.types';
-import * as fs from 'fs';
+} from './trace/traceprofile.types';
 
 describe('reduce-trace', () => {
   describe('DEFAULT_FILTER_OPTIONS', () => {
@@ -62,7 +51,7 @@ describe('reduce-trace', () => {
           'v8.evaluateModule',
         ],
         excludeCats: ['v8.compile'],
-        durMin: 10000,
+        durMin: 10_000,
       });
     });
   });
@@ -479,10 +468,10 @@ describe('reduce-trace', () => {
             } as unknown as CompleteEvent,
             {
               name: 'LongDuration',
-              dur: 15000,
+              dur: 15_000,
             } as unknown as CompleteEvent,
           ],
-          { durMin: 10000 }
+          { durMin: 10_000 }
         )
       ).toStrictEqual([expect.objectContaining({ name: 'LongDuration' })]);
     });
@@ -537,7 +526,7 @@ describe('reduce-trace', () => {
     });
 
     it('should throw error for invalid trace data structure', () => {
-      expect(() => reduceTrace(JSON.stringify({ invalidField: [] }))).toThrow(
+      expect(() => reduceTrace(JSON.stringify({ invalidField: [] }))).toThrowError(
         'traceEvents array not found in the trace file'
       );
     });

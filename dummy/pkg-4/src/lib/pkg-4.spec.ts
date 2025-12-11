@@ -2,6 +2,6 @@ import { pkg4 } from './pkg-4.js';
 
 describe('pkg4', () => {
   it('should work', () => {
-    expect(pkg4()).toEqual('pkg-4');
+    expect(pkg4()).toBe('pkg-4');
   });
 });

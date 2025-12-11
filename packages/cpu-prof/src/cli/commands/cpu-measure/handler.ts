@@ -5,17 +5,11 @@ import { filterCliOptions } from './utils';
 export async function handler(argv: MeasureArgs): Promise<void> {
   const { _: positionalArgs = [], ...options } = argv;
   const {
-    $0,
     cpuProfDir,
-    ['cpu-prof-dir']: cpuProfDir2,
     cpuProfInterval,
-    ['cpu-prof-interval']: cpuProfInterval2,
     cpuProfName,
-    ['cpu-prof-name']: cpuProfName2,
     commandToProfile,
-    ['command-to-profile']: commandToProfile2,
     flagMain,
-    ['flag-main']: flagMain2,
     ...commandOptions
   } = options;
 
@@ -62,7 +56,7 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     );
   } catch (error) {
     const e = error as Error;
-    let errorMessage = e.message || 'Unknown error';
+    const errorMessage = e.message || 'Unknown error';
 
     if (errorMessage && errorMessage.includes('not allowed in NODE_OPTIONS')) {
       console.error(

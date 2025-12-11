@@ -31,9 +31,6 @@
       "path": "./dummy/pkg-4"
     },
     {
-      "path": "./testing/vitest-setup"
-    },
-    {
       "path": "./testing/setup"
     },
     {
@@ -47,6 +44,9 @@
     },
     {
       "path": "./packages/prof-dev-kit"
+    },
+    {
+      "path": "./testing/vitest-setup-config"
     }
   ]
 }

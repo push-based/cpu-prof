@@ -1,7 +1,7 @@
 export function filterCliOptions(
-  commandOptions: Record<string, any>
-): Record<string, any> {
-  const filteredCommandOptions: Record<string, any> = {};
+  commandOptions: Record<string, unknown>
+): Record<string, unknown> {
+  const filteredCommandOptions: Record<string, unknown> = {};
   for (const key in commandOptions) {
     if (Object.prototype.hasOwnProperty.call(commandOptions, key)) {
       // If the key is camelCase and its kebab-case version also exists, skip the camelCase version.

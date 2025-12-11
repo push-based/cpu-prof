@@ -1,10 +1,10 @@
 import { Performance as NodePerformance } from 'node:perf_hooks';
 
-export interface PerformanceEntryOptions {
+export type PerformanceEntryOptions = {
   detail?: Record<string, unknown>;
 }
 
-export interface TraceEvent {
+export type TraceEvent = {
   name: string;
   ph: string;
   pid: number;
@@ -15,7 +15,7 @@ export interface TraceEvent {
   cat?: string;
 }
 
-export interface PerfProfileEvent {
+export type PerfProfileEvent = {
   name: string;
   ph: string;
   pid: number;
@@ -26,12 +26,12 @@ export interface PerfProfileEvent {
   cat?: string;
 }
 
-export interface Profile {
+export type Profile = {
   metadata: Record<string, unknown>;
   traceEvents: PerfProfileEvent[];
 }
 
-export interface NxPerfOptions {
+export type NxPerfOptions = {
   verbose?: boolean;
   noPatch?: boolean;
   onData?: (data: string) => void;
@@ -40,7 +40,7 @@ export interface NxPerfOptions {
   beforeExit?: (profile: Profile) => void;
 }
 
-export interface CallFrame {
+export type CallFrame = {
   functionName: string | null;
   file: string;
   line: number;
@@ -48,12 +48,12 @@ export interface CallFrame {
   raw?: string;
 }
 
-export interface PerformanceMarkOptions extends PerformanceEntryOptions {
+export type PerformanceMarkOptions = {
   detail?: {
     callStack?: CallFrame[];
     [key: string]: unknown;
   };
-}
+} & PerformanceEntryOptions
 
 declare global {
   interface Performance extends NodePerformance {

@@ -8,7 +8,7 @@ import {
   createTraceContainer,
   getPerfLogName,
   type TaskStatus,
-} from './logging-utils';
+} from './logging-utils.js';
 
 /**
  * A file-based performance logger that collects trace events and writes them
@@ -106,11 +106,11 @@ export class PerfFileLogger {
     // ensure directory exists
     try {
       mkdirSync(this.logDir, { recursive: true });
-    } catch (err) {
-      console.warn('Failed to create perf log directory:', err);
+    } catch (error) {
+      console.warn('Failed to create perf log directory:', error);
     }
 
-    if (this.entries.length === 0) return;
+    if (this.entries.length === 0) {return;}
 
     const filename = getPerfLogName({
       prefix: 'NX-TRACE',
@@ -127,8 +127,8 @@ export class PerfFileLogger {
       console.log(
         `📊 To view: Open Chrome DevTools > Performance tab > Load profile`
       );
-    } catch (err) {
-      console.error('Failed to write performance log:', err);
+    } catch (error) {
+      console.error('Failed to write performance log:', error);
     }
   }
 }

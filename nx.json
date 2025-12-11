@@ -12,7 +12,8 @@
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
+    "testFixtures": ["{projectRoot}/mocks/**/*", "{projectRoot}/fixtures/**/*"]
   },
   "nxCloudId": "67f4ed637b16f351e65d5530",
   "plugins": [
@@ -76,7 +77,7 @@
   "targetDefaults": {
     "unit-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
       "inputs": [
         "default",
@@ -84,13 +85,14 @@
         "testFixtures"
       ],
       "options": {
-        "config": "packages/{projectName}/vitest.unit.config.ts"
+        "config": "packages/{projectName}/vitest.unit.config.ts",
+        "passWithNoTests": true
       }
     },
-    "integration-test": {
+    "int-test": {
       "dependsOn": ["^build"],
-      "outputs": ["{workspaceRoot}/coverage/integration/{projectName}"],
-      "executor": "@nx/vitest:vitest",
+      "outputs": ["{workspaceRoot}/coverage/int/{projectName}"],
+      "executor": "@nx/vite:test",
       "inputs": [
         "default",
         "^default",
@@ -99,7 +101,7 @@
     },
     "e2e-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
       "inputs": [
         "default",
@@ -130,7 +132,8 @@
   "release": {
     "version": {
       "preVersionCommand": "npx nx run-many -t build"
-    }
+    },
+    "projectsRelationship": "independent"
   },
   "tui": {
     "enabled": false,

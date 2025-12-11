@@ -7,7 +7,6 @@ import { join } from 'node:path';
 export async function handler(argv: MeasureArgs): Promise<void> {
   const { _: positionalArgs = [], ...options } = filterKebabCase(argv);
   const {
-    $0,
     verbose,
     merge,
     smosh = true,

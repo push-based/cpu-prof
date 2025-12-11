@@ -3,7 +3,7 @@ import type { ReduceTraceArgs } from './types';
 import { builder } from './builder';
 import { handler } from './handler';
 
-export const reduceTraceCommand: CommandModule<{}, ReduceTraceArgs> = {
+export const reduceTraceCommand: CommandModule<object, ReduceTraceArgs> = {
   command: 'trace-reduce [inputFile]',
   describe: 'Reduce Chrome DevTools trace files by filtering unwanted events',
   builder,

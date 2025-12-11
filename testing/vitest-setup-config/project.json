@@ -1,0 +1,17 @@
+{
+  "name": "vitest-setup-config",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "testing/vitest-setup-config/src",
+  "projectType": "library",
+  "targets": {
+    "build": {},
+    "lint": {},
+    "unit-test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "config": "testing/vitest-setup-config/vitest.unit.config.ts"
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:testing"]
+}

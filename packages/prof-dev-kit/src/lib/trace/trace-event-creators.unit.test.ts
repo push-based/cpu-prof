@@ -11,7 +11,7 @@ import {
   getCpuProfilerStopProfilingEvent,
   getThreadName,
   getTraceMetadata,
-} from './trace-event-creators';
+} from './trace-event-creators.js';
 
 describe('getCpuProfilerStartProfilingEvent', () => {
   it('should return a CpuProfilerStartProfilingEvent', () => {
@@ -189,6 +189,7 @@ describe('getThreadName', () => {
     tid: 1,
     cpuProfile: baseCpuProfile,
   };
+
   it('should return thread name from CpuProfileInfo', () => {
     const info: CpuProfileInfo = {
       ...baseInfo,
@@ -230,6 +231,7 @@ describe('getTraceMetadata', () => {
     tid: 1,
     cpuProfile: baseCpuProfile,
   };
+
   it('should return TraceMetadata with default values if no info provided', () => {
     const metadata = getTraceMetadata();
     expect(metadata.source).toBe('DevTools');

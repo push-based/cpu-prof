@@ -45,9 +45,12 @@ async function handleCpuProfileMerge(
   if (verbose) {
     console.log(`🔧 Merging CPU profile files from: ${inputDir}`);
     console.log(`📄 Output file: ${outputFilePath}`);
-    smosh && console.log('✅ Smosh processes for better DX');
-    startTracingInBrowser &&
+    if (smosh) {
+      console.log('✅ Smosh processes for better DX');
+    }
+    if (startTracingInBrowser) {
       console.log(`✅ Highlight process ${startTracingInBrowser}`);
+    }
   }
 
   // Use the existing mergeCpuProfileFiles function with the full file path

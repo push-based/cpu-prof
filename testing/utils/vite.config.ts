@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
+import { copyFileSync, mkdirSync } from 'fs';
 
 export default defineConfig({
   root: __dirname,
@@ -11,6 +12,17 @@ export default defineConfig({
       entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
+    {
+      name: 'copy-mjs-files',
+      writeBundle() {
+        // Copy .mjs files to dist
+        mkdirSync(path.join(__dirname, 'dist/lib'), { recursive: true });
+        copyFileSync(
+          path.join(__dirname, 'src/lib/execute-process.mock.mjs'),
+          path.join(__dirname, 'dist/lib/execute-process.mock.mjs')
+        );
+      },
+    },
   ],
   build: {
     outDir: './dist',
@@ -19,6 +31,7 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    copyPublicDir: false,
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',

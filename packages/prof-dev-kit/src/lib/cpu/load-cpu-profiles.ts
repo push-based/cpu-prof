@@ -1,13 +1,12 @@
-import { readdir, readFile } from 'fs/promises';
-import { basename } from 'node:path';
+import { readdir, readFile } from 'node:fs/promises';
+import { basename , join } from 'node:path';
 import { CPUProfile, CpuProfileInfo } from './cpuprofile.types';
 import {
   parseCpuProfileName,
   type CpuProfileFileName,
   isCpuProfileFileName,
-} from './utils';
-import { join } from 'path';
-import { isDirectory } from '../file-utils';
+} from './utils.js';
+import { isDirectory } from '../file-utils.js';
 
 export type CpuProfileFilePath = `${string}/${CpuProfileFileName}`;
 

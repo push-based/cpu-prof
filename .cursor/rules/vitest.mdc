@@ -19,9 +19,9 @@ On this project, we distinguish three types of functional tests by scope - unit 
 ## Integration tests
 - Their scope refers to a bigger unit of code in isolation or an integration with a 3rd-party tool.
 - Aim to test the output of the unit as a whole. When communicating with a 3rd-party tool, only tests its usage in CodePushup.
-- These tests are also located **next to their production code counterpart** and have the `.integration.test.ts` suffix.
-- Run integration tests for a given package via `npx nx run <package>:integration-test`
-- Run all integration tests via `npx nx run-many -t integration-test`
+- These tests are also located **next to their production code counterpart** and have the `.int.test.ts` suffix.
+- Run integration tests for a given package via `npx nx run <package>:int-test`
+- Run all integration tests via `npx nx run-many -t int-test`
 
 # Automation
 

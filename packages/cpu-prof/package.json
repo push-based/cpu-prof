@@ -23,10 +23,14 @@
     "dist",
     "!**/*.tsbuildinfo"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "ansis": "^3.1.2",
-    "strip-ansi": "^6.0.1",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "@push-based/prof-dev-kit": "1.0.4",
+    "vitest": "^3.0.0",
+    "vite": "^6.0.0"
   },
   "nx": {
     "name": "cpu-prof",
@@ -35,12 +39,6 @@
         "executor": "@nx/vite:test",
         "options": {
           "config": "packages/{projectName}/vitest.unit.config.ts"
-        }
-      },
-      "integration-test": {
-        "executor": "@nx/vite:test",
-        "options": {
-          "config": "packages/{projectName}/vitest.integration.config.ts"
         }
       },
       "help": {

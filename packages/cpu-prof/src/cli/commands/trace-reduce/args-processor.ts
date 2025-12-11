@@ -9,8 +9,15 @@ export function processArgs(
   logger = console
 ): ProcessedArgs {
   // Input and output files are now handled by middleware
-  const inputFile = argv.inputFile!; // Safe to assert since middleware ensures it's set
-  const outputFile = argv.output!; // Safe to assert since middleware ensures it's set
+  const inputFile = argv.inputFile ?? '';
+  const outputFile = argv.output ?? '';
+  
+  if (!inputFile) {
+    throw new Error('Input file is required');
+  }
+  if (!outputFile) {
+    throw new Error('Output file is required');
+  }
 
   if (argv.verbose) {
     // Verbose logging is handled elsewhere - this just indicates middleware was used

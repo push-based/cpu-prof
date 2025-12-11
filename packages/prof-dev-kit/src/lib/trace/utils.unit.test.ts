@@ -3,8 +3,8 @@ import {
   cpuProfileToTraceProfileEvents,
   sortTraceEvents,
   cpuProfilesToTraceFile,
-  smoshCpuProfiles,
-} from './utils';
+  smoshCpuProfiles, SmoshCpuProfilesOptions
+} from './utils.js';
 import { CPUProfile, CpuProfileInfo } from '../cpu/cpuprofile.types';
 import { TraceEvent, TraceEventContainer } from './traceprofile.types';
 import * as pyramideProfile from '../../../mocks/fixtures/minimal/pyramide.cpuprofile.json';
@@ -378,25 +378,6 @@ describe('cpuProfilesToTraceFile', () => {
 
     result = cpuProfilesToTraceFile(
       [profileInfoWithPidTid, profileInfoUndefinedPidTid],
-      { smosh: 'all' }
-    ) as TraceEventContainer;
-    expect(result.traceEvents).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 10,
-          tid: 5,
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 10,
-          tid: 5,
-        }),
-      ])
-    );
-
-    result = cpuProfilesToTraceFile(
-      [profileInfoWithPidTid, profileInfoUndefinedPidTid],
       { smosh: 'pid' }
     ) as TraceEventContainer;
     expect(result.traceEvents).toEqual(
@@ -432,25 +413,6 @@ describe('cpuProfilesToTraceFile', () => {
         expect.objectContaining({
           name: 'CpuProfiler::StopProfiling',
           pid: 10,
-        }),
-      ])
-    );
-
-    result = cpuProfilesToTraceFile(
-      [profileInfoWithPidTid, profileInfoUndefinedPidTid],
-      { smosh: 'tid' }
-    ) as TraceEventContainer;
-    expect(result.traceEvents).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 10,
-          tid: 5,
-        }),
-        expect.objectContaining({
-          name: 'CpuProfiler::StartProfiling',
-          pid: 10,
-          tid: 5,
         }),
       ])
     );
@@ -506,7 +468,7 @@ describe('cpuProfilesToTraceFile', () => {
 
   describe('error handling', () => {
     it('should throw error when no CPU profiles are provided', () => {
-      expect(() => cpuProfilesToTraceFile([])).toThrow(
+      expect(() => cpuProfilesToTraceFile([])).toThrowError(
         'No CPU profiles provided'
       );
     });
@@ -657,7 +619,7 @@ describe('cpuProfilesToTraceFile', () => {
       const result = smoshCpuProfiles(profileInfos, {
         mainPid: 1,
         mainTid: 0,
-      } as any);
+      } as SmoshCpuProfilesOptions);
 
       expect(result).toHaveLength(2);
       expect(result).toStrictEqual([

@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
-import { nxRunWithPerfLogging } from './utils';
-import { PerfProfileEvent, Profile } from './types';
+import { nxRunWithPerfLogging } from './utils.js';
+import { PerfProfileEvent, Profile } from './types.js';
 
 const { values } = parseArgs({
   options: {

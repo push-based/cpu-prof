@@ -4,10 +4,10 @@
   "include": [],
   "references": [
     {
-      "path": "../../testing/vitest-setup"
+      "path": "../../testing/vitest-setup-config"
     },
     {
-      "path": "../cpu-prof"
+      "path": "../prof-dev-kit"
     },
     {
       "path": "./tsconfig.lib.json"

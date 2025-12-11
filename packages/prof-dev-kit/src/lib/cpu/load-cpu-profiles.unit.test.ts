@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { vol } from 'memfs';
-import { loadCpuProfiles, type CpuProfileFilePath } from './load-cpu-profiles';
+import { loadCpuProfiles, type CpuProfileFilePath } from './load-cpu-profiles.js';
 
 describe('loadCpuProfiles', () => {
   it('should load and parse CPU profiles from file paths', async () => {

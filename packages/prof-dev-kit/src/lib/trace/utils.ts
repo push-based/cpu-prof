@@ -18,9 +18,9 @@ import {
   getThreadNameTraceEvent,
   getCommitLoadTraceEvent,
   getProcessNameTraceEvent,
-} from './trace-event-creators';
-import { getSmallestPidTidProfileInfo } from '../cpu/profile-selection';
-import { decodeCmd } from '../utils/encode-command-data';
+} from './trace-event-creators.js';
+import { getSmallestPidTidProfileInfo } from '../cpu/profile-selection.js';
+import { decodeCmd } from '../utils/encode-command-data.js';
 
 export function cpuProfileToTraceProfileEvents(
   cpuProfile: CPUProfile,
@@ -65,7 +65,7 @@ export function sortTraceEvents(rawEvents: TraceEvent[]): TraceEvent[] {
 function getTracingEvents(mainProfileInfo: CpuProfileInfo): TraceEvent[] {
   const { pid, tid, prefix } = mainProfileInfo;
   const url = prefix?.startsWith('MAIN-CPU--')
-    ? 'cpu: ' + decodeCmd((prefix ?? '')?.replace('MAIN-CPU--', ''))
+    ? `cpu: ${  decodeCmd((prefix ?? '')?.replace('MAIN-CPU--', ''))}`
     : `Process: pid:${pid}`;
   const startTime = mainProfileInfo.cpuProfile.startTime;
   return [
@@ -86,12 +86,13 @@ function getTracingEvents(mainProfileInfo: CpuProfileInfo): TraceEvent[] {
   ];
 }
 
+export type CpuProfilesToTraceFile = {
+  smosh?: SmoshType;
+  startTracingInBrowser?: boolean;
+};
 export function cpuProfilesToTraceFile(
   cpuProfileInfos: CpuProfileInfo[],
-  options?: {
-    smosh?: SmoshType;
-    startTracingInBrowser?: boolean;
-  }
+  options?: CpuProfilesToTraceFile
 ): TraceFile {
   if (cpuProfileInfos.length === 0) {
     throw new Error('No CPU profiles provided');
@@ -124,7 +125,7 @@ export function cpuProfilesToTraceFile(
       // child processes always have tid 0
       const childProcessName = `ChildProcess: pid:${unSmoshedProfile?.pid}`;
       const threadName =
-        unSmoshedProfile?.tid !== 0 ? workerThreadName : childProcessName;
+        unSmoshedProfile?.tid === 0 ? childProcessName : workerThreadName;
 
       return [
         getProcessNameTraceEvent(pid, tid, threadName),
@@ -152,13 +153,14 @@ export function cpuProfilesToTraceFile(
 
 export type SmoshType = 'pid' | 'off';
 
+export type SmoshCpuProfilesOptions = {
+  smosh: SmoshType;
+  mainPid: number;
+  mainTid: number;
+}
 export function smoshCpuProfiles(
   profileInfos: CpuProfileInfo[],
-  options: {
-    smosh: SmoshType;
-    mainPid: number;
-    mainTid: number;
-  }
+  options: SmoshCpuProfilesOptions
 ): CpuProfileInfo[] {
   const { smosh, mainPid, mainTid } = options;
 

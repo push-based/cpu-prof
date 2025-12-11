@@ -1,20 +1,20 @@
 import type { Argv } from 'yargs';
-import { DEFAULT_FILTER_OPTIONS } from '@push-based/prof-dev-kit';
-import type { ReduceTraceArgs } from './types';
 import {
+  DEFAULT_FILTER_OPTIONS,
   coerceStringArray,
   coerceNumberArray,
   coerceStringArrayWithDefaults,
-} from '../../utils';
+  findNewestTraceFile,
+  generateOutputFilename,
+} from '@push-based/prof-dev-kit';
+import type { ReduceTraceArgs } from './types';
 import { validateTraceReduceArgs } from './helpers';
-import { findNewestTraceFile, generateOutputFilename } from '../../utils';
 
 // Constants for default values to reduce duplication
 const DEFAULT_DUR_MIN = DEFAULT_FILTER_OPTIONS.durMin;
 const DEFAULT_EXCLUDE_NAMES =
   DEFAULT_FILTER_OPTIONS.excludeNames?.join(', ') ?? '';
-const DEFAULT_EXCLUDE_CATS =
-  DEFAULT_FILTER_OPTIONS.excludeCats?.join(', ') ?? '';
+
 const DEFAULT_EXCLUDE_NAMES_COMMA =
   DEFAULT_FILTER_OPTIONS.excludeNames?.join(',') ?? '';
 const DEFAULT_EXCLUDE_CATS_COMMA =

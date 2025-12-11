@@ -1,27 +1,3 @@
-import { defineConfig } from 'vitest/config';
-import { createSharedE2eVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
-import path from 'path';
+import { createE2ETestConfig } from '../../testing/vitest-setup-config/src/index.js';
 
-export default defineConfig(() => {
-  const baseConfig = createSharedE2eVitestConfig({
-    projectRoot: __dirname,
-    workspaceRoot: '../..',
-  });
-
-  return {
-    ...baseConfig,
-    plugins: [],
-    resolve: {
-      alias: {
-        '@push-based/testing-utils': path.resolve(
-          __dirname,
-          '../../testing/utils/src'
-        ),
-      },
-    },
-    // Uncomment this if you are using workers.
-    // worker: {
-    //  plugins: [ nxViteTsPaths() ],
-    // }
-  };
-});
+export default createE2ETestConfig('cpu-prof-e2e');

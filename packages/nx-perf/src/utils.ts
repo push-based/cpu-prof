@@ -1,6 +1,6 @@
 import { fork, ForkOptions } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { NxPerfOptions, Profile } from './types';
+import { NxPerfOptions, Profile } from './types.js';
 
 export async function nxRunWithPerfLogging(
   args: string[],

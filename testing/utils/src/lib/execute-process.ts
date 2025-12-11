@@ -209,9 +209,7 @@ export function executeProcess(
       ...options,
     }) as ChildProcessByStdio<Writable, Readable, Readable>;
 
-    // eslint-disable-next-line functional/no-let
     let stdout = '';
-    // eslint-disable-next-line functional/no-let
     let stderr = '';
 
     spawnedProcess.stdout.on('data', (data) => {

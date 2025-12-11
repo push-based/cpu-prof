@@ -90,7 +90,7 @@ export function getCpuProfileName(
   const preparedPrefix = prefix
     // Remove leading/trailing whitespace, replace spaces with dashes, and remove non-alphanumeric characters
     .replace(/\s+/g, '-')
-    .replace(/[^a-zA-Z0-9-_]/g, '-');
+    .replace(/[^\w-]/g, '-');
   return `${preparedPrefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
 }
 

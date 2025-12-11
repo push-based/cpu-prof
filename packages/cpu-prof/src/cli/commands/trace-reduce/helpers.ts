@@ -98,7 +98,7 @@ export function logVerboseOptions(args: ProcessedArgs, logger = console): void {
 /**
  * Validate command line arguments for trace-reduce command
  */
-export function validateTraceReduceArgs(argv: any): boolean {
+export function validateTraceReduceArgs(argv: Record<string, unknown>): boolean {
   // File validation
   const inputFile = argv.inputFile;
   if (inputFile) {

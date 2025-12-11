@@ -7,5 +7,5 @@ export interface MeasureArgs {
   'cpu-prof-name'?: string;
   cpuProfName?: string;
   commandToProfile?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }

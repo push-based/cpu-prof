@@ -92,7 +92,7 @@ export interface UsedDeprecatedRule {
   /** An array of rule IDs that replace the deprecated rule. */
   replacedBy: string[];
   /** Additional information about the deprecation. */
-  info?: Record<string, any>;
+  info?: Record<string, unknown>;
 }
 
 /**
