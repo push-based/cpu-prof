@@ -1,7 +1,7 @@
 {
-  "name": "testing-utils",
+  "name": "test-setup",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "testing/utils/src",
+  "sourceRoot": "testing/test-setup/src",
   "projectType": "library",
   "targets": {
     "build": {},
@@ -9,7 +9,7 @@
     "unit-test": {
       "executor": "@nx/vite:test",
       "options": {
-        "config": "testing/utils/vitest.unit.config.ts"
+        "config": "testing/test-setup/vitest.unit.config.ts"
       }
     }
   },
