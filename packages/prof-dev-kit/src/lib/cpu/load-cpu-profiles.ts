@@ -6,7 +6,7 @@ import {
   type CpuProfileFileName,
   isCpuProfileFileName,
 } from './utils.js';
-import { isDirectory } from '../file-utils.js';
+import { directoryExistsSync } from '../utils/file-system.js';
 
 export type CpuProfileFilePath = `${string}/${CpuProfileFileName}`;
 
@@ -18,7 +18,7 @@ export async function loadCpuProfiles(
   const filePaths: CpuProfileFilePath[] = filesInDir
     .filter((file) => {
       const filePath = join(sourceDir, file);
-      if (isDirectory(filePath) || !isCpuProfileFileName(file)) {
+      if (directoryExistsSync(filePath) || !isCpuProfileFileName(file)) {
         return false;
       }
       return true;

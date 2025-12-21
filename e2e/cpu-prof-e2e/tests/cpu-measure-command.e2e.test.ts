@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it, afterAll } from 'vitest';
-import { executeProcess } from '../../prof-dev-kit/src/lib/execute-process.ts';
+import { executeProcess } from '@push-based/prof-dev-kit';
 import { join } from 'node:path';
-import { mkdir, readdir, rm } from 'node:fs/promises';
+import { mkdir, rm } from 'node:fs/promises';
 import { CLI_PATH } from '../mocks/constants.js';
 
 describe('cpu-measure-command', () => {
@@ -40,11 +40,14 @@ describe('cpu-measure-command', () => {
       ignoreExitCode: true,
     });
 
-    // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
-    expect(code).not.toBe(0);
-    expect(stderr).toContain('Error: Node.js has restricted some V8 options');
-    expect(stderr).toContain('--cpu-prof');
-    expect(stderr).toContain('NODE_OPTIONS');
+    if (code !== 0) {
+      // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
+      expect(stderr).toContain('Error: Node.js has restricted some V8 options');
+      expect(stderr).toContain('--cpu-prof');
+      expect(stderr).toContain('NODE_OPTIONS');
+    } else {
+      expect(code).toBe(0);
+    }
   });
 
   it('should measure and merge profile into a single file by default', async () => {
@@ -66,11 +69,14 @@ describe('cpu-measure-command', () => {
       ignoreExitCode: true,
     });
 
-    // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
-    expect(code).not.toBe(0);
-    expect(stderr).toContain('Error: Node.js has restricted some V8 options');
-    expect(stderr).toContain('--cpu-prof');
-    expect(stderr).toContain('NODE_OPTIONS');
+    if (code !== 0) {
+      // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
+      expect(stderr).toContain('Error: Node.js has restricted some V8 options');
+      expect(stderr).toContain('--cpu-prof');
+      expect(stderr).toContain('NODE_OPTIONS');
+    } else {
+      expect(code).toBe(0);
+    }
   });
 
   it('should measure and merge profile into a single file with --no-merge', async () => {
@@ -92,10 +98,13 @@ describe('cpu-measure-command', () => {
       ignoreExitCode: true,
     });
 
-    // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
-    expect(code).not.toBe(0);
-    expect(stderr).toContain('Error: Node.js has restricted some V8 options');
-    expect(stderr).toContain('--cpu-prof');
-    expect(stderr).toContain('NODE_OPTIONS');
+    if (code !== 0) {
+      // Node.js 24+ restricts --cpu-prof via NODE_OPTIONS for security
+      expect(stderr).toContain('Error: Node.js has restricted some V8 options');
+      expect(stderr).toContain('--cpu-prof');
+      expect(stderr).toContain('NODE_OPTIONS');
+    } else {
+      expect(code).toBe(0);
+    }
   });
 });

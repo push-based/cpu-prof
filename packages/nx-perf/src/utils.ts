@@ -1,6 +1,7 @@
 import { fork, ForkOptions } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { NxPerfOptions, Profile } from './types.js';
+import { TraceFile } from '@push-based/prof-dev-kit';
+import { NxPerfOptions } from './types.js';
 
 export async function nxRunWithPerfLogging(
   args: string[],
@@ -18,10 +19,10 @@ export async function nxRunWithPerfLogging(
   const nxUrl = (await import.meta.resolve?.('nx')) ?? 'nx';
   const nxPath = fileURLToPath(nxUrl);
 
-  const profile: Profile = {
-    metadata: {},
+  const profile: TraceFile = {
+    metadata: { source: 'nx-perf' },
     traceEvents: [],
-  };
+  } as any;
 
   const forkOptions: ForkOptions = {
     stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
@@ -51,11 +52,11 @@ export async function nxRunWithPerfLogging(
         const perfProfileEvent = JSON.parse(jsonString?.trim() || '{}');
         if (prop === 'traceEvent') {
           onTraceEvent(perfProfileEvent);
-          profile.traceEvents.push(perfProfileEvent);
+          (profile as any).traceEvents.push(perfProfileEvent);
         }
         if (prop === 'metadata') {
           onMetadata(perfProfileEvent);
-          profile.metadata = perfProfileEvent;
+          (profile as any).metadata = perfProfileEvent;
         }
       }
     }

@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { nxRunWithPerfLogging } from './utils.js';
-import { PerfProfileEvent, Profile } from './types.js';
+import { TraceEvent, TraceFile } from '@push-based/prof-dev-kit';
 
 const { values } = parseArgs({
   options: {
@@ -39,15 +39,15 @@ const {
 nxRunWithPerfLogging(args.split(','), {
   verbose,
   noPatch,
-  onData: (perfProfileEvent: string) => {
+  onData: (_perfProfileEvent: string) => {
     // console.log(perfProfileEvent);
   },
-  onTraceEvent: (event: PerfProfileEvent) => {
+  onTraceEvent: (_event: TraceEvent) => {
     // Handle trace events if needed
   },
-  beforeExit: (profile: Profile) => {
+  beforeExit: (profile: TraceFile) => {
     // @TODO figure out why profile directly does not show the flames but profile.traceEvents does
-    const profileStdout = JSON.stringify(profile.traceEvents, null, 2);
+    const profileStdout = JSON.stringify((profile as any).traceEvents, null, 2);
     mkdirSync(outDir, { recursive: true });
     writeFileSync(`${outDir}/${outFile}`, profileStdout);
     if (verbose) {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { executeProcess } from '../../prof-dev-kit/src/lib/execute-process.ts';
+import { executeProcess } from '@push-based/prof-dev-kit';
 import { CLI_PATH } from '../mocks/constants.js';
 import { join } from 'node:path';
 

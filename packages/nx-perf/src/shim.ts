@@ -5,7 +5,8 @@ import {
 } from 'node:perf_hooks';
 import { basename } from 'node:path';
 import { cpus } from 'node:os';
-import { TraceEvent, CallFrame, PerformanceMarkOptions } from './types.js';
+import { TraceEvent, TraceFile } from '@push-based/prof-dev-kit';
+import { CallFrame, PerformanceMarkOptions } from './types.js';
 
 // Global array to store complete events.
 const traceEvents: TraceEvent[] = [];
@@ -14,6 +15,7 @@ const traceEvents: TraceEvent[] = [];
 const processMetadata: TraceEvent = {
   name: 'process_name',
   ph: 'M',
+  cat: '__metadata',
   pid: 0,
   tid: process.pid,
   ts: 0,
@@ -23,6 +25,7 @@ const processMetadata: TraceEvent = {
 const threadMetadata: TraceEvent = {
   name: 'thread_name',
   ph: 'M',
+  cat: '__metadata',
   pid: 0,
   tid: process.pid,
   ts: 0,
@@ -149,11 +152,11 @@ const observer = new PerformanceObserver((list) => {
 observer.observe({ entryTypes: ['measure'], buffered: true });
 
 // Add profile method to performance object
-(performance as any).profile = function () {
+(performance as any).profile = function (): TraceFile {
   return {
     metadata: {
       source: 'Nx Advanced Profiling',
-      startTime: Date.now() / 1000,
+      startTime: new Date().toISOString(),
       hardwareConcurrency: cpus().length,
       dataOrigin: 'TraceEvents',
       modifications: {

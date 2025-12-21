@@ -22,6 +22,8 @@
     "dist",
     "!**/*.tsbuildinfo"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@push-based/prof-dev-kit": "workspace:*"
+  },
   "nx": {}
 }

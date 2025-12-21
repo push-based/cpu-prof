@@ -17,7 +17,7 @@ export function tsconfigPathAliases(): AliasOptions {
   }
 
   return Object.entries(result.paths)
-    .map(([key, value]) => [key, (value as string[])[0]])
+    .map(([key, value]) => [key, value.at(0)])
     .filter((pair): pair is [string, string] => pair[1] != null)
     .map(
       ([importPath, relativePath]): Alias => ({

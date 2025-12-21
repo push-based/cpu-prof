@@ -16,7 +16,7 @@
     }
   },
   "nx": {
-    "sourceRoot": "packages/pkg-2/src",
+    "sourceRoot": "dummy/pkg-2/src",
     "targets": {
       "build": {
         "executor": "@nx/js:swc",
@@ -24,9 +24,9 @@
           "{options.outputPath}"
         ],
         "options": {
-          "outputPath": "packages/pkg-2/dist",
-          "main": "packages/pkg-2/src/index.ts",
-          "tsConfig": "packages/pkg-2/tsconfig.lib.json",
+          "outputPath": "dummy/pkg-2/dist",
+          "main": "dummy/pkg-2/src/index.ts",
+          "tsConfig": "dummy/pkg-2/tsconfig.lib.json",
           "skipTypeCheck": true,
           "stripLeadingPaths": true
         }

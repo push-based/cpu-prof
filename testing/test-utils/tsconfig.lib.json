@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/testing/test-utils",
+    "declaration": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "vitest.unit.config.ts",
+    "src/**/*.unit.test.ts",
+    "src/lib/fixtures/configs"
+  ],
+  "references": [
+    {
+      "path": "../vitest-setup-config/tsconfig.lib.json"
+    }
+  ]
+}

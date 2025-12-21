@@ -6,11 +6,10 @@
   },
   "include": [
     "vitest.unit.config.ts",
-    "src/*.ts",
     "src/vitest.d.ts",
     "src/**/*.unit.test.ts",
     "src/**/*.d.ts",
     "src/**/*.int.test.ts",
-    "../../testing/setup/src/vitest.d.ts"
+    "../../testing/test-setup/src/vitest.d.ts"
   ]
 }

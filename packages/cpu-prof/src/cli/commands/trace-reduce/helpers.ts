@@ -2,9 +2,9 @@ import type { ProcessedArgs } from './types';
 import type { TraceReductionStats } from '@push-based/prof-dev-kit';
 import path from 'path';
 import {
-  fileExists,
+  fileExistsSync as fileExists,
   isJsonFile,
-  directoryExists,
+  directoryExistsSync as directoryExists,
 } from '@push-based/prof-dev-kit';
 
 /**

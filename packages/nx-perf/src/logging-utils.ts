@@ -3,7 +3,7 @@ import type {
   InstantEvent,
   TraceEvent,
   TraceFile,
-} from './traceprofile.types';
+} from '@push-based/prof-dev-kit';
 
 export type TaskStatus = 'completed' | 'failed';
 
@@ -16,36 +16,15 @@ export type PerfLogNameOptions = {
   extension?: string;
 };
 
-let perfLogSeq = 0;
+import { getCpuProfileName } from '@push-based/prof-dev-kit';
 
-export function getPerfLogName({
-  prefix = 'EVENT-TRACE',
-  pid = process.pid,
-  tid = 1,
-  date = new Date(),
-}: Omit<PerfLogNameOptions, 'extension'>): string {
-  const pad = (n: number, width = 2) => String(n).padStart(width, '0');
-  const extension = '.json';
-
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-
-  const datePart = `${year}${month}${day}`;
-  const timePart = `${hours}${minutes}${seconds}`;
-
-  const nextSeq = ++perfLogSeq;
-  const seqPart = pad(nextSeq, 3);
-
-  const cleanExtension = extension.startsWith('.')
-    ? extension.slice(1)
-    : extension;
-  const preparedPrefix = prefix.replace(/\s+/g, '-').replace(/[^\w-]/g, '-');
-
-  return `${preparedPrefix}.${datePart}.${timePart}.${pid}.${tid}.${seqPart}.${cleanExtension}`;
+export function getPerfLogName(
+  options: Omit<PerfLogNameOptions, 'extension'>
+): string {
+  return getCpuProfileName({
+    ...options,
+    extension: 'json',
+  });
 }
 
 export function createNxTaskCompleteEvent(options: {

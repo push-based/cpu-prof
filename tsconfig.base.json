@@ -5,7 +5,9 @@
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
+    "lib": [
+      "es2022"
+    ],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noEmitOnError": true,
@@ -16,10 +18,20 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["development"],
+    "customConditions": [
+      "development"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@push-based/test-utils": ["testing/utils/src/index.ts"]
+      "@push-based/cpu-prof": [
+        "packages/cpu-prof/src/index.ts"
+      ],
+      "@push-based/prof-dev-kit": [
+        "packages/prof-dev-kit/src/index.ts"
+      ],
+      "@push-based/test-utils": [
+        "testing/test-utils/src/index.ts"
+      ]
     }
   }
 }

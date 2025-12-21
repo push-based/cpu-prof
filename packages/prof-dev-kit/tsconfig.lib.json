@@ -17,7 +17,7 @@
       "path": "../../testing/vitest-setup-config/tsconfig.lib.json"
     },
     {
-      "path": "../../testing/utils/tsconfig.lib.json"
+      "path": "../../testing/test-utils/tsconfig.lib.json"
     }
   ],
   "exclude": [

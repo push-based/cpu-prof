@@ -51,8 +51,11 @@ export function createVitestConfig(
   return {
     cacheDir: `../../node_modules/.vite/${projectKey}`,
     test: {
-      reporters: [['default', { summary: false }]],
+      reporters: ['basic'],
       globals: true,
+      cache: {
+        dir: '../../node_modules/.vitest',
+      },
       alias: tsconfigPathAliases(),
       pool: 'threads',
       poolOptions: { threads: { singleThread: true } },

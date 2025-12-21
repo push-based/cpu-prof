@@ -19,8 +19,9 @@ describe('createVitestConfig', () => {
       expect(config).toEqual({
         cacheDir: '../../node_modules/.vite/test-package',
         test: expect.objectContaining({
-          reporters: [['default', { summary: false }]],
+          reporters: ['basic'],
           globals: true,
+          cache: { dir: '../../node_modules/.vitest' },
           alias: expect.any(Array),
           pool: 'threads',
           poolOptions: { threads: { singleThread: true } },
@@ -31,8 +32,8 @@ describe('createVitestConfig', () => {
           ],
           globalSetup: ['../../global-setup.ts'],
           setupFiles: expect.arrayContaining([
-            '../../testing/setup/src/lib/reset.setup-file.ts',
-            '../../testing/setup/src/lib/fs-memfs.setup-file.ts',
+            '../../testing/test-setup/src/lib/reset.mocks.ts',
+            '../../testing/test-setup/src/lib/fs.mock.ts',
           ]),
           coverage: expect.objectContaining({
             reporter: ['text', 'lcov'],
@@ -49,16 +50,19 @@ describe('createVitestConfig', () => {
 
       const setupFiles = config.test!.setupFiles;
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts'
+        '../../testing/test-setup/src/lib/reset.mocks.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
+        '../../testing/test-setup/src/lib/fs.mock.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/jest-extended.matcher.ts'
+        '../../testing/test-setup/src/lib/logger.mock.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts'
+        '../../testing/test-setup/src/lib/extend/jest-extended.matcher.ts'
+      );
+      expect(setupFiles).toContain(
+        '../../testing/test-setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -92,7 +96,7 @@ describe('createVitestConfig', () => {
       expect(config).toEqual({
         cacheDir: '../../node_modules/.vite/test-package',
         test: expect.objectContaining({
-          reporters: [['default', { summary: false }]],
+          reporters: ['basic'],
           globals: true,
           include: ['src/**/*.int.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
           globalSetup: ['../../global-setup.ts'],
@@ -108,13 +112,13 @@ describe('createVitestConfig', () => {
 
       const setupFiles = config.test!.setupFiles;
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts'
+        '../../testing/test-setup/src/lib/logger.mock.ts'
       );
       expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
+        '../../testing/test-setup/src/lib/fs.mock.ts'
       );
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts'
+        '../../testing/test-setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -132,7 +136,7 @@ describe('createVitestConfig', () => {
       expect(config).toEqual({
         cacheDir: '../../node_modules/.vite/test-package',
         test: expect.objectContaining({
-          reporters: [['default', { summary: false }]],
+          reporters: ['basic'],
           globals: true,
           include: ['tests/**/*.e2e.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
           globalSetup: ['../../global-setup.ts'],
@@ -145,16 +149,16 @@ describe('createVitestConfig', () => {
       const config = createVitestConfig('test-package', 'e2e');
 
       const setupFiles = config.test!.setupFiles;
-      // Should not include reset mocks for e2e
-      expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/reset.setup-file.ts'
-      );
-      expect(setupFiles).not.toContain(
-        '../../testing/setup/src/lib/fs-memfs.setup-file.ts'
-      );
-      // Should include matchers
+      // Should only include reset mocks
       expect(setupFiles).toContain(
-        '../../testing/setup/src/lib/extend/path.matcher.ts'
+        '../../testing/test-setup/src/lib/reset.mocks.ts'
+      );
+      expect(setupFiles).not.toContain(
+        '../../testing/test-setup/src/lib/fs.mock.ts'
+      );
+      // Should include all matchers
+      expect(setupFiles).toContain(
+        '../../testing/test-setup/src/lib/extend/path.matcher.ts'
       );
     });
 
@@ -266,8 +270,9 @@ describe('createVitestConfig', () => {
       // GlobalSetup should be relative
       expect(config.test!.globalSetup![0]).toBe('../../global-setup.ts');
 
-      // Cache dir should be relative
+      // Cache dirs should be relative
       expect(config.cacheDir).toMatch(/^\.\.\/\.\.\//);
+      expect((config.test!.cache as any).dir).toMatch(/^\.\.\/\.\.\//);
 
       // Coverage directory should be relative
       expect(config.test!.coverage!.reportsDirectory).toMatch(/^\.\.\/\.\.\//);

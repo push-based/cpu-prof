@@ -2,6 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
+  "include": [],
+  "exclude": [],
   "references": [
     {
       "path": "./packages/nx-perf"
@@ -31,19 +33,22 @@
       "path": "./dummy/pkg-4"
     },
     {
-      "path": "./testing/setup"
-    },
-    {
-      "path": "./testing/utils"
-    },
-    {
-      "path": "./packages/cpu-prof-e2e"
-    },
-    {
       "path": "./packages/cpu-prof"
     },
     {
       "path": "./packages/prof-dev-kit"
+    },
+    {
+      "path": "./testing/test-nx-utils"
+    },
+    {
+      "path": "./testing/test-setup"
+    },
+    {
+      "path": "./testing/test-utils"
+    },
+    {
+      "path": "./e2e/cpu-prof-e2e"
     },
     {
       "path": "./testing/vitest-setup-config"

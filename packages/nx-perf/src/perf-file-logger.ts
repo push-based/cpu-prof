@@ -1,7 +1,7 @@
 import { performance, type PerformanceEntry } from 'node:perf_hooks';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import type { TraceEvent } from './traceprofile.types';
+import type { TraceEvent } from '@push-based/prof-dev-kit';
 import {
   createNxTaskCompleteEvent,
   createNxErrorInstantEvent,

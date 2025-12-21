@@ -1,0 +1,20 @@
+{
+  "name": "test-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "testing/test-utils/src",
+  "projectType": "library",
+  "targets": {
+    "build": {},
+    "lint": {},
+    "unit-test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "config": "testing/test-utils/vitest.unit.config.ts"
+      }
+    },
+    "nx-release-publish": {
+      "executor": "nx:noop"
+    }
+  },
+  "tags": ["scope:shared", "type:testing"]
+}

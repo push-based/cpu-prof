@@ -7,7 +7,7 @@ Standardized Vitest configuration for the Code PushUp monorepo.
 #### Unit tests:
 
 ```typescript
-import { createUnitTestConfig } from '@code-pushup/test-setup-config';
+import { createUnitTestConfig } from '@push-based/test-setup-config';
 
 export default createUnitTestConfig('my-package');
 ```
@@ -15,7 +15,7 @@ export default createUnitTestConfig('my-package');
 #### Integration tests:
 
 ```typescript
-import { createIntTestConfig } from '@code-pushup/test-setup-config';
+import { createIntTestConfig } from '@push-based/test-setup-config';
 
 export default createIntTestConfig('my-package');
 ```
@@ -23,7 +23,7 @@ export default createIntTestConfig('my-package');
 #### E2E tests:
 
 ```typescript
-import { createE2ETestConfig } from '@code-pushup/test-setup-config';
+import { createE2ETestConfig } from '@push-based/test-setup-config';
 
 export default createE2ETestConfig('my-e2e');
 

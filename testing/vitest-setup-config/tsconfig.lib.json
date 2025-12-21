@@ -1,11 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
+    "outDir": "../../dist/testing/vitest-setup-config",
     "declaration": true,
-    "types": ["node"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "types": ["node"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -13,5 +11,6 @@
     "src/vitest.d.ts",
     "src/**/*.unit.test.ts",
     "src/**/*.int.test.ts"
-  ]
+  ],
+  "references": []
 }

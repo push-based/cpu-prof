@@ -23,13 +23,13 @@
           "{options.outputPath}"
         ],
         "options": {
-          "outputPath": "packages/pkg-3/dist",
-          "main": "packages/pkg-3/src/index.ts",
-          "tsConfig": "packages/pkg-3/tsconfig.lib.json",
+          "outputPath": "dummy/pkg-3/dist",
+          "main": "dummy/pkg-3/src/index.ts",
+          "tsConfig": "dummy/pkg-3/tsconfig.lib.json",
           "format": [
             "esm"
           ],
-          "declarationRootDir": "packages/pkg-3/src"
+          "declarationRootDir": "dummy/pkg-3/src"
         }
       }
     }

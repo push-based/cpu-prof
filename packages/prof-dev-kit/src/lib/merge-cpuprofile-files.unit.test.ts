@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { mergeCpuProfileFiles } from './merge-cpuprofile-files.js';
 import { vol } from 'memfs';
-import * as fileUtils from './file-utils.js';
+import * as fileUtils from './utils/file-system.js';
 import * as cpuUtils from './cpu/utils.js';
 import * as loadCpuProfilesModule from './cpu/load-cpu-profiles.js';
 import * as traceUtils from './trace/utils.js';
@@ -31,14 +31,24 @@ describe('mergeCpuProfileFiles', () => {
       [profilePath1]: '{"mock": "profile1"}',
     });
 
-    cpuProfilesToTraceFileSpy.mockReturnValue({ mock: 'profile1' });
+    cpuProfilesToTraceFileSpy.mockReturnValue({
+      traceEvents: [],
+      metadata: { source: 'test', startTime: '2025-01-01T00:00:00.000Z' },
+    } as any);
     const outputFile = join(profilesDir, 'merged-profile.json');
     await mergeCpuProfileFiles(profilesDir, outputFile);
 
     const outputFileContent = await readFile(outputFile, 'utf8');
 
     expect(outputFileContent).toBe(
-      JSON.stringify({ mock: 'profile1' }, null, 2)
+      JSON.stringify(
+        {
+          traceEvents: [],
+          metadata: { source: 'test', startTime: '2025-01-01T00:00:00.000Z' },
+        },
+        null,
+        2
+      )
     );
   });
 

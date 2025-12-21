@@ -53,7 +53,7 @@ describe('mergeCpuProfileFiles integration', () => {
       join(
         __dirname,
         '__snapshots__',
-        'merge-prof-dev-kitile-files-merged-profile.json'
+        'merge-cpu-profile-files-merged-profile.json'
       )
     );
   });

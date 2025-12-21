@@ -17,6 +17,20 @@
   },
   "plugins": [
     {
+      "plugin": "@push-based/nx-verdaccio",
+      "options": {
+        "environments": {
+          "environmentsDir": "tmp/environments",
+          "targetNames": ["e2e-test"],
+          "filterByTag": ["e2e"]
+        },
+        "publishable": {
+          "filterByTag": ["publishable"]
+        }
+      },
+      "exclude": ["dummy/*", "testing/*"]
+    },
+    {
       "plugin": "@nx/js/typescript",
       "options": {
         "typecheck": {

@@ -16,7 +16,7 @@
     }
   },
   "bin": {
-    "cpu-prof": "./src/bin/cpu-prof.esm.js"
+    "cpu-prof": "./dist/cpu-prof.esm.js"
   },
   "scripts": {},
   "files": [

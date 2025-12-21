@@ -12,15 +12,15 @@
         "defaultConfiguration": "production",
         "options": {
           "platform": "node",
-          "outputPath": "packages/app-0/dist",
+          "outputPath": "dummy/app-0/dist",
           "format": [
             "cjs"
           ],
           "bundle": false,
-          "main": "packages/app-0/src/main.ts",
-          "tsConfig": "packages/app-0/tsconfig.app.json",
+          "main": "dummy/app-0/src/main.ts",
+          "tsConfig": "dummy/app-0/tsconfig.app.json",
           "assets": [
-            "packages/app-0/src/assets"
+            "dummy/app-0/src/assets"
           ],
           "esbuildOptions": {
             "sourcemap": true,

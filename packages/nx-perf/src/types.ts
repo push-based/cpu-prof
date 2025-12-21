@@ -1,43 +1,17 @@
 import { Performance as NodePerformance } from 'node:perf_hooks';
+import { TraceEvent, TraceFile } from '@push-based/prof-dev-kit';
 
 export type PerformanceEntryOptions = {
   detail?: Record<string, unknown>;
-};
-
-export type TraceEvent = {
-  name: string;
-  ph: string;
-  pid: number;
-  tid: number;
-  ts: number;
-  args?: Record<string, unknown>;
-  dur?: number;
-  cat?: string;
-};
-
-export type PerfProfileEvent = {
-  name: string;
-  ph: string;
-  pid: number;
-  tid: number;
-  ts: number;
-  args?: Record<string, unknown>;
-  dur?: number;
-  cat?: string;
-};
-
-export type Profile = {
-  metadata: Record<string, unknown>;
-  traceEvents: PerfProfileEvent[];
 };
 
 export type NxPerfOptions = {
   verbose?: boolean;
   noPatch?: boolean;
   onData?: (data: string) => void;
-  onTraceEvent?: (event: PerfProfileEvent) => void;
+  onTraceEvent?: (event: TraceEvent) => void;
   onMetadata?: (metadata: Record<string, unknown>) => void;
-  beforeExit?: (profile: Profile) => void;
+  beforeExit?: (profile: TraceFile) => void;
 };
 
 export type CallFrame = {

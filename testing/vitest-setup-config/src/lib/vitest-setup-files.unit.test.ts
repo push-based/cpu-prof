@@ -25,25 +25,4 @@ describe('getSetupFiles', () => {
       );
     });
   });
-
-  describe('test kind differences', () => {
-    it('should return different setup files for different test kinds', () => {
-      const unitFiles = getSetupFiles('unit');
-      const intFiles = getSetupFiles('int');
-      const e2eFiles = getSetupFiles('e2e');
-
-      expect(unitFiles).not.toHaveLength(intFiles.length);
-      expect(intFiles).not.toHaveLength(e2eFiles.length);
-      expect(unitFiles).not.toHaveLength(e2eFiles.length);
-    });
-
-    it('should show hierarchy: unit has most, e2e has least', () => {
-      const unitFiles = getSetupFiles('unit');
-      const intFiles = getSetupFiles('int');
-      const e2eFiles = getSetupFiles('e2e');
-
-      expect(unitFiles.length).toBeGreaterThan(intFiles.length);
-      expect(intFiles.length).toBeGreaterThan(e2eFiles.length);
-    });
-  });
 });

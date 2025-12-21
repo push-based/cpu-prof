@@ -8,8 +8,8 @@ import type { TestKind } from './vitest-config-factory.js';
  * which is why they use `../../` to navigate to the workspace root first.
  */
 const CUSTOM_MATCHERS = [
-  '../../testing/setup/src/lib/extend/jest-extended.matcher.ts',
-  '../../testing/setup/src/lib/extend/path.matcher.ts',
+  '../../testing/test-setup/src/lib/extend/jest-extended.matcher.ts',
+  '../../testing/test-setup/src/lib/extend/path.matcher.ts',
 ] as const;
 
 /**
@@ -19,8 +19,9 @@ const CUSTOM_MATCHERS = [
  * which is why they use `../../` to navigate to the workspace root first.
  */
 const UNIT_TEST_SETUP_FILES = [
-  '../../testing/setup/src/lib/reset.setup-file.ts',
-  '../../testing/setup/src/lib/fs-memfs.setup-file.ts',
+  '../../testing/test-setup/src/lib/reset.mocks.ts',
+  '../../testing/test-setup/src/lib/fs.mock.ts',
+  '../../testing/test-setup/src/lib/logger.mock.ts',
   ...CUSTOM_MATCHERS,
 ] as const;
 
@@ -32,7 +33,8 @@ const UNIT_TEST_SETUP_FILES = [
 
  */
 const INT_TEST_SETUP_FILES = [
-  '../../testing/setup/src/lib/reset.setup-file.ts',
+  '../../testing/test-setup/src/lib/reset.mocks.ts',
+  '../../testing/test-setup/src/lib/logger.mock.ts',
   ...CUSTOM_MATCHERS,
 ] as const;
 
@@ -42,7 +44,10 @@ const INT_TEST_SETUP_FILES = [
  * These paths are relative to the config file location (typically `e2e/<project-e2e>/vitest.e2e.config.ts`),
  * which is why they use `../../` to navigate to the workspace root first.
  */
-const E2E_TEST_SETUP_FILES = [...CUSTOM_MATCHERS] as const;
+const E2E_TEST_SETUP_FILES = [
+  '../../testing/test-setup/src/lib/reset.mocks.ts',
+  ...CUSTOM_MATCHERS,
+] as const;
 
 /**
  * Returns the appropriate setup files for the given test kind.

@@ -13,6 +13,9 @@
   "references": [
     {
       "path": "../../testing/vitest-setup-config/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/prof-dev-kit/tsconfig.lib.json"
     }
   ],
   "exclude": [
