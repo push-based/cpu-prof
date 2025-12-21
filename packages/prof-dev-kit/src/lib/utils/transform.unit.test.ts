@@ -81,7 +81,7 @@ describe('toPascalCaseSchemaName', () => {
 
   it('should convert camelCase export names to PascalCase with Schema suffix', () => {
     expect(toPascalCaseSchemaName('basicExecutorOptions')).toBe(
-      'BasicExecutorOptionsSchema',
+      'BasicExecutorOptionsSchema'
     );
     expect(toPascalCaseSchemaName('myOptions')).toBe('MyOptionsSchema');
     expect(toPascalCaseSchemaName('userConfig')).toBe('UserConfigSchema');
@@ -91,7 +91,7 @@ describe('toPascalCaseSchemaName', () => {
     expect(toPascalCaseSchemaName('my-config')).toBe('MyConfigSchema');
     expect(toPascalCaseSchemaName('user-settings')).toBe('UserSettingsSchema');
     expect(toPascalCaseSchemaName('basic-executor-options')).toBe(
-      'BasicExecutorOptionsSchema',
+      'BasicExecutorOptionsSchema'
     );
   });
 
@@ -99,7 +99,7 @@ describe('toPascalCaseSchemaName', () => {
     expect(toPascalCaseSchemaName('user_settings')).toBe('UserSettingsSchema');
     expect(toPascalCaseSchemaName('my_config')).toBe('MyConfigSchema');
     expect(toPascalCaseSchemaName('basic_executor_options')).toBe(
-      'BasicExecutorOptionsSchema',
+      'BasicExecutorOptionsSchema'
     );
   });
 
@@ -111,10 +111,10 @@ describe('toPascalCaseSchemaName', () => {
 
   it('should handle mixed case and special characters', () => {
     expect(toPascalCaseSchemaName('My-Special_Config')).toBe(
-      'MySpecialConfigSchema',
+      'MySpecialConfigSchema'
     );
     expect(toPascalCaseSchemaName('testConfigOptions')).toBe(
-      'TestConfigOptionsSchema',
+      'TestConfigOptionsSchema'
     );
   });
 

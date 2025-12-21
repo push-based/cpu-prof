@@ -28,7 +28,7 @@ describe('transformMultilineText', () => {
 ✖ Invalid input: expected array, received undefined
   → at plugins`;
     expect(truncateMultilineText(error)).toBe(
-      'SchemaValidationError: Invalid CoreConfig in push-based.config.ts file […]',
+      'SchemaValidationError: Invalid CoreConfig in push-based.config.ts file […]'
     );
   });
 
@@ -47,17 +47,17 @@ describe('transformLines', () => {
     expect(
       transformLines(
         `export function greet(name = 'World') {\n  console.log('Hello, ' + name + '!');\n}\n`,
-        line => {
+        (line) => {
           const prefix = `${++count} | `;
           return `${ansis.gray(prefix)}${line}`;
-        },
-      ),
+        }
+      )
     ).toBe(
       `
 ${ansis.gray('1 | ')}export function greet(name = 'World') {
 ${ansis.gray('2 | ')}  console.log('Hello, ' + name + '!');
 ${ansis.gray('3 | ')}}
-${ansis.gray('4 | ')}`.trimStart(),
+${ansis.gray('4 | ')}`.trimStart()
     );
   });
 
@@ -65,14 +65,14 @@ ${ansis.gray('4 | ')}`.trimStart(),
     expect(
       transformLines(
         'ESLint v9.16.0\r\n\r\nAll files pass linting.\r\n',
-        line => `> ${line}`,
-      ),
+        (line) => `> ${line}`
+      )
     ).toBe(
       `
 > ESLint v9.16.0
 > 
 > All files pass linting.
-> `.trimStart(),
+> `.trimStart()
     );
   });
 });
@@ -84,7 +84,7 @@ describe('indentLines', () => {
   ESLint v9.16.0
   
   All files pass linting.
-  `.slice(1), // ignore first line break
+  `.slice(1) // ignore first line break
     );
   });
 });

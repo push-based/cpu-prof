@@ -593,8 +593,8 @@ export interface AsyncEndEvent extends TraceEventBase {
 }
 ```
 
-
 In the example, we include:
+
 - `TracingStartedInBrowser` - Start the tracing.
 - `RunTask` - for each async operation, we include a `AsyncBeginEvent` and `AsyncEndEvent`.
 - `RunTask` - End the tracing.
@@ -626,7 +626,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-1",
       "ph": "b",
       "pid": 1,
@@ -636,7 +636,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-2",
       "ph": "b",
       "pid": 1,
@@ -646,7 +646,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-3",
       "ph": "b",
       "pid": 1,
@@ -656,7 +656,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-3",
       "ph": "e",
       "pid": 1,
@@ -666,7 +666,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-2",
       "ph": "e",
       "pid": 1,
@@ -676,7 +676,7 @@ In the example, we include:
     {
       "args": {},
       "cat": "blink.user_timing",
-      "id2": {"local": "0x2"},
+      "id2": { "local": "0x2" },
       "name": "step-1",
       "ph": "e",
       "pid": 1,
@@ -742,7 +742,7 @@ export interface SampleEvent extends TraceEventBase {
 export interface ProfileEvent extends SampleEvent {
   name: 'Profile';
   args: {
-    data: { startTime: number, [key: string]: any }
+    data: { startTime: number; [key: string]: any };
   };
 }
 
@@ -750,7 +750,7 @@ export interface ProfileEvent extends SampleEvent {
 export interface ProfileChunkEvent extends SampleEvent {
   name: 'ProfileChunk';
   args: {
-    data: { cpuProfile: any, timeDeltas?: number[], [key: string]: any }
+    data: { cpuProfile: any; timeDeltas?: number[]; [key: string]: any };
   };
 }
 ```
@@ -760,6 +760,7 @@ export interface ProfileChunkEvent extends SampleEvent {
 As CPU profiles require a couple of additional events to be present in the trace.
 
 In the example, we include:
+
 - `CpuProfiler::StartProfiling` - Start the CPU profiler.
 - `Profile` - Register the profile chunk stream.
 - `ProfileChunk` - Add a profile chunk to the stream.
@@ -820,9 +821,7 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -833,9 +832,7 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
                   "lineNumber": 92,
                   "columnNumber": 19
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -848,19 +845,9 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
                 }
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              3
-            ]
+            "samples": [1, 2, 3, 3]
           },
-          "timeDeltas": [
-            0,
-            100,
-            100,
-            100
-          ]
+          "timeDeltas": [0, 100, 100, 100]
         }
       }
     },
@@ -875,19 +862,9 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              1,
-              2,
-              3,
-              3
-            ]
+            "samples": [1, 2, 3, 3]
           },
-          "timeDeltas": [
-            0,
-            100,
-            100,
-            100
-          ]
+          "timeDeltas": [0, 100, 100, 100]
         }
       }
     },
@@ -902,15 +879,9 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              1,
-              3
-            ]
+            "samples": [1, 3]
           },
-          "timeDeltas": [
-            0,
-            50
-          ]
+          "timeDeltas": [0, 50]
         }
       }
     },
@@ -925,15 +896,9 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              3,
-              2
-            ]
+            "samples": [3, 2]
           },
-          "timeDeltas": [
-            50,
-            50
-          ]
+          "timeDeltas": [50, 50]
         }
       }
     },
@@ -948,15 +913,9 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
       "args": {
         "data": {
           "cpuProfile": {
-            "samples": [
-              2,
-              2
-            ]
+            "samples": [2, 2]
           },
-          "timeDeltas": [
-            50,
-            50
-          ]
+          "timeDeltas": [50, 50]
         }
       }
     },
@@ -975,7 +934,7 @@ Here we only focus on ProfileChunk events. To read about the other events, pleas
     }
   ]
 }
-````
+```
 
 **DevTools Performance Tab:**  
 <img src="imgs/minimal-event-trace-instant-event-simple-profile-chunks.png" alt="DevTools Performance tab displaying a flame chart generated from Profile and ProfileChunk events." width="800">

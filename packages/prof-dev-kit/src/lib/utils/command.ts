@@ -15,22 +15,22 @@ export function formatCommandStatus(
     env?: Record<string, string | number | boolean>;
     cwd?: string;
   },
-  status: 'pending' | 'success' | 'failure' = 'pending',
+  status: 'pending' | 'success' | 'failure' = 'pending'
 ): string {
   const cwd = options?.cwd && path.relative(process.cwd(), options.cwd);
   const cwdPrefix = cwd ? ansis.blue(cwd) : '';
   const envString =
     options?.env && Object.keys(options.env).length > 0
       ? Object.entries(options.env).map(([key, value]) =>
-          ansis.gray(`${key}="${value}"`),
+          ansis.gray(`${key}="${value}"`)
         )
       : [];
   const statusColor =
     status === 'pending'
       ? ansis.blue('$')
       : status === 'success'
-        ? ansis.green('$')
-        : ansis.red('$');
+      ? ansis.green('$')
+      : ansis.red('$');
 
   return [
     ...(cwdPrefix ? [cwdPrefix] : []),

@@ -13,7 +13,7 @@ describe('ensureDirectoryExists', () => {
 
     await ensureDirectoryExists(dir);
     await expect(
-      stat(dir).then(stats => stats.isDirectory()),
+      stat(dir).then((stats) => stats.isDirectory())
     ).resolves.toBeTruthy();
   });
 });

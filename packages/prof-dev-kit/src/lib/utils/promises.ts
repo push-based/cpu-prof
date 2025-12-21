@@ -10,13 +10,13 @@ export function groupByStatus<T>(results: PromiseSettledResult<T>[]): {
       result.status === 'fulfilled'
         ? { ...acc, fulfilled: [...acc.fulfilled, result] }
         : { ...acc, rejected: [...acc.rejected, result] },
-    { fulfilled: [], rejected: [] },
+    { fulfilled: [], rejected: [] }
   );
 }
 
 export async function asyncSequential<TInput, TOutput>(
   items: TInput[],
-  work: (item: TInput, index: number) => Promise<TOutput>,
+  work: (item: TInput, index: number) => Promise<TOutput>
 ): Promise<TOutput[]> {
   // for-loop used instead of reduce for performance
   const results: TOutput[] = [];
@@ -30,7 +30,7 @@ export async function asyncSequential<TInput, TOutput>(
 }
 
 export async function settlePromise<T>(
-  promise: Promise<T>,
+  promise: Promise<T>
 ): Promise<PromiseSettledResult<T>> {
   try {
     const value = await promise;

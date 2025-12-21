@@ -23,10 +23,10 @@ describe('loadModuleExport', () => {
 
   it.each(['js', 'mjs', 'cjs', 'ts'])(
     'should load a Zod schema from file with extension .%s',
-    async extension => {
+    async (extension) => {
       const schemaFile = path.resolve(
         extensionsDir,
-        `basic.zod-schema.${extension}`,
+        `basic.zod-schema.${extension}`
       );
 
       const zodSchema = await loadModuleExport(schemaFile);
@@ -36,6 +36,6 @@ describe('loadModuleExport', () => {
 
       expect(zodSchema.def).toBeDefined();
       expect(zodSchema.def.type).toBe('object');
-    },
+    }
   );
 });

@@ -190,7 +190,7 @@ export function executeProcess(cfg: ProcessConfig): Promise<ProcessResult> {
         onStderr?.(message, spawnedProcess);
       });
 
-      spawnedProcess.on('error', error => {
+      spawnedProcess.on('error', (error) => {
         reject(error);
       });
 

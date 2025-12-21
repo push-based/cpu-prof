@@ -34,8 +34,8 @@ export class Logger {
   #ciPlatform: CiPlatform | undefined = isEnvVarEnabled('GITHUB_ACTIONS')
     ? 'GitHub Actions'
     : isEnvVarEnabled('GITLAB_CI')
-      ? 'GitLab CI/CD'
-      : undefined;
+    ? 'GitLab CI/CD'
+    : undefined;
   #groupColor: GroupColor | undefined;
 
   #groupsCount = 0;
@@ -69,7 +69,7 @@ export class Logger {
     process.exit(
       os.platform() === 'win32'
         ? SIGINT_EXIT_CODE_WINDOWS
-        : SIGINT_EXIT_CODE_UNIX,
+        : SIGINT_EXIT_CODE_UNIX
     );
   };
 
@@ -107,8 +107,8 @@ export class Logger {
   async task(title: string, worker: () => Promise<string>): Promise<void> {
     await this.#spinner(worker, {
       pending: title,
-      success: value => value,
-      failure: error => `${title} → ${ansis.red(String(error))}`,
+      success: (value) => value,
+      failure: (error) => `${title} → ${ansis.red(String(error))}`,
     });
   }
 
@@ -117,7 +117,7 @@ export class Logger {
     worker: () => Promise<T>,
     options?: {
       cwd?: string;
-    },
+    }
   ): Promise<T> {
     return this.#spinner(worker, {
       pending: formatCommandStatus(bin, options, 'pending'),
@@ -128,16 +128,16 @@ export class Logger {
 
   async group<T = undefined>(
     title: string,
-    worker: () => Promise<string | { message: string; result: T }>,
+    worker: () => Promise<string | { message: string; result: T }>
   ): Promise<T> {
     if (this.#groupColor) {
       throw new Error(
-        'Internal Logger error - nested groups are not supported',
+        'Internal Logger error - nested groups are not supported'
       );
     }
     if (this.#activeSpinner) {
       throw new Error(
-        'Internal Logger error - creating group in active spinner is not supported',
+        'Internal Logger error - creating group in active spinner is not supported'
       );
     }
 
@@ -164,7 +164,7 @@ export class Logger {
           this.#colorize(this.#groupSymbols.end, this.#groupColor),
           this.#colorize(message, 'green'),
           this.#formatDurationSuffix({ start, end }),
-        ].join(' '),
+        ].join(' ')
       );
     } else {
       console.log(
@@ -172,9 +172,9 @@ export class Logger {
           this.#colorize(this.#groupSymbols.end, this.#groupColor),
           this.#colorize(
             `${stringifyError(result.reason, { oneline: true })}`,
-            'red',
+            'red'
           ),
-        ].join(' '),
+        ].join(' ')
       );
     }
 
@@ -202,7 +202,7 @@ export class Logger {
     switch (this.#ciPlatform) {
       case 'GitHub Actions':
         return {
-          start: title =>
+          start: (title) =>
             `::group::${this.#formatGroupTitle(title, { prefix: false })}`,
           end: () => '::endgroup::',
         };
@@ -211,19 +211,23 @@ export class Logger {
         const id = Math.random().toString(HEX_RADIX).slice(2);
         const sectionId = `code_pushup_logs_group_${id}`;
         return {
-          start: title => {
+          start: (title) => {
             const sectionHeader = this.#formatGroupTitle(title, {
               prefix: true,
             });
             const options = this.#isVerbose ? '' : '[collapsed=true]';
-            return `${ansiEscCode}section_start:${dateToUnixTimestamp(new Date())}:${sectionId}${options}\r${ansiEscCode}${sectionHeader}`;
+            return `${ansiEscCode}section_start:${dateToUnixTimestamp(
+              new Date()
+            )}:${sectionId}${options}\r${ansiEscCode}${sectionHeader}`;
           },
           end: () =>
-            `${ansiEscCode}section_end:${dateToUnixTimestamp(new Date())}:${sectionId}\r${ansiEscCode}`,
+            `${ansiEscCode}section_end:${dateToUnixTimestamp(
+              new Date()
+            )}:${sectionId}\r${ansiEscCode}`,
         };
       case undefined:
         return {
-          start: title => this.#formatGroupTitle(title, { prefix: true }),
+          start: (title) => this.#formatGroupTitle(title, { prefix: true }),
           end: () => '',
         };
     }
@@ -242,11 +246,11 @@ export class Logger {
       pending: string;
       success: (value: T) => string;
       failure: (error: unknown) => string;
-    },
+    }
   ): Promise<T> {
     if (this.#activeSpinner) {
       throw new Error(
-        'Internal Logger error - concurrent spinners are not supported',
+        'Internal Logger error - concurrent spinners are not supported'
       );
     }
 
@@ -304,7 +308,7 @@ export class Logger {
     }
 
     this.#activeSpinner = undefined;
-    this.#activeSpinnerLogs.forEach(message => {
+    this.#activeSpinnerLogs.forEach((message) => {
       this.#log(indentLines(message, 2));
     });
     this.#activeSpinnerLogs = [];
@@ -319,7 +323,7 @@ export class Logger {
 
   #log(message: string, color?: AnsiColors, options?: LogOptions): void {
     const print: (text: string) => void = options?.noLineBreak
-      ? text => process.stdout.write(text)
+      ? (text) => process.stdout.write(text)
       : console.log;
 
     if (this.#activeSpinner) {
@@ -343,8 +347,11 @@ export class Logger {
     }
     return transformLines(
       message,
-      line =>
-        `${this.#colorize('│', this.#groupColor)} ${this.#colorize(line, color)}`,
+      (line) =>
+        `${this.#colorize('│', this.#groupColor)} ${this.#colorize(
+          line,
+          color
+        )}`
     );
   }
 

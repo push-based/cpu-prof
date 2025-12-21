@@ -68,7 +68,7 @@ NODE_OPTIONS="--cpu-prof" node -e "console.log('CPU')"
 
 > [!Note]  
 > The **order** of CPU profiling arguments is critical!
-> 
+>
 > ❌ Bad:
 >
 > ```shell

@@ -22,7 +22,7 @@ describe('groupByStatus', () => {
 describe('asyncSequential', () => {
   it('should map async function to array', async () => {
     await expect(
-      asyncSequential(['a', 'b', 'c'], x => Promise.resolve(x.toUpperCase())),
+      asyncSequential(['a', 'b', 'c'], (x) => Promise.resolve(x.toUpperCase()))
     ).resolves.toEqual(['A', 'B', 'C']);
   });
 
@@ -30,12 +30,12 @@ describe('asyncSequential', () => {
     let counter = 0;
     const work = vi.fn().mockImplementation(
       () =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           counter++;
           setTimeout(() => {
             resolve(counter);
           }, 10);
-        }),
+        })
     );
 
     const items = Array.from({ length: 4 });
@@ -53,7 +53,7 @@ describe('asyncSequential', () => {
   it('should provide array item and index to callback', async () => {
     const callback = vi.fn();
     await expect(
-      asyncSequential(['a', 'b', 'c'], callback),
+      asyncSequential(['a', 'b', 'c'], callback)
     ).resolves.toBeArrayOfSize(3);
     expect(callback).toHaveBeenCalledTimes(3);
     expect(callback).toHaveBeenNthCalledWith(1, 'a', 0);

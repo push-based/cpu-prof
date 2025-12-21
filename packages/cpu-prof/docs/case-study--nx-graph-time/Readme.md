@@ -5,6 +5,7 @@
 ### Setup Detection
 
 We use commands to capture the setup specification:
+
 - `nx report` - to capture the Nx, Node.js, and OS versions.
 - `nx reset` - to reset the Nx daemon and clear the cache before running measurements.
 
@@ -26,6 +27,7 @@ The tool [@push-based/cpu-prof](https://www.npmjs.com/package/@push-based/cpu-pr
 Use native Node.js CPU profiling to analyze where time is spent when calculating Nx graphs.
 
 The following commands are executed from the root of a Nx workspace:
+
 - Project graph generation
 - Project graph without plugins
 - Task graph for specific target
@@ -73,6 +75,7 @@ npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-project-graph-no-plugins \
 node ./node_modules/nx/bin/nx.js graph --file=./profiles/nx-project-graph-no-plugins/nx-project-graph-no-plugins.json
 ```
+
 4. Restore nx.json
 
 ```bash
@@ -97,7 +100,3 @@ npx -y @push-based/cpu-prof \
 --cpu-prof-dir ./profiles/nx-task-graph-build \
 node ./node_modules/nx/bin/nx.js graph --view=tasks --targets=<targets> --file=./profiles/nx-task-graph-build/nx-task-graph-build.json
 ```
-
-
-
-

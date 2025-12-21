@@ -14,7 +14,7 @@ export function formatDuration(ms: number, maxDecimals: number = 2): string {
 
 export function truncateMultilineText(
   text: string,
-  options?: { ellipsis?: string },
+  options?: { ellipsis?: string }
 ): string {
   const { ellipsis = `[${UNICODE_ELLIPSIS}]` } = options ?? {};
 
@@ -35,11 +35,11 @@ export function truncateMultilineText(
 
 export function transformLines(
   text: string,
-  fn: (line: string) => string,
+  fn: (line: string) => string
 ): string {
   return text.split(/\r?\n/).map(fn).join('\n');
 }
 
 export function indentLines(text: string, identation: number): string {
-  return transformLines(text, line => `${' '.repeat(identation)}${line}`);
+  return transformLines(text, (line) => `${' '.repeat(identation)}${line}`);
 }

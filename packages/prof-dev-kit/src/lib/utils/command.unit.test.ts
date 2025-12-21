@@ -13,10 +13,12 @@ describe('formatCommandStatus', () => {
           cwd: '<CWD>',
           env: { ZNX_VERBOSE: true },
         },
-        'failure',
-      ),
+        'failure'
+      )
     ).toBe(
-      `${ansis.blue('<CWD>')} ${ansis.red('$')} ${ansis.gray('ZNX_VERBOSE="true"')} npx eslint . --format=json`,
+      `${ansis.blue('<CWD>')} ${ansis.red('$')} ${ansis.gray(
+        'ZNX_VERBOSE="true"'
+      )} npx eslint . --format=json`
     );
   });
 
@@ -27,19 +29,19 @@ describe('formatCommandStatus', () => {
     ['failure' as const, ansis.red],
   ])(`should format command status %s explicitly`, (status, color) => {
     expect(
-      formatCommandStatus('npx eslint . --format=json', {}, status),
+      formatCommandStatus('npx eslint . --format=json', {}, status)
     ).toContain(`${color('$')}`);
   });
 
   it('should not include cwd prefix when cwd is same as process.cwd()', () => {
     expect(formatCommandStatus('npx -v', { cwd: process.cwd() })).toStartWith(
-      `${ansis.blue('$')}`,
+      `${ansis.blue('$')}`
     );
   });
 
   it('should include cwd prefix when cwd is provided and different from process.cwd()', () => {
     expect(
-      formatCommandStatus('npx -v', { cwd: path.join(process.cwd(), 'src') }),
+      formatCommandStatus('npx -v', { cwd: path.join(process.cwd(), 'src') })
     ).toStartWith(`${ansis.blue('src')} `);
   });
 
@@ -48,7 +50,9 @@ describe('formatCommandStatus', () => {
       env: { NODE_ENV: 'test', NODE_OPTIONS: '--import tsx' },
     });
     expect(result).toStartWith(
-      `${ansis.blue('$')} ${ansis.gray('NODE_ENV="test"')} ${ansis.gray('NODE_OPTIONS="--import tsx"')}`,
+      `${ansis.blue('$')} ${ansis.gray('NODE_ENV="test"')} ${ansis.gray(
+        'NODE_OPTIONS="--import tsx"'
+      )}`
     );
   });
 
@@ -57,7 +61,9 @@ describe('formatCommandStatus', () => {
       env: { NODE_OPTIONS: '--import tsx' },
     });
     expect(result).toBe(
-      `${ansis.blue('$')} ${ansis.gray('NODE_OPTIONS="--import tsx"')} node packages/cli/src/index.ts`,
+      `${ansis.blue('$')} ${ansis.gray(
+        'NODE_OPTIONS="--import tsx"'
+      )} node packages/cli/src/index.ts`
     );
   });
 });
