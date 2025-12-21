@@ -242,10 +242,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2,
-                  4
-                ]
+                "children": [2, 4]
               },
               {
                 "id": 2,
@@ -257,9 +254,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -282,9 +277,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  5
-                ]
+                "children": [5]
               },
               {
                 "id": 5,
@@ -296,9 +289,7 @@
                   "columnNumber": 0
                 },
                 "parent": 4,
-                "children": [
-                  6
-                ]
+                "children": [6]
               },
               {
                 "id": 6,
@@ -312,27 +303,9 @@
                 "parent": 5
               }
             ],
-            "samples": [
-              1,
-              3,
-              1,
-              6,
-              1,
-              3,
-              1,
-              1
-            ]
+            "samples": [1, 3, 1, 6, 1, 3, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -385,9 +358,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -399,9 +370,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -413,9 +382,7 @@
                   "columnNumber": 0
                 },
                 "parent": 2,
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -429,23 +396,9 @@
                 "parent": 3
               }
             ],
-            "samples": [
-              1,
-              4,
-              4,
-              4,
-              4,
-              1
-            ]
+            "samples": [1, 4, 4, 4, 4, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -526,9 +479,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -539,9 +490,7 @@
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -552,9 +501,7 @@
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -568,27 +515,9 @@
                 "children": []
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              4,
-              3,
-              2,
-              1,
-              1
-            ]
+            "samples": [1, 2, 3, 4, 3, 2, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -655,9 +584,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -668,9 +595,7 @@
                   "lineNumber": 1,
                   "columnNumber": 0
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -681,9 +606,7 @@
                   "lineNumber": 2,
                   "columnNumber": 0
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -696,23 +619,9 @@
                 }
               }
             ],
-            "samples": [
-              1,
-              4,
-              3,
-              2,
-              1,
-              1
-            ]
+            "samples": [1, 4, 3, 2, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -765,9 +674,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -778,9 +685,7 @@
                   "lineNumber": 10,
                   "columnNumber": 0
                 },
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -791,9 +696,7 @@
                   "lineNumber": 20,
                   "columnNumber": 0
                 },
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -807,23 +710,9 @@
                 "children": []
               }
             ],
-            "samples": [
-              1,
-              2,
-              3,
-              4,
-              1,
-              1
-            ]
+            "samples": [1, 2, 3, 4, 1, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            0
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 0]
         }
       }
     },
@@ -904,9 +793,7 @@
                   "lineNumber": -1,
                   "columnNumber": -1
                 },
-                "children": [
-                  2
-                ]
+                "children": [2]
               },
               {
                 "id": 2,
@@ -918,9 +805,7 @@
                   "columnNumber": 0
                 },
                 "parent": 1,
-                "children": [
-                  3
-                ]
+                "children": [3]
               },
               {
                 "id": 3,
@@ -932,9 +817,7 @@
                   "columnNumber": 0
                 },
                 "parent": 2,
-                "children": [
-                  4
-                ]
+                "children": [4]
               },
               {
                 "id": 4,
@@ -948,25 +831,9 @@
                 "parent": 3
               }
             ],
-            "samples": [
-              1,
-              2,
-              4,
-              1,
-              4,
-              2,
-              1
-            ]
+            "samples": [1, 2, 4, 1, 4, 2, 1]
           },
-          "timeDeltas": [
-            0,
-            10,
-            10,
-            10,
-            10,
-            10,
-            10
-          ]
+          "timeDeltas": [0, 10, 10, 10, 10, 10, 10]
         }
       }
     },

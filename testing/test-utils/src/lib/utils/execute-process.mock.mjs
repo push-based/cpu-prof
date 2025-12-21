@@ -1,6 +1,6 @@
 const interval = parseInt(process.argv[2] || 100);
 let runs = parseInt(process.argv[3] || 4);
-const throwError = process.argv[4] === '1';
+let throwError = process.argv[4] === '1';
 
 /**
  * Custom runner implementation that simulates asynchronous situations.
@@ -12,23 +12,25 @@ const throwError = process.argv[4] === '1';
  * @arg runs: number - number of updates; defaults to 4
  * @arg throwError: '1' | '0' - if the process completes or throws; defaults to '0'
  **/
-console.info(
-  `process:start with interval: ${interval}, runs: ${runs}, throwError: ${throwError}`
-);
-await new Promise((resolve) => {
-  const id = setInterval(() => {
-    if (runs === 0) {
-      clearInterval(id);
-      if (throwError) {
-        throw new Error('dummy-error');
+(async () => {
+  console.info(
+    `process:start with interval: ${interval}, runs: ${runs}, throwError: ${throwError}`
+  );
+  await new Promise((resolve) => {
+    const id = setInterval(() => {
+      if (runs === 0) {
+        clearInterval(id);
+        if (throwError) {
+          throw new Error('dummy-error');
+        } else {
+          resolve('result');
+        }
       } else {
-        resolve('result');
+        runs--;
+        console.info('process:update');
       }
-    } else {
-      runs--;
-      console.info('process:update');
-    }
-  }, interval);
-});
+    }, interval);
+  });
 
-console.info('process:complete');
+  console.info('process:complete');
+})();

@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
 import * as testUtils from '@push-based/test-utils';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('path-matcher', () => {
   const osAgnosticPathSpy = vi.spyOn(testUtils, 'osAgnosticPath');
