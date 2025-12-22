@@ -23,7 +23,7 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {
-    "@push-based/prof-dev-kit": "workspace:*"
+    "@push-based/prof-dev-kit": "^1.0.4"
   },
   "nx": {}
 }
