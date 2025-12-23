@@ -13,12 +13,6 @@
   "include": [],
   "references": [
     {
-      "path": "../vitest-setup-config"
-    },
-    {
-      "path": "../test-utils"
-    },
-    {
       "path": "./tsconfig.lib.json"
     },
     {

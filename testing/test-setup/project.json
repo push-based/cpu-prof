@@ -7,11 +7,13 @@
     "build": {},
     "lint": {},
     "unit-test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "options": {
         "config": "testing/test-setup/vitest.unit.config.ts"
       }
     }
   },
+  "implicitDependencies": ["test-utils"],
+  "implicitDependencies": ["test-utils"],
   "tags": ["scope:shared", "type:testing"]
 }

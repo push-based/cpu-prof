@@ -8,8 +8,8 @@ describe('getSetupFiles', () => {
       'should return paths for %s-test relative to config file location',
       (kind) => {
         const setupFiles = getSetupFiles(kind);
-        expect(setupFiles).toSatisfyAll<string>((path) =>
-          /^\.\.\/\.\.\//.test(path)
+        expect(setupFiles).toSatisfy((files) =>
+          files.every((path: string) => /^\.\.\/\.\.\//.test(path))
         );
       }
     );
@@ -20,8 +20,8 @@ describe('getSetupFiles', () => {
       const setupFiles = getSetupFiles('unit');
 
       expect(Array.isArray(setupFiles)).toBe(true);
-      expect(setupFiles).toSatisfyAll<unknown>(
-        (item) => typeof item === 'string'
+      expect(setupFiles).toSatisfy((files) =>
+        files.every((item: unknown) => typeof item === 'string')
       );
     });
   });

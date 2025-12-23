@@ -29,86 +29,36 @@
         }
       },
       "exclude": ["dummy/*", "testing/*"]
-    },
-    {
-      "plugin": "@nx/js/typescript",
-      "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
-        "build": {
-          "targetName": "build",
-          "configName": "tsconfig.lib.json",
-          "buildDepsName": "build-deps",
-          "watchDepsName": "watch-deps"
-        }
-      },
-      "exclude": ["cpu-profiling-e2e/*"]
-    },
-
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
-      "exclude": ["packages/app-0-e2e/**/*"]
-    },
-    {
-      "plugin": "@nx/rollup/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    },
-    {
-      "plugin": "@nx/webpack/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    },
-    {
-      "plugin": "@nx/js/typescript",
-      "include": ["cpu-profiling-e2e/*"],
-      "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        }
-      }
     }
   ],
   "targetDefaults": {
     "unit-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
+      "executor": "@nx/vitest:test",
+      "outputs": ["{projectRoot}/coverage/unit"],
       "inputs": ["default", "^default", "testFixtures"],
       "options": {
-        "config": "packages/{projectName}/vitest.unit.config.ts",
+        "config": "{projectRoot}/vitest.unit.config.ts",
         "passWithNoTests": true
       }
     },
     "int-test": {
       "dependsOn": ["^build"],
-      "outputs": ["{workspaceRoot}/coverage/int/{projectName}"],
-      "executor": "@nx/vite:test",
-      "inputs": ["default", "^default", "testFixtures"]
+      "outputs": ["{projectRoot}/coverage/unit"],
+      "executor": "@nx/vitest:test",
+      "inputs": ["default", "^default", "testFixtures"],
+      "options": {
+        "config": "{projectRoot}/vitest.int.config.ts",
+        "passWithNoTests": true
+      }
     },
-    "e2e-test": {
-      "dependsOn": ["^build"],
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
-      "inputs": ["default", "^default", "testFixtures"]
+    "e2e": {
+      "executor": "@nx/vitest:test",
+      "inputs": ["default", "^default", "testFixtures"],
+      "options": {
+        "config": "{projectRoot}/vitest.e2e.config.ts",
+        "passWithNoTests": true
+      }
     },
     "lint": {
       "cache": true,

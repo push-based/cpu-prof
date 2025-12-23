@@ -68,6 +68,8 @@
   },
   "workspaces": [
     "packages/*",
+    "testing/*",
+    "e2e/*",
     "dummy/*"
   ],
   "dependencies": {

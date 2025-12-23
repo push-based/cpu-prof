@@ -32,18 +32,8 @@
   "nx": {
     "name": "prof-dev-kit",
     "targets": {
-      "unit-test": {
-        "executor": "@nx/vite:test",
-        "options": {
-          "config": "packages/{projectName}/vitest.unit.config.ts"
-        }
-      },
-      "int-test": {
-        "executor": "@nx/vite:test",
-        "options": {
-          "config": "packages/{projectName}/vitest.int.config.ts"
-        }
-      }
+      "unit-test": {},
+      "int-test": {}
     },
     "tags": [
       "package"

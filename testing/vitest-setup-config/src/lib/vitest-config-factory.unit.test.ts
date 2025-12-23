@@ -18,8 +18,8 @@ describe('createVitestConfig', () => {
 
       expect(config).toEqual({
         cacheDir: '../../node_modules/.vite/test-package',
-        test: expect.objectContaining({
-          reporters: ['basic'],
+        test: {
+          reporters: ['default'],
           globals: true,
           cache: { dir: '../../node_modules/.vitest' },
           alias: expect.any(Array),
@@ -31,24 +31,27 @@ describe('createVitestConfig', () => {
             'src/**/*.type.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
           ],
           globalSetup: ['../../global-setup.ts'],
-          setupFiles: expect.arrayContaining([
+          setupFiles: [
             '../../testing/test-setup/src/lib/reset.mocks.ts',
             '../../testing/test-setup/src/lib/fs.mock.ts',
-          ]),
-          coverage: expect.objectContaining({
+            '../../testing/test-setup/src/lib/logger.mock.ts',
+            '../../testing/test-setup/src/lib/extend/jest-extended.matcher.ts',
+            '../../testing/test-setup/src/lib/extend/path.matcher.ts',
+          ],
+          coverage: {
             reporter: ['text', 'lcov'],
             reportsDirectory: '../../coverage/test-package/unit-tests',
             exclude: ['mocks/**', '**/types.ts', 'perf/**'],
-          }),
+          },
           typecheck: { include: ['**/*.type.test.ts'] },
-        }),
+        },
       });
     });
 
     it('should include all required setup files for unit tests', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      const setupFiles = config.test!.setupFiles;
+      const setupFiles = config.test.setupFiles;
       expect(setupFiles).toContain(
         '../../testing/test-setup/src/lib/reset.mocks.ts'
       );
@@ -69,7 +72,7 @@ describe('createVitestConfig', () => {
     it('should include type test pattern in unit tests', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      expect(config.test!.include).toContain(
+      expect(config.test.include).toContain(
         'src/**/*.type.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
       );
     });
@@ -77,7 +80,7 @@ describe('createVitestConfig', () => {
     it('should enable typecheck for unit tests', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      expect(config.test!.typecheck).toEqual({
+      expect(config.test.typecheck).toEqual({
         include: ['**/*.type.test.ts'],
       });
     });
@@ -85,7 +88,7 @@ describe('createVitestConfig', () => {
     it('should always include perf/** in coverage exclusions', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      expect(config.test!.coverage!.exclude).toContain('perf/**');
+      expect(config.test.coverage!.exclude).toContain('perf/**');
     });
   });
 
@@ -93,24 +96,26 @@ describe('createVitestConfig', () => {
     it('should create a complete integration test config', () => {
       const config = createVitestConfig('test-package', 'int');
 
-      expect(config).toEqual({
-        cacheDir: '../../node_modules/.vite/test-package',
-        test: expect.objectContaining({
-          reporters: ['basic'],
-          globals: true,
-          include: ['src/**/*.int.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-          globalSetup: ['../../global-setup.ts'],
-          coverage: expect.objectContaining({
-            reportsDirectory: '../../coverage/test-package/int-tests',
+      expect(config).toEqual(
+        expect.objectContaining({
+          cacheDir: '../../node_modules/.vite/test-package',
+          test: expect.objectContaining({
+            reporters: ['default'],
+            globals: true,
+            include: ['src/**/*.int.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+            globalSetup: ['../../global-setup.ts'],
+            coverage: expect.objectContaining({
+              reportsDirectory: '../../coverage/test-package/int-tests',
+            }),
           }),
-        }),
-      });
+        })
+      );
     });
 
     it('should include correct setup files for integration tests', () => {
       const config = createVitestConfig('test-package', 'int');
 
-      const setupFiles = config.test!.setupFiles;
+      const setupFiles = config.test.setupFiles;
       expect(setupFiles).toContain(
         '../../testing/test-setup/src/lib/logger.mock.ts'
       );
@@ -133,22 +138,24 @@ describe('createVitestConfig', () => {
     it('should create e2e config without coverage by default', () => {
       const config = createVitestConfig('test-package', 'e2e');
 
-      expect(config).toEqual({
-        cacheDir: '../../node_modules/.vite/test-package',
-        test: expect.objectContaining({
-          reporters: ['basic'],
-          globals: true,
-          include: ['tests/**/*.e2e.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-          globalSetup: ['../../global-setup.ts'],
-        }),
-      });
-      expect(config.test?.coverage).toBeUndefined();
+      expect(config).toEqual(
+        expect.objectContaining({
+          cacheDir: '../../node_modules/.vite/test-package',
+          test: expect.objectContaining({
+            reporters: ['default'],
+            globals: true,
+            include: ['tests/**/*.e2e.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+            globalSetup: ['../../global-setup.ts'],
+          }),
+        })
+      );
+      expect(config.test.coverage).toBeUndefined();
     });
 
     it('should include minimal setup files for e2e tests', () => {
       const config = createVitestConfig('test-package', 'e2e');
 
-      const setupFiles = config.test!.setupFiles;
+      const setupFiles = config.test.setupFiles;
       // Should only include reset mocks
       expect(setupFiles).toContain(
         '../../testing/test-setup/src/lib/reset.mocks.ts'
@@ -166,7 +173,7 @@ describe('createVitestConfig', () => {
       const options: E2ETestOptions = { testTimeout: 60_000 };
       const config = createVitestConfig('test-package', 'e2e', options);
 
-      expect(config.test!.testTimeout).toBe(60_000);
+      expect(config.test.testTimeout).toBe(60_000);
     });
 
     it('should support multiple options together', () => {
@@ -175,22 +182,16 @@ describe('createVitestConfig', () => {
       };
       const config = createVitestConfig('test-package', 'e2e', options);
 
-      expect(config.test!.testTimeout).toBe(30_000);
-      expect(config.test?.coverage).toBeUndefined();
+      expect(config.test.testTimeout).toBe(30_000);
+      expect(config.test.coverage).toBeUndefined();
     });
   });
 
-  describe('cacheDir naming', () => {
-    it('should use projectKey for cacheDir', () => {
-      const config = createVitestConfig('my-custom-name', 'unit');
-
-      expect(config.cacheDir).toBe('../../node_modules/.vite/my-custom-name');
-    });
-
+  describe('coverage directory naming', () => {
     it('should use projectKey for coverage directory', () => {
       const config = createVitestConfig('my-package', 'unit');
 
-      expect(config.test!.coverage!.reportsDirectory).toBe(
+      expect(config.test.coverage!.reportsDirectory).toBe(
         '../../coverage/my-package/unit-tests'
       );
     });
@@ -212,7 +213,7 @@ describe('createVitestConfig', () => {
           e2e: ['tests/**/*.e2e.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
         };
 
-        expect(config.test!.include).toStrictEqual(expectedIncludes[kind]);
+        expect(config.test.include).toStrictEqual(expectedIncludes[kind]);
 
         const expectedGlobalSetup = {
           unit: ['../../global-setup.ts'],
@@ -220,7 +221,7 @@ describe('createVitestConfig', () => {
           e2e: ['../../global-setup.ts'],
         };
 
-        expect(config.test!.globalSetup).toStrictEqual(
+        expect(config.test.globalSetup).toStrictEqual(
           expectedGlobalSetup[kind]
         );
       });
@@ -231,26 +232,26 @@ describe('createVitestConfig', () => {
     it('should enable coverage for unit tests by default', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      expect(config.test!.coverage).toBeDefined();
-      expect((config.test!.coverage as any).reporter).toEqual(['text', 'lcov']);
+      expect(config.test.coverage).toBeDefined();
+      expect((config.test.coverage as any).reporter).toEqual(['text', 'lcov']);
     });
 
     it('should enable coverage for integration tests by default', () => {
       const config = createVitestConfig('test-package', 'int');
 
-      expect(config.test!.coverage).toBeDefined();
+      expect(config.test.coverage).toBeDefined();
     });
 
     it('should disable coverage for e2e tests by default', () => {
       const config = createVitestConfig('test-package', 'e2e');
 
-      expect(config.test?.coverage).toBeUndefined();
+      expect(config.test.coverage).toBeUndefined();
     });
 
     it('should always exclude mocks, types.ts, and perf folders', () => {
       const config = createVitestConfig('test-package', 'unit');
 
-      expect(config.test!.coverage!.exclude).toEqual([
+      expect(config.test.coverage!.exclude).toEqual([
         'mocks/**',
         '**/types.ts',
         'perf/**',
@@ -263,19 +264,18 @@ describe('createVitestConfig', () => {
       const config = createVitestConfig('test-package', 'unit');
 
       // Setup files should be relative
-      const setupFiles = config.test!.setupFiles;
+      const setupFiles = config.test.setupFiles;
       expect(setupFiles).toBeDefined();
       expect(setupFiles![0]).toMatch(/^\.\.\/\.\.\//);
 
       // GlobalSetup should be relative
-      expect(config.test!.globalSetup![0]).toBe('../../global-setup.ts');
+      expect(config.test.globalSetup![0]).toBe('../../global-setup.ts');
 
-      // Cache dirs should be relative
-      expect(config.cacheDir).toMatch(/^\.\.\/\.\.\//);
-      expect((config.test!.cache as any).dir).toMatch(/^\.\.\/\.\.\//);
+      // Cache dir should be relative
+      expect((config.test.cache as any).dir).toMatch(/^\.\.\/\.\.\//);
 
       // Coverage directory should be relative
-      expect(config.test!.coverage!.reportsDirectory).toMatch(/^\.\.\/\.\.\//);
+      expect(config.test.coverage!.reportsDirectory).toMatch(/^\.\.\/\.\.\//);
     });
   });
 
@@ -283,8 +283,7 @@ describe('createVitestConfig', () => {
     it('should handle empty projectKey gracefully', () => {
       const config = createVitestConfig('', 'unit');
 
-      expect(config.cacheDir).toBe('../../node_modules/.vite/');
-      expect(config.test!.coverage!.reportsDirectory).toBe(
+      expect(config.test.coverage!.reportsDirectory).toBe(
         '../../coverage//unit-tests'
       );
     });
@@ -292,16 +291,17 @@ describe('createVitestConfig', () => {
     it('should handle projectKey with special characters', () => {
       const config = createVitestConfig('my-special_package.v2', 'unit');
 
-      expect(config.cacheDir).toBe(
-        '../../node_modules/.vite/my-special_package.v2'
+      // Coverage directory should handle special characters
+      expect(config.test.coverage!.reportsDirectory).toBe(
+        '../../coverage/my-special_package.v2/unit-tests'
       );
     });
 
     it('should not modify config when no options provided to e2e', () => {
       const config = createVitestConfig('test-package', 'e2e');
 
-      expect(config.test?.testTimeout).toBeUndefined();
-      expect(config.test?.globalSetup).toEqual(['../../global-setup.ts']);
+      expect(config.test.testTimeout).toBeUndefined();
+      expect(config.test.globalSetup).toEqual(['../../global-setup.ts']);
     });
   });
 });

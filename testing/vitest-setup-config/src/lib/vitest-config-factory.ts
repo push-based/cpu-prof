@@ -1,5 +1,5 @@
 import type { CoverageOptions } from 'vitest';
-import type { UserConfig as ViteUserConfig } from 'vitest/config';
+import type { UserConfig as ViteUserConfig } from 'vite';
 import { getSetupFiles } from './vitest-setup-files.js';
 import { tsconfigPathAliases } from './vitest-tsconfig-path-aliases.js';
 
@@ -51,7 +51,7 @@ export function createVitestConfig(
   return {
     cacheDir: `../../node_modules/.vite/${projectKey}`,
     test: {
-      reporters: ['basic'],
+      reporters: ['default'],
       globals: true,
       cache: {
         dir: '../../node_modules/.vitest',

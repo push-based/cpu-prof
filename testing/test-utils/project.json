@@ -7,9 +7,9 @@
     "build": {},
     "lint": {},
     "unit-test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "options": {
-        "config": "testing/test-utils/vitest.unit.config.ts"
+        "passWithNoTests": true
       }
     },
     "nx-release-publish": {

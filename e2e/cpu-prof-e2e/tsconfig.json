@@ -4,12 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../../testing/vitest-setup-config"
-    },
-    {
-      "path": "../../packages/prof-dev-kit"
-    },
-    {
       "path": "./tsconfig.lib.json"
     },
     {

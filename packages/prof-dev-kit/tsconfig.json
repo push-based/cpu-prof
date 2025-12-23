@@ -4,16 +4,10 @@
   "include": [],
   "references": [
     {
-      "path": "../../testing/vitest-setup-config"
-    },
-    {
-      "path": "../../testing/test-utils"
-    },
-    {
       "path": "./tsconfig.lib.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      "path": "./tsconfig.test.json"
     }
   ]
 }

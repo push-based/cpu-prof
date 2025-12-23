@@ -1,13 +1,32 @@
 import * as path from 'node:path';
+import * as fs from 'node:fs';
 import { loadConfig } from 'tsconfig-paths';
 import type { Alias, AliasOptions } from 'vite';
 
 /**
  * Loads TypeScript path aliases from tsconfig.base.json for use in Vitest.
- * Uses process.cwd() as the workspace root to load the tsconfig.
+ * Looks for tsconfig.base.json in the workspace root by traversing up from current directory.
  */
 export function tsconfigPathAliases(): AliasOptions {
-  const tsconfigPath = path.resolve(process.cwd(), 'tsconfig.base.json');
+  // Find tsconfig.base.json by traversing up from current working directory
+  let currentDir = process.cwd();
+  let tsconfigPath: string | null = null;
+
+  for (let i = 0; i < 10; i++) {
+    // Prevent infinite loop
+    const candidate = path.join(currentDir, 'tsconfig.base.json');
+    if (fs.existsSync(candidate)) {
+      tsconfigPath = candidate;
+      break;
+    }
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) break; // Reached root
+    currentDir = parentDir;
+  }
+
+  if (!tsconfigPath) {
+    throw new Error('Could not find tsconfig.base.json in workspace');
+  }
   const result = loadConfig(tsconfigPath);
 
   if (result.resultType === 'failed') {

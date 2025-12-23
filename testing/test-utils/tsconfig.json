@@ -14,9 +14,6 @@
   "include": [],
   "references": [
     {
-      "path": "../vitest-setup-config"
-    },
-    {
       "path": "./tsconfig.lib.json"
     },
     {
