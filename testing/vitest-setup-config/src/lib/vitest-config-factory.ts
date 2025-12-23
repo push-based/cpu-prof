@@ -23,10 +23,7 @@ function getIncludePatterns(kind: TestKind): string[] {
   }
 }
 
-function buildCoverageConfig(
-  projectKey: string,
-  kind: TestKind
-): any {
+function buildCoverageConfig(projectKey: string, kind: TestKind): any {
   if (kind === 'e2e') {
     return undefined;
   }
