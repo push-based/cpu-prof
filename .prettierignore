@@ -7,4 +7,4 @@
 /coverage
 /.nx/cache
 /.nx/workspace-data
-/__snapshots__
+**/__snapshots__
