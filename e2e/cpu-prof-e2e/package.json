@@ -21,15 +21,7 @@
     "projectRoot": "packages/cpu-prof-e2e",
     "name": "cpu-prof-e2e",
     "targets": {
-      "e2e-test": {
-        "dependsOn": [
-          "^build"
-        ],
-        "executor": "@nx/vitest:test",
-        "options": {
-          "config": "{projectRoot}/vitest.e2e.config.ts"
-        }
-      }
+      "e2e": {}
     },
     "implicitDependencies": [
       "cpu-prof"

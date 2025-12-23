@@ -4,7 +4,15 @@
   "sourceRoot": "testing/test-utils/src",
   "projectType": "library",
   "targets": {
-    "build": {},
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "outputPath": "testing/test-utils/dist",
+        "tsConfig": "testing/test-utils/tsconfig.lib.json",
+        "main": "testing/test-utils/src/index.ts"
+      }
+    },
     "lint": {},
     "unit-test": {
       "executor": "@nx/vitest:test",

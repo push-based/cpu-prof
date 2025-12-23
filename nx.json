@@ -21,7 +21,10 @@
       "options": {
         "environments": {
           "environmentsDir": "tmp/environments",
-          "targetNames": ["e2e-test"],
+          "targetNames": ["e2e"],
+          "inferredTargets": {
+            "e2e": "e2e-test"
+          },
           "filterByTag": ["e2e"]
         },
         "publishable": {

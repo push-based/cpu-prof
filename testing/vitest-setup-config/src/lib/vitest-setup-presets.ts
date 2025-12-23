@@ -1,6 +1,6 @@
-import type { TestUserConfig as VitestUserConfig } from 'vitest/node';
 import {
   type E2ETestOptions,
+  type VitestConfig,
   createVitestConfig,
 } from './vitest-config-factory.js';
 
@@ -15,7 +15,7 @@ import {
  * export default createUnitTestConfig('my-package');
  * ```
  */
-export function createUnitTestConfig(projectKey: string): VitestUserConfig {
+export function createUnitTestConfig(projectKey: string): VitestConfig {
   return createVitestConfig(projectKey, 'unit');
 }
 
@@ -30,7 +30,7 @@ export function createUnitTestConfig(projectKey: string): VitestUserConfig {
  * export default createIntTestConfig('my-package');
  * ```
  */
-export function createIntTestConfig(projectKey: string): VitestUserConfig {
+export function createIntTestConfig(projectKey: string): VitestConfig {
   return createVitestConfig(projectKey, 'int');
 }
 
@@ -54,6 +54,6 @@ export function createIntTestConfig(projectKey: string): VitestUserConfig {
 export function createE2ETestConfig(
   projectKey: string,
   options?: E2ETestOptions
-): VitestUserConfig {
+): VitestConfig {
   return createVitestConfig(projectKey, 'e2e', options);
 }

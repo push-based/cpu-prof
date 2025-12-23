@@ -1,5 +1,5 @@
-import type { CoverageOptions } from 'vitest';
-import type { UserConfig as ViteUserConfig } from 'vite';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type VitestConfig = any;
 import { getSetupFiles } from './vitest-setup-files.js';
 import { tsconfigPathAliases } from './vitest-tsconfig-path-aliases.js';
 
@@ -26,7 +26,7 @@ function getIncludePatterns(kind: TestKind): string[] {
 function buildCoverageConfig(
   projectKey: string,
   kind: TestKind
-): CoverageOptions | undefined {
+): any {
   if (kind === 'e2e') {
     return undefined;
   }
@@ -45,7 +45,7 @@ export function createVitestConfig(
   projectKey: string,
   kind: TestKind,
   options?: E2ETestOptions
-): ViteUserConfig {
+): VitestConfig {
   const coverage = buildCoverageConfig(projectKey, kind);
 
   return {
