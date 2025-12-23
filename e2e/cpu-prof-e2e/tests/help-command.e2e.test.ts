@@ -19,7 +19,7 @@ describe('help-command', () => {
     );
 
     await expect(processedStdout).toMatchFileSnapshot(
-      join(__dirname, 'help-command.e2e.test.stdout.txt')
+      join(__dirname, '__snapshots__', 'help-command.e2e.test.stdout.txt')
     );
     expect(code).toBe(0);
   });
