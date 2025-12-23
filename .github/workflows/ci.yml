@@ -102,7 +102,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: E2E test affected projects
-        run: npx nx affected -t e2e-test --parallel=1
+        run: npx nx affected -t e2e-test --parallel=1 --exclude="**/dummy/**"
 
   build:
     runs-on: ubuntu-latest
