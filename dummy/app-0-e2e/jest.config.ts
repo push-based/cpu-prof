@@ -1,4 +1,3 @@
- 
 import { readFileSync } from 'fs';
 
 // Reading the SWC compilation config for the spec files
