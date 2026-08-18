@@ -1,6 +1,29 @@
 {
   "name": "@push-based/cpu-prof",
   "version": "1.0.4",
+  "description": "Collect, merge and visualize Node.js CPU profiles as Chrome trace files.",
+  "license": "MIT",
+  "homepage": "https://github.com/push-based/cpu-prof#readme",
+  "bugs": {
+    "url": "https://github.com/push-based/cpu-prof/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/push-based/cpu-prof.git",
+    "directory": "packages/cpu-prof"
+  },
+  "keywords": [
+    "cpu-profile",
+    "cpuprofile",
+    "profiling",
+    "performance",
+    "nodejs",
+    "trace",
+    "chrome-devtools"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.esm.js",
