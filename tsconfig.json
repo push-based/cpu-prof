@@ -45,5 +45,8 @@
     {
       "path": "./packages/cpu-prof"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  }
 }

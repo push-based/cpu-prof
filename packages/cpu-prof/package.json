@@ -32,13 +32,13 @@
     "name": "cpu-prof",
     "targets": {
       "unit-test": {
-        "executor": "@nx/vite:test",
+        "executor": "@nx/vitest:test",
         "options": {
           "config": "packages/{projectName}/vitest.unit.config.ts"
         }
       },
       "integration-test": {
-        "executor": "@nx/vite:test",
+        "executor": "@nx/vitest:test",
         "options": {
           "config": "packages/{projectName}/vitest.integration.config.ts"
         }
