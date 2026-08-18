@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import { searchForWorkspaceRoot } from 'vite';
-import { createSharedIntegrationVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
+import { createSharedIntegrationVitestConfig } from '@push-based/testing-vitest-setup';
 
 export default defineConfig(() => {
   const baseConfig = createSharedIntegrationVitestConfig({

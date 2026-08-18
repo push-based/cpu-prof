@@ -6,7 +6,7 @@ import type { FileInfo } from '../lib/file-utils';
  * Find the newest trace file in a directory (CLI-specific logic)
  */
 export function findNewestTraceFile(
-  directory: string = './packages/cpu-prof/mocks/fixtures/'
+  directory = './packages/cpu-prof/mocks/fixtures/'
 ): string {
   try {
     const files: FileInfo[] = fs
@@ -38,7 +38,7 @@ export function findNewestTraceFile(
  */
 export function generateOutputFilename(
   inputFile: string,
-  suffix: string = '.reduced'
+  suffix = '.reduced'
 ): string {
   return inputFile.replace('.json', `${suffix}.json`);
 }

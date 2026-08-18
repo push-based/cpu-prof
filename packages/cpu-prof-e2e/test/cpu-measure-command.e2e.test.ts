@@ -1,8 +1,14 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { executeProcess } from '../../cpu-prof/src/lib/execute-process';
+import { executeProcess } from '@push-based/cpu-prof';
 import { join } from 'path';
 import { mkdir, readdir, rm } from 'fs/promises';
 import { CLI_PATH } from '../mocks/constants';
+
+// removes all color codes from the output for stable matching
+function removeColorCodes(stdout: string): string {
+  // eslint-disable-next-line no-control-regex
+  return stdout.replace(/\u001B\[\d+m/g, '');
+}
 
 describe('cpu-measure-command', () => {
   const cliPath = join(__dirname, '../../../', CLI_PATH);
@@ -88,11 +94,11 @@ describe('cpu-measure-command', () => {
     );
     const lines = stdout.split(/\r?\n/).filter(Boolean);
     // Remove color codes before matching
-    const firstLineWithoutColors = lines[0].replace(/\u001B\[\d+m/g, '');
+    const firstLineWithoutColors = removeColorCodes(lines[0]);
     expect(firstLineWithoutColors).toMatch(expectedCmdRegex);
 
     // Check for expected process/thread output patterns anywhere in stdout (order independent)
-    const stdoutWithoutColors = stdout.replace(/\u001B\[\d+m/g, '');
+    const stdoutWithoutColors = removeColorCodes(stdout);
 
     // Check for exactly 1 main process
     const mainMatches = stdoutWithoutColors.match(/Main PID: \d+ TID: 0/g);
@@ -128,7 +134,7 @@ describe('cpu-measure-command', () => {
     });
 
     expect(code).toBe(0);
-    const stdoutWithoutColors = stdout.replace(/\u001B\[\d+m/g, '');
+    const stdoutWithoutColors = removeColorCodes(stdout);
     expect(stdoutWithoutColors).toContain(
       `NODE_OPTIONS="--cpu-prof --cpu-prof-dir=${outputDir}" npm --verbose -v`
     );

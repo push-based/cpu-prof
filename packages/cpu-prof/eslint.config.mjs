@@ -12,6 +12,7 @@ export default [
             '{projectRoot}/eslint.config.{js,cjs,mjs}',
             '{projectRoot}/rollup.config.{js,ts,mjs,mts,cjs,cts}',
             '{projectRoot}/vite.config.{js,ts,mjs,mts}',
+            '{projectRoot}/vitest.*.config.{js,ts,mjs,mts}',
           ],
         },
       ],

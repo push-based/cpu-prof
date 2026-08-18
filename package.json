@@ -59,6 +59,7 @@
   },
   "workspaces": [
     "packages/*",
+    "testing/*",
     "pkg-0",
     "packages",
     "cpu-profiling-e2e"

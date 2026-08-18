@@ -5,5 +5,11 @@
     "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node"],
     "rootDir": "."
   },
-  "include": ["vite.config.ts", "src/**/*.ts", "src/**/*.unit.test.ts"]
+  "include": [
+    "vite.config.ts",
+    "vitest.*.config.ts",
+    "vitest.*.config.mts",
+    "src/**/*.ts",
+    "src/**/*.unit.test.ts"
+  ]
 }

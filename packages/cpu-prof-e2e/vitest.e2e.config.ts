@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { createSharedE2eVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
+import { createSharedE2eVitestConfig } from '@push-based/testing-vitest-setup';
 import path from 'path';
 
 export default defineConfig(() => {

@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { createSharedIntegrationVitestConfig } from '../vitest-setup/src/lib/configuration';
+import { createSharedIntegrationVitestConfig } from '@push-based/testing-vitest-setup';
 
 export default defineConfig(() => {
   const baseConfig = createSharedIntegrationVitestConfig({

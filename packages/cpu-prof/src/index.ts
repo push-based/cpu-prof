@@ -1,3 +1,4 @@
+export * from './lib/execute-process';
 export * from './lib/merge-cpuprofile-files';
 export * from './lib/cpu/utils';
 export * from './lib/reduce-trace';
