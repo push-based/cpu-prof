@@ -27,15 +27,15 @@
     "name": "testing-utils",
     "targets": {
       "unit-test": {
-        "executor": "@nx/vitest:vitest",
+        "executor": "@nx/vitest:test",
         "options": {
-          "config": "vitest.unit.config.ts"
+          "config": "testing/utils/vitest.unit.config.ts"
         }
       },
       "integration-test": {
-        "executor": "@nx/vitest:vitest",
+        "executor": "@nx/vitest:test",
         "options": {
-          "config": "vitest.integration.config.mts"
+          "config": "testing/utils/vitest.integration.config.mts"
         }
       }
     }
