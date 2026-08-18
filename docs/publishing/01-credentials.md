@@ -117,19 +117,54 @@ Expected: `release` present; variables contain `GH_APP_ID`; secrets contain
 `@push-based/cpu-prof` already exists on npm at version `1.0.4`, so this is a
 configuration change on an existing package, not a first publish.
 
-### C1. Confirm who owns it
-
-Locally you are currently **not authenticated** (`npm whoami` → 401). Log in first:
+### C1. Confirm who owns it — ✅ checked, with a catch
 
 ```bash
 npm login
-npm whoami
+npm whoami                                        # -> bio_photon
+npm access list packages push-based               # -> @push-based/cpu-prof: read-write
+npm owner ls @push-based/cpu-prof                 # -> push-based-bot, julianjj
 npm access list collaborators @push-based/cpu-prof
 ```
 
-You need write/admin access on the package to configure a trusted publisher. If the
-account that published `1.0.4` is a personal one rather than the `@push-based` org,
-sort that out here — this is the most likely place for this plan to stall.
+Result:
+
+| Question                  | Answer                                               |
+| ------------------------- | ---------------------------------------------------- |
+| Logged in as              | `bio_photon`                                         |
+| Access to `cpu-prof`      | **read-write** (enough to publish)                   |
+| Package **owners**        | `push-based-bot <npm@push-based.io>`, `julianjj`     |
+| Is `bio_photon` an owner? | **No**                                               |
+| Collaborators listed      | `julianjj: read-write`, `push-based-bot: read-write` |
+| Package visibility        | `public`                                             |
+
+**The catch:** read-write lets you _publish_, but the package **Settings** page —
+where Trusted Publisher lives — needs **owner/admin** on the package. `bio_photon` is
+not an owner. `npm org ls push-based` also returns an empty roster (`{}`, exit 0),
+which is what a non-admin sees, so org-level admin rights are unlikely too.
+
+So C2 is likely to need one of:
+
+- **`julianjj`** configures it (an owner), or
+- the **`push-based-bot`** npm account (owner, `npm@push-based.io`) is used, or
+- an existing owner runs `npm owner add bio_photon @push-based/cpu-prof` first.
+
+Fastest way to settle it: open the package Settings page while logged in as
+`bio_photon`. If the Trusted Publisher section is missing or read-only, you need one
+of the routes above.
+
+**Fallback if trusted publishing cannot be arranged.** Create a **granular access
+token** (read-write, scoped to `@push-based/cpu-prof`) on an account that can publish,
+store it as `NPM_TOKEN` in the `release` environment, and give `publish.yml` an
+`.npmrc` step:
+
+```yaml
+- run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+```
+
+This works but reintroduces a long-lived rotatable credential and loses the
+provenance attestation — which is exactly what the OIDC design avoids. Treat it as
+plan B.
 
 ### C2. Configure the trusted publisher
 
@@ -212,7 +247,8 @@ Status as of the automated run of this plan (2026-08-19):
 - [x] B3 — `GH_APP_PRIVATE_KEY` as environment secret
 - [ ] B4 — (optional) `NX_CLOUD_ACCESS_TOKEN` repo secret — _see note below_
 - [x] B5 — verified via `gh api`
-- [ ] **C1 — npm login confirmed, ownership of `@push-based/cpu-prof` confirmed** ⛔ _needs interactive npm login_
+- [x] C1 — logged in as `bio_photon`, **read-write** on the package — but **not an
+      owner** (owners: `push-based-bot`, `julianjj`), which likely blocks C2
 - [ ] **C2 — trusted publisher configured** ⛔ _npmjs.com web UI only_
 - [ ] **C3 — package publish policy allows trusted publishing** ⛔ _npmjs.com web UI only_
 - [x] E — `v1.0.4` tag pushed, pointing at `39a0b81` (the commit that set `1.0.4`)
