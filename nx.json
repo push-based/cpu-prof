@@ -104,6 +104,14 @@
       ],
       "outputs": ["{options.output-file}"]
     },
+    "nx-release-publish": {
+      "dependsOn": ["build"],
+      "executor": "@nx/js:release-publish",
+      "options": {
+        "packageRoot": "{projectRoot}",
+        "registry": "https://registry.npmjs.org/"
+      }
+    },
     "@nx/esbuild:esbuild": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -116,8 +124,30 @@
     }
   },
   "release": {
+    "projects": ["packages/cpu-prof"],
+    "projectsRelationship": "independent",
+    "releaseTag": {
+      "pattern": "v{version}"
+    },
+    "changelog": {
+      "workspaceChangelog": false,
+      "projectChangelogs": {
+        "createRelease": "github"
+      }
+    },
+    "git": {
+      "commit": true,
+      "push": true,
+      "pushRemote": "origin",
+      "tag": true,
+      "commitMessage": "release: {version}"
+    },
     "version": {
-      "preVersionCommand": "npx nx run-many -t build"
+      "conventionalCommits": true,
+      "preVersionCommand": "npx nx run-many -t build",
+      "versionActionsOptions": {
+        "skipLockFileUpdate": true
+      }
     }
   },
   "tui": {
