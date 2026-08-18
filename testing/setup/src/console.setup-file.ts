@@ -8,22 +8,30 @@ let consoleErrorSpy: MockInstance | undefined;
 beforeEach(() => {
   // In multi-progress-bars, console methods are overriden
   if (console.log != null) {
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    consoleLogSpy = vi
+      .spyOn(console, 'log')
+      .mockImplementation(() => undefined);
     (globalThis as any).consoleLogSpy = consoleLogSpy;
   }
 
   if (console.info != null) {
-    consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    consoleInfoSpy = vi
+      .spyOn(console, 'info')
+      .mockImplementation(() => undefined);
     (globalThis as any).consoleInfoSpy = consoleInfoSpy;
   }
 
   if (console.warn != null) {
-    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    consoleWarnSpy = vi
+      .spyOn(console, 'warn')
+      .mockImplementation(() => undefined);
     (globalThis as any).consoleWarnSpy = consoleWarnSpy;
   }
 
   if (console.error != null) {
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
     (globalThis as any).consoleErrorSpy = consoleErrorSpy;
   }
 });

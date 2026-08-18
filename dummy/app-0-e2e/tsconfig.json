@@ -4,7 +4,9 @@
     "outDir": "out-tsc/@dummy/app-0-e2e",
     "esModuleInterop": true,
     "noUnusedLocals": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "include": ["jest.config.ts", "src/**/*.ts"],
   "references": []

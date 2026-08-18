@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { executeProcess } from '../../cpu-prof/src/lib/execute-process';
+import { executeProcess } from '@push-based/cpu-prof';
 import { join } from 'path';
 import { cp, mkdir, rm, readFile } from 'fs/promises';
 import { existsSync } from 'fs';

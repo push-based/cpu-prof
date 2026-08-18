@@ -18,7 +18,7 @@ describe('mergeCpuProfileFiles', () => {
   );
 
   beforeEach(() => {
-    ensureDirectoryExistsSpy.mockImplementation(() => {});
+    ensureDirectoryExistsSpy.mockImplementation(() => undefined);
   });
 
   it('should merge files in a folder', async () => {

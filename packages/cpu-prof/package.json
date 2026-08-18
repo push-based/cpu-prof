@@ -25,20 +25,19 @@
   ],
   "dependencies": {
     "ansis": "^3.1.2",
-    "strip-ansi": "^6.0.1",
     "yargs": "^17.7.2"
   },
   "nx": {
     "name": "cpu-prof",
     "targets": {
       "unit-test": {
-        "executor": "@nx/vite:test",
+        "executor": "@nx/vitest:test",
         "options": {
           "config": "packages/{projectName}/vitest.unit.config.ts"
         }
       },
       "integration-test": {
-        "executor": "@nx/vite:test",
+        "executor": "@nx/vitest:test",
         "options": {
           "config": "packages/{projectName}/vitest.integration.config.ts"
         }

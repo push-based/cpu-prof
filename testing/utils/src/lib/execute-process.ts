@@ -197,8 +197,7 @@ export function executeProcess(
   const date = new Date().toISOString();
   const start = performance.now();
 
-  logger?.log &&
-    logger.log(formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`));
+  logger?.log?.(formatCommandLog(command, args, `${cfg.cwd ?? process.cwd()}`));
 
   return new Promise((resolve, reject) => {
     // shell:true tells Windows to use shell command for spawning a child process
@@ -209,9 +208,7 @@ export function executeProcess(
       ...options,
     }) as ChildProcessByStdio<Writable, Readable, Readable>;
 
-    // eslint-disable-next-line functional/no-let
     let stdout = '';
-    // eslint-disable-next-line functional/no-let
     let stderr = '';
 
     spawnedProcess.stdout.on('data', (data) => {

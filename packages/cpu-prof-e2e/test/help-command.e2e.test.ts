@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { executeProcess } from '../../cpu-prof/src/lib/execute-process';
+import { executeProcess } from '@push-based/cpu-prof';
 import { CLI_PATH } from '../mocks/constants';
 import { join } from 'path';
 
@@ -14,7 +14,7 @@ describe('help-command', () => {
 
     // Replace the variable default path with a stable placeholder
     const processedStdout = stdout.replace(
-      /(\[string\] \[default: \")([^\"]+)(\"\])/g,
+      /(\[string\] \[default: ")([^"]+)("\])/g,
       '$1[PATH_PLACEHOLDER]$3'
     );
 

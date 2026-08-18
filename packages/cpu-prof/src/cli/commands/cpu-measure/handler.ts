@@ -62,7 +62,7 @@ export async function handler(argv: MeasureArgs): Promise<void> {
     );
   } catch (error) {
     const e = error as Error;
-    let errorMessage = e.message || 'Unknown error';
+    const errorMessage = e.message || 'Unknown error';
 
     if (errorMessage && errorMessage.includes('not allowed in NODE_OPTIONS')) {
       console.error(

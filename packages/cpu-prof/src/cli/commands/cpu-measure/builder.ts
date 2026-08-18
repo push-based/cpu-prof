@@ -3,7 +3,7 @@ import { isAbsolute, join } from 'node:path';
 import type { MeasureArgs } from './types';
 import { handler } from './handler';
 
-export const measureCommand: CommandModule<{}, MeasureArgs> = {
+export const measureCommand: CommandModule<object, MeasureArgs> = {
   command: 'measure <commandToProfile...>',
   describe:
     'Run a Node.js script with CPU profiling enabled and save the profile to disk',

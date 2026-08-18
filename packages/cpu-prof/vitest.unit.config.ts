@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { createSharedUnitVitestConfig } from '../../testing/vitest-setup/src/lib/configuration';
+import { createSharedUnitVitestConfig } from '@push-based/testing-vitest-setup';
 import * as path from 'path';
 
 export default defineConfig(() => {

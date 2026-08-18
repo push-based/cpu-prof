@@ -7,10 +7,10 @@ export async function nxRunWithPerfLogging(
   {
     verbose = false,
     noPatch = false,
-    onData = () => {},
-    onTraceEvent = () => {},
-    onMetadata = () => {},
-    beforeExit = () => {},
+    onData,
+    onTraceEvent,
+    onMetadata,
+    beforeExit,
   }: NxPerfOptions = {}
 ): Promise<void> {
   const patch = !noPatch;
@@ -43,18 +43,18 @@ export async function nxRunWithPerfLogging(
   child.stdout?.on('data', (data: Buffer) => {
     const lines = data.toString().split('\n');
     for (const line of lines) {
-      onData(line);
+      onData?.(line);
       const res = line.split(':JSON:');
 
       if (res.length === 2) {
         const [prop, jsonString] = res;
         const perfProfileEvent = JSON.parse(jsonString?.trim() || '{}');
         if (prop === 'traceEvent') {
-          onTraceEvent(perfProfileEvent);
+          onTraceEvent?.(perfProfileEvent);
           profile.traceEvents.push(perfProfileEvent);
         }
         if (prop === 'metadata') {
-          onMetadata(perfProfileEvent);
+          onMetadata?.(perfProfileEvent);
           profile.metadata = perfProfileEvent;
         }
       }
@@ -62,6 +62,6 @@ export async function nxRunWithPerfLogging(
   });
 
   child.on('close', () => {
-    beforeExit(profile);
+    beforeExit?.(profile);
   });
 }

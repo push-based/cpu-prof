@@ -12,7 +12,8 @@
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
+    "testFixtures": ["{projectRoot}/mocks/**/*"]
   },
   "nxCloudId": "67f4ed637b16f351e65d5530",
   "plugins": [
@@ -31,7 +32,6 @@
       },
       "exclude": ["cpu-profiling-e2e/*"]
     },
-    
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -76,13 +76,9 @@
   "targetDefaults": {
     "unit-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ],
+      "inputs": ["default", "^default", "testFixtures"],
       "options": {
         "config": "packages/{projectName}/vitest.unit.config.ts"
       }
@@ -90,22 +86,14 @@
     "integration-test": {
       "dependsOn": ["^build"],
       "outputs": ["{workspaceRoot}/coverage/integration/{projectName}"],
-      "executor": "@nx/vitest:vitest",
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ]
+      "executor": "@nx/vitest:test",
+      "inputs": ["default", "^default", "testFixtures"]
     },
     "e2e-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
-      "inputs": [
-        "default",
-        "^default",
-        "testFixtures"
-      ]
+      "inputs": ["default", "^default", "testFixtures"]
     },
     "lint": {
       "cache": true,

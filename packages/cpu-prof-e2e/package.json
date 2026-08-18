@@ -22,7 +22,7 @@
       "dependsOn": [
         "^build"
       ],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "options": {
         "config": "vitest.e2e.config.ts"
       }
