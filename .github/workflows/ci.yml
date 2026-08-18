@@ -36,21 +36,4 @@ jobs:
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
       # - run: npx nx-cloud record -- echo Hello World
       # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: npx nx affected -t lint build
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - run: npm ci --legacy-peer-deps
-      - uses: nrwl/nx-set-shas@v5
-
-      - run: npx nx affected -t unit-test integration-test
+      - run: npx nx affected -t lint unit-test integration-test build
