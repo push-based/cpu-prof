@@ -75,7 +75,7 @@
   "targetDefaults": {
     "unit-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/unit/{projectName}"],
       "inputs": ["default", "^default", "testFixtures"],
       "options": {
@@ -85,12 +85,12 @@
     "integration-test": {
       "dependsOn": ["^build"],
       "outputs": ["{workspaceRoot}/coverage/integration/{projectName}"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "inputs": ["default", "^default", "testFixtures"]
     },
     "e2e-test": {
       "dependsOn": ["^build"],
-      "executor": "@nx/vitest:vitest",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/{projectName}"],
       "inputs": ["default", "^default", "testFixtures"]
     },
