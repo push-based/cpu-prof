@@ -1,0 +1,9 @@
+<main>
+  <h1>Angular SSR profiling demo</h1>
+  <p>{{ primes().length.toLocaleString('en') }} primes, the last {{ rows().length }} below.</p>
+  <ol>
+    @for (p of rows(); track p) {
+      <li>{{ p }}</li>
+    }
+  </ol>
+</main>
