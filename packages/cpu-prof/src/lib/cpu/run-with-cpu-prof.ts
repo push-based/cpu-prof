@@ -61,7 +61,7 @@ export async function runWithCpuProf(
     // Construct the environment variables for executeProcess
     const envWithNodeOptions = {
       ...env,
-      NODE_OPTIONS: nodeOptionsString,
+      NODE_OPTIONS: nodeOptionsString.replaceAll('\\', '\\\\'),
     };
     const result = await executeProcess({
       command,
